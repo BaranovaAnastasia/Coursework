@@ -47,7 +47,7 @@
             this.UserManualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.NextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MovementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Tools = new System.Windows.Forms.Panel();
             this.ClearButton = new System.Windows.Forms.Button();
@@ -87,6 +87,7 @@
             this.SpeedNumeric = new System.Windows.Forms.NumericUpDown();
             this.SpeedLabel = new System.Windows.Forms.Label();
             this.TimeLabel = new System.Windows.Forms.Label();
+            this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TopMenu.SuspendLayout();
             this.Tools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TimeNumeric)).BeginInit();
@@ -143,8 +144,9 @@
             this.UserManualToolStripMenuItem,
             this.AboutToolStripMenuItem,
             this.MainMenuToolStripMenuItem,
-            this.NextToolStripMenuItem,
-            this.StopToolStripMenuItem});
+            this.MovementToolStripMenuItem,
+            this.StopToolStripMenuItem,
+            this.resetToolStripMenuItem});
             this.TopMenu.Location = new System.Drawing.Point(0, 0);
             this.TopMenu.Name = "TopMenu";
             this.TopMenu.Size = new System.Drawing.Size(1236, 33);
@@ -272,12 +274,12 @@
             this.MainMenuToolStripMenuItem.Text = "Main Menu";
             this.MainMenuToolStripMenuItem.Click += new System.EventHandler(this.MainMenuToolStripMenuItem_Click);
             // 
-            // NextToolStripMenuItem
+            // MovementToolStripMenuItem
             // 
-            this.NextToolStripMenuItem.Name = "NextToolStripMenuItem";
-            this.NextToolStripMenuItem.Size = new System.Drawing.Size(64, 29);
-            this.NextToolStripMenuItem.Text = "Next";
-            this.NextToolStripMenuItem.Click += new System.EventHandler(this.NextToolStripMenuItem_Click);
+            this.MovementToolStripMenuItem.Name = "MovementToolStripMenuItem";
+            this.MovementToolStripMenuItem.Size = new System.Drawing.Size(114, 29);
+            this.MovementToolStripMenuItem.Text = "Movement";
+            this.MovementToolStripMenuItem.Click += new System.EventHandler(this.MovementToolStripMenuItem_Click);
             // 
             // StopToolStripMenuItem
             // 
@@ -440,7 +442,7 @@
             this.GridThresholds.Name = "GridThresholds";
             this.GridThresholds.RowHeadersWidth = 33;
             this.GridThresholds.RowTemplate.Height = 28;
-            this.GridThresholds.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            this.GridThresholds.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.GridThresholds.Size = new System.Drawing.Size(130, 572);
             this.GridThresholds.TabIndex = 21;
             this.GridThresholds.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridThresholds_CellValueChanged);
@@ -615,7 +617,7 @@
             this.GridRefractoryPeriods.Name = "GridRefractoryPeriods";
             this.GridRefractoryPeriods.RowHeadersWidth = 33;
             this.GridRefractoryPeriods.RowTemplate.Height = 28;
-            this.GridRefractoryPeriods.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            this.GridRefractoryPeriods.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.GridRefractoryPeriods.Size = new System.Drawing.Size(130, 572);
             this.GridRefractoryPeriods.TabIndex = 21;
             this.GridRefractoryPeriods.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridRefractoryPeriods_CellValueChanged);
@@ -656,7 +658,7 @@
             this.GridInitialState.Name = "GridInitialState";
             this.GridInitialState.RowHeadersWidth = 33;
             this.GridInitialState.RowTemplate.Height = 28;
-            this.GridInitialState.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            this.GridInitialState.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.GridInitialState.Size = new System.Drawing.Size(130, 572);
             this.GridInitialState.TabIndex = 22;
             this.GridInitialState.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridInitialState_CellValueChanged);
@@ -789,6 +791,13 @@
             this.TimeLabel.TabIndex = 26;
             this.TimeLabel.Text = "Time, s";
             // 
+            // resetToolStripMenuItem
+            // 
+            this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
+            this.resetToolStripMenuItem.Size = new System.Drawing.Size(70, 29);
+            this.resetToolStripMenuItem.Text = "Reset";
+            this.resetToolStripMenuItem.Click += new System.EventHandler(this.ResetToolStripMenuItem_Click);
+            // 
             // GraphBuilder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -876,7 +885,7 @@
         private System.Windows.Forms.ToolStripMenuItem AboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MainMenuToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem StopToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem NextToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MovementToolStripMenuItem;
         private System.Windows.Forms.Label AdjacencyMatrixLabel;
         private System.Windows.Forms.SplitContainer ArcLengthContainer;
         private System.Windows.Forms.ComboBox ArcName;
@@ -906,6 +915,7 @@
         private System.Windows.Forms.Label ActionsLabel;
         private System.Windows.Forms.ToolStripMenuItem darkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lightToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
     }
 }
 

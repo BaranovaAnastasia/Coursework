@@ -78,30 +78,7 @@ namespace Graph_WinForms
             ChangeMainMenuState(true);
         }
 
-        /// <summary>
-        /// Saves the graph if user wants to and goes to a previous window
-        /// </summary>
-        private void StopToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (DrawingSurface.Visible)
-            {
-                if (Digraph.Vertices.Count != 0)
-                {
-                    SaveGraph(
-                        "Would you like to save the graph before going to the start menu? Your graph will be lost.",
-                        "Saving", out DialogResult result);
-                    if (result == DialogResult.Cancel) return;
-                }
 
-                ChangeDrawingElementsState(false);
-                ChangeMainMenuState(true);
-                RefreshVariables();
-            }
-            else if (Build.Visible)
-            {
-                ChangeMainMenuState(false);
-            }
-        }
 
         /// <summary>
         /// Shows a user manual (maybe in the future)
@@ -120,14 +97,25 @@ namespace Graph_WinForms
         /// <summary>
         /// Checks if the digraph is strongly connected and goes to the next step if it is
         /// </summary>
-        private void NextToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MovementToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (movement != null && movement.IsActive) return;
+
             if (!ApplicationMethods.IsGraphValid(Digraph))
             {
                 MessageBox.Show("The graph is not strongly connected", "Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 return;
             }
+
+            if (movement != null && !movement.IsActive)
+            {
+                movement.Go();
+                return;
+            }
+
+            foreach (var control in Tools.Controls)
+                (control as Button).Enabled = false;
             /*MessageBox.Show("The next step is in development...");
             Text = Calculating.GetNumber(Digraph, 0.54, 10, this, out Series data).ToString() + "все";
             
@@ -143,26 +131,39 @@ namespace Graph_WinForms
             MovementModelingType type = BasicTypeCheckBox.Checked
                 ? MovementModelingType.Basic
                 : MovementModelingType.Sandpile;
-            MovementModelingMode mode = MovementModelingMode.Animation;
 
-            if (AnimationCheckBox.Checked && ChartCheckBox.Checked && SaveGifCheckBox.Checked)
-                mode = MovementModelingMode.AnimationAndChartAndGif;
-            else if (AnimationCheckBox.Checked && ChartCheckBox.Checked)
-                mode = MovementModelingMode.AnimationAndChart;
-            else if (ChartCheckBox.Checked && SaveGifCheckBox.Checked)
-                mode = MovementModelingMode.ChartAndGif;
-            else if (AnimationCheckBox.Checked && SaveGifCheckBox.Checked)
-                mode = MovementModelingMode.AnimationAndGif;
-            else if (AnimationCheckBox.Checked) mode = MovementModelingMode.Animation;
-            else if (ChartCheckBox.Checked) mode = MovementModelingMode.Chart;
-            else if (SaveGifCheckBox.Checked) mode = MovementModelingMode.Gif;
+            MovementModelingMode[] modes = new MovementModelingMode[3];
+            if (AnimationCheckBox.Checked) modes[0] = MovementModelingMode.Animation;
+            if (ChartCheckBox.Checked) modes[1] = MovementModelingMode.Chart;
+            if (SaveGifCheckBox.Checked) modes[2] = MovementModelingMode.Gif;
 
-            MovementModeling movement = new MovementModeling(Digraph, (int)TimeNumeric.Value*1000, (double)SpeedNumeric.Value/1000);
-            movement.Movement(graphDrawing, DrawingSurface, type, mode);
+            movement = new MovementModeling(Digraph, (int)TimeNumeric.Value * 1000, (double)SpeedNumeric.Value / 1000);
+            movement.Movement(graphDrawing, DrawingSurface, type, modes);
 
         }
 
-        private readonly Results results = new Results();
+        private MovementModeling movement = null;
+
+        /// <summary>
+        /// Stops movement
+        /// </summary>
+        private void StopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (movement != null && movement.IsActive) movement.Stop();
+        }
+
+        private void ResetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StopToolStripMenuItem_Click(sender, e);
+            for (int i = 0; i < Digraph.State.Count; i++)
+                Digraph.State[i] = (int)GridInitialState[0, i].Value;
+            graphDrawing.DrawTheWholeGraph(Digraph);
+            DrawingSurface.Image = graphDrawing.Image;
+            movement = null;
+            foreach (var control in Tools.Controls)
+                (control as Button).Enabled = true;
+            CoursorButton.Enabled = false;
+        }
 
 
 
@@ -199,6 +200,7 @@ namespace Graph_WinForms
             MovingVertexIndex = -1;
             ArcLength.Text = String.Empty;
             chosenNumber = -1;
+            movement = null;
         }
     }
 

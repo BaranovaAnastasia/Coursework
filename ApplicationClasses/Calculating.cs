@@ -12,6 +12,7 @@ using System.IO;
 using System.Data;
 using System.Data.Objects;
 using System.Data.Entity;
+using System.Windows.Media.Imaging;
 
 namespace ApplicationClasses
 {
@@ -38,7 +39,21 @@ namespace ApplicationClasses
                 throw new ArgumentOutOfRangeException(nameof(speed), "Speed of movement should be positive");
             this.time = time;
             this.speed = speed;
+            IsActive = false;
         }
+
+        private readonly Digraph digraph;
+        private GraphDrawing graphDrawing;
+        private PictureBox drawingSurface;
+        private readonly int time;
+        private readonly double speed;
+        private List<Arc>[] incidenceList;
+        private List<Arc> involvedArcs;
+        private List<Stopwatch> timers;
+        private Stopwatch mainStopwatch = new Stopwatch();
+        private Timer mainTimer = new Timer() { Interval = 50 };
+        public List<Bitmap> Gif = new List<Bitmap>();
+
 
         /// <summary>
         /// Creates an array of lists of the arcs coming from the digraph vertices
@@ -147,31 +162,39 @@ namespace ApplicationClasses
         /// <summary>
         /// Starts dots movement
         /// </summary>
-        public void Movement(GraphDrawing graphics, PictureBox picture, MovementModelingType type, MovementModelingMode mode)
+        public void Movement(GraphDrawing graphics, PictureBox picture, MovementModelingType type, MovementModelingMode[] modes)
         {
             if (type == MovementModelingType.Basic) mainTimer.Tick += TickBasicAnimation;
             else mainTimer.Tick += TickSandpileAnimation;
+                //mainTimer.Tick += TickGifCollecting;
 
             incidenceList = GetIncidenceList(digraph);
             involvedArcs = new List<Arc>();
             timers = new List<Stopwatch>();
             graphDrawing = graphics;
             drawingSurface = picture;
+            IsActive = true;
             mainTimer.Start();
             mainStopwatch.Start();
         }
 
-        private readonly Digraph digraph;
-        private GraphDrawing graphDrawing;
-        private PictureBox drawingSurface;
-        private int time;
-        private readonly double speed;
-        private List<Arc>[] incidenceList;
-        private List<Arc> involvedArcs;
-        private List<Stopwatch> timers;
-        private Stopwatch mainStopwatch = new Stopwatch();
-        private Timer mainTimer = new Timer() {Interval = 50};
-        public List<Bitmap> Gif = new List<Bitmap>();
+        public bool IsActive { get; private set; }
+
+        public void Stop()
+        {
+            mainTimer.Stop();
+            mainStopwatch.Stop();
+            timers.ForEach(timer => timer.Stop());
+            IsActive = false;
+        }
+
+        public void Go()
+        {
+            mainTimer.Start();
+            mainStopwatch.Start();
+            timers.ForEach(timer => timer.Start());
+            IsActive = true;
+        }
 
         /// <summary>
         /// Draws all the currently moving dots
@@ -315,11 +338,7 @@ namespace ApplicationClasses
     {
         Animation,
         Chart,
-        Gif,
-        AnimationAndChart,
-        AnimationAndGif,
-        ChartAndGif,
-        AnimationAndChartAndGif
+        Gif
     }
     public enum MovementModelingType
     {

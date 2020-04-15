@@ -44,9 +44,9 @@ namespace ApplicationClasses
             if (refractoryPeriod < 0)
                 throw new ArgumentOutOfRangeException(nameof(refractoryPeriod),
                     "The value of the vertex refractory period must be a non-negative number");
-            if (initialState < 0 || initialState > refractoryPeriod)
+            if (initialState < 0 || initialState > threshold)
                 throw new ArgumentOutOfRangeException(nameof(initialState),
-                    "The value of the vertex initial state must be a non-negative number, not grater than the value of the vertex refractory period");
+                    "The value of the vertex initial state must be a non-negative number, not grater than the value of the vertex threshold");
             vertices.Add(vertex);
             thresholds.Add(threshold);
             refractoryPeriods.Add(refractoryPeriod);

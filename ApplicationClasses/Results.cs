@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Graph_WinForms
+namespace ApplicationClasses
 {
     public partial class Results : Form
     {

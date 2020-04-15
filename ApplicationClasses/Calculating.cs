@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.IO;
 using System.Data;
 using System.Data.Objects;
 using System.Data.Entity;
+using System.Runtime.Remoting.Channels;
 using System.Windows.Media.Imaging;
 
 namespace ApplicationClasses
@@ -159,6 +161,9 @@ namespace ApplicationClasses
             return new PointF((float)x, (float)y);
         }
 
+        private Results resultsForm = null;
+        private Series data;
+
         /// <summary>
         /// Starts dots movement
         /// </summary>
@@ -166,7 +171,26 @@ namespace ApplicationClasses
         {
             if (type == MovementModelingType.Basic) mainTimer.Tick += TickBasicAnimation;
             else mainTimer.Tick += TickSandpileAnimation;
-                //mainTimer.Tick += TickGifCollecting;
+            if (modes.Contains(MovementModelingMode.Chart))
+            {
+                mainTimer.Tick += TickChartFilling;
+                resultsForm = new Results(); 
+                data = new Series("Number of dots")
+                {
+                    ChartType = SeriesChartType.Line,
+                    MarkerColor = Color.Red,
+                    ChartArea = "Chart",
+                    BorderWidth = 3
+                };
+                resultsForm.chart1.Series.Add(data);
+                resultsForm.chart1.ChartAreas.Add("Chart");
+                resultsForm.chart1.ChartAreas[0].AxisX.Interval = 0.1;
+                resultsForm.Closing += delegate(object sender, System.ComponentModel.CancelEventArgs e)
+                {
+                    mainTimer.Tick -= TickChartFilling;
+                };
+                resultsForm.Show();
+            }
 
             incidenceList = GetIncidenceList(digraph);
             involvedArcs = new List<Arc>();
@@ -251,6 +275,9 @@ namespace ApplicationClasses
             }
             for (int i = 0; i < digraph.Vertices.Count; ++i)
                 graphDrawing.DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1, new Pen(Color.MidnightBlue, 2.5f));
+
+            if (IsMovementEnded()) MovementEnded?.Invoke(this, null);
+
             /*if (mainStopwatch.ElapsedMilliseconds >= time)
             {
                 mainTimer.Stop();
@@ -291,6 +318,7 @@ namespace ApplicationClasses
                 graphDrawing.DrawDot(point);
                 drawingSurface.Image = graphDrawing.Image;
             }
+            if(IsMovementEnded()) MovementEnded?.Invoke(this, null);
             /*if (mainStopwatch.ElapsedMilliseconds >= time)
             {
                 mainTimer.Stop();
@@ -326,7 +354,18 @@ namespace ApplicationClasses
 
         private void TickChartFilling(object source, EventArgs e)
         {
+            data.Points.AddXY(mainStopwatch.ElapsedMilliseconds, involvedArcs.Count);
+        }
 
+        public event EventHandler MovementEnded;
+
+        public bool IsMovementEnded()
+        {
+            for (int i = 0; i < digraph.State.Count; i++)
+                if (digraph.State[i] == 0)
+                    return false;
+            if (involvedArcs.Count != 0) return false;
+            return true;
         }
 
 

@@ -34,7 +34,7 @@ namespace ApplicationClasses
         /// <summary>
         /// Font for vertices titles
         /// </summary>
-        private readonly Font font = new Font("Times New Roman", 7);
+        private readonly Font font = new Font("Segoe UI", 5);
 
         /// <summary>
         /// DarkSlateGray Brush for writing titles

@@ -87,7 +87,7 @@ namespace ApplicationClasses
         /// </summary>
         static readonly Random rnd = new Random();
 
-        #region ShitMethodRandomGraph
+
         /// <summary>
         /// Creates Random Graph
         /// </summary>
@@ -97,50 +97,28 @@ namespace ApplicationClasses
         /// <param name="height">Drawing surface height</param>
         public static void GetRandomGraph(int numberOfVertices, out Digraph digraph, int width, int height)
         {
-            /*List<Vertex> Vertices = new List<Vertex>(NumberOfVertices);
-            List<Arc>  Edges = new List<Arc>();
-            double[,] AdjacencyMatrix = new double[NumberOfVertices, NumberOfVertices];
-            // Shows if vertices have any connections
-            int[] visited = new int[NumberOfVertices];
-            // sheet into cells
-            //bool[,] cells = new bool[Width / 40, Height / 40];
-            // Filling vertices list
-            int x, y, i;
-            for (i = 0; i < NumberOfVertices; i++)
-            {
-                // Looking for a vacant cell
-                /*do
-                {
-                    x = rnd.Next(0, cells.GetLength(0));
-                    y = rnd.Next(0, cells.GetLength(1));
-                } while (cells[x, y]);
-                Vertices.Add(new Vertex(40 * x + R + rnd.Next(0, 10), Height - 40 * y - 2 * R - rnd.Next(5, 15)));
-                cells[x, y] = true;* /
-                x = rnd.Next(2 * GraphDrawing.R, Width - 2 * GraphDrawing.R);
-                y = rnd.Next(2 * GraphDrawing.R, Height - 2 * GraphDrawing.R);
-                Vertices.Add(new Vertex(x, y));
-            }
-            i = 0;
-            int j = 0;
-            int AllVisited = 0;
-            while (AllVisited != Vertices.Count)
-            {
-                if (visited[i] == 0) AllVisited++;
-                visited[i]++;
-                do
-                {
-                    j = rnd.Next(0, Vertices.Count - 1);
-                    j = j >= i ? j + 1 : j;
-                } while (visited[j] >= 2 || AdjacencyMatrix[i, j] != 0);
-
-                Edges.Add(new Arc(i, j, rnd.Next(0, 10) + rnd.NextDouble() + 0.01));
-                AdjacencyMatrix[i, j] = Edges[Edges.Count - 1].Length;
-                i = j;
-            }
-            Edges.Add(new Arc(j, 0, rnd.Next(0, 10) + rnd.NextDouble() + 0.01));*/
             digraph = new Digraph();
+            bool[] visitedV = new bool[numberOfVertices];
+            for (int i = 0; i < numberOfVertices; i++)
+            {
+                int th = rnd.Next(1, 5);
+                int p = rnd.Next(1, 5);
+                int s = rnd.NextDouble() > 0.65 ? 0 : rnd.Next(1, th + 1);
+                digraph.AddVertex(new Vertex(rnd.Next(10, width-10), rnd.Next(10, height-10)), th, p, s);
+                visitedV[i] = i == 0;
+            }
+
+            int start = 0;
+            int end;
+            for (int i = 0; i < numberOfVertices - 1; i++)
+            {
+                do { } while ((end = rnd.Next(1, visitedV.Length)) == start || visitedV[end]);
+                digraph.AddArc(new Arc(start, end, rnd.Next(3, 11) + rnd.NextDouble()));
+                visitedV[end] = true;
+                start = end;
+            }
+            digraph.AddArc(new Arc(start, 0, rnd.Next(3, 11) + rnd.NextDouble()));
         }
-        #endregion
 
         /// <summary>
         /// Defines whether the string is a number or not
@@ -223,7 +201,7 @@ namespace ApplicationClasses
             {
                 if (Math.Pow(digraph.Vertices[i].X - x, 2) + Math.Pow(digraph.Vertices[i].Y - y, 2)
                       > GraphDrawing.R * GraphDrawing.R)
-                      continue;
+                    continue;
                 digraph.RemoveVertex(i);
                 index = i;
                 return;

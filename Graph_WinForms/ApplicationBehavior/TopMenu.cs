@@ -138,6 +138,7 @@ namespace Graph_WinForms
             if (SaveGifCheckBox.Checked) modes[2] = MovementModelingMode.Gif;
 
             movement = new MovementModeling(Digraph, (int)TimeNumeric.Value * 1000, (double)SpeedNumeric.Value / 1000);
+            movement.MovementEnded += ResetToolStripMenuItem_Click;
             movement.Movement(graphDrawing, DrawingSurface, type, modes);
 
         }

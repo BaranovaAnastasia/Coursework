@@ -86,12 +86,6 @@
     <Compile Include="ApplicationBehavior\Variables.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Results.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Results.Designer.cs">
-      <DependentUpon>Results.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="ApplicationBehavior\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -107,9 +101,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Results.resx">
-      <DependentUpon>Results.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

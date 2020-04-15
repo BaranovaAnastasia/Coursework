@@ -228,12 +228,21 @@ namespace ApplicationClasses
             int count = involvedArcs.Count;
             for (var i = 0; i < digraph.State.Count; i++)
             {
-                if (digraph.State[i] == 0 && digraph.TimeTillTheEndOfRefractoryPeriod[i] == 0)
+                if (digraph.State[i] >= digraph.Thresholds[i] && digraph.TimeTillTheEndOfRefractoryPeriod[i] <= 0)
                 {
                     involvedArcs.AddRange(incidenceList[i]);
                     timers.AddRange(incidenceList[i].ConvertAll(arc => new Stopwatch()));
-                    digraph.State[i]++;
+                    digraph.State[i] -= digraph.Thresholds[i];
                     digraph.TimeTillTheEndOfRefractoryPeriod[i] += digraph.RefractoryPeriods[i];
+
+                    if (digraph.RefractoryPeriods[i] == 0)
+                        while (digraph.State[i] >= digraph.Thresholds[i])
+                        {
+                            involvedArcs.AddRange(incidenceList[i]);
+                            timers.AddRange(incidenceList[i].ConvertAll(arc => new Stopwatch()));
+                            digraph.State[i] -= digraph.Thresholds[i];
+                        }
+
                     continue;
                 }
 
@@ -252,16 +261,16 @@ namespace ApplicationClasses
                 drawingSurface.Image = graphDrawing.Image;
                 return;
             }
+
             graphDrawing.DrawTheWholeGraph(digraph);
             for (var i = 0; i < involvedArcs.Count; i++)
             {
                 if (timers[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
                 {
-                    digraph.State[involvedArcs[i].EndVertex] =
-                        digraph.State[involvedArcs[i].EndVertex] < digraph.Thresholds[involvedArcs[i].EndVertex] ?
-                            digraph.State[involvedArcs[i].EndVertex] + 1 : 0;
+                    digraph.State[involvedArcs[i].EndVertex]++;
                     timers.RemoveAt(i);
                     involvedArcs.RemoveAt(i);
+
                     i--;
                     continue;
                 }

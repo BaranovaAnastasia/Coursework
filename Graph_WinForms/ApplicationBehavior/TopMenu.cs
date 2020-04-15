@@ -157,7 +157,7 @@ namespace Graph_WinForms
         {
             StopToolStripMenuItem_Click(sender, e);
             for (int i = 0; i < Digraph.State.Count; i++)
-                Digraph.State[i] = (int)GridInitialState[0, i].Value;
+                Digraph.State[i] = int.Parse(GridInitialState[0, i].Value.ToString());
             graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
             movement = null;

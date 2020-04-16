@@ -96,6 +96,12 @@ namespace Graph_WinForms
                 Digraph.State[e.RowIndex] = s;
             else
                 GridInitialState[e.ColumnIndex, e.RowIndex].Value = Digraph.State[e.RowIndex];
+
+            if (SandpileTypeCheckBox.Checked)
+            {
+                graphDrawing.DrawTheWholeGraphSandpile(Digraph);
+                DrawingSurface.Image = graphDrawing.Image;
+            }
         }
     }
 }

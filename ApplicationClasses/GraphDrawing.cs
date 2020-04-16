@@ -135,8 +135,9 @@ namespace ApplicationClasses
                 DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1, verticesPen);
         }
 
-        public void DrawTheWholeGraphSandpile(Digraph digraph, List<Arc>[] incidenceList)
+        public void DrawTheWholeGraphSandpile(Digraph digraph, List<Arc>[] incidenceList = null)
         {
+            if(incidenceList == null) incidenceList = MovementModeling.GetIncidenceList(digraph);
             int max = incidenceList.Max(arcs => arcs.Count);
             colors = GetGradientColors(Color.Red, Color.Blue, max);
             ClearTheSurface();
@@ -148,8 +149,11 @@ namespace ApplicationClasses
             digraph.Arcs.ForEach(arc =>
                     DrawArc(digraph.Vertices[arc.StartVertex], digraph.Vertices[arc.EndVertex], arc));
             for (int i = 0; i < digraph.Vertices.Count; ++i)
+            {
                 DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1,
-                    new Pen(digraph.State[i] >= max ? Color.Black : colors[digraph.State[i]], 2.5f));
+                    new Pen(digraph.State[i] >= incidenceList[i].Count ? Color.Black : colors[digraph.State[i]], 2.5f));
+                drawing.DrawString(digraph.State[i].ToString(), font, brush, digraph.Vertices[i].X+15, digraph.Vertices[i].Y - 15);
+            }
         }
 
         private Color[] colors;

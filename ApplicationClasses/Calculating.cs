@@ -56,7 +56,7 @@ namespace ApplicationClasses
         /// <summary>
         /// Creates an array of lists of the arcs coming from the digraph vertices
         /// </summary>
-        private static List<Arc>[] GetIncidenceList(Digraph digraph)
+        public static List<Arc>[] GetIncidenceList(Digraph digraph)
         {
             List<Arc>[] incidenceList = new List<Arc>[digraph.Vertices.Count];
             for (int i = 0; i < incidenceList.Length; i++)
@@ -259,7 +259,7 @@ namespace ApplicationClasses
 
                 graphDrawing.DrawTheWholeGraph(digraph);
                 drawingSurface.Image = graphDrawing.Image;
-                if (IsMovementEnded()) MovementEnded?.Invoke(this, null);
+                if (IsMovementEndedBasic()) MovementEnded?.Invoke(this, null);
                 return;
             }
 
@@ -286,13 +286,13 @@ namespace ApplicationClasses
             for (int i = 0; i < digraph.Vertices.Count; ++i)
                 graphDrawing.DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1, new Pen(Color.MidnightBlue, 2.5f));
 
-            if (IsMovementEnded()) MovementEnded?.Invoke(this, null);
+            if (IsMovementEndedBasic()) MovementEnded?.Invoke(this, null);
         }
 
 
         private void TickSandpileAnimation(object source, EventArgs e)
         {
-            Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch));
+                Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch));
             int count = involvedArcs.Count;
             for (var i = 0; i < digraph.State.Count; i++)
             {
@@ -323,14 +323,14 @@ namespace ApplicationClasses
             for (int i = count; i < timers.Count; i++)
                 timers[i].Start();
 
-            if (involvedArcs.Count == 0)
+            /*if (involvedArcs.Count == 0)
             {
 
                 graphDrawing.DrawTheWholeGraphSandpile(digraph, incidenceList);
                 drawingSurface.Image = graphDrawing.Image;
-                if (IsMovementEnded()) MovementEnded?.Invoke(this, null);
+                if (IsMovementEndedSandpile()) MovementEnded?.Invoke(this, null);
                 return;
-            }
+            }*/
 
             graphDrawing.DrawTheWholeGraphSandpile(digraph, incidenceList);
             for (var i = 0; i < involvedArcs.Count; i++)
@@ -351,11 +351,11 @@ namespace ApplicationClasses
                 graphDrawing.DrawDot(point);
                 drawingSurface.Image = graphDrawing.Image;
             }
-            for (int i = 0; i < digraph.Vertices.Count; ++i)
-                graphDrawing.DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1, new Pen(Color.MidnightBlue, 2.5f));
+            //for (int i = 0; i < digraph.Vertices.Count; ++i)
+               // graphDrawing.DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1, new Pen(Color.MidnightBlue, 2.5f));
 
 
-            if(IsMovementEnded()) MovementEnded?.Invoke(this, null);
+            if(IsMovementEndedSandpile()) MovementEnded?.Invoke(this, null);
         }
 
         private void TickGifCollecting(object source, EventArgs e)
@@ -392,12 +392,21 @@ namespace ApplicationClasses
         public event EventHandler MovementEnded;
         public event EventHandler<MovementTickEventArgs> Tick;
 
-        public bool IsMovementEnded()
+        public bool IsMovementEndedBasic()
         {
+            if (involvedArcs.Count != 0) return false;
             for (int i = 0; i < digraph.State.Count; i++)
                 if (digraph.State[i] >= digraph.Thresholds[i])
                     return false;
+            return true;
+        }
+
+        public bool IsMovementEndedSandpile()
+        {
             if (involvedArcs.Count != 0) return false;
+            for (int i = 0; i < digraph.State.Count; i++)
+                if (digraph.State[i] >= incidenceList[i].Count)
+                    return false;
             return true;
         }
 

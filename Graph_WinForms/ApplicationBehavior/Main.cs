@@ -38,7 +38,7 @@ namespace Graph_WinForms
             Open.Location = new Point(RandomGraph.Location.X, RandomGraph.Location.Y + RandomGraph.Size.Height + 10);
             AppParameters.Size = new Size(AppParameters.Width, DrawingSurface.Height);
             AppParameters.Location = new Point(Size.Width - AppParameters.Size.Width - 30, AppParameters.Location.Y);
-            TimeTextBox.Location = new Point(DrawingSurface.Location.X + DrawingSurface.Size.Width - TimeTextBox.Size.Width + 5, TimeTextBox.Location.Y);
+            TimeTextBox.Location = new Point(DrawingSurface.Location.X + DrawingSurface.Size.Width - TimeTextBox.Size.Width - 30, TimeTextBox.Location.Y);
             if (Size.Width - (Size.Width - AppParameters.Location.X - 10) - Tools.Size.Width - 40 > 0 && Size.Height - 120 > 0)
                 DrawingSurface.Size = new Size(Size.Width - (Size.Width - AppParameters.Location.X - 10) - Tools.Size.Width - 40,
                      Size.Height - 120);
@@ -75,11 +75,14 @@ namespace Graph_WinForms
         private void BasicTypeCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             SandpileTypeCheckBox.Checked = !BasicTypeCheckBox.Checked;
+            if (SandpileTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraphSandpile(Digraph);
+            else graphDrawing.DrawTheWholeGraph(Digraph);
+            DrawingSurface.Image = graphDrawing.Image;
         }
 
         private void SandpileTypeCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            BasicTypeCheckBox.Checked = !SandpileTypeCheckBox.Checked;
+            BasicTypeCheckBox.Checked = !SandpileTypeCheckBox.Checked; DrawingSurface.Image = graphDrawing.Image;
         }
 
         private void DarkToolStripMenuItem_Click(object sender, EventArgs e)

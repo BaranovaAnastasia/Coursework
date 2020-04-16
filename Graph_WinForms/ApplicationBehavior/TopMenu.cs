@@ -100,6 +100,7 @@ namespace Graph_WinForms
         private void MovementToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (movement != null && movement.IsActive) return;
+            if(movement == null && TimeTextBox.Text != " Elapsed time, s:  0") return;
 
             if (!ApplicationMethods.IsGraphValid(Digraph))
             {
@@ -118,6 +119,9 @@ namespace Graph_WinForms
 
             foreach (var control in Tools.Controls)
                 (control as Button).Enabled = false;
+            foreach (var page in AppParameters.Controls)
+                foreach (var control in (page as TabPage).Controls)
+                    if (!(control is Label)) (control as Control).Enabled = false;
 
             MovementModelingType type = BasicTypeCheckBox.Checked
                 ? MovementModelingType.Basic
@@ -128,8 +132,15 @@ namespace Graph_WinForms
             if (ChartCheckBox.Checked) modes[1] = MovementModelingMode.Chart;
             if (SaveGifCheckBox.Checked) modes[2] = MovementModelingMode.Gif;
 
-            movement = new MovementModeling(Digraph, (double)SpeedNumeric.Value / 1000);
-            movement.MovementEnded += ResetToolStripMenuItem_Click;
+            movement = new MovementModeling(Digraph, (double)SpeedNumeric.Value / 600);
+            movement.MovementEnded += (object _sender, EventArgs _e) =>
+            {
+                StopToolStripMenuItem_Click(sender, e);
+                if(SandpileTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraphSandpile(Digraph);
+                if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
+                DrawingSurface.Image = graphDrawing.Image;
+                movement = null;
+            };
 
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();
@@ -157,12 +168,18 @@ namespace Graph_WinForms
             StopToolStripMenuItem_Click(sender, e);
             for (int i = 0; i < Digraph.State.Count; i++)
                 Digraph.State[i] = int.Parse(GridInitialState[0, i].Value.ToString());
-            graphDrawing.DrawTheWholeGraph(Digraph);
+            if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
+            else graphDrawing.DrawTheWholeGraphSandpile(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
             movement = null;
             foreach (var control in Tools.Controls)
                 (control as Button).Enabled = true;
             CoursorButton.Enabled = false;
+            TimeTextBox.Text = " Elapsed time, s:  0";
+            TimeTextBox.Visible = false;
+            foreach (var page in AppParameters.Controls)
+                foreach (var control in (page as TabPage).Controls)
+                    (control as Control).Enabled = true;
         }
 
 
@@ -200,6 +217,9 @@ namespace Graph_WinForms
             MovingVertexIndex = -1;
             ArcLength.Text = String.Empty;
             chosenNumber = -1;
+
+            if (movement != null && movement.IsActive)
+                movement.Stop();
             movement = null;
         }
     }

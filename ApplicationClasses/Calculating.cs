@@ -320,9 +320,17 @@ namespace ApplicationClasses
                         : 0;
             }
 
-
             for (int i = count; i < timers.Count; i++)
                 timers[i].Start();
+
+            if (involvedArcs.Count == 0)
+            {
+
+                graphDrawing.DrawTheWholeGraphSandpile(digraph, incidenceList);
+                drawingSurface.Image = graphDrawing.Image;
+                if (IsMovementEnded()) MovementEnded?.Invoke(this, null);
+                return;
+            }
 
             graphDrawing.DrawTheWholeGraphSandpile(digraph, incidenceList);
             for (var i = 0; i < involvedArcs.Count; i++)
@@ -343,6 +351,10 @@ namespace ApplicationClasses
                 graphDrawing.DrawDot(point);
                 drawingSurface.Image = graphDrawing.Image;
             }
+            for (int i = 0; i < digraph.Vertices.Count; ++i)
+                graphDrawing.DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1, new Pen(Color.MidnightBlue, 2.5f));
+
+
             if(IsMovementEnded()) MovementEnded?.Invoke(this, null);
         }
 

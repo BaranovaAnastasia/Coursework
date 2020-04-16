@@ -32,14 +32,11 @@ namespace ApplicationClasses
         /// <param name="speed">Speed in unit per millisecond</param>
         /// <exception cref="ArgumentNullException"/>
         /// <exception cref="ArgumentOutOfRangeException"/>
-        public MovementModeling(Digraph digraph, int time, double speed)
+        public MovementModeling(Digraph digraph, double speed)
         {
             this.digraph = digraph ?? throw new ArgumentNullException(nameof(digraph));
-            if (time <= 0)
-                throw new ArgumentOutOfRangeException(nameof(time), "Process duration should be positive");
             if (speed <= 0)
                 throw new ArgumentOutOfRangeException(nameof(speed), "Speed of movement should be positive");
-            this.time = time;
             this.speed = speed;
             IsActive = false;
         }
@@ -47,7 +44,6 @@ namespace ApplicationClasses
         private readonly Digraph digraph;
         private GraphDrawing graphDrawing;
         private PictureBox drawingSurface;
-        private readonly int time;
         private readonly double speed;
         private List<Arc>[] incidenceList;
         private List<Arc> involvedArcs;
@@ -178,13 +174,15 @@ namespace ApplicationClasses
                 data = new Series("Number of dots")
                 {
                     ChartType = SeriesChartType.Line,
-                    MarkerColor = Color.Red,
+                    Color = Color.DarkCyan,
+                    MarkerStyle = MarkerStyle.Circle,
+                    MarkerColor = Color.DarkCyan,
                     ChartArea = "Chart",
-                    BorderWidth = 3
+                    BorderWidth = 1
                 };
                 resultsForm.chart1.Series.Add(data);
                 resultsForm.chart1.ChartAreas.Add("Chart");
-                resultsForm.chart1.ChartAreas[0].AxisX.Interval = 0.1;
+                    //resultsForm.chart1.ChartAreas[0].AxisX.Interval = 0.1;
                 resultsForm.Closing += delegate(object sender, System.ComponentModel.CancelEventArgs e)
                 {
                     mainTimer.Tick -= TickChartFilling;
@@ -225,6 +223,7 @@ namespace ApplicationClasses
         /// </summary>
         private void TickBasicAnimation(object source, EventArgs e)
         {
+            Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch));
             int count = involvedArcs.Count;
             for (var i = 0; i < digraph.State.Count; i++)
             {
@@ -257,8 +256,10 @@ namespace ApplicationClasses
 
             if (involvedArcs.Count == 0)
             {
+
                 graphDrawing.DrawTheWholeGraph(digraph);
                 drawingSurface.Image = graphDrawing.Image;
+                if (IsMovementEnded()) MovementEnded?.Invoke(this, null);
                 return;
             }
 
@@ -286,24 +287,39 @@ namespace ApplicationClasses
                 graphDrawing.DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1, new Pen(Color.MidnightBlue, 2.5f));
 
             if (IsMovementEnded()) MovementEnded?.Invoke(this, null);
-
-            /*if (mainStopwatch.ElapsedMilliseconds >= time)
-            {
-                mainTimer.Stop();
-                mainStopwatch.Stop();
-            }*/
         }
+
 
         private void TickSandpileAnimation(object source, EventArgs e)
         {
+            Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch));
             int count = involvedArcs.Count;
             for (var i = 0; i < digraph.State.Count; i++)
-                if (digraph.State[i] >= incidenceList[i].Count)
+            {
+                if (digraph.State[i] >= incidenceList[i].Count && digraph.TimeTillTheEndOfRefractoryPeriod[i] <= 0)
                 {
                     involvedArcs.AddRange(incidenceList[i]);
                     timers.AddRange(incidenceList[i].ConvertAll(arc => new Stopwatch()));
                     digraph.State[i] -= incidenceList[i].Count;
+                    digraph.TimeTillTheEndOfRefractoryPeriod[i] += digraph.RefractoryPeriods[i];
+
+                    if (digraph.RefractoryPeriods[i] == 0)
+                        while (digraph.State[i] >= incidenceList[i].Count)
+                        {
+                            involvedArcs.AddRange(incidenceList[i]);
+                            timers.AddRange(incidenceList[i].ConvertAll(arc => new Stopwatch()));
+                            digraph.State[i] -= incidenceList[i].Count;
+                        }
+
+                    continue;
                 }
+
+                digraph.TimeTillTheEndOfRefractoryPeriod[i] =
+                    digraph.TimeTillTheEndOfRefractoryPeriod[i] - mainTimer.Interval >= 0
+                        ? digraph.TimeTillTheEndOfRefractoryPeriod[i] - mainTimer.Interval
+                        : 0;
+            }
+
 
             for (int i = count; i < timers.Count; i++)
                 timers[i].Start();
@@ -328,17 +344,12 @@ namespace ApplicationClasses
                 drawingSurface.Image = graphDrawing.Image;
             }
             if(IsMovementEnded()) MovementEnded?.Invoke(this, null);
-            /*if (mainStopwatch.ElapsedMilliseconds >= time)
-            {
-                mainTimer.Stop();
-                mainStopwatch.Stop();
-            }*/
         }
 
         private void TickGifCollecting(object source, EventArgs e)
         {
             Gif.Add(new Bitmap((Bitmap)drawingSurface.Image));
-            if (mainStopwatch.ElapsedMilliseconds >= time)
+            if (mainStopwatch.ElapsedMilliseconds >= 20000)
             {
                 mainTimer.Stop();
                 mainStopwatch.Stop();
@@ -363,15 +374,16 @@ namespace ApplicationClasses
 
         private void TickChartFilling(object source, EventArgs e)
         {
-            data.Points.AddXY(mainStopwatch.ElapsedMilliseconds, involvedArcs.Count);
+            data.Points.AddXY(mainStopwatch.ElapsedMilliseconds/1000.0, involvedArcs.Count);
         }
 
         public event EventHandler MovementEnded;
+        public event EventHandler<MovementTickEventArgs> Tick;
 
         public bool IsMovementEnded()
         {
             for (int i = 0; i < digraph.State.Count; i++)
-                if (digraph.State[i] == 0)
+                if (digraph.State[i] >= digraph.Thresholds[i])
                     return false;
             if (involvedArcs.Count != 0) return false;
             return true;
@@ -392,5 +404,16 @@ namespace ApplicationClasses
     {
         Basic,
         Sandpile
+    }
+
+    public class MovementTickEventArgs : EventArgs
+    {
+        private readonly Stopwatch Time;
+        public long ElapsedTime => Time.ElapsedMilliseconds;
+
+        public MovementTickEventArgs(Stopwatch time)
+        {
+            Time = time;
+        }
     }
 }

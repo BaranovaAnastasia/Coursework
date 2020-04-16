@@ -1,6 +1,6 @@
 ﻿namespace Graph_WinForms
 {
-    partial class GraphBuilder
+    partial class MainWindow
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -35,9 +35,6 @@
             this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveGraphToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.gifToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,13 +46,13 @@
             this.MainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MovementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Tools = new System.Windows.Forms.Panel();
             this.ClearButton = new System.Windows.Forms.Button();
             this.CoursorButton = new System.Windows.Forms.Button();
             this.DeleteButton = new System.Windows.Forms.Button();
             this.VertexButton = new System.Windows.Forms.Button();
             this.EdgeButton = new System.Windows.Forms.Button();
-            this.TimeNumeric = new System.Windows.Forms.NumericUpDown();
             this.OkLength = new System.Windows.Forms.Button();
             this.RandomGraph = new System.Windows.Forms.Button();
             this.DrawingSurface = new System.Windows.Forms.PictureBox();
@@ -78,19 +75,17 @@
             this.GridInitialState = new System.Windows.Forms.DataGridView();
             this.ModePage = new System.Windows.Forms.TabPage();
             this.ActionsLabel = new System.Windows.Forms.Label();
+            this.SpeedNumeric = new System.Windows.Forms.NumericUpDown();
+            this.SpeedLabel = new System.Windows.Forms.Label();
             this.ModelingTypeLabel = new System.Windows.Forms.Label();
             this.SaveGifCheckBox = new System.Windows.Forms.CheckBox();
             this.ChartCheckBox = new System.Windows.Forms.CheckBox();
             this.AnimationCheckBox = new System.Windows.Forms.CheckBox();
             this.SandpileTypeCheckBox = new System.Windows.Forms.CheckBox();
             this.BasicTypeCheckBox = new System.Windows.Forms.CheckBox();
-            this.SpeedNumeric = new System.Windows.Forms.NumericUpDown();
-            this.SpeedLabel = new System.Windows.Forms.Label();
-            this.TimeLabel = new System.Windows.Forms.Label();
-            this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TimeTextBox = new System.Windows.Forms.TextBox();
             this.TopMenu.SuspendLayout();
             this.Tools.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TimeNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawingSurface)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridThresholds)).BeginInit();
             this.AppParameters.SuspendLayout();
@@ -180,34 +175,10 @@
             // 
             // saveToolStripMenuItem
             // 
-            this.saveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveGraphToolStripMenuItem,
-            this.saveResultsToolStripMenuItem});
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(217, 34);
-            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveToolStripMenuItem.Text = "Save Graph";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
-            // 
-            // saveGraphToolStripMenuItem
-            // 
-            this.saveGraphToolStripMenuItem.Name = "saveGraphToolStripMenuItem";
-            this.saveGraphToolStripMenuItem.Size = new System.Drawing.Size(211, 34);
-            this.saveGraphToolStripMenuItem.Text = "Save Graph";
-            // 
-            // saveResultsToolStripMenuItem
-            // 
-            this.saveResultsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gifToolStripMenuItem});
-            this.saveResultsToolStripMenuItem.Name = "saveResultsToolStripMenuItem";
-            this.saveResultsToolStripMenuItem.Size = new System.Drawing.Size(211, 34);
-            this.saveResultsToolStripMenuItem.Text = "Save Results";
-            // 
-            // gifToolStripMenuItem
-            // 
-            this.gifToolStripMenuItem.Name = "gifToolStripMenuItem";
-            this.gifToolStripMenuItem.Size = new System.Drawing.Size(136, 34);
-            this.gifToolStripMenuItem.Text = "Gif";
-            this.gifToolStripMenuItem.Click += new System.EventHandler(this.GifToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -288,6 +259,13 @@
             this.StopToolStripMenuItem.Text = "Stop";
             this.StopToolStripMenuItem.Click += new System.EventHandler(this.StopToolStripMenuItem_Click);
             // 
+            // resetToolStripMenuItem
+            // 
+            this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
+            this.resetToolStripMenuItem.Size = new System.Drawing.Size(70, 29);
+            this.resetToolStripMenuItem.Text = "Reset";
+            this.resetToolStripMenuItem.Click += new System.EventHandler(this.ResetToolStripMenuItem_Click);
+            // 
             // Tools
             // 
             this.Tools.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -363,29 +341,6 @@
             this.EdgeButton.Text = "Edge";
             this.EdgeButton.UseVisualStyleBackColor = true;
             this.EdgeButton.Click += new System.EventHandler(this.EdgeButton_Click);
-            // 
-            // TimeNumeric
-            // 
-            this.TimeNumeric.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.TimeNumeric.Location = new System.Drawing.Point(10, 652);
-            this.TimeNumeric.Maximum = new decimal(new int[] {
-            120,
-            0,
-            0,
-            0});
-            this.TimeNumeric.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.TimeNumeric.Name = "TimeNumeric";
-            this.TimeNumeric.Size = new System.Drawing.Size(95, 26);
-            this.TimeNumeric.TabIndex = 12;
-            this.TimeNumeric.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             // 
             // OkLength
             // 
@@ -479,6 +434,7 @@
             // AdjacencyPage
             // 
             this.AdjacencyPage.BackColor = System.Drawing.SystemColors.Control;
+            this.AdjacencyPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AdjacencyPage.Controls.Add(this.ArcLengthLabel);
             this.AdjacencyPage.Controls.Add(this.GridAdjacencyMatrix);
             this.AdjacencyPage.Controls.Add(this.ArcLengthContainer);
@@ -574,6 +530,7 @@
             // 
             // ThresholdsPage
             // 
+            this.ThresholdsPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ThresholdsPage.Controls.Add(this.ThresholdsLabel);
             this.ThresholdsPage.Controls.Add(this.GridThresholds);
             this.ThresholdsPage.Location = new System.Drawing.Point(4, 4);
@@ -586,6 +543,7 @@
             // 
             // RefactoryPeriodsPage
             // 
+            this.RefactoryPeriodsPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.RefactoryPeriodsPage.Controls.Add(this.RefractoryPeriodsLabel);
             this.RefactoryPeriodsPage.Controls.Add(this.GridRefractoryPeriods);
             this.RefactoryPeriodsPage.Location = new System.Drawing.Point(4, 4);
@@ -625,6 +583,7 @@
             // 
             // InitialStatePage
             // 
+            this.InitialStatePage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.InitialStatePage.Controls.Add(this.InitialStateLabel);
             this.InitialStatePage.Controls.Add(this.GridInitialState);
             this.InitialStatePage.Location = new System.Drawing.Point(4, 4);
@@ -666,7 +625,10 @@
             // 
             // ModePage
             // 
+            this.ModePage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ModePage.Controls.Add(this.ActionsLabel);
+            this.ModePage.Controls.Add(this.SpeedNumeric);
+            this.ModePage.Controls.Add(this.SpeedLabel);
             this.ModePage.Controls.Add(this.ModelingTypeLabel);
             this.ModePage.Controls.Add(this.SaveGifCheckBox);
             this.ModePage.Controls.Add(this.ChartCheckBox);
@@ -689,6 +651,33 @@
             this.ActionsLabel.Size = new System.Drawing.Size(155, 28);
             this.ActionsLabel.TabIndex = 6;
             this.ActionsLabel.Text = "Needed Actions:";
+            // 
+            // SpeedNumeric
+            // 
+            this.SpeedNumeric.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.SpeedNumeric.Location = new System.Drawing.Point(11, 346);
+            this.SpeedNumeric.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.SpeedNumeric.Name = "SpeedNumeric";
+            this.SpeedNumeric.Size = new System.Drawing.Size(95, 31);
+            this.SpeedNumeric.TabIndex = 24;
+            this.SpeedNumeric.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // SpeedLabel
+            // 
+            this.SpeedLabel.AutoSize = true;
+            this.SpeedLabel.Location = new System.Drawing.Point(6, 308);
+            this.SpeedLabel.Name = "SpeedLabel";
+            this.SpeedLabel.Size = new System.Drawing.Size(138, 28);
+            this.SpeedLabel.TabIndex = 25;
+            this.SpeedLabel.Text = "Speed, units/s:";
             // 
             // ModelingTypeLabel
             // 
@@ -756,58 +745,26 @@
             this.BasicTypeCheckBox.UseVisualStyleBackColor = true;
             this.BasicTypeCheckBox.CheckedChanged += new System.EventHandler(this.BasicTypeCheckBox_CheckedChanged);
             // 
-            // SpeedNumeric
+            // TimeTextBox
             // 
-            this.SpeedNumeric.Location = new System.Drawing.Point(10, 590);
-            this.SpeedNumeric.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.SpeedNumeric.Name = "SpeedNumeric";
-            this.SpeedNumeric.Size = new System.Drawing.Size(95, 26);
-            this.SpeedNumeric.TabIndex = 24;
-            this.SpeedNumeric.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+            this.TimeTextBox.BackColor = System.Drawing.SystemColors.Window;
+            this.TimeTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.TimeTextBox.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.TimeTextBox.Location = new System.Drawing.Point(635, 50);
+            this.TimeTextBox.Name = "TimeTextBox";
+            this.TimeTextBox.ReadOnly = true;
+            this.TimeTextBox.Size = new System.Drawing.Size(260, 29);
+            this.TimeTextBox.TabIndex = 27;
+            this.TimeTextBox.Text = " Elapsed time, s:  0";
+            this.TimeTextBox.Visible = false;
             // 
-            // SpeedLabel
-            // 
-            this.SpeedLabel.AutoSize = true;
-            this.SpeedLabel.Location = new System.Drawing.Point(6, 547);
-            this.SpeedLabel.Name = "SpeedLabel";
-            this.SpeedLabel.Size = new System.Drawing.Size(67, 40);
-            this.SpeedLabel.TabIndex = 25;
-            this.SpeedLabel.Text = "Speed,\n\r   units/s";
-            // 
-            // TimeLabel
-            // 
-            this.TimeLabel.AutoSize = true;
-            this.TimeLabel.Location = new System.Drawing.Point(6, 629);
-            this.TimeLabel.Name = "TimeLabel";
-            this.TimeLabel.Size = new System.Drawing.Size(59, 20);
-            this.TimeLabel.TabIndex = 26;
-            this.TimeLabel.Text = "Time, s";
-            // 
-            // resetToolStripMenuItem
-            // 
-            this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
-            this.resetToolStripMenuItem.Size = new System.Drawing.Size(70, 29);
-            this.resetToolStripMenuItem.Text = "Reset";
-            this.resetToolStripMenuItem.Click += new System.EventHandler(this.ResetToolStripMenuItem_Click);
-            // 
-            // GraphBuilder
+            // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1236, 697);
-            this.Controls.Add(this.TimeLabel);
-            this.Controls.Add(this.SpeedLabel);
-            this.Controls.Add(this.SpeedNumeric);
-            this.Controls.Add(this.TimeNumeric);
+            this.Controls.Add(this.TimeTextBox);
             this.Controls.Add(this.AppParameters);
             this.Controls.Add(this.DrawingSurface);
             this.Controls.Add(this.RandomGraph);
@@ -818,15 +775,14 @@
             this.KeyPreview = true;
             this.MainMenuStrip = this.TopMenu;
             this.MinimumSize = new System.Drawing.Size(1228, 613);
-            this.Name = "GraphBuilder";
+            this.Name = "MainWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "GraphBuilder";
+            this.Text = "Movement Modeling Application";
             this.SizeChanged += new System.EventHandler(this.GraphBuilder_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GraphBuilder_KeyDown);
             this.TopMenu.ResumeLayout(false);
             this.TopMenu.PerformLayout();
             this.Tools.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.TimeNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawingSurface)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridThresholds)).EndInit();
             this.AppParameters.ResumeLayout(false);
@@ -896,15 +852,10 @@
         private System.Windows.Forms.Label RefractoryPeriodsLabel;
         private System.Windows.Forms.Label InitialStateLabel;
         private System.Windows.Forms.DataGridView GridInitialState;
-        private System.Windows.Forms.ToolStripMenuItem saveGraphToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveResultsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem modeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem gifToolStripMenuItem;
-        private System.Windows.Forms.NumericUpDown TimeNumeric;
         private System.Windows.Forms.NumericUpDown SpeedNumeric;
         private System.Windows.Forms.Label SpeedLabel;
-        private System.Windows.Forms.Label TimeLabel;
         private System.Windows.Forms.TabPage ModePage;
         private System.Windows.Forms.Label ModelingTypeLabel;
         private System.Windows.Forms.CheckBox SaveGifCheckBox;
@@ -916,6 +867,7 @@
         private System.Windows.Forms.ToolStripMenuItem darkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lightToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
+        private System.Windows.Forms.TextBox TimeTextBox;
     }
 }
 

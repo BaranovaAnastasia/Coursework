@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Graph_WinForms
 {
-    public partial class GraphBuilder
+    public partial class MainWindow
     {
         private void GridAdjacencyMatrix_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
         {

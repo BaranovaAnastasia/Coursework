@@ -16,7 +16,7 @@ namespace Graph_WinForms
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new GraphBuilder());
+            Application.Run(new MainWindow());
         }
     }
 }

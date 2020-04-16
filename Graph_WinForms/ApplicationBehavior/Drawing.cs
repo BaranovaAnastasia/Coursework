@@ -9,7 +9,7 @@ using ApplicationClasses;
 
 namespace Graph_WinForms
 {
-    public partial class GraphBuilder : Form
+    public partial class MainWindow : Form
     {
         /// <summary>
         /// Draws vertices and arcs by mouse click on a drawing surfsce 

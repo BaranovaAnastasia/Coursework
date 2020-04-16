@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace Graph_WinForms
 {
-    public partial class GraphBuilder : Form
+    public partial class MainWindow : Form
     {
         /// <summary>
         /// GraphDrawing instance containing methods for digraph drawing

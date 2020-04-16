@@ -4,7 +4,7 @@ using ApplicationClasses;
 
 namespace Graph_WinForms
 {
-    public partial class GraphBuilder
+    public partial class MainWindow
     {
         private void GridAdjacencyMatrix_CellClick(object sender, DataGridViewCellEventArgs e)
         {

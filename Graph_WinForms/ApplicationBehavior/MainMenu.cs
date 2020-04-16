@@ -6,7 +6,7 @@ using  System.IO;
 
 namespace Graph_WinForms
 {
-    public partial class GraphBuilder
+    public partial class MainWindow
     {
         /// <summary>
         /// Opens the editor for creating a new graph
@@ -79,6 +79,8 @@ namespace Graph_WinForms
             Tools.Visible = state;
             DrawingSurface.Visible = state;
             AppParameters.Visible = state;
+            if(!state)
+                TimeTextBox.Visible = false;
         }
 
         /// <summary>

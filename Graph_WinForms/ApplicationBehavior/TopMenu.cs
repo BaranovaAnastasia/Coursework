@@ -13,7 +13,7 @@ using System.IO;
 
 namespace Graph_WinForms
 {
-    public partial class GraphBuilder
+    public partial class MainWindow
     {
         readonly string AboutApp = "The application developed as a part of a coursework" + Environment.NewLine +
                                    "«The Program for Modeling the Movement of Points on Directed Metric Graph, with the Condition of Synchronization at the Vertices»." +
@@ -114,20 +114,11 @@ namespace Graph_WinForms
                 return;
             }
 
+            TimeTextBox.Visible = true;
+
             foreach (var control in Tools.Controls)
                 (control as Button).Enabled = false;
-            /*MessageBox.Show("The next step is in development...");
-            Text = Calculating.GetNumber(Digraph, 0.54, 10, this, out Series data).ToString() + "все";
-            
-            if (results.chart1.Series.Count > 0)
-                results.chart1.Series[0] = data;
-            else
-            {
-                results.chart1.Series.Add(data);
-                results.chart1.ChartAreas.Add("Chart");
-                results.chart1.ChartAreas[0].AxisX.Interval = 0.1;
-            }
-            results.ShowDialog();*/
+
             MovementModelingType type = BasicTypeCheckBox.Checked
                 ? MovementModelingType.Basic
                 : MovementModelingType.Sandpile;
@@ -137,8 +128,16 @@ namespace Graph_WinForms
             if (ChartCheckBox.Checked) modes[1] = MovementModelingMode.Chart;
             if (SaveGifCheckBox.Checked) modes[2] = MovementModelingMode.Gif;
 
-            movement = new MovementModeling(Digraph, (int)TimeNumeric.Value * 1000, (double)SpeedNumeric.Value / 1000);
+            movement = new MovementModeling(Digraph, (double)SpeedNumeric.Value / 1000);
             movement.MovementEnded += ResetToolStripMenuItem_Click;
+
+            TimeTextBox.Visible = true;
+            TimeTextBox.BringToFront();
+
+            movement.Tick += (object _sender, MovementTickEventArgs _e) =>
+                {
+                    TimeTextBox.Text = " Elapsed time, s:  " + (_e.ElapsedTime / 1000.0);
+                };
             movement.Movement(graphDrawing, DrawingSurface, type, modes);
 
         }

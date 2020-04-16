@@ -25,13 +25,13 @@ namespace Graph_WinForms
 
         private void Button2_Click(object sender, EventArgs e)
         {
-            GraphBuilder.chosenNumber = (int)NumOfVertices.Value;
+            MainWindow.chosenNumber = (int)NumOfVertices.Value;
             this.Close();
         }
 
         private void Cancel_Click(object sender, EventArgs e)
         {
-            GraphBuilder.chosenNumber = -1;
+            MainWindow.chosenNumber = -1;
             this.Close();
         }
     }

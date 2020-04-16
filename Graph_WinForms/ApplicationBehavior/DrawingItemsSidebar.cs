@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Graph_WinForms
 {
-    public partial class GraphBuilder
+    public partial class MainWindow
     {
         private void CursorButton_Click(object sender, EventArgs e)
         {

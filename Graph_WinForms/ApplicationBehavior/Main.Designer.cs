@@ -176,7 +176,7 @@
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(217, 34);
             this.saveToolStripMenuItem.Text = "Save Graph";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
             // 
@@ -430,6 +430,7 @@
             this.AppParameters.Size = new System.Drawing.Size(318, 628);
             this.AppParameters.TabIndex = 23;
             this.AppParameters.Visible = false;
+            this.AppParameters.MouseLeave += new System.EventHandler(this.AppParameters_MouseLeave);
             // 
             // AdjacencyPage
             // 

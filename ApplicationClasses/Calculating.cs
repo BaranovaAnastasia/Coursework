@@ -48,9 +48,10 @@ namespace ApplicationClasses
         private List<Arc>[] incidenceList;
         private List<Arc> involvedArcs;
         private List<Stopwatch> timers;
-        private Stopwatch mainStopwatch = new Stopwatch();
-        private Timer mainTimer = new Timer() { Interval = 50 };
-        public List<Bitmap> Gif = new List<Bitmap>();
+        private readonly Stopwatch mainStopwatch = new Stopwatch();
+        private Timer mainTimer = null;
+        private readonly Timer gifTimer = new Timer() { Interval = 30 };
+
 
 
         /// <summary>
@@ -71,75 +72,6 @@ namespace ApplicationClasses
         /// <param name="speed">Speed in units per millisecond</param>
         /// <returns>Time in milliseconds</returns>
         public static double GetTime(double length, double speed) => length / speed;
-
-
-        public int GetNumber(Digraph digraph, double time, int speed, Form form, out Series data)
-        {
-            data = new Series("Number of dots")
-            {
-                ChartType = SeriesChartType.Line,
-                MarkerColor = Color.Red,
-                ChartArea = "Chart",
-                BorderWidth = 3
-            };
-            double fullTime = time;
-
-            int number = 0; int k = 1;
-            List<Arc>[] incidenceList = GetIncidenceList(digraph);
-            List<Arc> involvedArcs = new List<Arc>(0);
-            List<double> involvedArcsLength = new List<double>(0);
-            double minLength;
-            do
-            {
-                data.Points.AddXY(fullTime - time, number);
-                for (int i = 0; i < digraph.State.Count; i++)
-                    if (digraph.State[i] == 0)
-                    {
-                        involvedArcs.AddRange(incidenceList[i]);
-                        involvedArcsLength.AddRange(incidenceList[i].ConvertAll(arc => arc.Length));
-                        number += incidenceList[i].Count;
-                    }
-                data.Points.AddXY(fullTime - time, number);
-                form.Text = involvedArcs.Count.ToString();
-                if (involvedArcs.Count != 0)
-                {
-                    minLength = involvedArcsLength[0];
-                    List<int> minLengthIndices = new List<int>(1);
-                    minLengthIndices.Add(0);
-                    for (var i = 1; i < involvedArcs.Count; i++)
-                    {
-                        if (involvedArcsLength[i] == minLength)
-                            minLengthIndices.Add(i);
-                        if (involvedArcsLength[i] >= minLength) continue;
-                        minLength = involvedArcsLength[i];
-                        minLengthIndices = new List<int>(1);
-                        minLengthIndices.Add(i);
-                    }
-                    if (time > GetTime(minLength, speed))
-                    {
-                        time -= GetTime(minLength, speed);
-                        data.Points.AddXY(fullTime - time, number);
-                        number = number - minLengthIndices.Count;
-                        for (int i = 0; i < digraph.State.Count; i++)
-                            digraph.State[i] = digraph.State[i] < digraph.Thresholds[i] - 1 ? digraph.State[i] + 1 : 0;
-                        involvedArcsLength = involvedArcsLength.ConvertAll(len => len - minLength);
-                        for (int i = 0; i < involvedArcsLength.Count; i++)
-                        {
-                            if (involvedArcsLength[i] == 0)
-                            {
-                                involvedArcsLength.RemoveAt(i);
-                                involvedArcs.RemoveAt(i);
-                                i--;
-                            }
-                        }
-                    }
-                    else time = 0;
-                    form.Text = number + " " + k++;
-                }
-                else return number;
-            } while (time > 0);
-            return number;
-        }
 
         /// <summary>
         /// Returns current coordinates of the dot traveling along the arc
@@ -165,12 +97,13 @@ namespace ApplicationClasses
         /// </summary>
         public void Movement(GraphDrawing graphics, PictureBox picture, MovementModelingType type, MovementModelingMode[] modes)
         {
+            mainTimer = new Timer() { Interval = (int)(50/(1000*speed)) };
             if (type == MovementModelingType.Basic) mainTimer.Tick += TickBasicAnimation;
             else mainTimer.Tick += TickSandpileAnimation;
             if (modes.Contains(MovementModelingMode.Chart))
             {
                 mainTimer.Tick += TickChartFilling;
-                resultsForm = new Results(); 
+                resultsForm = new Results();
                 data = new Series("Number of dots")
                 {
                     ChartType = SeriesChartType.Line,
@@ -182,13 +115,15 @@ namespace ApplicationClasses
                 };
                 resultsForm.chart1.Series.Add(data);
                 resultsForm.chart1.ChartAreas.Add("Chart");
-                    //resultsForm.chart1.ChartAreas[0].AxisX.Interval = 0.1;
-                resultsForm.Closing += delegate(object sender, System.ComponentModel.CancelEventArgs e)
+                //resultsForm.chart1.ChartAreas[0].AxisX.Interval = 0.1;
+                resultsForm.Closing += delegate (object sender, System.ComponentModel.CancelEventArgs e)
                 {
                     mainTimer.Tick -= TickChartFilling;
                 };
                 resultsForm.Show();
             }
+
+            if (modes.Contains(MovementModelingMode.Gif)) gifTimer.Tick += TickGifCollecting;
 
             incidenceList = GetIncidenceList(digraph);
             involvedArcs = new List<Arc>();
@@ -198,6 +133,7 @@ namespace ApplicationClasses
             IsActive = true;
             mainTimer.Start();
             mainStopwatch.Start();
+            if (modes.Contains(MovementModelingMode.Gif)) gifTimer.Start();
         }
 
         public bool IsActive { get; private set; }
@@ -206,6 +142,7 @@ namespace ApplicationClasses
         {
             mainTimer.Stop();
             mainStopwatch.Stop();
+            gifTimer.Stop();
             timers.ForEach(timer => timer.Stop());
             IsActive = false;
         }
@@ -214,6 +151,7 @@ namespace ApplicationClasses
         {
             mainTimer.Start();
             mainStopwatch.Start();
+            gifTimer.Start();
             timers.ForEach(timer => timer.Start());
             IsActive = true;
         }
@@ -223,6 +161,7 @@ namespace ApplicationClasses
         /// </summary>
         private void TickBasicAnimation(object source, EventArgs e)
         {
+            if (IsMovementEndedBasic) return;
             Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch));
             int count = involvedArcs.Count;
             for (var i = 0; i < digraph.State.Count; i++)
@@ -259,7 +198,7 @@ namespace ApplicationClasses
 
                 graphDrawing.DrawTheWholeGraph(digraph);
                 drawingSurface.Image = graphDrawing.Image;
-                if (IsMovementEndedBasic()) MovementEnded?.Invoke(this, null);
+                if (IsMovementEndedBasic) MovementEnded?.Invoke(this, null);
                 return;
             }
 
@@ -286,13 +225,13 @@ namespace ApplicationClasses
             for (int i = 0; i < digraph.Vertices.Count; ++i)
                 graphDrawing.DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1, new Pen(Color.MidnightBlue, 2.5f));
 
-            if (IsMovementEndedBasic()) MovementEnded?.Invoke(this, null);
+            if (IsMovementEndedBasic) MovementEnded?.Invoke(this, null);
         }
 
 
         private void TickSandpileAnimation(object source, EventArgs e)
         {
-                Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch));
+            Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch));
             int count = involvedArcs.Count;
             for (var i = 0; i < digraph.State.Count; i++)
             {
@@ -323,15 +262,6 @@ namespace ApplicationClasses
             for (int i = count; i < timers.Count; i++)
                 timers[i].Start();
 
-            /*if (involvedArcs.Count == 0)
-            {
-
-                graphDrawing.DrawTheWholeGraphSandpile(digraph, incidenceList);
-                drawingSurface.Image = graphDrawing.Image;
-                if (IsMovementEndedSandpile()) MovementEnded?.Invoke(this, null);
-                return;
-            }*/
-
             graphDrawing.DrawTheWholeGraphSandpile(digraph, incidenceList);
             for (var i = 0; i < involvedArcs.Count; i++)
             {
@@ -351,68 +281,56 @@ namespace ApplicationClasses
                 graphDrawing.DrawDot(point);
                 drawingSurface.Image = graphDrawing.Image;
             }
-            //for (int i = 0; i < digraph.Vertices.Count; ++i)
-               // graphDrawing.DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1, new Pen(Color.MidnightBlue, 2.5f));
 
 
-            if(IsMovementEndedSandpile()) MovementEnded?.Invoke(this, null);
+            if (IsMovementEndedSandpile) MovementEnded?.Invoke(this, null);
         }
 
+
+        public readonly GifBitmapEncoder gEnc = new GifBitmapEncoder();
         private void TickGifCollecting(object source, EventArgs e)
         {
-            Gif.Add(new Bitmap((Bitmap)drawingSurface.Image));
-            if (mainStopwatch.ElapsedMilliseconds >= 20000)
-            {
-                mainTimer.Stop();
-                mainStopwatch.Stop();
-                System.Windows.Media.Imaging.GifBitmapEncoder gEnc = new System.Windows.Media.Imaging.GifBitmapEncoder();
-                foreach (System.Drawing.Bitmap bmpImage in Gif)
-                {
-                    var bmp = bmpImage.GetHbitmap();
-                    var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                        bmp,
-                        IntPtr.Zero,
-                        System.Windows.Int32Rect.Empty,
-                        System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
-                    gEnc.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(src));
-                    DeleteObject(bmp); // recommended, handle memory leak
-                }
-                using (FileStream fs = new FileStream(@"C:\Users\Anastasia\Desktop\some stuff\testGif.gif", FileMode.Create))
-                {
-                    gEnc.Save(fs);
-                }
-            }
+            var bmp = (drawingSurface.Image as Bitmap).GetHbitmap();
+            var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                bmp,
+                IntPtr.Zero,
+                System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            gEnc.Frames.Add(BitmapFrame.Create(src));
+            if (gEnc.Frames.Count >= 249)
+                gifTimer.Stop();
         }
 
         private void TickChartFilling(object source, EventArgs e)
         {
-            data.Points.AddXY(mainStopwatch.ElapsedMilliseconds/1000.0, involvedArcs.Count);
+            data.Points.AddXY(mainStopwatch.ElapsedMilliseconds / 1000.0, involvedArcs.Count);
         }
 
         public event EventHandler MovementEnded;
         public event EventHandler<MovementTickEventArgs> Tick;
 
-        public bool IsMovementEndedBasic()
+        public bool IsMovementEndedBasic
         {
-            if (involvedArcs.Count != 0) return false;
-            for (int i = 0; i < digraph.State.Count; i++)
-                if (digraph.State[i] >= digraph.Thresholds[i])
-                    return false;
-            return true;
+            get
+            {
+                if (involvedArcs.Count != 0) return false;
+                for (int i = 0; i < digraph.State.Count; i++)
+                    if (digraph.State[i] >= digraph.Thresholds[i])
+                        return false;
+                return true;
+            }
         }
 
-        public bool IsMovementEndedSandpile()
+        public bool IsMovementEndedSandpile
         {
-            if (involvedArcs.Count != 0) return false;
-            for (int i = 0; i < digraph.State.Count; i++)
-                if (digraph.State[i] >= incidenceList[i].Count)
-                    return false;
-            return true;
+            get
+            {
+                if (involvedArcs.Count != 0) return false;
+                for (int i = 0; i < digraph.State.Count; i++)
+                    if (digraph.State[i] >= incidenceList[i].Count)
+                        return false;
+                return true;
+            }
         }
-
-
-        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
-        public static extern bool DeleteObject(IntPtr hObject);
     }
 
     public enum MovementModelingMode
@@ -426,7 +344,6 @@ namespace ApplicationClasses
         Basic,
         Sandpile
     }
-
     public class MovementTickEventArgs : EventArgs
     {
         private readonly Stopwatch Time;

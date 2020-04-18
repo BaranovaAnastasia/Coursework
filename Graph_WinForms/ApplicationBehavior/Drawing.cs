@@ -57,6 +57,7 @@ namespace Graph_WinForms
         private void DrawingSurface_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (DeleteButton.Enabled) return;
+            //if(movement != null)
 
             bool wasSmthDeleted = false;
 

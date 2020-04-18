@@ -17,8 +17,10 @@ namespace Graph_WinForms
         /// </summary>
         Digraph Digraph = new Digraph();
 
-        readonly SaveFileDialog savingDialog = new SaveFileDialog(); // In order to save the graph
+        readonly SaveFileDialog saveDialog = new SaveFileDialog(); // In order to save the graph
         readonly OpenFileDialog openDialog = new OpenFileDialog();   // In order to open the graph from file
+
+        readonly SaveFileDialog saveGifDialog = new SaveFileDialog(); // In order to save the gif
 
 
         // Indices of the vertices selected for edge drawing

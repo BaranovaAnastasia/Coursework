@@ -21,11 +21,15 @@ namespace Graph_WinForms
 
             graphDrawing = new GraphDrawing(DrawingSurface.Width, DrawingSurface.Height);
 
-            savingDialog.FileName = "Graph"; // Default file name
-            savingDialog.DefaultExt = ".txt"; // Default file extension
-            savingDialog.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
+            saveDialog.FileName = "Graph"; // Default file name
+            saveDialog.DefaultExt = ".txt"; // Default file extension
+            saveDialog.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
             openDialog.DefaultExt = ".txt"; // Default file extension
             openDialog.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
+
+            saveGifDialog.FileName = "Movement";
+            saveGifDialog.DefaultExt = ".gif";
+            saveGifDialog.Filter = "Gif image (.gif)|*.gif";
         }
 
         /// <summary>
@@ -93,6 +97,11 @@ namespace Graph_WinForms
             graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image*/
             ;
+        }
+
+        private void AppParameters_MouseLeave(object sender, EventArgs e)
+        {
+            Tools.Focus();
         }
     }
 }

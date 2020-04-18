@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Xml.Serialization;
 using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace Graph_WinForms
 {
@@ -31,9 +32,9 @@ namespace Graph_WinForms
 
         private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (savingDialog.ShowDialog() == DialogResult.OK)
+            if (saveDialog.ShowDialog() == DialogResult.OK)
             {
-                using (FileStream stream = new FileStream(savingDialog.FileName, FileMode.Create))
+                using (FileStream stream = new FileStream(saveDialog.FileName, FileMode.Create))
                 {
                     XmlSerializer format = new XmlSerializer(typeof(Digraph));
                     format.Serialize(stream, Digraph);
@@ -100,7 +101,7 @@ namespace Graph_WinForms
         private void MovementToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (movement != null && movement.IsActive) return;
-            if(movement == null && TimeTextBox.Text != " Elapsed time, s:  0") return;
+            if (movement == null && TimeTextBox.Text != " Elapsed time, s:  0") return;
 
             if (!ApplicationMethods.IsGraphValid(Digraph))
             {
@@ -132,21 +133,43 @@ namespace Graph_WinForms
             if (ChartCheckBox.Checked) modes[1] = MovementModelingMode.Chart;
             if (SaveGifCheckBox.Checked) modes[2] = MovementModelingMode.Gif;
 
-            movement = new MovementModeling(Digraph, (double)SpeedNumeric.Value / 600);
+            movement = new MovementModeling(Digraph, (double)SpeedNumeric.Value / 1000);
+
+            movement.MovementEnded += StopToolStripMenuItem_Click;
             movement.MovementEnded += (object _sender, EventArgs _e) =>
             {
-                StopToolStripMenuItem_Click(sender, e);
-                if(SandpileTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraphSandpile(Digraph);
-                if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
-                DrawingSurface.Image = graphDrawing.Image;
-                movement = null;
+                if (SandpileTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraphSandpile(Digraph);
+               // if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
+                //DrawingSurface.Image = graphDrawing.Image;
             };
+            if (SaveGifCheckBox.Checked)
+                movement.MovementEnded += (object _sender, EventArgs _e) =>
+                {
+                    if (saveGifDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        using (FileStream stream = new FileStream(saveGifDialog.FileName, FileMode.Create))
+                        {
+                            var bmp = (DrawingSurface.Image as Bitmap).GetHbitmap();
+                            var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                                bmp,
+                                IntPtr.Zero,
+                                System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                            movement.gEnc.Frames.Add(BitmapFrame.Create(src));
+                            movement.gEnc.Save(stream);
+                            Text = movement.gEnc.Frames.Count.ToString();
+                        }
+                    }
+                };
+            else
+                movement.MovementEnded += (object _sender, EventArgs _e) => movement = null;
+
 
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();
 
             movement.Tick += (object _sender, MovementTickEventArgs _e) =>
                 {
+                    if(movement.IsMovementEndedBasic) return;
                     TimeTextBox.Text = " Elapsed time, s:  " + (_e.ElapsedTime / 1000.0);
                 };
             movement.Movement(graphDrawing, DrawingSurface, type, modes);
@@ -154,6 +177,8 @@ namespace Graph_WinForms
         }
 
         private MovementModeling movement = null;
+
+
 
         /// <summary>
         /// Stops movement

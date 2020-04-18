@@ -100,23 +100,13 @@ namespace Graph_WinForms
         /// </summary>
         private void MovementToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (movement != null && movement.IsActive) return;
-            if (movement == null && TimeTextBox.Text != " Elapsed time, s:  0") return;
+            if (movement != null)
+                if (movement.IsActive) return;
+                else { movement.Go(); return; }
+            if (movement == null && isOnMovement) return;
 
-            if (!ApplicationMethods.IsGraphValid(Digraph))
-            {
-                MessageBox.Show("The graph is not strongly connected", "Error", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                return;
-            }
+            if (!CheckConnectivity()) return;
 
-            if (movement != null && !movement.IsActive)
-            {
-                movement.Go();
-                return;
-            }
-
-            TimeTextBox.Visible = true;
 
             foreach (var control in Tools.Controls)
                 (control as Button).Enabled = false;
@@ -128,57 +118,72 @@ namespace Graph_WinForms
                 ? MovementModelingType.Basic
                 : MovementModelingType.Sandpile;
 
-            MovementModelingMode[] modes = new MovementModelingMode[3];
-            if (AnimationCheckBox.Checked) modes[0] = MovementModelingMode.Animation;
-            if (ChartCheckBox.Checked) modes[1] = MovementModelingMode.Chart;
-            if (SaveGifCheckBox.Checked) modes[2] = MovementModelingMode.Gif;
+            MovementModelingMode[] modes = GetModelingModes();
 
             movement = new MovementModeling(Digraph, (double)SpeedNumeric.Value / 1000);
 
             movement.MovementEnded += StopToolStripMenuItem_Click;
-            movement.MovementEnded += (object _sender, EventArgs _e) =>
-            {
-                if (SandpileTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraphSandpile(Digraph);
-               // if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
-                //DrawingSurface.Image = graphDrawing.Image;
-            };
-            if (SaveGifCheckBox.Checked)
-                movement.MovementEnded += (object _sender, EventArgs _e) =>
-                {
-                    if (saveGifDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        using (FileStream stream = new FileStream(saveGifDialog.FileName, FileMode.Create))
-                        {
-                            var bmp = (DrawingSurface.Image as Bitmap).GetHbitmap();
-                            var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                                bmp,
-                                IntPtr.Zero,
-                                System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                            movement.gEnc.Frames.Add(BitmapFrame.Create(src));
-                            movement.gEnc.Save(stream);
-                            Text = movement.gEnc.Frames.Count.ToString();
-                        }
-                    }
-                };
-            else
-                movement.MovementEnded += (object _sender, EventArgs _e) => movement = null;
-
+            movement.MovementEnded += UpdateImageAfterMovementEnded;
+            if (SaveGifCheckBox.Checked) movement.MovementEnded += SaveGif;
+            movement.MovementEnded += (object _sender, EventArgs _e) => movement = null;
+            movement.Tick += UpdateElapsedTime;
 
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();
 
-            movement.Tick += (object _sender, MovementTickEventArgs _e) =>
-                {
-                    if(movement.IsMovementEndedBasic) return;
-                    TimeTextBox.Text = " Elapsed time, s:  " + (_e.ElapsedTime / 1000.0);
-                };
             movement.Movement(graphDrawing, DrawingSurface, type, modes);
-
         }
 
-        private MovementModeling movement = null;
+        private MovementModelingMode[] GetModelingModes()
+        {
+            MovementModelingMode[] modes = new MovementModelingMode[3];
+            if (AnimationCheckBox.Checked) modes[0] = MovementModelingMode.Animation;
+            if (ChartCheckBox.Checked) modes[1] = MovementModelingMode.Chart;
+            if (SaveGifCheckBox.Checked) modes[2] = MovementModelingMode.Gif;
+            return modes;
+        }
 
+        private bool CheckConnectivity()
+        {
+            if (!ApplicationMethods.IsGraphValid(Digraph))
+            {
+                MessageBox.Show("The graph is not strongly connected", "Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
 
+        private void UpdateImageAfterMovementEnded(object sender, EventArgs e)
+        {
+            if (SandpileTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraphSandpile(Digraph);
+            if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
+            DrawingSurface.Image = graphDrawing.Image;
+        }
+
+        private void SaveGif(object sender, EventArgs e)
+        {
+            if (saveGifDialog.ShowDialog() == DialogResult.OK)
+            {
+                using (FileStream stream = new FileStream(saveGifDialog.FileName, FileMode.Create))
+                {
+                    var bmp = (DrawingSurface.Image as Bitmap).GetHbitmap();
+                    var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                        bmp,
+                        IntPtr.Zero,
+                        System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                    movement.gEnc.Frames.Add(BitmapFrame.Create(src));
+                    movement.gEnc.Save(stream);
+                    Text = movement.gEnc.Frames.Count.ToString();
+                }
+            }
+        }
+
+        public void UpdateElapsedTime(object sender, MovementTickEventArgs e)
+        {
+            if (movement.IsMovementEndedBasic) return;
+            TimeTextBox.Text = " Elapsed time, s:  " + (e.ElapsedTime / 1000.0);
+        }
 
         /// <summary>
         /// Stops movement
@@ -191,6 +196,8 @@ namespace Graph_WinForms
         private void ResetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             StopToolStripMenuItem_Click(sender, e);
+            isOnMovement = false;
+            if(movement != null && SaveGifCheckBox.Checked) SaveGif(sender, e);
             for (int i = 0; i < Digraph.State.Count; i++)
                 Digraph.State[i] = int.Parse(GridInitialState[0, i].Value.ToString());
             if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);

@@ -38,5 +38,10 @@ namespace Graph_WinForms
 
         // Number of vertices of random graph
         internal static int chosenNumber = -1;
+
+        // 
+        private MovementModeling movement = null;
+
+        private bool isOnMovement;
     }
 }

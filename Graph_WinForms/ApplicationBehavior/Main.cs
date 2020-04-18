@@ -42,7 +42,7 @@ namespace Graph_WinForms
             Open.Location = new Point(RandomGraph.Location.X, RandomGraph.Location.Y + RandomGraph.Size.Height + 10);
             AppParameters.Size = new Size(AppParameters.Width, DrawingSurface.Height);
             AppParameters.Location = new Point(Size.Width - AppParameters.Size.Width - 30, AppParameters.Location.Y);
-            TimeTextBox.Location = new Point(DrawingSurface.Location.X + DrawingSurface.Size.Width - TimeTextBox.Size.Width - 30, TimeTextBox.Location.Y);
+            TimeTextBox.Location = new Point(DrawingSurface.Location.X + DrawingSurface.Size.Width - TimeTextBox.Size.Width + 5, TimeTextBox.Location.Y);
             if (Size.Width - (Size.Width - AppParameters.Location.X - 10) - Tools.Size.Width - 40 > 0 && Size.Height - 120 > 0)
                 DrawingSurface.Size = new Size(Size.Width - (Size.Width - AppParameters.Location.X - 10) - Tools.Size.Width - 40,
                      Size.Height - 120);

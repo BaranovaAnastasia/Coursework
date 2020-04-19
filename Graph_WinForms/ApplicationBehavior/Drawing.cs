@@ -16,6 +16,7 @@ namespace Graph_WinForms
         /// </summary>
         private void DrawingSurface_MouseClick(object sender, MouseEventArgs e)
         {
+            if(isOnMovement) return;
             if (!VertexButton.Enabled)
             {
                 Digraph.AddVertex(new Vertex(e.X, e.Y));
@@ -56,8 +57,7 @@ namespace Graph_WinForms
         /// </summary>
         private void DrawingSurface_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (DeleteButton.Enabled) return;
-            //if(movement != null)
+            if (DeleteButton.Enabled || isOnMovement) return;
 
             bool wasSmthDeleted = false;
 
@@ -94,7 +94,7 @@ namespace Graph_WinForms
         /// </summary>
         private void DrawingSurface_MouseDown(object sender, MouseEventArgs e)
         {
-            if (CoursorButton.Enabled) return;
+            if (CoursorButton.Enabled || isOnMovement) return;
             IsPressed = true;
 
             for (int i = 0; i < Digraph.Vertices.Count; i++)
@@ -113,7 +113,7 @@ namespace Graph_WinForms
         /// </summary>
         private void DrawingSurface_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!IsPressed || CoursorButton.Enabled || MovingVertexIndex == -1) return;
+            if (isOnMovement || !IsPressed || CoursorButton.Enabled || MovingVertexIndex == -1) return;
             Digraph.Vertices[MovingVertexIndex] = new Vertex(e.X, e.Y);
             graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
@@ -124,7 +124,7 @@ namespace Graph_WinForms
         /// </summary>
         private void DrawingSurface_MouseUp(object sender, MouseEventArgs e)
         {
-            if (!IsPressed || CoursorButton.Enabled) return;
+            if (isOnMovement || !IsPressed || CoursorButton.Enabled) return;
 
             bool highlight = (DateTime.Now - Ticks).Ticks < 2250000 &&
                 Math.Pow(e.X - MovingVetrex.X, 2) + Math.Pow(e.Y - MovingVetrex.Y, 2) <= GraphDrawing.R * GraphDrawing.R;

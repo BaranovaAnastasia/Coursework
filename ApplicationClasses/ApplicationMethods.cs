@@ -189,6 +189,7 @@ namespace ApplicationClasses
         /// <param name="digraph">Digraph</param>
         public static bool IsGraphValid(Digraph digraph)
         {
+            if (digraph.Vertices.Count < 3) return false;
             ConnectivityCheck check = new ConnectivityCheck(digraph.Vertices.Count);
             foreach (Arc arc in digraph.Arcs)
                 check.AddEdge(arc);

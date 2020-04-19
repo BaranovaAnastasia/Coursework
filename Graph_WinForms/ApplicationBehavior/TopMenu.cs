@@ -130,6 +130,7 @@ namespace Graph_WinForms
 
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();
+            isOnMovement = true;
 
             movement.Movement(graphDrawing, DrawingSurface, type, modes);
         }
@@ -147,7 +148,10 @@ namespace Graph_WinForms
         {
             if (!ApplicationMethods.IsGraphValid(Digraph))
             {
-                MessageBox.Show("The graph is not strongly connected", "Error", MessageBoxButtons.OK,
+                if (Digraph.Vertices.Count >= 3)
+                    MessageBox.Show("The graph is not strongly connected", "Graph validation failed", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                else MessageBox.Show("Not enough vertices", "Graph validation failed", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 return false;
             }
@@ -197,7 +201,7 @@ namespace Graph_WinForms
         {
             StopToolStripMenuItem_Click(sender, e);
             isOnMovement = false;
-            if(movement != null && SaveGifCheckBox.Checked) SaveGif(sender, e);
+            if (movement != null && SaveGifCheckBox.Checked) SaveGif(sender, e);
             for (int i = 0; i < Digraph.State.Count; i++)
                 Digraph.State[i] = int.Parse(GridInitialState[0, i].Value.ToString());
             if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);

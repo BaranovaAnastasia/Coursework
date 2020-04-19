@@ -135,15 +135,14 @@ namespace ApplicationClasses
                 DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1, verticesPen);
         }
 
-        public void DrawTheWholeGraphSandpile(Digraph digraph, List<Arc>[] incidenceList = null)
+        public void DrawTheWholeGraphSandpile(Digraph digraph, List<Arc>[] incidenceList = null, Color[] palette = null)
         {
             if(incidenceList == null) incidenceList = MovementModeling.GetIncidenceList(digraph);
-            int max = incidenceList.Max(arcs => arcs.Count);
-            colors = GetGradientColors(Color.Red, Color.Blue, max);
+            if(palette == null) palette = GetGradientColors(Color.Crimson, Color.CadetBlue, incidenceList.Max(arcs => arcs.Count));
             ClearTheSurface();
-            for (int i = 0; i < colors.Length; i++)
+            for (int i = 0; i < palette.Length; i++)
             {
-                drawing.DrawLine(new Pen(colors[i], 2.5f), Image.Width - 50, i*10 + 10, Image.Width - 10, i * 10 + 10);
+                drawing.DrawLine(new Pen(palette[i], 2.5f), Image.Width - 50, i*10 + 10, Image.Width - 10, i * 10 + 10);
                 drawing.DrawString(i.ToString(), font, brush, Image.Width - 10, i * 10 + 10);
             }
             digraph.Arcs.ForEach(arc =>
@@ -151,12 +150,20 @@ namespace ApplicationClasses
             for (int i = 0; i < digraph.Vertices.Count; ++i)
             {
                 DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1,
-                    new Pen(digraph.State[i] >= incidenceList[i].Count ? Color.Black : colors[digraph.State[i]], 2.5f));
+                    new Pen(digraph.State[i] >= incidenceList[i].Count ? Color.Black : palette[digraph.State[i]], 2.5f));
                 drawing.DrawString(digraph.State[i].ToString(), font, brush, digraph.Vertices[i].X+15, digraph.Vertices[i].Y - 15);
             }
         }
 
-        private Color[] colors;
+        public void DrawDot(PointF point) => drawing.FillEllipse(Brushes.Black, point.X - 4, point.Y - 4, 8, 8);
+
+        public void DrawVerticesSandpile(Digraph digraph, List<Arc>[] incidenceList, Color[] palette)
+        {
+            for (int i = 0; i < digraph.State.Count; i++)
+                DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1,
+                    new Pen(digraph.State[i] >= incidenceList[i].Count ? Color.Black : palette[digraph.State[i]], 2.5f));
+        }
+
         private static Color[] GetGradientColors(Color start, Color end, int steps)
         {
             Color[] colors = new Color[steps];
@@ -178,8 +185,6 @@ namespace ApplicationClasses
             }
             return colors;
         }
-
-        public void DrawDot(PointF point) => drawing.FillEllipse(Brushes.Black, point.X - 4, point.Y - 4, 8, 8);
 
         public Size Size
         {

@@ -97,9 +97,14 @@ namespace ApplicationClasses
         /// </summary>
         public void Movement(GraphDrawing graphics, PictureBox picture, MovementModelingType type, MovementModelingMode[] modes)
         {
+            incidenceList = GetIncidenceList(digraph);
             mainTimer = new Timer() { Interval = (int)(50/(1000*speed)) };
             if (type == MovementModelingType.Basic) mainTimer.Tick += TickBasicAnimation;
-            else mainTimer.Tick += TickSandpileAnimation;
+            else
+            {
+                mainTimer.Tick += TickSandpileAnimation;
+                palette = GetGradientColors(Color.Crimson, Color.CadetBlue, incidenceList.Max(arcs => arcs.Count));
+            }
             if (modes.Contains(MovementModelingMode.Chart))
             {
                 mainTimer.Tick += TickChartFilling;
@@ -114,7 +119,7 @@ namespace ApplicationClasses
                     BorderWidth = 1
                 };
                 resultsForm.chart1.Series.Add(data);
-                resultsForm.chart1.ChartAreas.Add("Chart");
+                resultsForm.chart1.ChartAreas.Add("Chart"); 
                 //resultsForm.chart1.ChartAreas[0].AxisX.Interval = 0.1;
                 resultsForm.Closing += delegate (object sender, System.ComponentModel.CancelEventArgs e)
                 {
@@ -125,7 +130,6 @@ namespace ApplicationClasses
 
             if (modes.Contains(MovementModelingMode.Gif)) gifTimer.Tick += TickGifCollecting;
 
-            incidenceList = GetIncidenceList(digraph);
             involvedArcs = new List<Arc>();
             timers = new List<Stopwatch>();
             graphDrawing = graphics;
@@ -262,7 +266,7 @@ namespace ApplicationClasses
             for (int i = count; i < timers.Count; i++)
                 timers[i].Start();
 
-            graphDrawing.DrawTheWholeGraphSandpile(digraph, incidenceList);
+            graphDrawing.DrawTheWholeGraphSandpile(digraph, incidenceList, palette);
             for (var i = 0; i < involvedArcs.Count; i++)
             {
                 if (timers[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
@@ -281,7 +285,8 @@ namespace ApplicationClasses
                 graphDrawing.DrawDot(point);
                 drawingSurface.Image = graphDrawing.Image;
             }
-
+            graphDrawing.DrawVerticesSandpile(digraph, incidenceList, palette);
+            drawingSurface.Image = graphDrawing.Image;
 
             if (IsMovementEndedSandpile) MovementEnded?.Invoke(this, null);
         }
@@ -330,6 +335,30 @@ namespace ApplicationClasses
                         return false;
                 return true;
             }
+        }
+
+
+        private Color[] palette;
+        private static Color[] GetGradientColors(Color start, Color end, int steps)
+        {
+            Color[] colors = new Color[steps];
+            colors[0] = start;
+            colors[steps - 1] = end;
+
+            double aStep = (end.A - start.A) / steps;
+            double rStep = (end.R - start.R) / steps;
+            double gStep = (end.G - start.G) / steps;
+            double bStep = (end.B - start.B) / steps;
+
+            for (int i = 1; i < steps - 1; i++)
+            {
+                var a = start.A + (aStep * i);
+                var r = start.R + (rStep * i);
+                var g = start.G + (gStep * i);
+                var b = start.B + (bStep * i);
+                colors[i] = Color.FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
+            }
+            return colors;
         }
     }
 

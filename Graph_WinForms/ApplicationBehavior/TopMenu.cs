@@ -203,7 +203,10 @@ namespace Graph_WinForms
             isOnMovement = false;
             if (movement != null && SaveGifCheckBox.Checked) SaveGif(sender, e);
             for (int i = 0; i < Digraph.State.Count; i++)
+            {
                 Digraph.State[i] = int.Parse(GridInitialState[0, i].Value.ToString());
+                Digraph.TimeTillTheEndOfRefractoryPeriod[i] = 0;
+            }
             if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
             else graphDrawing.DrawTheWholeGraphSandpile(Digraph);
             DrawingSurface.Image = graphDrawing.Image;

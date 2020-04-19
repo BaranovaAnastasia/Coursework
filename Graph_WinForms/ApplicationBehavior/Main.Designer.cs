@@ -46,7 +46,7 @@
             this.MainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MovementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Tools = new System.Windows.Forms.Panel();
             this.ClearButton = new System.Windows.Forms.Button();
             this.CoursorButton = new System.Windows.Forms.Button();
@@ -141,7 +141,7 @@
             this.MainMenuToolStripMenuItem,
             this.MovementToolStripMenuItem,
             this.StopToolStripMenuItem,
-            this.resetToolStripMenuItem});
+            this.ResetToolStripMenuItem});
             this.TopMenu.Location = new System.Drawing.Point(0, 0);
             this.TopMenu.Name = "TopMenu";
             this.TopMenu.Size = new System.Drawing.Size(1236, 33);
@@ -243,6 +243,7 @@
             this.MainMenuToolStripMenuItem.Name = "MainMenuToolStripMenuItem";
             this.MainMenuToolStripMenuItem.Size = new System.Drawing.Size(117, 29);
             this.MainMenuToolStripMenuItem.Text = "Main Menu";
+            this.MainMenuToolStripMenuItem.Visible = false;
             this.MainMenuToolStripMenuItem.Click += new System.EventHandler(this.MainMenuToolStripMenuItem_Click);
             // 
             // MovementToolStripMenuItem
@@ -250,6 +251,7 @@
             this.MovementToolStripMenuItem.Name = "MovementToolStripMenuItem";
             this.MovementToolStripMenuItem.Size = new System.Drawing.Size(114, 29);
             this.MovementToolStripMenuItem.Text = "Movement";
+            this.MovementToolStripMenuItem.Visible = false;
             this.MovementToolStripMenuItem.Click += new System.EventHandler(this.MovementToolStripMenuItem_Click);
             // 
             // StopToolStripMenuItem
@@ -257,14 +259,16 @@
             this.StopToolStripMenuItem.Name = "StopToolStripMenuItem";
             this.StopToolStripMenuItem.Size = new System.Drawing.Size(65, 29);
             this.StopToolStripMenuItem.Text = "Stop";
+            this.StopToolStripMenuItem.Visible = false;
             this.StopToolStripMenuItem.Click += new System.EventHandler(this.StopToolStripMenuItem_Click);
             // 
-            // resetToolStripMenuItem
+            // ResetToolStripMenuItem
             // 
-            this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
-            this.resetToolStripMenuItem.Size = new System.Drawing.Size(70, 29);
-            this.resetToolStripMenuItem.Text = "Reset";
-            this.resetToolStripMenuItem.Click += new System.EventHandler(this.ResetToolStripMenuItem_Click);
+            this.ResetToolStripMenuItem.Name = "ResetToolStripMenuItem";
+            this.ResetToolStripMenuItem.Size = new System.Drawing.Size(70, 29);
+            this.ResetToolStripMenuItem.Text = "Reset";
+            this.ResetToolStripMenuItem.Visible = false;
+            this.ResetToolStripMenuItem.Click += new System.EventHandler(this.ResetToolStripMenuItem_Click);
             // 
             // Tools
             // 
@@ -657,6 +661,11 @@
             // 
             this.SpeedNumeric.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.SpeedNumeric.Location = new System.Drawing.Point(11, 346);
+            this.SpeedNumeric.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.SpeedNumeric.Minimum = new decimal(new int[] {
             1,
             0,
@@ -867,7 +876,7 @@
         private System.Windows.Forms.Label ActionsLabel;
         private System.Windows.Forms.ToolStripMenuItem darkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lightToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ResetToolStripMenuItem;
         private System.Windows.Forms.TextBox TimeTextBox;
     }
 }

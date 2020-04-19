@@ -81,6 +81,10 @@ namespace Graph_WinForms
             AppParameters.Visible = state;
             if(!state)
                 TimeTextBox.Visible = false;
+            MainMenuToolStripMenuItem.Visible = state;
+            MovementToolStripMenuItem.Visible = state;
+            StopToolStripMenuItem.Visible = state;
+            ResetToolStripMenuItem.Visible = state;
         }
 
         /// <summary>

@@ -95,8 +95,11 @@ namespace Graph_WinForms
             TopMenu.BackColor = Color.FromArgb(40, 40, 40);
             graphDrawing.BackColor = Color.FromArgb(140, 140, 140);
             graphDrawing.DrawTheWholeGraph(Digraph);
-            DrawingSurface.Image = graphDrawing.Image*/
-            ;
+            DrawingSurface.Image = graphDrawing.Image;
+            foreach (Control control in Controls)
+            {
+                control.ForeColor = Color.AliceBlue;
+            }*/
         }
 
         private void AppParameters_MouseLeave(object sender, EventArgs e)

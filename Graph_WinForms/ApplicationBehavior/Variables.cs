@@ -2,6 +2,7 @@
 using ApplicationClasses;
 using System.Drawing;
 using System.Windows.Forms;
+using ApplicationClasses.Modeling;
 
 namespace Graph_WinForms
 {

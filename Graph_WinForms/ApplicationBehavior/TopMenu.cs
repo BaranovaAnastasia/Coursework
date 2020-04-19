@@ -11,6 +11,7 @@ using System.Timers;
 using System.Xml.Serialization;
 using System.IO;
 using System.Windows.Media.Imaging;
+using ApplicationClasses.Modeling;
 
 namespace Graph_WinForms
 {
@@ -114,16 +115,15 @@ namespace Graph_WinForms
                 foreach (var control in (page as TabPage).Controls)
                     if (!(control is Label)) (control as Control).Enabled = false;
 
-            MovementModelingType type = BasicTypeCheckBox.Checked
+            var type = BasicTypeCheckBox.Checked
                 ? MovementModelingType.Basic
                 : MovementModelingType.Sandpile;
 
-            MovementModelingMode[] modes = GetModelingModes();
+            var modes = GetModelingModes();
 
-            movement = new MovementModeling(Digraph, (double)SpeedNumeric.Value / 1000);
+            movement = new MovementModeling(Digraph, (double)SpeedNumeric.Value / 1000, type, modes);
 
             movement.MovementEnded += StopToolStripMenuItem_Click;
-            movement.MovementEnded += UpdateImageAfterMovementEnded;
             if (SaveGifCheckBox.Checked) movement.MovementEnded += SaveGif;
             movement.MovementEnded += (object _sender, EventArgs _e) => movement = null;
             movement.Tick += UpdateElapsedTime;
@@ -132,7 +132,7 @@ namespace Graph_WinForms
             TimeTextBox.BringToFront();
             isOnMovement = true;
 
-            movement.Movement(graphDrawing, DrawingSurface, type, modes);
+            movement.Movement(graphDrawing, DrawingSurface);
         }
 
         private MovementModelingMode[] GetModelingModes()
@@ -158,13 +158,6 @@ namespace Graph_WinForms
             return true;
         }
 
-        private void UpdateImageAfterMovementEnded(object sender, EventArgs e)
-        {
-            if (SandpileTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraphSandpile(Digraph);
-            if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
-            DrawingSurface.Image = graphDrawing.Image;
-        }
-
         private void SaveGif(object sender, EventArgs e)
         {
             if (saveGifDialog.ShowDialog() == DialogResult.OK)
@@ -176,9 +169,9 @@ namespace Graph_WinForms
                         bmp,
                         IntPtr.Zero,
                         System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                    movement.gEnc.Frames.Add(BitmapFrame.Create(src));
-                    movement.gEnc.Save(stream);
-                    Text = movement.gEnc.Frames.Count.ToString();
+                    movement.MovementGif.Frames.Add(BitmapFrame.Create(src));
+                    movement.MovementGif.Save(stream);
+                    Text = movement.MovementGif.Frames.Count.ToString();
                 }
             }
         }

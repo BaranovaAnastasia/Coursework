@@ -48,25 +48,28 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arc.cs" />
-    <Compile Include="MovementModeling.cs" />
+    <Compile Include="Graph\Arc.cs" />
+    <Compile Include="Modeling\MovementModeling.cs" />
     <Compile Include="ConnectivityCheck.cs" />
-    <Compile Include="Digraph.cs" />
+    <Compile Include="Graph\Digraph.cs" />
     <Compile Include="GraphDrawing.cs" />
     <Compile Include="ApplicationMethods.cs" />
-    <Compile Include="Results.cs">
+    <Compile Include="Modeling\ChartWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Results.Designer.cs">
-      <DependentUpon>Results.cs</DependentUpon>
+    <Compile Include="Modeling\ChartWindow.Designer.cs">
+      <DependentUpon>ChartWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Vertex.cs" />
+    <Compile Include="Graph\Vertex.cs" />
+    <Compile Include="Modeling\TicksAnimation.cs" />
+    <Compile Include="Modeling\TicksChartGif.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Results.resx">
-      <DependentUpon>Results.cs</DependentUpon>
+    <EmbeddedResource Include="Modeling\ChartWindow.resx">
+      <DependentUpon>ChartWindow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -724,6 +724,7 @@
             this.AnimationCheckBox.AutoSize = true;
             this.AnimationCheckBox.Checked = true;
             this.AnimationCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.AnimationCheckBox.Enabled = false;
             this.AnimationCheckBox.Location = new System.Drawing.Point(11, 170);
             this.AnimationCheckBox.Name = "AnimationCheckBox";
             this.AnimationCheckBox.Size = new System.Drawing.Size(129, 32);

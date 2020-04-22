@@ -23,6 +23,8 @@ namespace ApplicationClasses
         /// MidnightBlue Pen for drawing vertices
         /// </summary>
         private readonly Pen verticesPen = new Pen(Color.MidnightBlue, 2.5f);
+
+        public Pen VerticesPen => verticesPen;
         /// <summary>
         /// MidnightBlue Pen for drawing edges
         /// </summary>
@@ -143,15 +145,17 @@ namespace ApplicationClasses
             ClearTheSurface();
             for (int i = 0; i < palette.Length; i++)
             {
-                drawing.DrawLine(new Pen(palette[i], 2.5f), Image.Width - 50, i*10 + 10, Image.Width - 10, i * 10 + 10);
-                drawing.DrawString(i.ToString(), font, brush, Image.Width - 10, i * 10 + 10);
+                drawing.DrawLine(new Pen(palette[i], 4f), Image.Width - 50, i*10 + 40, Image.Width - 10, i * 10 + 40);
+                drawing.DrawString(i.ToString(), font, brush, Image.Width - 10, i * 10 + 35);
             }
             digraph.Arcs.ForEach(arc =>
                     DrawArc(digraph.Vertices[arc.StartVertex], digraph.Vertices[arc.EndVertex], arc));
             for (int i = 0; i < digraph.Vertices.Count; ++i)
             {
                 DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1,
-                    new Pen(digraph.State[i] >= incidenceList[i].Count ? Color.Black : palette[digraph.State[i]], 2.5f));
+                    new Pen(digraph.State[i] >= incidenceList[i].Count || digraph.Stock.Contains(i)
+                        ? Color.Black 
+                        : palette[digraph.State[i]], 2.5f));
                 drawing.DrawString(digraph.State[i].ToString(), font, brush, digraph.Vertices[i].X+15, digraph.Vertices[i].Y - 15);
             }
         }
@@ -162,7 +166,9 @@ namespace ApplicationClasses
         {
             for (int i = 0; i < digraph.State.Count; i++)
                 DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1,
-                    new Pen(digraph.State[i] >= incidenceList[i].Count ? Color.Black : palette[digraph.State[i]], 2.5f));
+                    new Pen(digraph.State[i] >= incidenceList[i].Count || digraph.Stock.Contains(i)
+                        ? Color.Black
+                        : palette[digraph.State[i]], 2.5f));
         }
 
         private static Color[] GetGradientColors(Color start, Color end, int steps)

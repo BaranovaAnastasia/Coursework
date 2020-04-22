@@ -29,6 +29,7 @@ namespace ApplicationClasses
 
         private readonly List<int> state = new List<int>();
         private readonly List<double> timeTillTheEndOfRefractoryPeriod = new List<double>();
+        private List<int> stock = new List<int>();
 
         /// <summary>
         /// Adds vertex to the list of digraph vertices
@@ -102,7 +103,8 @@ namespace ApplicationClasses
         public List<int> RefractoryPeriods => refractoryPeriods;
         public List<int> State => state;
         public List<double> TimeTillTheEndOfRefractoryPeriod => timeTillTheEndOfRefractoryPeriod;
-
+        public List<int> Stock => stock;
+        public void ResetStock() => stock = new List<int>();
 
         /// <summary>
         /// Graph Adjacency Matrix

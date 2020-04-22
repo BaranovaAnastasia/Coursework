@@ -28,6 +28,7 @@ namespace ApplicationClasses.Modeling
                 BorderWidth = 1
             };
             chart1.Series.Add(data);
+            chart1.Series[0].ToolTip = "t = #VALX,\n\rN = #VALY";
             chart1.ChartAreas.Add("Chart");
             chart1.ChartAreas[0].AxisX.Title = "t, s";
             chart1.ChartAreas[0].AxisY.Title = "Amount";

@@ -102,7 +102,7 @@ namespace Graph_WinForms
         private void MovementToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (movement != null)
-                if (movement.IsActive) return;
+                if (movement.IsActive || SandpileLabel.Visible) return;
                 else { movement.Go(); return; }
             if (movement == null && isOnMovement) return;
 
@@ -122,15 +122,22 @@ namespace Graph_WinForms
             var modes = GetModelingModes();
 
             movement = new MovementModeling(Digraph, (double)SpeedNumeric.Value / 1000, type, modes);
-
+            isOnMovement = true;
+            movement.Tick += UpdateElapsedTime;
             movement.MovementEnded += StopToolStripMenuItem_Click;
+
+            if(type == MovementModelingType.Sandpile)
+            {
+                SandpileLabel.Visible = true;
+                SandpileLabel.BringToFront();
+                return;
+            }
+
             if (SaveGifCheckBox.Checked) movement.MovementEnded += SaveGif;
             movement.MovementEnded += (object _sender, EventArgs _e) => movement = null;
-            movement.Tick += UpdateElapsedTime;
 
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();
-            isOnMovement = true;
 
             movement.Movement(graphDrawing, DrawingSurface);
         }
@@ -200,6 +207,7 @@ namespace Graph_WinForms
                 Digraph.State[i] = int.Parse(GridInitialState[0, i].Value.ToString());
                 Digraph.TimeTillTheEndOfRefractoryPeriod[i] = 0;
             }
+            Digraph.ResetStock();
             if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
             else graphDrawing.DrawTheWholeGraphSandpile(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
@@ -209,6 +217,7 @@ namespace Graph_WinForms
             CoursorButton.Enabled = false;
             TimeTextBox.Text = " Elapsed time, s:  0";
             TimeTextBox.Visible = false;
+            SandpileLabel.Visible = false;
             foreach (var page in AppParameters.Controls)
                 foreach (var control in (page as TabPage).Controls)
                     (control as Control).Enabled = true;

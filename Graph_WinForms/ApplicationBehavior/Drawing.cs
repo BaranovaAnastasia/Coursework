@@ -12,10 +12,47 @@ namespace Graph_WinForms
     public partial class MainWindow : Form
     {
         /// <summary>
-        /// Draws vertices and arcs by mouse click on a drawing surfsce 
+        /// Draws vertices and arcs by mouse click on a drawing surface 
         /// </summary>
         private void DrawingSurface_MouseClick(object sender, MouseEventArgs e)
         {
+            if (isOnMovement && SandpileTypeCheckBox.Checked && SandpileLabel.Visible)
+            {
+                if (SandpileLabel.Text == "Select stock vertices and then click here")
+                {
+                    for (int i = 0; i < Digraph.Vertices.Count; i++)
+                        if (Math.Pow((Digraph.Vertices[i].X - e.X), 2) + Math.Pow((Digraph.Vertices[i].Y - e.Y), 2) <=
+                            Math.Pow(GraphDrawing.R, 2))
+                        {
+                            if (Digraph.Stock.Contains(i))
+                            {
+                                Digraph.Stock.Remove(i);
+                                graphDrawing.DrawTheWholeGraphSandpile(Digraph);
+                                foreach (var index in Digraph.Stock)
+                                    graphDrawing.HighlightVertex(Digraph.Vertices[index]);
+                                DrawingSurface.Image = graphDrawing.Image;
+                                return;
+                            }
+
+                            Digraph.Stock.Add(i);
+                            graphDrawing.HighlightVertex(Digraph.Vertices[i]);
+                            DrawingSurface.Image = graphDrawing.Image;
+                            return;
+                        }
+                }
+                else
+                {
+                    for (int i = 0; i < Digraph.Vertices.Count; i++)
+                        if (Math.Pow((Digraph.Vertices[i].X - e.X), 2) + Math.Pow((Digraph.Vertices[i].Y - e.Y), 2) <=
+                            Math.Pow(GraphDrawing.R, 2))
+                        {
+                            Digraph.State[i]++;
+                            SandpileLabel.Visible = false;
+                            movement.Go();
+                        }
+                }
+                return;
+            }
             if(isOnMovement) return;
             if (!VertexButton.Enabled)
             {
@@ -33,7 +70,7 @@ namespace Graph_WinForms
                 FindArcVertices(e.X, e.Y);
                 if (vStart != -1 && vEnd != -1)
                 {
-                    if(vStart == vEnd)
+                    if (vStart == vEnd)
                     {
                         MessageBox.Show("Arc cannot be a loop", "Error",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -224,7 +261,7 @@ namespace Graph_WinForms
         private void AddVertexToGridInitialState()
         {
             GridInitialState.Rows.Add();
-            GridInitialState[0, Digraph.Vertices.Count -1].Value = Digraph.State[Digraph.Vertices.Count - 1];
+            GridInitialState[0, Digraph.Vertices.Count - 1].Value = Digraph.State[Digraph.Vertices.Count - 1];
             GridInitialState.Rows[Digraph.Vertices.Count - 1].HeaderCell.Value = Digraph.Vertices.Count.ToString();
         }
         private void RemoveVertexFromGridInitialState(int index)

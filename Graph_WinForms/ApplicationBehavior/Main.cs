@@ -106,5 +106,21 @@ namespace Graph_WinForms
         {
             Tools.Focus();
         }
+
+        private void StockLabel_Click(object sender, EventArgs e)
+        {
+            SandpileLabel.Visible = false;
+            TimeTextBox.Visible = true;
+            TimeTextBox.BringToFront();
+
+            movement.MovementEnded += delegate(object o, EventArgs args)
+                {
+                    SandpileLabel.Text = "Select vertex to add a grain of sand to";
+                    SandpileLabel.Visible = true;
+                    SandpileLabel.BringToFront();
+                };
+
+            movement.Movement(graphDrawing, DrawingSurface);
+        }
     }
 }

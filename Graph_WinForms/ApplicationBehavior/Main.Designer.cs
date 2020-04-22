@@ -84,6 +84,7 @@
             this.SandpileTypeCheckBox = new System.Windows.Forms.CheckBox();
             this.BasicTypeCheckBox = new System.Windows.Forms.CheckBox();
             this.TimeTextBox = new System.Windows.Forms.TextBox();
+            this.SandpileLabel = new System.Windows.Forms.Label();
             this.TopMenu.SuspendLayout();
             this.Tools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DrawingSurface)).BeginInit();
@@ -769,12 +770,28 @@
             this.TimeTextBox.Text = " Elapsed time, s:  0";
             this.TimeTextBox.Visible = false;
             // 
+            // SandpileLabel
+            // 
+            this.SandpileLabel.AutoSize = true;
+            this.SandpileLabel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.SandpileLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.SandpileLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.SandpileLabel.ForeColor = System.Drawing.SystemColors.Window;
+            this.SandpileLabel.Location = new System.Drawing.Point(120, 55);
+            this.SandpileLabel.Name = "SandpileLabel";
+            this.SandpileLabel.Size = new System.Drawing.Size(323, 27);
+            this.SandpileLabel.TabIndex = 28;
+            this.SandpileLabel.Text = "Select stock vertices and then click here";
+            this.SandpileLabel.Visible = false;
+            this.SandpileLabel.Click += new System.EventHandler(this.StockLabel_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1236, 697);
+            this.Controls.Add(this.SandpileLabel);
             this.Controls.Add(this.TimeTextBox);
             this.Controls.Add(this.AppParameters);
             this.Controls.Add(this.DrawingSurface);
@@ -879,6 +896,7 @@
         private System.Windows.Forms.ToolStripMenuItem lightToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ResetToolStripMenuItem;
         private System.Windows.Forms.TextBox TimeTextBox;
+        private System.Windows.Forms.Label SandpileLabel;
     }
 }
 

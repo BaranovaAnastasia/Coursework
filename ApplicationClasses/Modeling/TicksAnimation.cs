@@ -25,7 +25,8 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private void TickBasicAnimation(object source, EventArgs e)
         {
-            if (IsMovementEndedBasic) return;
+            if (IsMovementEndedBasic){ MovementEnded?.Invoke(this, null); return;}
+            if(!mainStopwatch.IsRunning) mainStopwatch.Start();
             Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch));
             int count = involvedArcs.Count;
             for (var i = 0; i < digraph.State.Count; i++)
@@ -94,10 +95,13 @@ namespace ApplicationClasses.Modeling
 
         private void TickSandpileAnimation(object source, EventArgs e)
         {
+            if (IsMovementEndedSandpile) { MovementEnded?.Invoke(this, null); return; }
+            if (!mainStopwatch.IsRunning) mainStopwatch.Start();
             Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch));
             int count = involvedArcs.Count;
             for (var i = 0; i < digraph.State.Count; i++)
-            {
+            { 
+                if(digraph.Stock.Contains(i)) continue;
                 if (digraph.State[i] >= incidenceList[i].Count && digraph.TimeTillTheEndOfRefractoryPeriod[i] <= 0)
                 {
                     involvedArcs.AddRange(incidenceList[i]);

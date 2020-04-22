@@ -29,7 +29,6 @@ namespace ApplicationClasses.Modeling
         /// Initialize new instance of MovementModeling class
         /// </summary>
         /// <param name="digraph">Digraph</param>
-        /// <param name="time">Movement process duration in milliseconds</param>
         /// <param name="speed">Speed in unit per millisecond</param>
         /// <exception cref="ArgumentNullException"/>
         /// <exception cref="ArgumentOutOfRangeException"/>
@@ -135,7 +134,7 @@ namespace ApplicationClasses.Modeling
             drawingSurface = picture;
             IsActive = true;
             mainTimer.Start();
-            mainStopwatch.Start();
+                //mainStopwatch.Start();
             if (modes.Contains(MovementModelingMode.Gif)) gifTimer.Start();
         }
 
@@ -145,7 +144,7 @@ namespace ApplicationClasses.Modeling
         {
             mainTimer.Stop();
             mainStopwatch.Stop();
-            gifTimer.Stop();
+            if (modes.Contains(MovementModelingMode.Gif)) gifTimer.Stop();
             timers.ForEach(timer => timer.Stop());
             IsActive = false;
         }
@@ -154,7 +153,7 @@ namespace ApplicationClasses.Modeling
         {
             mainTimer.Start();
             mainStopwatch.Start();
-            gifTimer.Start();
+            if(modes.Contains(MovementModelingMode.Gif))gifTimer.Start();
             timers.ForEach(timer => timer.Start());
             IsActive = true;
         }
@@ -180,7 +179,7 @@ namespace ApplicationClasses.Modeling
             {
                 if (involvedArcs.Count != 0) return false;
                 for (int i = 0; i < digraph.State.Count; i++)
-                    if (digraph.State[i] >= incidenceList[i].Count)
+                    if (!digraph.Stock.Contains(i) && digraph.State[i] >= incidenceList[i].Count)
                         return false;
                 return true;
             }

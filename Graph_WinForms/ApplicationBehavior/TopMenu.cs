@@ -215,9 +215,10 @@ namespace Graph_WinForms
             foreach (var control in Tools.Controls)
                 (control as Button).Enabled = true;
             CoursorButton.Enabled = false;
-            TimeTextBox.Text = " Elapsed time, s:  0";
             TimeTextBox.Visible = false;
+            TimeTextBox.Text = " Elapsed time, s:  0";
             SandpileLabel.Visible = false;
+            SandpileLabel.Text = "Select sink vertices and then click here";
             foreach (var page in AppParameters.Controls)
                 foreach (var control in (page as TabPage).Controls)
                     (control as Control).Enabled = true;

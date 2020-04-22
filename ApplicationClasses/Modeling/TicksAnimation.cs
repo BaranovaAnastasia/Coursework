@@ -109,6 +109,8 @@ namespace ApplicationClasses.Modeling
                     digraph.State[i] -= incidenceList[i].Count;
                     digraph.TimeTillTheEndOfRefractoryPeriod[i] += digraph.RefractoryPeriods[i];
 
+                    avalancheSize++;
+
                     if (digraph.RefractoryPeriods[i] == 0)
                         while (digraph.State[i] >= incidenceList[i].Count)
                         {

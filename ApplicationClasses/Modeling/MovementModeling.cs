@@ -62,6 +62,7 @@ namespace ApplicationClasses.Modeling
         private readonly Timer gifTimer = new Timer() { Interval = 30 };
         private MovementModelingType type;
         private MovementModelingMode[] modes;
+        private int avalancheSize;
 
 
         /// <summary>
@@ -117,12 +118,19 @@ namespace ApplicationClasses.Modeling
             }
             if (modes.Contains(MovementModelingMode.Chart))
             {
-                mainTimer.Tick += TickChartFilling;
                 resultsForm = new ChartWindow();
                 resultsForm.Closing += delegate (object sender, System.ComponentModel.CancelEventArgs e)
                 {
                     mainTimer.Tick -= TickChartFilling;
                 };
+
+                if (type == MovementModelingType.Sandpile)
+                {
+                    MovementEnded += TickChartFilling;
+                    MovementEnded += delegate(object sender, EventArgs args) { avalancheSize = 0; };
+                    resultsForm.chart1.Series[0].ChartType = SeriesChartType.Point;
+                }
+                else mainTimer.Tick += TickChartFilling;
                 resultsForm.Show();
             }
 

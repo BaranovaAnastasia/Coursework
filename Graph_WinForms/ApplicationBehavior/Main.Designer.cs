@@ -145,7 +145,7 @@
             this.ResetToolStripMenuItem});
             this.TopMenu.Location = new System.Drawing.Point(0, 0);
             this.TopMenu.Name = "TopMenu";
-            this.TopMenu.Size = new System.Drawing.Size(1236, 33);
+            this.TopMenu.Size = new System.Drawing.Size(1236, 36);
             this.TopMenu.TabIndex = 4;
             this.TopMenu.Text = "menuStrip1";
             // 
@@ -157,7 +157,7 @@
             this.saveToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.FileToolStripMenuItem.Name = "FileToolStripMenuItem";
-            this.FileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
+            this.FileToolStripMenuItem.Size = new System.Drawing.Size(54, 32);
             this.FileToolStripMenuItem.Text = "File";
             // 
             // newProjectToolStripMenuItem
@@ -194,7 +194,7 @@
             this.languageToolStripMenuItem,
             this.modeToolStripMenuItem});
             this.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem";
-            this.SettingsToolStripMenuItem.Size = new System.Drawing.Size(92, 29);
+            this.SettingsToolStripMenuItem.Size = new System.Drawing.Size(92, 32);
             this.SettingsToolStripMenuItem.Text = "Settings";
             // 
             // languageToolStripMenuItem
@@ -228,14 +228,14 @@
             // UserManualToolStripMenuItem
             // 
             this.UserManualToolStripMenuItem.Name = "UserManualToolStripMenuItem";
-            this.UserManualToolStripMenuItem.Size = new System.Drawing.Size(126, 29);
+            this.UserManualToolStripMenuItem.Size = new System.Drawing.Size(126, 32);
             this.UserManualToolStripMenuItem.Text = "User Manual";
             this.UserManualToolStripMenuItem.Click += new System.EventHandler(this.UserManualToolStripMenuItem_Click);
             // 
             // AboutToolStripMenuItem
             // 
             this.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem";
-            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(78, 29);
+            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(78, 32);
             this.AboutToolStripMenuItem.Text = "About";
             this.AboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
@@ -779,9 +779,9 @@
             this.SandpileLabel.ForeColor = System.Drawing.SystemColors.Window;
             this.SandpileLabel.Location = new System.Drawing.Point(120, 55);
             this.SandpileLabel.Name = "SandpileLabel";
-            this.SandpileLabel.Size = new System.Drawing.Size(323, 27);
+            this.SandpileLabel.Size = new System.Drawing.Size(312, 27);
             this.SandpileLabel.TabIndex = 28;
-            this.SandpileLabel.Text = "Select stock vertices and then click here";
+            this.SandpileLabel.Text = "Select sink vertices and then click here";
             this.SandpileLabel.Visible = false;
             this.SandpileLabel.Click += new System.EventHandler(this.StockLabel_Click);
             // 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Media.Imaging;
 
 namespace ApplicationClasses.Modeling
@@ -31,6 +32,21 @@ namespace ApplicationClasses.Modeling
 
         private void TickChartFilling(object source, EventArgs e)
         {
+            if (type == MovementModelingType.Sandpile)
+            {
+                foreach (DataPoint point in resultsForm.chart1.Series[0].Points)
+                {
+                    if (point.XValue != avalancheSize) continue;
+                    else
+                    {
+                        resultsForm.chart1.Series[0].Points.AddXY(avalancheSize, point.YValues[0] + 1);
+                        resultsForm.chart1.Series[0].Points.Remove(point);
+                        return;
+                    }
+                }
+                resultsForm.chart1.Series[0].Points.AddXY(avalancheSize, 1);
+                return;
+            }
             resultsForm.chart1.Series[0].Points.AddXY(mainStopwatch.ElapsedMilliseconds / 1000.0, involvedArcs.Count);
         }
     }

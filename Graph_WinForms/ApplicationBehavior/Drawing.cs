@@ -18,7 +18,7 @@ namespace Graph_WinForms
         {
             if (isOnMovement && SandpileTypeCheckBox.Checked && SandpileLabel.Visible)
             {
-                if (SandpileLabel.Text == "Select stock vertices and then click here")
+                if (SandpileLabel.Text == "Select sink vertices and then click here")
                 {
                     for (int i = 0; i < Digraph.Vertices.Count; i++)
                         if (Math.Pow((Digraph.Vertices[i].X - e.X), 2) + Math.Pow((Digraph.Vertices[i].Y - e.Y), 2) <=

@@ -74,6 +74,8 @@
             this.InitialStateLabel = new System.Windows.Forms.Label();
             this.GridInitialState = new System.Windows.Forms.DataGridView();
             this.ModePage = new System.Windows.Forms.TabPage();
+            this.SandpileChartType2 = new System.Windows.Forms.CheckBox();
+            this.SandpileChartType1 = new System.Windows.Forms.CheckBox();
             this.ActionsLabel = new System.Windows.Forms.Label();
             this.SpeedNumeric = new System.Windows.Forms.NumericUpDown();
             this.SpeedLabel = new System.Windows.Forms.Label();
@@ -85,6 +87,9 @@
             this.BasicTypeCheckBox = new System.Windows.Forms.CheckBox();
             this.TimeTextBox = new System.Windows.Forms.TextBox();
             this.SandpileLabel = new System.Windows.Forms.Label();
+            this.RandomAddingLabel = new System.Windows.Forms.Label();
+            this.RandomAddingCheckBox = new System.Windows.Forms.CheckBox();
+            this.SandpilePanel = new System.Windows.Forms.Panel();
             this.TopMenu.SuspendLayout();
             this.Tools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DrawingSurface)).BeginInit();
@@ -103,6 +108,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.GridInitialState)).BeginInit();
             this.ModePage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SpeedNumeric)).BeginInit();
+            this.SandpilePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // Build
@@ -145,7 +151,7 @@
             this.ResetToolStripMenuItem});
             this.TopMenu.Location = new System.Drawing.Point(0, 0);
             this.TopMenu.Name = "TopMenu";
-            this.TopMenu.Size = new System.Drawing.Size(1236, 36);
+            this.TopMenu.Size = new System.Drawing.Size(1236, 33);
             this.TopMenu.TabIndex = 4;
             this.TopMenu.Text = "menuStrip1";
             // 
@@ -157,7 +163,7 @@
             this.saveToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.FileToolStripMenuItem.Name = "FileToolStripMenuItem";
-            this.FileToolStripMenuItem.Size = new System.Drawing.Size(54, 32);
+            this.FileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
             this.FileToolStripMenuItem.Text = "File";
             // 
             // newProjectToolStripMenuItem
@@ -194,7 +200,7 @@
             this.languageToolStripMenuItem,
             this.modeToolStripMenuItem});
             this.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem";
-            this.SettingsToolStripMenuItem.Size = new System.Drawing.Size(92, 32);
+            this.SettingsToolStripMenuItem.Size = new System.Drawing.Size(92, 29);
             this.SettingsToolStripMenuItem.Text = "Settings";
             // 
             // languageToolStripMenuItem
@@ -228,14 +234,14 @@
             // UserManualToolStripMenuItem
             // 
             this.UserManualToolStripMenuItem.Name = "UserManualToolStripMenuItem";
-            this.UserManualToolStripMenuItem.Size = new System.Drawing.Size(126, 32);
+            this.UserManualToolStripMenuItem.Size = new System.Drawing.Size(126, 29);
             this.UserManualToolStripMenuItem.Text = "User Manual";
             this.UserManualToolStripMenuItem.Click += new System.EventHandler(this.UserManualToolStripMenuItem_Click);
             // 
             // AboutToolStripMenuItem
             // 
             this.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem";
-            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(78, 32);
+            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(78, 29);
             this.AboutToolStripMenuItem.Text = "About";
             this.AboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
@@ -632,6 +638,8 @@
             // ModePage
             // 
             this.ModePage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ModePage.Controls.Add(this.SandpileChartType2);
+            this.ModePage.Controls.Add(this.SandpileChartType1);
             this.ModePage.Controls.Add(this.ActionsLabel);
             this.ModePage.Controls.Add(this.SpeedNumeric);
             this.ModePage.Controls.Add(this.SpeedLabel);
@@ -648,6 +656,28 @@
             this.ModePage.TabIndex = 4;
             this.ModePage.Text = " Mode";
             this.ModePage.UseVisualStyleBackColor = true;
+            // 
+            // SandpileChartType2
+            // 
+            this.SandpileChartType2.AutoSize = true;
+            this.SandpileChartType2.Location = new System.Drawing.Point(40, 281);
+            this.SandpileChartType2.Name = "SandpileChartType2";
+            this.SandpileChartType2.Size = new System.Drawing.Size(218, 60);
+            this.SandpileChartType2.TabIndex = 27;
+            this.SandpileChartType2.Text = "Distribution of\n\ravalanche sizes chart";
+            this.SandpileChartType2.UseVisualStyleBackColor = true;
+            this.SandpileChartType2.Visible = false;
+            // 
+            // SandpileChartType1
+            // 
+            this.SandpileChartType1.AutoSize = true;
+            this.SandpileChartType1.Location = new System.Drawing.Point(40, 246);
+            this.SandpileChartType1.Name = "SandpileChartType1";
+            this.SandpileChartType1.Size = new System.Drawing.Size(226, 32);
+            this.SandpileChartType1.TabIndex = 26;
+            this.SandpileChartType1.Text = "Number of dots chart";
+            this.SandpileChartType1.UseVisualStyleBackColor = true;
+            this.SandpileChartType1.Visible = false;
             // 
             // ActionsLabel
             // 
@@ -719,6 +749,7 @@
             this.ChartCheckBox.TabIndex = 3;
             this.ChartCheckBox.Text = "Create Chart ";
             this.ChartCheckBox.UseVisualStyleBackColor = true;
+            this.ChartCheckBox.CheckedChanged += new System.EventHandler(this.ChartCheckBox_CheckedChanged);
             // 
             // AnimationCheckBox
             // 
@@ -774,16 +805,53 @@
             // 
             this.SandpileLabel.AutoSize = true;
             this.SandpileLabel.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.SandpileLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.SandpileLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.SandpileLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.SandpileLabel.ForeColor = System.Drawing.SystemColors.Window;
-            this.SandpileLabel.Location = new System.Drawing.Point(120, 55);
+            this.SandpileLabel.Location = new System.Drawing.Point(0, 0);
             this.SandpileLabel.Name = "SandpileLabel";
-            this.SandpileLabel.Size = new System.Drawing.Size(312, 27);
+            this.SandpileLabel.Size = new System.Drawing.Size(360, 25);
             this.SandpileLabel.TabIndex = 28;
-            this.SandpileLabel.Text = "Select sink vertices and then click here";
-            this.SandpileLabel.Visible = false;
+            this.SandpileLabel.Text = "Select sink vertices and then click here          ";
             this.SandpileLabel.Click += new System.EventHandler(this.StockLabel_Click);
+            // 
+            // RandomAddingLabel
+            // 
+            this.RandomAddingLabel.AutoSize = true;
+            this.RandomAddingLabel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.RandomAddingLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.RandomAddingLabel.ForeColor = System.Drawing.SystemColors.Window;
+            this.RandomAddingLabel.Location = new System.Drawing.Point(0, 30);
+            this.RandomAddingLabel.Name = "RandomAddingLabel";
+            this.RandomAddingLabel.Size = new System.Drawing.Size(361, 25);
+            this.RandomAddingLabel.TabIndex = 29;
+            this.RandomAddingLabel.Text = "Or click here to add sand randomly              ";
+            this.RandomAddingLabel.Click += new System.EventHandler(this.RandomAddingLabel_Click);
+            // 
+            // RandomAddingCheckBox
+            // 
+            this.RandomAddingCheckBox.AutoSize = true;
+            this.RandomAddingCheckBox.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.RandomAddingCheckBox.ForeColor = System.Drawing.SystemColors.Window;
+            this.RandomAddingCheckBox.Location = new System.Drawing.Point(5, 60);
+            this.RandomAddingCheckBox.Name = "RandomAddingCheckBox";
+            this.RandomAddingCheckBox.Size = new System.Drawing.Size(351, 25);
+            this.RandomAddingCheckBox.TabIndex = 30;
+            this.RandomAddingCheckBox.Text = "Always add randomly and don\'t ask me again";
+            this.RandomAddingCheckBox.UseVisualStyleBackColor = true;
+            this.RandomAddingCheckBox.CheckedChanged += new System.EventHandler(this.RandomAddingCheckBox_CheckedChanged);
+            // 
+            // SandpilePanel
+            // 
+            this.SandpilePanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.SandpilePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.SandpilePanel.Controls.Add(this.SandpileLabel);
+            this.SandpilePanel.Controls.Add(this.RandomAddingCheckBox);
+            this.SandpilePanel.Controls.Add(this.RandomAddingLabel);
+            this.SandpilePanel.Location = new System.Drawing.Point(125, 61);
+            this.SandpilePanel.Name = "SandpilePanel";
+            this.SandpilePanel.Size = new System.Drawing.Size(358, 32);
+            this.SandpilePanel.TabIndex = 31;
+            this.SandpilePanel.Visible = false;
             // 
             // MainWindow
             // 
@@ -791,7 +859,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1236, 697);
-            this.Controls.Add(this.SandpileLabel);
+            this.Controls.Add(this.SandpilePanel);
             this.Controls.Add(this.TimeTextBox);
             this.Controls.Add(this.AppParameters);
             this.Controls.Add(this.DrawingSurface);
@@ -833,6 +901,8 @@
             this.ModePage.ResumeLayout(false);
             this.ModePage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SpeedNumeric)).EndInit();
+            this.SandpilePanel.ResumeLayout(false);
+            this.SandpilePanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -897,6 +967,11 @@
         private System.Windows.Forms.ToolStripMenuItem ResetToolStripMenuItem;
         private System.Windows.Forms.TextBox TimeTextBox;
         private System.Windows.Forms.Label SandpileLabel;
+        private System.Windows.Forms.CheckBox SandpileChartType2;
+        private System.Windows.Forms.CheckBox SandpileChartType1;
+        private System.Windows.Forms.Label RandomAddingLabel;
+        private System.Windows.Forms.CheckBox RandomAddingCheckBox;
+        private System.Windows.Forms.Panel SandpilePanel;
     }
 }
 

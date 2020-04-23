@@ -121,15 +121,25 @@ namespace Graph_WinForms
 
             var modes = GetModelingModes();
 
-            movement = new MovementModeling(Digraph, (double)SpeedNumeric.Value / 1000, type, modes);
+            var sandpileChartTypes = GetChartTypes();
+
+            movement = new MovementModeling(Digraph, (double) SpeedNumeric.Value / 1000, type, modes)
+            {
+                GraphDrawing = this.graphDrawing,
+                DrawingSurface = this.DrawingSurface,
+                SandpileChartTypes = sandpileChartTypes
+            };
+
+
+
             isOnMovement = true;
             movement.Tick += UpdateElapsedTime;
             movement.MovementEnded += StopToolStripMenuItem_Click;
 
             if(type == MovementModelingType.Sandpile)
             {
-                SandpileLabel.Visible = true;
-                SandpileLabel.BringToFront();
+                SandpilePanel.Visible = true;
+                SandpilePanel.BringToFront();
                 return;
             }
 
@@ -139,16 +149,25 @@ namespace Graph_WinForms
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();
 
-            movement.Movement(graphDrawing, DrawingSurface);
+            movement.Movement();
         }
 
         private MovementModelingMode[] GetModelingModes()
         {
-            MovementModelingMode[] modes = new MovementModelingMode[3];
-            if (AnimationCheckBox.Checked) modes[0] = MovementModelingMode.Animation;
-            if (ChartCheckBox.Checked) modes[1] = MovementModelingMode.Chart;
-            if (SaveGifCheckBox.Checked) modes[2] = MovementModelingMode.Gif;
-            return modes;
+            var modes = new List<MovementModelingMode>(2);
+            if (AnimationCheckBox.Checked) modes.Add(MovementModelingMode.Animation);
+            if (ChartCheckBox.Checked) modes.Add(MovementModelingMode.Chart);
+            if (SaveGifCheckBox.Checked) modes.Add(MovementModelingMode.Gif);
+            return modes.ToArray();
+        }
+
+        private SandpileChartType[] GetChartTypes()
+        {
+            if(!SandpileTypeCheckBox.Checked || !ChartCheckBox.Checked) return null;
+            var types = new List<SandpileChartType>(2);
+            if (SandpileChartType1.Checked) types.Add(SandpileChartType.NumberOfDotsChart);
+            if(SandpileChartType2.Checked) types.Add(SandpileChartType.AvalancheSizesDistributionChart);
+            return types.ToArray();
         }
 
         private bool CheckConnectivity()
@@ -217,8 +236,9 @@ namespace Graph_WinForms
             CoursorButton.Enabled = false;
             TimeTextBox.Visible = false;
             TimeTextBox.Text = " Elapsed time, s:  0";
-            SandpileLabel.Visible = false;
-            SandpileLabel.Text = "Select sink vertices and then click here";
+            SandpilePanel.Visible = false;
+            SandpileLabel.Text = "Select sink vertices and then click here          ";
+            SandpilePanel.Size = new Size(SandpilePanel.Size.Width, 32);
             foreach (var page in AppParameters.Controls)
                 foreach (var control in (page as TabPage).Controls)
                     (control as Control).Enabled = true;

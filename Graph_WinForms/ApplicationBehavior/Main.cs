@@ -22,10 +22,10 @@ namespace Graph_WinForms
             graphDrawing = new GraphDrawing(DrawingSurface.Width, DrawingSurface.Height);
 
             saveDialog.FileName = "Graph"; // Default file name
-            saveDialog.DefaultExt = ".txt"; // Default file extension
-            saveDialog.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
-            openDialog.DefaultExt = ".txt"; // Default file extension
-            openDialog.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
+            saveDialog.DefaultExt = ".digraph"; // Default file extension
+            saveDialog.Filter = "Digraph data files (.digraph)|*.digraph"; // Filter files by extension
+            openDialog.DefaultExt = ".digraph"; // Default file extension
+            openDialog.Filter = "Digraph data files (.digraph)|*.digraph"; // Filter files by extension
 
             saveGifDialog.FileName = "Movement";
             saveGifDialog.DefaultExt = ".gif";
@@ -87,6 +87,14 @@ namespace Graph_WinForms
         private void SandpileTypeCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             BasicTypeCheckBox.Checked = !SandpileTypeCheckBox.Checked; DrawingSurface.Image = graphDrawing.Image;
+            if (SandpileTypeCheckBox.Checked) ChartCheckBox_CheckedChanged(sender, e);
+            else if (ChartCheckBox.Checked)
+            {
+                SandpileChartType1.Visible = SandpileChartType2.Visible = false;
+                SaveGifCheckBox.Location = new Point(11, 246);
+                SpeedLabel.Location = new Point(6, 308);
+                SpeedNumeric.Location = new Point(11, 346);
+            }
         }
 
         private void DarkToolStripMenuItem_Click(object sender, EventArgs e)
@@ -106,21 +114,80 @@ namespace Graph_WinForms
         {
             Tools.Focus();
         }
-
+        private static readonly Random rnd = new Random();
         private void StockLabel_Click(object sender, EventArgs e)
         {
-            SandpileLabel.Visible = false;
+            if (SandpilePanel.Size.Height > 60) return;
+            SandpilePanel.Visible = false;
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();
+            SandpileLabel.Text = "Select vertex to add a grain of sand to       ";
+            SandpilePanel.Size = new Size(SandpilePanel.Size.Width, 91);
 
-            movement.MovementEnded += delegate(object o, EventArgs args)
-                {
-                    SandpileLabel.Text = "Select vertex to add a grain of sand to";
-                    SandpileLabel.Visible = true;
-                    SandpileLabel.BringToFront();
-                };
+            movement.MovementEnded += MovementEndedSandpileEventHandler;
 
-            movement.Movement(graphDrawing, DrawingSurface);
+            movement.Movement();
+        }
+
+        private void ChartCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (SandpileTypeCheckBox.Checked && ChartCheckBox.Checked)
+            {
+                SaveGifCheckBox.Location =
+                    new Point(SaveGifCheckBox.Location.X,
+                        SandpileChartType2.Location.Y + SandpileChartType2.Size.Height + 10);
+                SpeedLabel.Location =
+                    new Point(SpeedLabel.Location.X,
+                        SaveGifCheckBox.Location.Y + SaveGifCheckBox.Size.Height + 28);
+                SpeedNumeric.Location =
+                    new Point(SpeedNumeric.Location.X,
+                        SpeedLabel.Location.Y + SpeedLabel.Size.Height + 10);
+                SandpileChartType1.Visible = SandpileChartType2.Visible = true;
+                return;
+            }
+            if (SandpileTypeCheckBox.Checked && !ChartCheckBox.Checked)
+            {
+                SandpileChartType1.Visible = SandpileChartType2.Visible = false;
+                SaveGifCheckBox.Location = new Point(11, 246);
+                SpeedLabel.Location = new Point(6, 308);
+                SpeedNumeric.Location = new Point(11, 346);
+                return;
+            }
+        }
+
+        private async void RandomAddingLabel_Click(object sender, EventArgs e)
+        {
+            int rndVertex;
+            do { rndVertex = rnd.Next(Digraph.Vertices.Count); }
+            while (Digraph.Stock.Contains(rndVertex));
+
+            Digraph.State[rndVertex]++;
+            SandpilePanel.Visible = false;
+            graphDrawing.HighlightVertexToAddSand(Digraph.Vertices[rndVertex]);
+            DrawingSurface.Image = graphDrawing.Image;
+
+            await Task.Delay(1000);
+            movement.Go();
+        }
+
+        private void RandomAddingCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (RandomAddingCheckBox.Checked)
+            {
+                movement.MovementEnded -= MovementEndedSandpileEventHandler;
+                movement.MovementEnded += RandomAddingLabel_Click;
+            }
+            else
+            {
+                movement.MovementEnded += MovementEndedSandpileEventHandler;
+                movement.MovementEnded -= RandomAddingLabel_Click;
+            }
+        }
+
+        private void MovementEndedSandpileEventHandler(object o, EventArgs args)
+        {
+            SandpilePanel.Visible = true;
+            SandpilePanel.BringToFront();
         }
     }
 }

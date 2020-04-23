@@ -61,13 +61,13 @@ namespace ApplicationClasses.Modeling
             if (involvedArcs.Count == 0)
             {
 
-                graphDrawing.DrawTheWholeGraph(digraph);
-                drawingSurface.Image = graphDrawing.Image;
+                GraphDrawing.DrawTheWholeGraph(digraph);
+                DrawingSurface.Image = GraphDrawing.Image;
                 if (IsMovementEndedBasic) MovementEnded?.Invoke(this, null);
                 return;
             }
 
-            graphDrawing.DrawTheWholeGraph(digraph);
+            GraphDrawing.DrawTheWholeGraph(digraph);
             for (var i = 0; i < involvedArcs.Count; i++)
             {
                 if (timers[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
@@ -84,11 +84,11 @@ namespace ApplicationClasses.Modeling
                         digraph.Vertices[involvedArcs[i].EndVertex],
                         involvedArcs[i].Length,
                         timers[i]);
-                graphDrawing.DrawDot(point);
-                drawingSurface.Image = graphDrawing.Image;
+                GraphDrawing.DrawDot(point);
+                DrawingSurface.Image = GraphDrawing.Image;
             }
             for (int i = 0; i < digraph.Vertices.Count; ++i)
-                graphDrawing.DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1, new Pen(Color.MidnightBlue, 2.5f));
+                GraphDrawing.DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1, new Pen(Color.MidnightBlue, 2.5f));
 
             if (IsMovementEndedBasic) MovementEnded?.Invoke(this, null);
         }
@@ -131,7 +131,7 @@ namespace ApplicationClasses.Modeling
             for (int i = count; i < timers.Count; i++)
                 timers[i].Start();
 
-            graphDrawing.DrawTheWholeGraphSandpile(digraph, incidenceList, palette);
+            GraphDrawing.DrawTheWholeGraphSandpile(digraph, incidenceList, palette);
             for (var i = 0; i < involvedArcs.Count; i++)
             {
                 if (timers[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
@@ -147,11 +147,11 @@ namespace ApplicationClasses.Modeling
                         digraph.Vertices[involvedArcs[i].EndVertex],
                         involvedArcs[i].Length,
                         timers[i]);
-                graphDrawing.DrawDot(point);
-                drawingSurface.Image = graphDrawing.Image;
+                GraphDrawing.DrawDot(point);
+                DrawingSurface.Image = GraphDrawing.Image;
             }
-            graphDrawing.DrawVerticesSandpile(digraph, incidenceList, palette);
-            drawingSurface.Image = graphDrawing.Image;
+            GraphDrawing.DrawVerticesSandpile(digraph, incidenceList, palette);
+            DrawingSurface.Image = GraphDrawing.Image;
 
             if (IsMovementEndedSandpile) MovementEnded?.Invoke(this, null);
         }

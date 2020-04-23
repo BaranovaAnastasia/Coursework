@@ -18,7 +18,7 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private void TickGifCollecting(object source, EventArgs e)
         {
-            var bmp = (drawingSurface.Image as Bitmap).GetHbitmap();
+            var bmp = (DrawingSurface.Image as Bitmap).GetHbitmap();
             var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                 bmp,
                 IntPtr.Zero,
@@ -32,22 +32,21 @@ namespace ApplicationClasses.Modeling
 
         private void TickChartFilling(object source, EventArgs e)
         {
-            if (type == MovementModelingType.Sandpile)
+            if(NumberOfDotsChart != null)
+                NumberOfDotsChart.chart1.Series[0].Points.AddXY(mainStopwatch.ElapsedMilliseconds / 1000.0, involvedArcs.Count);
+
+            if (IsMovementEndedSandpile && DistibutionChart != null)
             {
-                foreach (DataPoint point in resultsForm.chart1.Series[0].Points)
+                if(avalancheSize == 0) return;
+                foreach (DataPoint point in DistibutionChart.chart1.Series[0].Points)
                 {
                     if (point.XValue != avalancheSize) continue;
-                    else
-                    {
-                        resultsForm.chart1.Series[0].Points.AddXY(avalancheSize, point.YValues[0] + 1);
-                        resultsForm.chart1.Series[0].Points.Remove(point);
-                        return;
-                    }
+                    DistibutionChart.chart1.Series[0].Points.AddXY(avalancheSize, point.YValues[0] + 1);
+                    DistibutionChart.chart1.Series[0].Points.Remove(point);
+                    return;
                 }
-                resultsForm.chart1.Series[0].Points.AddXY(avalancheSize, 1);
-                return;
+                DistibutionChart.chart1.Series[0].Points.AddXY(avalancheSize, 1);
             }
-            resultsForm.chart1.Series[0].Points.AddXY(mainStopwatch.ElapsedMilliseconds / 1000.0, involvedArcs.Count);
         }
     }
 }

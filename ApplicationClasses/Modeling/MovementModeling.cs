@@ -38,30 +38,32 @@ namespace ApplicationClasses.Modeling
             if (speed <= 0)
                 throw new ArgumentOutOfRangeException(nameof(speed), "Speed of movement should be positive");
             this.speed = speed;
-            this.type = type;
-            this.modes = modes;
+            Type = type;
+            Modes = modes;
             IsActive = false;
 
             MovementEnded += (object sender, EventArgs e) =>
             {
-                if (type == MovementModelingType.Sandpile) graphDrawing.DrawTheWholeGraphSandpile(digraph);
-                if (type == MovementModelingType.Basic) graphDrawing.DrawTheWholeGraph(digraph);
-                drawingSurface.Image = graphDrawing.Image;
+                if (type == MovementModelingType.Sandpile) GraphDrawing.DrawTheWholeGraphSandpile(digraph);
+                if (type == MovementModelingType.Basic) GraphDrawing.DrawTheWholeGraph(digraph);
+                DrawingSurface.Image = GraphDrawing.Image;
             };
         }
 
         private readonly Digraph digraph;
-        private GraphDrawing graphDrawing;
-        private PictureBox drawingSurface;
         private readonly double speed;
+        private readonly MovementModelingType Type;
+        private readonly MovementModelingMode[] Modes;
+        public GraphDrawing GraphDrawing;
+        public PictureBox DrawingSurface;
+        public SandpileChartType[] SandpileChartTypes;
+
         private List<Arc>[] incidenceList;
         private List<Arc> involvedArcs;
         private List<Stopwatch> timers;
         private readonly Stopwatch mainStopwatch = new Stopwatch();
         private Timer mainTimer = null;
         private readonly Timer gifTimer = new Timer() { Interval = 30 };
-        private MovementModelingType type;
-        private MovementModelingMode[] modes;
         private int avalancheSize;
 
 
@@ -100,50 +102,66 @@ namespace ApplicationClasses.Modeling
             return new PointF((float)x, (float)y);
         }
 
-        private ChartWindow resultsForm = null;
+        private ChartWindow NumberOfDotsChart = null;
+        private ChartWindow DistibutionChart = null;
 
         /// <summary>
         /// Starts dots movement
         /// </summary>
-        public void Movement(GraphDrawing graphics, PictureBox picture)
+        public void Movement()
         {
             incidenceList = GetIncidenceList(digraph);
 
-            mainTimer = new Timer() { Interval = (int)(50/(1000*speed)) };
-            if (type == MovementModelingType.Basic) mainTimer.Tick += TickBasicAnimation;
+            mainTimer = new Timer() { Interval = (int)(50 / (1000 * speed)) };
+            if (Type == MovementModelingType.Basic) mainTimer.Tick += TickBasicAnimation;
             else
             {
                 mainTimer.Tick += TickSandpileAnimation;
                 palette = GetGradientColors(Color.Crimson, Color.CadetBlue, incidenceList.Max(arcs => arcs.Count));
             }
-            if (modes.Contains(MovementModelingMode.Chart))
+            if (Modes.Contains(MovementModelingMode.Chart))
             {
-                resultsForm = new ChartWindow();
-                resultsForm.Closing += delegate (object sender, System.ComponentModel.CancelEventArgs e)
+                if (Type == MovementModelingType.Sandpile)
                 {
-                    mainTimer.Tick -= TickChartFilling;
-                };
+                    if (SandpileChartTypes.Contains(SandpileChartType.NumberOfDotsChart))
+                    {
+                        NumberOfDotsChart = new ChartWindow();
+                        NumberOfDotsChart.Closing +=
+                            delegate (object sender, System.ComponentModel.CancelEventArgs e)
+                            { mainTimer.Tick -= TickChartFilling; };
+                        mainTimer.Tick += TickChartFilling;
+                    }
 
-                if (type == MovementModelingType.Sandpile)
-                {
-                    MovementEnded += TickChartFilling;
-                    MovementEnded += delegate(object sender, EventArgs args) { avalancheSize = 0; };
-                    resultsForm.chart1.Series[0].ChartType = SeriesChartType.Point;
+                    if (SandpileChartTypes.Contains(SandpileChartType.AvalancheSizesDistributionChart))
+                    {
+                        DistibutionChart = new ChartWindow();
+                        DistibutionChart.Closing +=
+                            delegate (object sender, System.ComponentModel.CancelEventArgs e)
+                            { MovementEnded -= TickChartFilling; };
+                        MovementEnded += TickChartFilling;
+                        MovementEnded += delegate (object sender, EventArgs args) { avalancheSize = 0; };
+                        DistibutionChart.AvalancheSizesDistributionChartPrepare();
+                    }
                 }
-                else mainTimer.Tick += TickChartFilling;
-                resultsForm.Show();
+                else
+                {
+                    mainTimer.Tick += TickChartFilling;
+                    NumberOfDotsChart.Closing +=
+                        delegate (object sender, System.ComponentModel.CancelEventArgs e)
+                        { mainTimer.Tick -= TickChartFilling; };
+                }
+                NumberOfDotsChart?.Show();
+                DistibutionChart?.Show();
             }
 
-            if (modes.Contains(MovementModelingMode.Gif)) gifTimer.Tick += TickGifCollecting;
+            if (Modes.Contains(MovementModelingMode.Gif)) gifTimer.Tick += TickGifCollecting;
 
             involvedArcs = new List<Arc>();
             timers = new List<Stopwatch>();
-            graphDrawing = graphics;
-            drawingSurface = picture;
             IsActive = true;
             mainTimer.Start();
-                //mainStopwatch.Start();
-            if (modes.Contains(MovementModelingMode.Gif)) gifTimer.Start();
+            //mainStopwatch.Start();
+            if (Modes.Contains(MovementModelingMode.Gif)) gifTimer.Start();
         }
 
         public bool IsActive { get; private set; }
@@ -152,7 +170,7 @@ namespace ApplicationClasses.Modeling
         {
             mainTimer.Stop();
             mainStopwatch.Stop();
-            if (modes.Contains(MovementModelingMode.Gif)) gifTimer.Stop();
+            if (Modes.Contains(MovementModelingMode.Gif)) gifTimer.Stop();
             timers.ForEach(timer => timer.Stop());
             IsActive = false;
         }
@@ -161,7 +179,7 @@ namespace ApplicationClasses.Modeling
         {
             mainTimer.Start();
             mainStopwatch.Start();
-            if(modes.Contains(MovementModelingMode.Gif))gifTimer.Start();
+            if (Modes.Contains(MovementModelingMode.Gif)) gifTimer.Start();
             timers.ForEach(timer => timer.Start());
             IsActive = true;
         }
@@ -228,6 +246,12 @@ namespace ApplicationClasses.Modeling
     {
         Basic,
         Sandpile
+    }
+
+    public enum SandpileChartType
+    {
+        NumberOfDotsChart,
+        AvalancheSizesDistributionChart
     }
     public class MovementTickEventArgs : EventArgs
     {

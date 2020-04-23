@@ -18,7 +18,7 @@ namespace ApplicationClasses.Modeling
         public ChartWindow()
         {
             InitializeComponent();
-            Series data = new Series("Number of dots")
+            Series data = new Series("Number of Dots")
             {
                 ChartType = SeriesChartType.Line,
                 Color = Color.DarkCyan,
@@ -52,6 +52,25 @@ namespace ApplicationClasses.Modeling
                     chart1.SaveImage(stream, ChartImageFormat.Jpeg);
                 }
             }
+        }
+
+        public void AvalancheSizesDistributionChartPrepare()
+        {
+            Text = "Distribution of Avalanche Sizes Chart";
+            chart1.Series[0] = new Series("Distribution of\n\rAvalanche Sizes")
+            {
+                ChartType = SeriesChartType.Point,
+                Color = Color.DarkCyan,
+                MarkerStyle = MarkerStyle.Circle,
+                MarkerColor = Color.DarkCyan,
+                ChartArea = "Chart",
+                BorderWidth = 1
+            };
+            chart1.Series[0].ToolTip = "Size = #VALX,\n\rFrequency = #VALY";
+            chart1.ChartAreas[0].AxisX.Title = "Avalanche Size";
+            chart1.ChartAreas[0].AxisY.Title = "Frequency";
+            chart1.ChartAreas[0].AxisX.Interval = 2;
+            chart1.ChartAreas[0].AxisY.Interval = 5;
         }
     }
 }

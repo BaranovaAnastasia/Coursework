@@ -33,6 +33,7 @@ namespace ApplicationClasses
         /// MediumAquamarine Pen for highlighting vertices
         /// </summary>
         private readonly Pen highlightPen = new Pen(Color.MediumAquamarine, 2.5f);
+        private readonly Pen highlightSandpilePen = new Pen(Color.Gold, 4);
 
         /// <summary>
         /// Font for vertices titles
@@ -91,12 +92,17 @@ namespace ApplicationClasses
         /// <summary>
         /// Highlights graph vertex
         /// </summary>
-        public void HighlightVertex(Vertex vertex) => drawing.DrawEllipse(highlightPen, (vertex.X - R), (vertex.Y - R), 2 * R, 2 * R);
+        public void HighlightVertex(Vertex vertex) =>
+            drawing.DrawEllipse(highlightPen, (vertex.X - R), (vertex.Y - R), 2 * R, 2 * R);
+        public void HighlightVertexToAddSand(Vertex vertex) =>
+            drawing.DrawEllipse(highlightSandpilePen, (vertex.X - R*1.2f), (vertex.Y - R*1.2f), 2 * R*1.2f, 2 * R*1.2f);
+
 
         /// <summary>
         /// Removes highlighting from graph vertex
         /// </summary>
-        public void UnhighlightVertex(Vertex vertex) => drawing.DrawEllipse(verticesPen, (vertex.X - R), (vertex.Y - R), 2 * R, 2 * R);
+        public void UnhighlightVertex(Vertex vertex) => 
+            drawing.DrawEllipse(verticesPen, (vertex.X - R), (vertex.Y - R), 2 * R, 2 * R);
 
         /// <summary>
         /// Draws graph arc

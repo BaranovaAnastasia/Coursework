@@ -16,9 +16,9 @@ namespace Graph_WinForms
         /// </summary>
         private void DrawingSurface_MouseClick(object sender, MouseEventArgs e)
         {
-            if (isOnMovement && SandpileTypeCheckBox.Checked && SandpileLabel.Visible)
+            if (isOnMovement && SandpileTypeCheckBox.Checked && SandpilePanel.Visible)
             {
-                if (SandpileLabel.Text == "Select sink vertices and then click here")
+                if (SandpilePanel.Size.Height < 50)
                 {
                     for (int i = 0; i < Digraph.Vertices.Count; i++)
                         if (Math.Pow((Digraph.Vertices[i].X - e.X), 2) + Math.Pow((Digraph.Vertices[i].Y - e.Y), 2) <=
@@ -47,7 +47,7 @@ namespace Graph_WinForms
                             Math.Pow(GraphDrawing.R, 2))
                         {
                             Digraph.State[i]++;
-                            SandpileLabel.Visible = false;
+                            SandpilePanel.Visible = false;
                             movement.Go();
                         }
                 }

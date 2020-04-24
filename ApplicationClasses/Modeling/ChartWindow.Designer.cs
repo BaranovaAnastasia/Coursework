@@ -33,6 +33,9 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveChartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -69,10 +72,34 @@
             // 
             // saveToolStripMenuItem
             // 
+            this.saveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveChartToolStripMenuItem,
+            this.saveDataToolStripMenuItem,
+            this.saveAllToolStripMenuItem});
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(151, 34);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.saveToolStripMenuItem.Text = "Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
+            // 
+            // saveChartToolStripMenuItem
+            // 
+            this.saveChartToolStripMenuItem.Name = "saveChartToolStripMenuItem";
+            this.saveChartToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveChartToolStripMenuItem.Text = "Save Chart";
+            this.saveChartToolStripMenuItem.Click += new System.EventHandler(this.saveChartToolStripMenuItem_Click);
+            // 
+            // saveDataToolStripMenuItem
+            // 
+            this.saveDataToolStripMenuItem.Name = "saveDataToolStripMenuItem";
+            this.saveDataToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveDataToolStripMenuItem.Text = "Save Data";
+            this.saveDataToolStripMenuItem.Click += new System.EventHandler(this.saveDataToolStripMenuItem_Click);
+            // 
+            // saveAllToolStripMenuItem
+            // 
+            this.saveAllToolStripMenuItem.Name = "saveAllToolStripMenuItem";
+            this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveAllToolStripMenuItem.Text = "Save All";
+            this.saveAllToolStripMenuItem.Click += new System.EventHandler(this.saveAllToolStripMenuItem_Click);
             // 
             // ChartWindow
             // 
@@ -99,5 +126,8 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveChartToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveAllToolStripMenuItem;
     }
 }

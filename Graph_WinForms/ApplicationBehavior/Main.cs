@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Windows.Media.Imaging;
 using ApplicationClasses;
 
 namespace Graph_WinForms
@@ -21,15 +22,22 @@ namespace Graph_WinForms
 
             graphDrawing = new GraphDrawing(DrawingSurface.Width, DrawingSurface.Height);
 
-            saveDialog.FileName = "Graph"; // Default file name
-            saveDialog.DefaultExt = ".digraph"; // Default file extension
-            saveDialog.Filter = "Digraph data files (.digraph)|*.digraph"; // Filter files by extension
+            saveDataDialog.FileName = "GraphData"; // Default file name
+            saveDataDialog.DefaultExt = ".digraph"; // Default file extension
+            saveDataDialog.Filter = "Digraph data files (.digraph)|*.digraph"; // Filter files by extension
+
+            saveDataDialog.FileName = "GraphImage"; // Default file name
+            saveDataDialog.DefaultExt = ".jpg"; // Default file extension
+            saveDataDialog.Filter = "JPG Image (.jpg)|*.jpg"; // Filter files by extension
+
+            folderBrowserDialog.SelectedPath = "Digraph";
+
             openDialog.DefaultExt = ".digraph"; // Default file extension
             openDialog.Filter = "Digraph data files (.digraph)|*.digraph"; // Filter files by extension
 
             saveGifDialog.FileName = "Movement";
             saveGifDialog.DefaultExt = ".gif";
-            saveGifDialog.Filter = "Gif image (.gif)|*.gif";
+            saveGifDialog.Filter = "Gif Image (.gif)|*.gif";
         }
 
         /// <summary>
@@ -122,6 +130,7 @@ namespace Graph_WinForms
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();
             SandpileLabel.Text = "Select vertex to add a grain of sand to       ";
+            SandpileLabel.Font = new Font("Segoe UI", 9);
             SandpilePanel.Size = new Size(SandpilePanel.Size.Width, 91);
 
             movement.MovementEnded += MovementEndedSandpileEventHandler;
@@ -165,6 +174,15 @@ namespace Graph_WinForms
             SandpilePanel.Visible = false;
             graphDrawing.HighlightVertexToAddSand(Digraph.Vertices[rndVertex]);
             DrawingSurface.Image = graphDrawing.Image;
+            if (SaveGifCheckBox.Checked && movement.MovementGif.Frames.Count < 250)
+            {
+                var bmp = (DrawingSurface.Image as Bitmap).GetHbitmap();
+                var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                    bmp,
+                    IntPtr.Zero,
+                    System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                movement.MovementGif.Frames.Add(BitmapFrame.Create(src));
+            }
 
             await Task.Delay(1000);
             movement.Go();

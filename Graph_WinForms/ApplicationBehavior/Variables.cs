@@ -18,7 +18,10 @@ namespace Graph_WinForms
         /// </summary>
         Digraph Digraph = new Digraph();
 
-        readonly SaveFileDialog saveDialog = new SaveFileDialog(); // In order to save the graph
+        readonly SaveFileDialog saveDataDialog = new SaveFileDialog(); // In order to save the graph
+        readonly SaveFileDialog saveImageDialog = new SaveFileDialog();
+        readonly FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+
         readonly OpenFileDialog openDialog = new OpenFileDialog();   // In order to open the graph from file
 
         readonly SaveFileDialog saveGifDialog = new SaveFileDialog(); // In order to save the gif

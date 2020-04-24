@@ -5,6 +5,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
@@ -31,17 +32,48 @@ namespace Graph_WinForms
         private void NewProjectToolStripMenuItem_Click(object sender, EventArgs e) => Build_Click(sender, e);
         private void OpenProjectToolStripMenuItem_Click(object sender, EventArgs e) => Open_Click(sender, e);
 
-        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
+
+        private void dataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (saveDialog.ShowDialog() == DialogResult.OK)
+            if (saveDataDialog.ShowDialog() == DialogResult.OK)
             {
-                using (FileStream stream = new FileStream(saveDialog.FileName, FileMode.Create))
+                using (FileStream stream = new FileStream(saveDataDialog.FileName, FileMode.Create))
                 {
                     XmlSerializer format = new XmlSerializer(typeof(Digraph));
                     format.Serialize(stream, Digraph);
                 }
             }
         }
+
+        private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (saveImageDialog.ShowDialog() == DialogResult.OK)
+                using (FileStream stream = new FileStream(saveImageDialog.FileName, FileMode.Create))
+                {
+                    graphDrawing.DrawTheWholeGraph(Digraph);
+                    graphDrawing.Image.Save(stream, ImageFormat.Jpeg);
+                }
+        }
+
+        private void saveAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                using (FileStream stream =
+                    new FileStream(folderBrowserDialog.SelectedPath + @"\Image.jpg", FileMode.Create))
+                {
+                    graphDrawing.DrawTheWholeGraph(Digraph);
+                    graphDrawing.Image.Save(stream, ImageFormat.Jpeg);
+                }
+
+                using (var sw = new StreamWriter(folderBrowserDialog.SelectedPath + @"\Data.digraph", false))
+                {
+                    XmlSerializer format = new XmlSerializer(typeof(Digraph));
+                    format.Serialize(sw, Digraph);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Saves the graph if user wants to and closes the app
@@ -129,7 +161,6 @@ namespace Graph_WinForms
                 DrawingSurface = this.DrawingSurface,
                 SandpileChartTypes = sandpileChartTypes
             };
-
 
 
             isOnMovement = true;
@@ -220,7 +251,9 @@ namespace Graph_WinForms
         {
             StopToolStripMenuItem_Click(sender, e);
             isOnMovement = false;
-            if (movement != null && SaveGifCheckBox.Checked) SaveGif(sender, e);
+            if (movement != null && SaveGifCheckBox.Checked ||
+                SandpileTypeCheckBox.Checked && SaveGifCheckBox.Checked) 
+                SaveGif(sender, e);
             for (int i = 0; i < Digraph.State.Count; i++)
             {
                 Digraph.State[i] = int.Parse(GridInitialState[0, i].Value.ToString());
@@ -238,6 +271,7 @@ namespace Graph_WinForms
             TimeTextBox.Text = " Elapsed time, s:  0";
             SandpilePanel.Visible = false;
             SandpileLabel.Text = "Select sink vertices and then click here          ";
+            SandpileLabel.Font = new Font("Segoe UI", 9, FontStyle.Underline);
             SandpilePanel.Size = new Size(SandpilePanel.Size.Width, 32);
             foreach (var page in AppParameters.Controls)
                 foreach (var control in (page as TabPage).Controls)
@@ -253,7 +287,7 @@ namespace Graph_WinForms
         {
             result = MessageBox.Show(message, caption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
-                SaveToolStripMenuItem_Click(this, null);
+                dataToolStripMenuItem_Click(this, null);
         }
 
         /// <summary>

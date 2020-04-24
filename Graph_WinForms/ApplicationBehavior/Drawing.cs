@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Windows.Media.Imaging;
 using ApplicationClasses;
 
 namespace Graph_WinForms
@@ -48,6 +49,17 @@ namespace Graph_WinForms
                         {
                             Digraph.State[i]++;
                             SandpilePanel.Visible = false;
+                            graphDrawing.HighlightVertexToAddSand(Digraph.Vertices[i]);
+                            DrawingSurface.Image = graphDrawing.Image;
+                            if (SaveGifCheckBox.Checked && movement.MovementGif.Frames.Count < 250)
+                            {
+                                var bmp = (DrawingSurface.Image as Bitmap).GetHbitmap();
+                                var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                                    bmp,
+                                    IntPtr.Zero,
+                                    System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                                movement.MovementGif.Frames.Add(BitmapFrame.Create(src));
+                            }
                             movement.Go();
                         }
                 }

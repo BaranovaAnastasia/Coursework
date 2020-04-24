@@ -83,6 +83,7 @@ namespace Graph_WinForms
                 TimeTextBox.Visible = false;
             MainMenuToolStripMenuItem.Visible = state;
             MovementToolStripMenuItem.Visible = state;
+            saveToolStripMenuItem.Visible = state;
             StopToolStripMenuItem.Visible = state;
             ResetToolStripMenuItem.Visible = state;
         }

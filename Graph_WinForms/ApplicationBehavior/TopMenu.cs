@@ -276,6 +276,7 @@ namespace Graph_WinForms
             foreach (var page in AppParameters.Controls)
                 foreach (var control in (page as TabPage).Controls)
                     (control as Control).Enabled = true;
+            AnimationCheckBox.Enabled = false;
         }
 
 

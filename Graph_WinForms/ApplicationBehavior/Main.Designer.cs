@@ -192,6 +192,7 @@
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.saveToolStripMenuItem.Text = "Save Graph";
+            this.saveToolStripMenuItem.Visible = false;
             // 
             // dataToolStripMenuItem
             // 

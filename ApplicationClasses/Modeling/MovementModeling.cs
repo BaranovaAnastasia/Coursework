@@ -145,6 +145,7 @@ namespace ApplicationClasses.Modeling
                 }
                 else
                 {
+                    NumberOfDotsChart = new ChartWindow();
                     mainTimer.Tick += TickChartFilling;
                     NumberOfDotsChart.Closing +=
                         delegate (object sender, System.ComponentModel.CancelEventArgs e)

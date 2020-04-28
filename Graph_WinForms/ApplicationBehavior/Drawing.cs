@@ -23,7 +23,7 @@ namespace Graph_WinForms
                 {
                     for (int i = 0; i < Digraph.Vertices.Count; i++)
                         if (Math.Pow((Digraph.Vertices[i].X - e.X), 2) + Math.Pow((Digraph.Vertices[i].Y - e.Y), 2) <=
-                            Math.Pow(GraphDrawing.R, 2))
+                            Math.Pow(graphDrawing.R, 2))
                         {
                             if (Digraph.Stock.Contains(i))
                             {
@@ -45,7 +45,7 @@ namespace Graph_WinForms
                 {
                     for (int i = 0; i < Digraph.Vertices.Count; i++)
                         if (Math.Pow((Digraph.Vertices[i].X - e.X), 2) + Math.Pow((Digraph.Vertices[i].Y - e.Y), 2) <=
-                            Math.Pow(GraphDrawing.R, 2))
+                            Math.Pow(graphDrawing.R, 2))
                         {
                             Digraph.State[i]++;
                             SandpilePanel.Visible = false;
@@ -110,7 +110,7 @@ namespace Graph_WinForms
 
             bool wasSmthDeleted = false;
 
-            ApplicationMethods.TryToDeleteVertexAt(e.X, e.Y, Digraph, out int i);
+            ApplicationMethods.TryToDeleteVertexAt(e.X, e.Y, Digraph, graphDrawing.R, out int i);
             if (i != -1)
             {
                 RemoveVertexFromGridAdjacencyMatrix(i);
@@ -147,7 +147,7 @@ namespace Graph_WinForms
             IsPressed = true;
 
             for (int i = 0; i < Digraph.Vertices.Count; i++)
-                if (Math.Pow((Digraph.Vertices[i].X - e.X), 2) + Math.Pow((Digraph.Vertices[i].Y - e.Y), 2) <= Math.Pow(GraphDrawing.R, 2))
+                if (Math.Pow((Digraph.Vertices[i].X - e.X), 2) + Math.Pow((Digraph.Vertices[i].Y - e.Y), 2) <= Math.Pow(graphDrawing.R, 2))
                 {
                     MovingVertexIndex = i;
                     Ticks = DateTime.Now;
@@ -176,30 +176,30 @@ namespace Graph_WinForms
             if (isOnMovement || !IsPressed || CoursorButton.Enabled) return;
 
             bool highlight = (DateTime.Now - Ticks).Ticks < 2250000 &&
-                Math.Pow(e.X - MovingVetrex.X, 2) + Math.Pow(e.Y - MovingVetrex.Y, 2) <= GraphDrawing.R * GraphDrawing.R;
+                Math.Pow(e.X - MovingVetrex.X, 2) + Math.Pow(e.Y - MovingVetrex.Y, 2) <= graphDrawing.R * graphDrawing.R;
 
             if (MovingVertexIndex != -1 && !highlight)
             {
                 // Keeping the image inside the borders of the sheet
-                int x = e.X, y = e.Y;
-                if (x < GraphDrawing.R + 5)
-                    x = GraphDrawing.R + 5;
-                if (y < GraphDrawing.R + 5)
+                float x = e.X, y = e.Y;
+                if (x < graphDrawing.R + 5)
+                    x = graphDrawing.R + 5;
+                if (y < graphDrawing.R + 5)
                 {
-                    y = GraphDrawing.R + 5;
+                    y = graphDrawing.R + 5;
                     if (GridAdjacencyMatrix[MovingVertexIndex, MovingVertexIndex].Value.ToString() != "0")
-                        y += GraphDrawing.R;
+                        y += graphDrawing.R;
                 }
-                if (x > DrawingSurface.Width - GraphDrawing.R - 5)
+                if (x > DrawingSurface.Width - graphDrawing.R - 5)
                 {
-                    x = DrawingSurface.Width - GraphDrawing.R - 5;
+                    x = DrawingSurface.Width - graphDrawing.R - 5;
                     if (GridAdjacencyMatrix[MovingVertexIndex, MovingVertexIndex].Value.ToString() != "0")
-                        x -= GraphDrawing.R;
+                        x -= graphDrawing.R;
                 }
-                if (y > DrawingSurface.Height - GraphDrawing.R - 5)
-                    y = DrawingSurface.Height - GraphDrawing.R - 5;
+                if (y > DrawingSurface.Height - graphDrawing.R - 5)
+                    y = DrawingSurface.Height - graphDrawing.R - 5;
 
-                Digraph.Vertices[MovingVertexIndex] = new Vertex(x, y);
+                Digraph.Vertices[MovingVertexIndex] = new Vertex((int)x, (int)y);
             }
 
             if (highlight) Digraph.Vertices[MovingVertexIndex] = new Vertex(MovingVetrex.X, MovingVetrex.Y);
@@ -291,7 +291,7 @@ namespace Graph_WinForms
         private void FindArcVertices(int x, int y)
         {
             for (int i = 0; i < Digraph.Vertices.Count; i++)
-                if (Math.Pow((Digraph.Vertices[i].X - x), 2) + Math.Pow((Digraph.Vertices[i].Y - y), 2) <= Math.Pow(GraphDrawing.R, 2))
+                if (Math.Pow((Digraph.Vertices[i].X - x), 2) + Math.Pow((Digraph.Vertices[i].Y - y), 2) <= Math.Pow(graphDrawing.R, 2))
                 {
                     if (vStart == -1)
                     {

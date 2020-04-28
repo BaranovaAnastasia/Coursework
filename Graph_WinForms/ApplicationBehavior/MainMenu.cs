@@ -86,6 +86,8 @@ namespace Graph_WinForms
             saveToolStripMenuItem.Visible = state;
             StopToolStripMenuItem.Visible = state;
             ResetToolStripMenuItem.Visible = state;
+            RadiusLabel.Visible = state;
+            RadiusTrackBar.Visible = state;
         }
 
         /// <summary>

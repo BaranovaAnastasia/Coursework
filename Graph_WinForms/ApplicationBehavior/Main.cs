@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Runtime.Remoting.Channels;
 using System.Windows.Media.Imaging;
 using ApplicationClasses;
 
@@ -38,6 +39,12 @@ namespace Graph_WinForms
             saveGifDialog.FileName = "Movement";
             saveGifDialog.DefaultExt = ".gif";
             saveGifDialog.Filter = "Gif Image (.gif)|*.gif";
+
+            graphDrawing.RadiusChanged += (object sender, EventArgs e) =>
+            {
+                graphDrawing.DrawTheWholeGraph(Digraph);
+                DrawingSurface.Image = graphDrawing.Image;
+            };
         }
 
         /// <summary>
@@ -210,6 +217,11 @@ namespace Graph_WinForms
         {
             SandpilePanel.Visible = true;
             SandpilePanel.BringToFront();
+        }
+
+        private void RadiusTrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            graphDrawing.R = RadiusTrackBar.Value;
         }
     }
 }

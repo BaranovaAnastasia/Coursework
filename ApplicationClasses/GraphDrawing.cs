@@ -38,7 +38,7 @@ namespace ApplicationClasses
         /// <summary>
         /// Font for vertices titles
         /// </summary>
-        private readonly Font font = new Font("Segoe UI", 5);
+        private Font font = new Font("Segoe UI", 5);
 
         /// <summary>
         /// DarkSlateGray Brush for writing titles
@@ -50,7 +50,22 @@ namespace ApplicationClasses
         /// <summary>
         /// Vertices radius
         /// </summary>
-        public static readonly int R = 8;
+        private static int r = 8;
+
+        public int R
+        {
+            get => r;
+            set
+            {
+                if (value < 8)
+                    throw new ArgumentOutOfRangeException(nameof(value));
+                r = value;
+                font = new Font(font.FontFamily.Name, r * 0.625f);
+                RadiusChanged?.Invoke(null, EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler RadiusChanged;
 
         private PointF point; //Helper variable
 
@@ -84,8 +99,11 @@ namespace ApplicationClasses
         {
             drawing.FillEllipse(Brushes.White, (x - R), (y - R), 2 * R, 2 * R);
             drawing.DrawEllipse(pen, (x - R), (y - R), 2 * R, 2 * R);
-            point = number >= 100 ? new PointF(x - 13.5f, y - 7) :
-                number >= 10 ? new PointF(x - 8, y - 7) : new PointF(x - 4f, y - 7);
+            point = number >= 100 
+                ? new PointF(x - font.Size * 2.7f, y - font.Size * 1.4f) 
+                : number >= 10 
+                    ? new PointF(x - font.Size*1.4f, y - font.Size * 1.4f) 
+                    : new PointF(x - font.Size * 0.8f, y - font.Size * 1.4f);
             drawing.DrawString(number.ToString(), font, brush, point);
         }
 
@@ -95,13 +113,13 @@ namespace ApplicationClasses
         public void HighlightVertex(Vertex vertex) =>
             drawing.DrawEllipse(highlightPen, (vertex.X - R), (vertex.Y - R), 2 * R, 2 * R);
         public void HighlightVertexToAddSand(Vertex vertex) =>
-            drawing.DrawEllipse(highlightSandpilePen, (vertex.X - R*1.2f), (vertex.Y - R*1.2f), 2 * R*1.2f, 2 * R*1.2f);
+            drawing.DrawEllipse(highlightSandpilePen, (vertex.X - R * 1.2f), (vertex.Y - R * 1.2f), 2 * R * 1.2f, 2 * R * 1.2f);
 
 
         /// <summary>
         /// Removes highlighting from graph vertex
         /// </summary>
-        public void UnhighlightVertex(Vertex vertex) => 
+        public void UnhighlightVertex(Vertex vertex) =>
             drawing.DrawEllipse(verticesPen, (vertex.X - R), (vertex.Y - R), 2 * R, 2 * R);
 
         /// <summary>
@@ -146,12 +164,12 @@ namespace ApplicationClasses
 
         public void DrawTheWholeGraphSandpile(Digraph digraph, List<Arc>[] incidenceList = null, Color[] palette = null)
         {
-            if(incidenceList == null) incidenceList = MovementModeling.GetIncidenceList(digraph);
-            if(palette == null) palette = GetGradientColors(Color.Crimson, Color.CadetBlue, incidenceList.Max(arcs => arcs.Count));
+            if (incidenceList == null) incidenceList = MovementModeling.GetIncidenceList(digraph);
+            if (palette == null) palette = GetGradientColors(Color.Crimson, Color.CadetBlue, incidenceList.Max(arcs => arcs.Count));
             ClearTheSurface();
             for (int i = 0; i < palette.Length; i++)
             {
-                drawing.DrawLine(new Pen(palette[i], 4f), Image.Width - 50, i*10 + 40, Image.Width - 10, i * 10 + 40);
+                drawing.DrawLine(new Pen(palette[i], 4f), Image.Width - 50, i * 10 + 40, Image.Width - 10, i * 10 + 40);
                 drawing.DrawString(i.ToString(), font, brush, Image.Width - 10, i * 10 + 35);
             }
             digraph.Arcs.ForEach(arc =>
@@ -160,9 +178,9 @@ namespace ApplicationClasses
             {
                 DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1,
                     new Pen(digraph.State[i] >= incidenceList[i].Count || digraph.Stock.Contains(i)
-                        ? Color.Black 
+                        ? Color.Black
                         : palette[digraph.State[i]], 2.5f));
-                drawing.DrawString(digraph.State[i].ToString(), font, brush, digraph.Vertices[i].X+15, digraph.Vertices[i].Y - 15);
+                drawing.DrawString(digraph.State[i].ToString(), font, brush, digraph.Vertices[i].X + 15, digraph.Vertices[i].Y - 15);
             }
         }
 

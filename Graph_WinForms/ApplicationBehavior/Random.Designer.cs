@@ -116,17 +116,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(388, 214);
+            this.ClientSize = new System.Drawing.Size(398, 244);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.VNRandom);
             this.Controls.Add(this.VNLabel);
             this.Controls.Add(this.NumOfVertices);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.MaximumSize = new System.Drawing.Size(410, 270);
-            this.MinimumSize = new System.Drawing.Size(410, 270);
+            this.MaximumSize = new System.Drawing.Size(420, 300);
+            this.MinimumSize = new System.Drawing.Size(420, 300);
             this.Name = "Form2";
-            this.Text = "b";
+            this.Text = "Random Graph";
             ((System.ComponentModel.ISupportInitialize)(this.NumOfVertices)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

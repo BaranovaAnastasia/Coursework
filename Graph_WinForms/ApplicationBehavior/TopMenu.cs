@@ -277,6 +277,7 @@ namespace Graph_WinForms
                 foreach (var control in (page as TabPage).Controls)
                     (control as Control).Enabled = true;
             AnimationCheckBox.Enabled = false;
+            System.GC.Collect();
         }
 
 

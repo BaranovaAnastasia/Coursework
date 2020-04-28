@@ -145,16 +145,9 @@ namespace ApplicationClasses
                 num = Math.Sqrt(insideNum);
                 return true;
             }
-            // Checking if it's a degree
-            if (numStr.Contains("^") && IsANumber(numStr.Substring(numStr.LastIndexOf('^') + 1), out insideNum) &&
-                IsANumber(numStr.Substring(0, numStr.LastIndexOf('^')), out double insideNum1))
-            {
-                num = Math.Pow(insideNum1, insideNum);
-                return true;
-            }
             // Multiplication
             if (numStr.Contains("*") && IsANumber(numStr.Substring(numStr.IndexOf('*') + 1), out insideNum) &&
-                IsANumber(numStr.Substring(0, numStr.IndexOf('*')), out insideNum1))
+                IsANumber(numStr.Substring(0, numStr.IndexOf('*')), out double insideNum1))
             {
                 num = insideNum * insideNum1;
                 return true;
@@ -163,7 +156,7 @@ namespace ApplicationClasses
             if (numStr.Contains("/") && IsANumber(numStr.Substring(numStr.IndexOf('/') + 1), out insideNum) &&
                 IsANumber(numStr.Substring(0, numStr.IndexOf('/')), out insideNum1))
             {
-                num = insideNum * insideNum1;
+                num = insideNum1 / insideNum;
                 return true;
             }
             // Addition
@@ -178,6 +171,13 @@ namespace ApplicationClasses
                 IsANumber(numStr.Substring(0, numStr.IndexOf('-')), out insideNum1))
             {
                 num = insideNum - insideNum1;
+                return true;
+            }
+            // Checking if it's a degree
+            if (numStr.Contains("^") && IsANumber(numStr.Substring(numStr.LastIndexOf('^') + 1), out insideNum) &&
+                IsANumber(numStr.Substring(0, numStr.LastIndexOf('^')), out insideNum1))
+            {
+                num = Math.Pow(insideNum1, insideNum);
                 return true;
             }
             return false;
@@ -196,12 +196,11 @@ namespace ApplicationClasses
             return check.IsStronglyConnected();
         }
 
-        public static void TryToDeleteVertexAt(int x, int y, Digraph digraph, out int index)
+        public static void TryToDeleteVertexAt(int x, int y, Digraph digraph, float R, out int index)
         {
             for (var i = 0; i < digraph.Vertices.Count; i++)
             {
-                if (Math.Pow(digraph.Vertices[i].X - x, 2) + Math.Pow(digraph.Vertices[i].Y - y, 2)
-                      > GraphDrawing.R * GraphDrawing.R)
+                if (Math.Pow(digraph.Vertices[i].X - x, 2) + Math.Pow(digraph.Vertices[i].Y - y, 2) > R * R)
                     continue;
                 digraph.RemoveVertex(i);
                 index = i;

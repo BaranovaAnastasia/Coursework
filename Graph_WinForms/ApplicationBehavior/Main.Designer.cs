@@ -93,6 +93,8 @@
             this.RandomAddingLabel = new System.Windows.Forms.Label();
             this.RandomAddingCheckBox = new System.Windows.Forms.CheckBox();
             this.SandpilePanel = new System.Windows.Forms.Panel();
+            this.RadiusTrackBar = new System.Windows.Forms.TrackBar();
+            this.RadiusLabel = new System.Windows.Forms.Label();
             this.TopMenu.SuspendLayout();
             this.Tools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DrawingSurface)).BeginInit();
@@ -112,6 +114,7 @@
             this.ModePage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SpeedNumeric)).BeginInit();
             this.SandpilePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.RadiusTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // Build
@@ -230,6 +233,7 @@
             this.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem";
             this.SettingsToolStripMenuItem.Size = new System.Drawing.Size(92, 29);
             this.SettingsToolStripMenuItem.Text = "Settings";
+            this.SettingsToolStripMenuItem.Visible = false;
             // 
             // languageToolStripMenuItem
             // 
@@ -323,6 +327,7 @@
             // ClearButton
             // 
             this.ClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ClearButton.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ClearButton.Location = new System.Drawing.Point(10, 350);
             this.ClearButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ClearButton.Name = "ClearButton";
@@ -336,6 +341,7 @@
             // 
             this.CoursorButton.Enabled = false;
             this.CoursorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CoursorButton.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.CoursorButton.Location = new System.Drawing.Point(10, 10);
             this.CoursorButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.CoursorButton.Name = "CoursorButton";
@@ -348,6 +354,7 @@
             // DeleteButton
             // 
             this.DeleteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DeleteButton.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.DeleteButton.Location = new System.Drawing.Point(10, 265);
             this.DeleteButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.DeleteButton.Name = "DeleteButton";
@@ -360,6 +367,7 @@
             // VertexButton
             // 
             this.VertexButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VertexButton.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.VertexButton.Location = new System.Drawing.Point(10, 95);
             this.VertexButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.VertexButton.Name = "VertexButton";
@@ -372,12 +380,13 @@
             // EdgeButton
             // 
             this.EdgeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EdgeButton.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.EdgeButton.Location = new System.Drawing.Point(10, 180);
             this.EdgeButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.EdgeButton.Name = "EdgeButton";
             this.EdgeButton.Size = new System.Drawing.Size(75, 75);
             this.EdgeButton.TabIndex = 9;
-            this.EdgeButton.Text = "Edge";
+            this.EdgeButton.Text = "Arc";
             this.EdgeButton.UseVisualStyleBackColor = true;
             this.EdgeButton.Click += new System.EventHandler(this.EdgeButton_Click);
             // 
@@ -881,12 +890,38 @@
             this.SandpilePanel.TabIndex = 31;
             this.SandpilePanel.Visible = false;
             // 
+            // RadiusTrackBar
+            // 
+            this.RadiusTrackBar.Location = new System.Drawing.Point(10, 526);
+            this.RadiusTrackBar.Maximum = 20;
+            this.RadiusTrackBar.Minimum = 8;
+            this.RadiusTrackBar.Name = "RadiusTrackBar";
+            this.RadiusTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.RadiusTrackBar.Size = new System.Drawing.Size(69, 159);
+            this.RadiusTrackBar.TabIndex = 32;
+            this.RadiusTrackBar.Value = 8;
+            this.RadiusTrackBar.Visible = false;
+            this.RadiusTrackBar.ValueChanged += new System.EventHandler(this.RadiusTrackBar_ValueChanged);
+            // 
+            // RadiusLabel
+            // 
+            this.RadiusLabel.AutoSize = true;
+            this.RadiusLabel.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.RadiusLabel.Location = new System.Drawing.Point(6, 490);
+            this.RadiusLabel.Name = "RadiusLabel";
+            this.RadiusLabel.Size = new System.Drawing.Size(80, 42);
+            this.RadiusLabel.TabIndex = 33;
+            this.RadiusLabel.Text = "Vertex\n     Radius:";
+            this.RadiusLabel.Visible = false;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1236, 697);
+            this.Controls.Add(this.RadiusLabel);
+            this.Controls.Add(this.RadiusTrackBar);
             this.Controls.Add(this.SandpilePanel);
             this.Controls.Add(this.TimeTextBox);
             this.Controls.Add(this.AppParameters);
@@ -901,7 +936,7 @@
             this.MinimumSize = new System.Drawing.Size(1258, 753);
             this.Name = "MainWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Movement Modeling Application";
+            this.Text = "Points Movement Modeling Application";
             this.SizeChanged += new System.EventHandler(this.GraphBuilder_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GraphBuilder_KeyDown);
             this.TopMenu.ResumeLayout(false);
@@ -931,6 +966,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.SpeedNumeric)).EndInit();
             this.SandpilePanel.ResumeLayout(false);
             this.SandpilePanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.RadiusTrackBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1003,6 +1039,8 @@
         private System.Windows.Forms.ToolStripMenuItem dataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAllToolStripMenuItem;
+        private System.Windows.Forms.TrackBar RadiusTrackBar;
+        private System.Windows.Forms.Label RadiusLabel;
     }
 }
 

@@ -28,7 +28,13 @@ namespace ApplicationClasses.Modeling
             {
                 gifTimer.Stop();
             }
+
+            DeleteObject(bmp);
         }
+
+        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        public static extern bool DeleteObject(IntPtr hObject);
+
 
         private void TickChartFilling(object source, EventArgs e)
         {

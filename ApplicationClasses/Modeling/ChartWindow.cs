@@ -53,7 +53,7 @@ namespace ApplicationClasses.Modeling
         }
 
         private void ChartWindow_SizeChanged(object sender, EventArgs e) =>
-            chart1.Size = new Size(Width, Height - menuStrip1.Height - 5);
+            chart1.Size = new Size(Width, Height - menuStrip1.Height - 50 > 0 ? Height - menuStrip1.Height - 50 : 0);
 
         public void AvalancheSizesDistributionChartPrepare()
         {

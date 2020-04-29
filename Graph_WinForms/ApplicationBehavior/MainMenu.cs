@@ -2,7 +2,7 @@
 using ApplicationClasses;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using  System.IO;
+using System.IO;
 
 namespace Graph_WinForms
 {
@@ -79,7 +79,7 @@ namespace Graph_WinForms
             Tools.Visible = state;
             DrawingSurface.Visible = state;
             AppParameters.Visible = state;
-            if(!state)
+            if (!state)
                 TimeTextBox.Visible = false;
             MainMenuToolStripMenuItem.Visible = state;
             MovementToolStripMenuItem.Visible = state;

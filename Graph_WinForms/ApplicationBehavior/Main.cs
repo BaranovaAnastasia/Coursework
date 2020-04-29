@@ -27,9 +27,9 @@ namespace Graph_WinForms
             saveDataDialog.DefaultExt = ".digraph"; // Default file extension
             saveDataDialog.Filter = "Digraph data files (.digraph)|*.digraph"; // Filter files by extension
 
-            saveDataDialog.FileName = "GraphImage"; // Default file name
-            saveDataDialog.DefaultExt = ".jpg"; // Default file extension
-            saveDataDialog.Filter = "JPG Image (.jpg)|*.jpg"; // Filter files by extension
+            saveImageDialog.FileName = "GraphImage"; // Default file name
+            saveImageDialog.DefaultExt = ".jpg"; // Default file extension
+            saveImageDialog.Filter = "JPG Image (.jpg)|*.jpg"; // Filter files by extension
 
             folderBrowserDialog.SelectedPath = "Digraph";
 
@@ -57,8 +57,8 @@ namespace Graph_WinForms
             Open.Location = new Point(RandomGraph.Location.X, RandomGraph.Location.Y + RandomGraph.Size.Height + 10);
             AppParameters.Size = new Size(AppParameters.Width, DrawingSurface.Height);
             AppParameters.Location = new Point(Size.Width - AppParameters.Size.Width - 30, AppParameters.Location.Y);
-            
-            
+
+
             if (Size.Width - (Size.Width - AppParameters.Location.X - 10) - Tools.Size.Width - 40 > 0 && Size.Height - 120 > 0)
                 DrawingSurface.Size = new Size(Size.Width - (Size.Width - AppParameters.Location.X - 10) - Tools.Size.Width - 40,
                      Size.Height - 120);
@@ -70,7 +70,7 @@ namespace Graph_WinForms
                 graphDrawing.DrawTheWholeGraph(Digraph);
                 DrawingSurface.Image = graphDrawing.Image;
             }
-            TimeTextBox.Location = 
+            TimeTextBox.Location =
                 new Point(DrawingSurface.Location.X + DrawingSurface.Size.Width - TimeTextBox.Size.Width,
                     TimeTextBox.Location.Y);
         }
@@ -222,6 +222,18 @@ namespace Graph_WinForms
         private void RadiusTrackBar_ValueChanged(object sender, EventArgs e)
         {
             graphDrawing.R = RadiusTrackBar.Value;
+        }
+
+        private void SquareLattice_Click(object sender, EventArgs e)
+        {
+            SquareLatticeForm square = new SquareLatticeForm(DrawingSurface.Width, DrawingSurface.Height);
+            square.ShowDialog();
+            Digraph = square.Digraph;
+            graphDrawing.DrawTheWholeGraph(Digraph);
+            DrawingSurface.Image = graphDrawing.Image;
+            UpdateDigraphInfo();
+            ChangeMainMenuState(false);
+            ChangeDrawingElementsState(true);
         }
     }
 }

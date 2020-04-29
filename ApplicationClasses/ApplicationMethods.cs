@@ -39,6 +39,8 @@ namespace ApplicationClasses
             dataGridView.Columns[0].FillWeight = 1;
             dataGridView.Columns[0].Width = 95;
             dataGridView.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+            if(digraph.Vertices.Count <=0) return;
+
             dataGridView.Rows.Add(digraph.Vertices.Count);
             for (int i = 0; i < digraph.Vertices.Count; i++)
             {
@@ -56,6 +58,8 @@ namespace ApplicationClasses
             dataGridView.Columns[0].FillWeight = 1;
             dataGridView.Columns[0].Width = 95;
             dataGridView.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+            if (digraph.Vertices.Count <= 0) return;
+
             dataGridView.Rows.Add(digraph.Vertices.Count);
             for (int i = 0; i < digraph.Vertices.Count; i++)
             {
@@ -73,6 +77,8 @@ namespace ApplicationClasses
             dataGridView.Columns[0].FillWeight = 1;
             dataGridView.Columns[0].Width = 95;
             dataGridView.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+            if (digraph.Vertices.Count <= 0) return;
+
             dataGridView.Rows.Add(digraph.Vertices.Count);
             for (int i = 0; i < digraph.Vertices.Count; i++)
             {

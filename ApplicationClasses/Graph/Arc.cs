@@ -30,6 +30,8 @@ namespace ApplicationClasses
         /// <param name="length">Length of the arc</param>
         public Arc(int startVertex, int endVertex, double length = 1)
         {
+            if(startVertex == endVertex)
+                throw new ArgumentException(nameof(endVertex), "Arc cannot be a loop");
             if (startVertex < 0)
                 throw new ArgumentOutOfRangeException(nameof(startVertex), "Index of the vertex was negative");
             if (endVertex < 0)

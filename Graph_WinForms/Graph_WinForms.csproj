@@ -89,6 +89,12 @@
     <Compile Include="ApplicationBehavior\Variables.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="SquareLatticeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SquareLatticeForm.Designer.cs">
+      <DependentUpon>SquareLatticeForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ApplicationBehavior\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -104,6 +110,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SquareLatticeForm.resx">
+      <DependentUpon>SquareLatticeForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

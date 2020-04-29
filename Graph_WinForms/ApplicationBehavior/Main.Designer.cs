@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.Build = new System.Windows.Forms.Button();
             this.Open = new System.Windows.Forms.Button();
             this.TopMenu = new System.Windows.Forms.MenuStrip();
@@ -95,6 +96,8 @@
             this.SandpilePanel = new System.Windows.Forms.Panel();
             this.RadiusTrackBar = new System.Windows.Forms.TrackBar();
             this.RadiusLabel = new System.Windows.Forms.Label();
+            this.SquareLattice = new System.Windows.Forms.Button();
+            this.TriangleLattice = new System.Windows.Forms.Button();
             this.TopMenu.SuspendLayout();
             this.Tools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DrawingSurface)).BeginInit();
@@ -914,18 +917,44 @@
             this.RadiusLabel.Text = "Vertex\n     Radius:";
             this.RadiusLabel.Visible = false;
             // 
+            // SquareLattice
+            // 
+            this.SquareLattice.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("SquareLattice.BackgroundImage")));
+            this.SquareLattice.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.SquareLattice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SquareLattice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SquareLattice.Location = new System.Drawing.Point(446, 558);
+            this.SquareLattice.Name = "SquareLattice";
+            this.SquareLattice.Size = new System.Drawing.Size(168, 37);
+            this.SquareLattice.TabIndex = 34;
+            this.SquareLattice.UseVisualStyleBackColor = true;
+            this.SquareLattice.Click += new System.EventHandler(this.SquareLattice_Click);
+            // 
+            // TriangleLattice
+            // 
+            this.TriangleLattice.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.TriangleLattice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.TriangleLattice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TriangleLattice.Location = new System.Drawing.Point(623, 558);
+            this.TriangleLattice.Name = "TriangleLattice";
+            this.TriangleLattice.Size = new System.Drawing.Size(168, 37);
+            this.TriangleLattice.TabIndex = 35;
+            this.TriangleLattice.UseVisualStyleBackColor = true;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1236, 697);
+            this.Controls.Add(this.TriangleLattice);
+            this.Controls.Add(this.SquareLattice);
             this.Controls.Add(this.RadiusLabel);
             this.Controls.Add(this.RadiusTrackBar);
             this.Controls.Add(this.SandpilePanel);
+            this.Controls.Add(this.DrawingSurface);
             this.Controls.Add(this.TimeTextBox);
             this.Controls.Add(this.AppParameters);
-            this.Controls.Add(this.DrawingSurface);
             this.Controls.Add(this.RandomGraph);
             this.Controls.Add(this.Tools);
             this.Controls.Add(this.Open);
@@ -1041,6 +1070,8 @@
         private System.Windows.Forms.ToolStripMenuItem saveAllToolStripMenuItem;
         private System.Windows.Forms.TrackBar RadiusTrackBar;
         private System.Windows.Forms.Label RadiusLabel;
+        private System.Windows.Forms.Button SquareLattice;
+        private System.Windows.Forms.Button TriangleLattice;
     }
 }
 

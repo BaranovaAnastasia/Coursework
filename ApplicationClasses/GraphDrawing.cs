@@ -24,11 +24,13 @@ namespace ApplicationClasses
         /// </summary>
         private readonly Pen verticesPen = new Pen(Color.MidnightBlue, 2.5f);
 
+
         public Pen VerticesPen => verticesPen;
         /// <summary>
         /// MidnightBlue Pen for drawing edges
         /// </summary>
         private readonly Pen edgesPen = new Pen(Color.FromArgb(80, Color.MidnightBlue), 3);
+
         /// <summary>
         /// MediumAquamarine Pen for highlighting vertices
         /// </summary>

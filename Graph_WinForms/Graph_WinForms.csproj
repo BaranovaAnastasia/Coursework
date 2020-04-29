@@ -95,6 +95,12 @@
     <Compile Include="SquareLatticeForm.Designer.cs">
       <DependentUpon>SquareLatticeForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="TriangularLatticeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TriangularLatticeForm.Designer.cs">
+      <DependentUpon>TriangularLatticeForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ApplicationBehavior\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -112,6 +118,9 @@
     </Compile>
     <EmbeddedResource Include="SquareLatticeForm.resx">
       <DependentUpon>SquareLatticeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TriangularLatticeForm.resx">
+      <DependentUpon>TriangularLatticeForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -298,6 +298,8 @@ namespace Graph_WinForms
         private void RefreshVariables()
         {
             CursorButton_Click(null, null);
+            if(isOnMovement) ResetToolStripMenuItem_Click(null, null);
+            isOnMovement = false;
 
             Digraph = new Digraph();
 

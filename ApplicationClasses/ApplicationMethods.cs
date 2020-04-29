@@ -39,7 +39,7 @@ namespace ApplicationClasses
             dataGridView.Columns[0].FillWeight = 1;
             dataGridView.Columns[0].Width = 95;
             dataGridView.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
-            if(digraph.Vertices.Count <=0) return;
+            if (digraph.Vertices.Count <= 0) return;
 
             dataGridView.Rows.Add(digraph.Vertices.Count);
             for (int i = 0; i < digraph.Vertices.Count; i++)
@@ -109,8 +109,8 @@ namespace ApplicationClasses
             {
                 int th = rnd.Next(1, 5);
                 int p = rnd.Next(1, 5);
-                int s = rnd.NextDouble() > 0.65 ? 0 : rnd.Next(1, th + 1);
-                digraph.AddVertex(new Vertex(rnd.Next(10, width-10), rnd.Next(10, height-10)), th, p, s);
+                int s = rnd.Next(0, 2 * th);
+                digraph.AddVertex(new Vertex(rnd.Next(10, width - 10), rnd.Next(10, height - 10)), th, p, s);
                 visitedV[i] = i == 0;
             }
 

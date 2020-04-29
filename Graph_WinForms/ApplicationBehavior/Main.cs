@@ -52,9 +52,13 @@ namespace Graph_WinForms
         /// </summary>
         private void GraphBuilder_SizeChanged(object sender, EventArgs e)
         {
-            Build.Location = new Point(Size.Width / 2 - Build.Size.Width / 2, Size.Height / 2 - Build.Size.Height);
+            Build.Location = new Point(Size.Width / 2 - Build.Size.Width / 2, Size.Height / 2 - Build.Size.Height - 50);
             RandomGraph.Location = new Point(Build.Location.X, Build.Location.Y + Build.Size.Height + 10);
             Open.Location = new Point(RandomGraph.Location.X, RandomGraph.Location.Y + RandomGraph.Size.Height + 10);
+            SquareLattice.Location = new Point(Open.Location.X, Open.Location.Y + Open.Size.Height + 10);
+            TriangleLattice.Location = new Point(Open.Location.X + Open.Size.Width - TriangleLattice.Size.Width,
+                Open.Location.Y + Open.Size.Height + 10);
+
             AppParameters.Size = new Size(AppParameters.Width, DrawingSurface.Height);
             AppParameters.Location = new Point(Size.Width - AppParameters.Size.Width - 30, AppParameters.Location.Y);
 
@@ -228,7 +232,21 @@ namespace Graph_WinForms
         {
             SquareLatticeForm square = new SquareLatticeForm(DrawingSurface.Width, DrawingSurface.Height);
             square.ShowDialog();
+            if(square.Digraph == null) return;
             Digraph = square.Digraph;
+            graphDrawing.DrawTheWholeGraph(Digraph);
+            DrawingSurface.Image = graphDrawing.Image;
+            UpdateDigraphInfo();
+            ChangeMainMenuState(false);
+            ChangeDrawingElementsState(true);
+        }
+
+        private void TriangleLattice_Click(object sender, EventArgs e)
+        {
+            TriangularLatticeForm triangle = new TriangularLatticeForm(DrawingSurface.Width, DrawingSurface.Height);
+            triangle.ShowDialog();
+            if (triangle.Digraph == null) return;
+            Digraph = triangle.Digraph;
             graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
             UpdateDigraphInfo();

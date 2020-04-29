@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.Build = new System.Windows.Forms.Button();
             this.Open = new System.Windows.Forms.Button();
             this.TopMenu = new System.Windows.Forms.MenuStrip();
@@ -124,9 +123,9 @@
             // 
             this.Build.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Build.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.Build.Location = new System.Drawing.Point(446, 351);
+            this.Build.Location = new System.Drawing.Point(426, 350);
             this.Build.Name = "Build";
-            this.Build.Size = new System.Drawing.Size(345, 62);
+            this.Build.Size = new System.Drawing.Size(400, 62);
             this.Build.TabIndex = 0;
             this.Build.Text = "Build a new graph";
             this.Build.UseVisualStyleBackColor = true;
@@ -136,10 +135,10 @@
             // 
             this.Open.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Open.Font = new System.Drawing.Font("Segoe UI", 15.75F);
-            this.Open.Location = new System.Drawing.Point(446, 488);
+            this.Open.Location = new System.Drawing.Point(426, 490);
             this.Open.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Open.Name = "Open";
-            this.Open.Size = new System.Drawing.Size(345, 62);
+            this.Open.Size = new System.Drawing.Size(400, 62);
             this.Open.TabIndex = 1;
             this.Open.Text = "Open graph";
             this.Open.UseVisualStyleBackColor = true;
@@ -160,7 +159,7 @@
             this.ResetToolStripMenuItem});
             this.TopMenu.Location = new System.Drawing.Point(0, 0);
             this.TopMenu.Name = "TopMenu";
-            this.TopMenu.Size = new System.Drawing.Size(1236, 33);
+            this.TopMenu.Size = new System.Drawing.Size(1236, 36);
             this.TopMenu.TabIndex = 4;
             this.TopMenu.Text = "menuStrip1";
             // 
@@ -172,7 +171,7 @@
             this.saveToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.FileToolStripMenuItem.Name = "FileToolStripMenuItem";
-            this.FileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
+            this.FileToolStripMenuItem.Size = new System.Drawing.Size(54, 32);
             this.FileToolStripMenuItem.Text = "File";
             // 
             // newProjectToolStripMenuItem
@@ -269,14 +268,14 @@
             // UserManualToolStripMenuItem
             // 
             this.UserManualToolStripMenuItem.Name = "UserManualToolStripMenuItem";
-            this.UserManualToolStripMenuItem.Size = new System.Drawing.Size(126, 29);
+            this.UserManualToolStripMenuItem.Size = new System.Drawing.Size(126, 32);
             this.UserManualToolStripMenuItem.Text = "User Manual";
             this.UserManualToolStripMenuItem.Click += new System.EventHandler(this.UserManualToolStripMenuItem_Click);
             // 
             // AboutToolStripMenuItem
             // 
             this.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem";
-            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(78, 29);
+            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(78, 32);
             this.AboutToolStripMenuItem.Text = "About";
             this.AboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
@@ -412,9 +411,9 @@
             // 
             this.RandomGraph.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RandomGraph.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.RandomGraph.Location = new System.Drawing.Point(446, 418);
+            this.RandomGraph.Location = new System.Drawing.Point(426, 418);
             this.RandomGraph.Name = "RandomGraph";
-            this.RandomGraph.Size = new System.Drawing.Size(345, 62);
+            this.RandomGraph.Size = new System.Drawing.Size(400, 62);
             this.RandomGraph.TabIndex = 10;
             this.RandomGraph.Text = "Create random";
             this.RandomGraph.UseVisualStyleBackColor = true;
@@ -919,14 +918,14 @@
             // 
             // SquareLattice
             // 
-            this.SquareLattice.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("SquareLattice.BackgroundImage")));
             this.SquareLattice.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.SquareLattice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SquareLattice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SquareLattice.Location = new System.Drawing.Point(446, 558);
+            this.SquareLattice.Location = new System.Drawing.Point(426, 560);
             this.SquareLattice.Name = "SquareLattice";
-            this.SquareLattice.Size = new System.Drawing.Size(168, 37);
+            this.SquareLattice.Size = new System.Drawing.Size(195, 37);
             this.SquareLattice.TabIndex = 34;
+            this.SquareLattice.Text = "Square Lattice";
             this.SquareLattice.UseVisualStyleBackColor = true;
             this.SquareLattice.Click += new System.EventHandler(this.SquareLattice_Click);
             // 
@@ -935,11 +934,13 @@
             this.TriangleLattice.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.TriangleLattice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.TriangleLattice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TriangleLattice.Location = new System.Drawing.Point(623, 558);
+            this.TriangleLattice.Location = new System.Drawing.Point(631, 560);
             this.TriangleLattice.Name = "TriangleLattice";
-            this.TriangleLattice.Size = new System.Drawing.Size(168, 37);
+            this.TriangleLattice.Size = new System.Drawing.Size(195, 37);
             this.TriangleLattice.TabIndex = 35;
+            this.TriangleLattice.Text = "Triangular Lattice";
             this.TriangleLattice.UseVisualStyleBackColor = true;
+            this.TriangleLattice.Click += new System.EventHandler(this.TriangleLattice_Click);
             // 
             // MainWindow
             // 
@@ -947,19 +948,19 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1236, 697);
+            this.Controls.Add(this.TimeTextBox);
             this.Controls.Add(this.TriangleLattice);
             this.Controls.Add(this.SquareLattice);
             this.Controls.Add(this.RadiusLabel);
             this.Controls.Add(this.RadiusTrackBar);
             this.Controls.Add(this.SandpilePanel);
-            this.Controls.Add(this.DrawingSurface);
-            this.Controls.Add(this.TimeTextBox);
             this.Controls.Add(this.AppParameters);
             this.Controls.Add(this.RandomGraph);
             this.Controls.Add(this.Tools);
             this.Controls.Add(this.Open);
             this.Controls.Add(this.Build);
             this.Controls.Add(this.TopMenu);
+            this.Controls.Add(this.DrawingSurface);
             this.KeyPreview = true;
             this.MainMenuStrip = this.TopMenu;
             this.MinimumSize = new System.Drawing.Size(1258, 753);

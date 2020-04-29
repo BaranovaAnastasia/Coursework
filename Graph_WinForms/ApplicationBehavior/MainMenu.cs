@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using ApplicationClasses;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -88,6 +89,8 @@ namespace Graph_WinForms
             ResetToolStripMenuItem.Visible = state;
             RadiusLabel.Visible = state;
             RadiusTrackBar.Visible = state;
+            if(!state) SandpilePanel.Visible = state;
+            SandpilePanel.Size = new Size(358, 32);
         }
 
         /// <summary>
@@ -98,6 +101,8 @@ namespace Graph_WinForms
             Build.Visible = state;
             RandomGraph.Visible = state;
             Open.Visible = state;
+            SquareLattice.Visible = state;
+            TriangleLattice.Visible = state;
         }
 
         /// <summary>

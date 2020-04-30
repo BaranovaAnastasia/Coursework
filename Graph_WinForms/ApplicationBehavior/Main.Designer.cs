@@ -401,6 +401,7 @@ namespace Graph_WinForms
             // 
             // EdgeButton
             // 
+            this.EdgeButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("EdgeButton.BackgroundImage")));
             this.EdgeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.EdgeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EdgeButton.Font = new System.Drawing.Font("Segoe UI", 8F);

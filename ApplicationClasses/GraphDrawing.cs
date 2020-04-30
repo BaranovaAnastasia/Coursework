@@ -41,6 +41,7 @@ namespace ApplicationClasses
         /// Font for vertices titles
         /// </summary>
         private Font font = new Font("Segoe UI", 5);
+        private Font sandpileFont = new Font("Segoe UI", 5);
 
         /// <summary>
         /// DarkSlateGray Brush for writing titles
@@ -172,7 +173,7 @@ namespace ApplicationClasses
             for (int i = 0; i < palette.Length; i++)
             {
                 drawing.DrawLine(new Pen(palette[i], 4f), Image.Width - 50, i * 10 + 40, Image.Width - 10, i * 10 + 40);
-                drawing.DrawString(i.ToString(), font, brush, Image.Width - 10, i * 10 + 35);
+                drawing.DrawString(i.ToString(), sandpileFont, brush, Image.Width - 10, i * 10 + 35);
             }
             digraph.Arcs.ForEach(arc =>
                     DrawArc(digraph.Vertices[arc.StartVertex], digraph.Vertices[arc.EndVertex], arc));
@@ -181,8 +182,11 @@ namespace ApplicationClasses
                 DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1,
                     new Pen(digraph.State[i] >= incidenceList[i].Count || digraph.Stock.Contains(i)
                         ? Color.Black
-                        : palette[digraph.State[i]], 2.5f));
-                drawing.DrawString(digraph.State[i].ToString(), font, brush, digraph.Vertices[i].X + 15, digraph.Vertices[i].Y - 15);
+                        : palette[digraph.State[i]], 4f));
+                if(digraph.Stock.Contains(i)) 
+                    drawing.FillEllipse(Brushes.Black, (digraph.Vertices[i].X - R), (digraph.Vertices[i].Y - R), 2 * R, 2 * R);
+                drawing.DrawString(digraph.State[i].ToString(), sandpileFont, brush, 
+                    digraph.Vertices[i].X + R, digraph.Vertices[i].Y - R - 5);
             }
         }
 
@@ -191,10 +195,14 @@ namespace ApplicationClasses
         public void DrawVerticesSandpile(Digraph digraph, List<Arc>[] incidenceList, Color[] palette)
         {
             for (int i = 0; i < digraph.State.Count; i++)
+            {
                 DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1,
                     new Pen(digraph.State[i] >= incidenceList[i].Count || digraph.Stock.Contains(i)
                         ? Color.Black
-                        : palette[digraph.State[i]], 2.5f));
+                        : palette[digraph.State[i]], 4f));
+                if (digraph.Stock.Contains(i))
+                    drawing.FillEllipse(Brushes.Black, (digraph.Vertices[i].X - R), (digraph.Vertices[i].Y - R), 2 * R, 2 * R);
+            }
         }
 
         private static Color[] GetGradientColors(Color start, Color end, int steps)

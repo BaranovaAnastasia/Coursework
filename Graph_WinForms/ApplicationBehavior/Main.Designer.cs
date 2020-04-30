@@ -1,4 +1,6 @@
-﻿namespace Graph_WinForms
+﻿using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
+namespace Graph_WinForms
 {
     partial class MainWindow
     {
@@ -28,6 +30,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.Build = new System.Windows.Forms.Button();
             this.Open = new System.Windows.Forms.Button();
             this.TopMenu = new System.Windows.Forms.MenuStrip();
@@ -52,13 +56,12 @@
             this.ResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Tools = new System.Windows.Forms.Panel();
             this.ClearButton = new System.Windows.Forms.Button();
-            this.CoursorButton = new System.Windows.Forms.Button();
+            this.CursorButton = new System.Windows.Forms.Button();
             this.DeleteButton = new System.Windows.Forms.Button();
             this.VertexButton = new System.Windows.Forms.Button();
             this.EdgeButton = new System.Windows.Forms.Button();
             this.OkLength = new System.Windows.Forms.Button();
             this.RandomGraph = new System.Windows.Forms.Button();
-            this.DrawingSurface = new System.Windows.Forms.PictureBox();
             this.GridThresholds = new System.Windows.Forms.DataGridView();
             this.ThresholdsLabel = new System.Windows.Forms.Label();
             this.AppParameters = new System.Windows.Forms.TabControl();
@@ -97,9 +100,14 @@
             this.RadiusLabel = new System.Windows.Forms.Label();
             this.SquareLattice = new System.Windows.Forms.Button();
             this.TriangleLattice = new System.Windows.Forms.Button();
+            this.DrawingSurface = new System.Windows.Forms.PictureBox();
+            this.CursorToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.VertexToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.ArcToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.EraserToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.ClearAllToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.TopMenu.SuspendLayout();
             this.Tools.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DrawingSurface)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridThresholds)).BeginInit();
             this.AppParameters.SuspendLayout();
             this.AdjacencyPage.SuspendLayout();
@@ -117,6 +125,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.SpeedNumeric)).BeginInit();
             this.SandpilePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RadiusTrackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DrawingSurface)).BeginInit();
             this.SuspendLayout();
             // 
             // Build
@@ -159,7 +168,7 @@
             this.ResetToolStripMenuItem});
             this.TopMenu.Location = new System.Drawing.Point(0, 0);
             this.TopMenu.Name = "TopMenu";
-            this.TopMenu.Size = new System.Drawing.Size(1236, 36);
+            this.TopMenu.Size = new System.Drawing.Size(1236, 33);
             this.TopMenu.TabIndex = 4;
             this.TopMenu.Text = "menuStrip1";
             // 
@@ -171,7 +180,7 @@
             this.saveToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.FileToolStripMenuItem.Name = "FileToolStripMenuItem";
-            this.FileToolStripMenuItem.Size = new System.Drawing.Size(54, 32);
+            this.FileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
             this.FileToolStripMenuItem.Text = "File";
             // 
             // newProjectToolStripMenuItem
@@ -268,14 +277,14 @@
             // UserManualToolStripMenuItem
             // 
             this.UserManualToolStripMenuItem.Name = "UserManualToolStripMenuItem";
-            this.UserManualToolStripMenuItem.Size = new System.Drawing.Size(126, 32);
+            this.UserManualToolStripMenuItem.Size = new System.Drawing.Size(126, 29);
             this.UserManualToolStripMenuItem.Text = "User Manual";
             this.UserManualToolStripMenuItem.Click += new System.EventHandler(this.UserManualToolStripMenuItem_Click);
             // 
             // AboutToolStripMenuItem
             // 
             this.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem";
-            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(78, 32);
+            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(78, 29);
             this.AboutToolStripMenuItem.Text = "About";
             this.AboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
@@ -315,7 +324,7 @@
             // 
             this.Tools.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Tools.Controls.Add(this.ClearButton);
-            this.Tools.Controls.Add(this.CoursorButton);
+            this.Tools.Controls.Add(this.CursorButton);
             this.Tools.Controls.Add(this.DeleteButton);
             this.Tools.Controls.Add(this.VertexButton);
             this.Tools.Controls.Add(this.EdgeButton);
@@ -328,6 +337,8 @@
             // 
             // ClearButton
             // 
+            this.ClearButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ClearButton.BackgroundImage")));
+            this.ClearButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ClearButton.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ClearButton.Location = new System.Drawing.Point(10, 350);
@@ -335,26 +346,31 @@
             this.ClearButton.Name = "ClearButton";
             this.ClearButton.Size = new System.Drawing.Size(75, 75);
             this.ClearButton.TabIndex = 11;
-            this.ClearButton.Text = "Clear All";
+            this.ClearAllToolTip.SetToolTip(this.ClearButton, "Сlick to delete the digraph");
             this.ClearButton.UseVisualStyleBackColor = true;
             this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
             // 
-            // CoursorButton
+            // CursorButton
             // 
-            this.CoursorButton.Enabled = false;
-            this.CoursorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CoursorButton.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CoursorButton.Location = new System.Drawing.Point(10, 10);
-            this.CoursorButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.CoursorButton.Name = "CoursorButton";
-            this.CoursorButton.Size = new System.Drawing.Size(75, 75);
-            this.CoursorButton.TabIndex = 8;
-            this.CoursorButton.Text = "Cursor";
-            this.CoursorButton.UseVisualStyleBackColor = true;
-            this.CoursorButton.Click += new System.EventHandler(this.CursorButton_Click);
+            this.CursorButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("CursorButton.BackgroundImage")));
+            this.CursorButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.CursorButton.Enabled = false;
+            this.CursorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CursorButton.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CursorButton.Location = new System.Drawing.Point(15, 15);
+            this.CursorButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.CursorButton.Name = "CursorButton";
+            this.CursorButton.Size = new System.Drawing.Size(65, 65);
+            this.CursorButton.TabIndex = 8;
+            this.CursorToolTip.SetToolTip(this.CursorButton, "Move vertices using cursor");
+            this.CursorButton.UseVisualStyleBackColor = true;
+            this.CursorButton.EnabledChanged += new System.EventHandler(this.CursorButton_EnabledChanged);
+            this.CursorButton.Click += new System.EventHandler(this.CursorButton_Click);
             // 
             // DeleteButton
             // 
+            this.DeleteButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("DeleteButton.BackgroundImage")));
+            this.DeleteButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.DeleteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeleteButton.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.DeleteButton.Location = new System.Drawing.Point(10, 265);
@@ -362,12 +378,15 @@
             this.DeleteButton.Name = "DeleteButton";
             this.DeleteButton.Size = new System.Drawing.Size(75, 75);
             this.DeleteButton.TabIndex = 10;
-            this.DeleteButton.Text = "Delete";
+            this.EraserToolTip.SetToolTip(this.DeleteButton, "Double click on an arc or\nvertex to remove it");
             this.DeleteButton.UseVisualStyleBackColor = true;
+            this.DeleteButton.EnabledChanged += new System.EventHandler(this.DeleteButton_EnabledChanged);
             this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
             // 
             // VertexButton
             // 
+            this.VertexButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("VertexButton.BackgroundImage")));
+            this.VertexButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.VertexButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.VertexButton.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.VertexButton.Location = new System.Drawing.Point(10, 95);
@@ -375,12 +394,14 @@
             this.VertexButton.Name = "VertexButton";
             this.VertexButton.Size = new System.Drawing.Size(75, 75);
             this.VertexButton.TabIndex = 8;
-            this.VertexButton.Text = "Vertex";
+            this.VertexToolTip.SetToolTip(this.VertexButton, "Click on the drawing surface\nto add a new vertex");
             this.VertexButton.UseVisualStyleBackColor = true;
+            this.VertexButton.EnabledChanged += new System.EventHandler(this.VertexButton_EnabledChanged);
             this.VertexButton.Click += new System.EventHandler(this.VertexButton_Click);
             // 
             // EdgeButton
             // 
+            this.EdgeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.EdgeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EdgeButton.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.EdgeButton.Location = new System.Drawing.Point(10, 180);
@@ -388,8 +409,9 @@
             this.EdgeButton.Name = "EdgeButton";
             this.EdgeButton.Size = new System.Drawing.Size(75, 75);
             this.EdgeButton.TabIndex = 9;
-            this.EdgeButton.Text = "Arc";
+            this.ArcToolTip.SetToolTip(this.EdgeButton, "Сlick on the starting vertex\nand then on the ending one\nto add a new arc");
             this.EdgeButton.UseVisualStyleBackColor = true;
+            this.EdgeButton.EnabledChanged += new System.EventHandler(this.EdgeButton_EnabledChanged);
             this.EdgeButton.Click += new System.EventHandler(this.EdgeButton_Click);
             // 
             // OkLength
@@ -418,22 +440,6 @@
             this.RandomGraph.Text = "Create random";
             this.RandomGraph.UseVisualStyleBackColor = true;
             this.RandomGraph.Click += new System.EventHandler(this.RandomGraph_Click);
-            // 
-            // DrawingSurface
-            // 
-            this.DrawingSurface.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DrawingSurface.Location = new System.Drawing.Point(115, 50);
-            this.DrawingSurface.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.DrawingSurface.Name = "DrawingSurface";
-            this.DrawingSurface.Size = new System.Drawing.Size(780, 628);
-            this.DrawingSurface.TabIndex = 11;
-            this.DrawingSurface.TabStop = false;
-            this.DrawingSurface.Visible = false;
-            this.DrawingSurface.MouseClick += new System.Windows.Forms.MouseEventHandler(this.DrawingSurface_MouseClick);
-            this.DrawingSurface.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.DrawingSurface_MouseDoubleClick);
-            this.DrawingSurface.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawingSurface_MouseDown);
-            this.DrawingSurface.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DrawingSurface_MouseMove);
-            this.DrawingSurface.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawingSurface_MouseUp);
             // 
             // GridThresholds
             // 
@@ -942,6 +948,59 @@
             this.TriangleLattice.UseVisualStyleBackColor = true;
             this.TriangleLattice.Click += new System.EventHandler(this.TriangleLattice_Click);
             // 
+            // DrawingSurface
+            // 
+            this.DrawingSurface.BackColor = System.Drawing.Color.White;
+            this.DrawingSurface.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.DrawingSurface.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.DrawingSurface.Location = new System.Drawing.Point(115, 50);
+            this.DrawingSurface.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.DrawingSurface.Name = "DrawingSurface";
+            this.DrawingSurface.Size = new System.Drawing.Size(780, 628);
+            this.DrawingSurface.TabIndex = 11;
+            this.DrawingSurface.TabStop = false;
+            this.DrawingSurface.Visible = false;
+            this.DrawingSurface.MouseClick += new System.Windows.Forms.MouseEventHandler(this.DrawingSurface_MouseClick);
+            this.DrawingSurface.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.DrawingSurface_MouseDoubleClick);
+            this.DrawingSurface.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DrawingSurface_MouseDown);
+            this.DrawingSurface.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DrawingSurface_MouseMove);
+            this.DrawingSurface.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawingSurface_MouseUp);
+            // 
+            // CursorToolTip
+            // 
+            this.CursorToolTip.AutoPopDelay = 5000;
+            this.CursorToolTip.InitialDelay = 300;
+            this.CursorToolTip.ReshowDelay = 100;
+            this.CursorToolTip.ToolTipTitle = "Cursor";
+            // 
+            // VertexToolTip
+            // 
+            this.VertexToolTip.AutoPopDelay = 5000;
+            this.VertexToolTip.InitialDelay = 300;
+            this.VertexToolTip.ReshowDelay = 100;
+            this.VertexToolTip.ToolTipTitle = "Draw Vertex";
+            // 
+            // ArcToolTip
+            // 
+            this.ArcToolTip.AutoPopDelay = 5000;
+            this.ArcToolTip.InitialDelay = 300;
+            this.ArcToolTip.ReshowDelay = 100;
+            this.ArcToolTip.ToolTipTitle = "Draw Arc";
+            // 
+            // EraserToolTip
+            // 
+            this.EraserToolTip.AutoPopDelay = 5000;
+            this.EraserToolTip.InitialDelay = 300;
+            this.EraserToolTip.ReshowDelay = 100;
+            this.EraserToolTip.ToolTipTitle = "Eraser";
+            // 
+            // ClearAllToolTip
+            // 
+            this.ClearAllToolTip.AutoPopDelay = 5000;
+            this.ClearAllToolTip.InitialDelay = 300;
+            this.ClearAllToolTip.ReshowDelay = 100;
+            this.ClearAllToolTip.ToolTipTitle = "Delete Digraph";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -969,10 +1028,10 @@
             this.Text = "Points Movement Modeling Application";
             this.SizeChanged += new System.EventHandler(this.GraphBuilder_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GraphBuilder_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyUp);
             this.TopMenu.ResumeLayout(false);
             this.TopMenu.PerformLayout();
             this.Tools.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.DrawingSurface)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridThresholds)).EndInit();
             this.AppParameters.ResumeLayout(false);
             this.AdjacencyPage.ResumeLayout(false);
@@ -997,6 +1056,7 @@
             this.SandpilePanel.ResumeLayout(false);
             this.SandpilePanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RadiusTrackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DrawingSurface)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1009,12 +1069,11 @@
         private System.Windows.Forms.MenuStrip TopMenu;
         private System.Windows.Forms.Panel Tools;
         private System.Windows.Forms.Button ClearButton;
-        private System.Windows.Forms.Button CoursorButton;
+        private System.Windows.Forms.Button CursorButton;
         private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.Button VertexButton;
         private System.Windows.Forms.Button EdgeButton;
         private System.Windows.Forms.Button RandomGraph;
-        private System.Windows.Forms.PictureBox DrawingSurface;
         private System.Windows.Forms.Button OkLength;
         private System.Windows.Forms.DataGridView GridThresholds;
         private System.Windows.Forms.Label ThresholdsLabel;
@@ -1073,6 +1132,12 @@
         private System.Windows.Forms.Label RadiusLabel;
         private System.Windows.Forms.Button SquareLattice;
         private System.Windows.Forms.Button TriangleLattice;
+        private System.Windows.Forms.PictureBox DrawingSurface;
+        private System.Windows.Forms.ToolTip CursorToolTip;
+        private System.Windows.Forms.ToolTip VertexToolTip;
+        private System.Windows.Forms.ToolTip ArcToolTip;
+        private System.Windows.Forms.ToolTip EraserToolTip;
+        private System.Windows.Forms.ToolTip ClearAllToolTip;
     }
 }
 

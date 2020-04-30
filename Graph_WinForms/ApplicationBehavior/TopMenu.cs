@@ -266,7 +266,7 @@ namespace Graph_WinForms
             movement = null;
             foreach (var control in Tools.Controls)
                 (control as Button).Enabled = true;
-            CoursorButton.Enabled = false;
+            CursorButton.Enabled = false;
             TimeTextBox.Visible = false;
             TimeTextBox.Text = " Elapsed time, s:  0";
             SandpilePanel.Visible = false;

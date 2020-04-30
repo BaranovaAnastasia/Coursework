@@ -42,7 +42,8 @@ namespace Graph_WinForms
 
             graphDrawing.RadiusChanged += (object sender, EventArgs e) =>
             {
-                graphDrawing.DrawTheWholeGraph(Digraph);
+                if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
+                else graphDrawing.DrawTheWholeGraphSandpile(Digraph);
                 DrawingSurface.Image = graphDrawing.Image;
             };
         }
@@ -71,7 +72,8 @@ namespace Graph_WinForms
             if (graphDrawing != null)
             {
                 graphDrawing.Size = DrawingSurface.Size;
-                graphDrawing.DrawTheWholeGraph(Digraph);
+                if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
+                else graphDrawing.DrawTheWholeGraphSandpile(Digraph);
                 DrawingSurface.Image = graphDrawing.Image;
             }
             TimeTextBox.Location =
@@ -82,21 +84,32 @@ namespace Graph_WinForms
         private void GraphBuilder_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Modifiers != Keys.Control) return;
+            RadiusTrackBar.Enabled = false;
+            AppParameters.Enabled = false;
             if (e.KeyCode == Keys.Right)
                 for (int i = 0; i < Digraph.Vertices.Count; i++)
-                    Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X - 10, Digraph.Vertices[i].Y);
+                    Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X + 10, Digraph.Vertices[i].Y);
             if (e.KeyCode == Keys.Left)
                 for (int i = 0; i < Digraph.Vertices.Count; i++)
-                    Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X + 10, Digraph.Vertices[i].Y);
+                    Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X - 10, Digraph.Vertices[i].Y);
             if (e.KeyCode == Keys.Up)
                 for (int i = 0; i < Digraph.Vertices.Count; i++)
-                    Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X, Digraph.Vertices[i].Y + 10);
+                    Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X, Digraph.Vertices[i].Y - 10);
             if (e.KeyCode == Keys.Down)
                 for (int i = 0; i < Digraph.Vertices.Count; i++)
-                    Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X, Digraph.Vertices[i].Y - 10);
+                    Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X, Digraph.Vertices[i].Y + 10);
 
-            graphDrawing.DrawTheWholeGraph(Digraph);
+            if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
+            else graphDrawing.DrawTheWholeGraphSandpile(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
+        }
+
+        private void MainWindow_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.ControlKey)
+                return;
+            RadiusTrackBar.Enabled = true;
+            AppParameters.Enabled = true;
         }
 
         private void BasicTypeCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -232,7 +245,7 @@ namespace Graph_WinForms
         {
             SquareLatticeForm square = new SquareLatticeForm(DrawingSurface.Width, DrawingSurface.Height);
             square.ShowDialog();
-            if(square.Digraph == null) return;
+            if (square.Digraph == null) return;
             Digraph = square.Digraph;
             graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
@@ -252,6 +265,70 @@ namespace Graph_WinForms
             UpdateDigraphInfo();
             ChangeMainMenuState(false);
             ChangeDrawingElementsState(true);
+        }
+
+        private void EraserToolTip_Draw(object sender, DrawToolTipEventArgs e)
+        {
+            using (var boldFont = new Font(e.Font, FontStyle.Bold))
+            {
+                var headerText = "Eraser";
+                var valueText = "Double-click on the edge or vertex to remove it";
+
+                var headerTextSize = TextRenderer.MeasureText(headerText, e.Font);
+
+                TextRenderer.DrawText(e.Graphics, headerText, e.Font, e.Bounds.Location, Color.Black);
+
+                var valueTextPosition = new Point(e.Bounds.X + headerTextSize.Width, e.Bounds.Y);
+                TextRenderer.DrawText(e.Graphics, valueText, boldFont, valueTextPosition, Color.Black);
+            }
+        }
+
+        private void CursorButton_EnabledChanged(object sender, EventArgs e)
+        {
+            if (CursorButton.Enabled)
+            {
+                CursorButton.Size = new Size(75, 75);
+                CursorButton.Location = new Point(CursorButton.Location.X - 5, CursorButton.Location.Y - 5);
+                return;
+            }
+            CursorButton.Size = new Size(65, 65);
+            CursorButton.Location = new Point(CursorButton.Location.X + 5, CursorButton.Location.Y + 5);
+        }
+
+        private void VertexButton_EnabledChanged(object sender, EventArgs e)
+        {
+            if (VertexButton.Enabled)
+            {
+                VertexButton.Size = new Size(75, 75);
+                VertexButton.Location = new Point(VertexButton.Location.X - 5, VertexButton.Location.Y - 5);
+                return;
+            }
+            VertexButton.Size = new Size(65, 65);
+            VertexButton.Location = new Point(VertexButton.Location.X + 5, VertexButton.Location.Y + 5);
+        }
+
+        private void EdgeButton_EnabledChanged(object sender, EventArgs e)
+        {
+            if (EdgeButton.Enabled)
+            {
+                EdgeButton.Size = new Size(75, 75);
+                EdgeButton.Location = new Point(EdgeButton.Location.X - 5, EdgeButton.Location.Y - 5);
+                return;
+            }
+            EdgeButton.Size = new Size(65, 65);
+            EdgeButton.Location = new Point(EdgeButton.Location.X + 5, EdgeButton.Location.Y + 5);
+        }
+
+        private void DeleteButton_EnabledChanged(object sender, EventArgs e)
+        {
+            if (DeleteButton.Enabled)
+            {
+                DeleteButton.Size = new Size(75, 75);
+                DeleteButton.Location = new Point(DeleteButton.Location.X - 5, DeleteButton.Location.Y - 5);
+                return;
+            }
+            DeleteButton.Size = new Size(65, 65);
+            DeleteButton.Location = new Point(DeleteButton.Location.X + 5, DeleteButton.Location.Y + 5);
         }
     }
 }

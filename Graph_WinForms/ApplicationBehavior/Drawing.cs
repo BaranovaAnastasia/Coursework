@@ -143,7 +143,7 @@ namespace Graph_WinForms
         /// </summary>
         private void DrawingSurface_MouseDown(object sender, MouseEventArgs e)
         {
-            if (CoursorButton.Enabled || isOnMovement) return;
+            if (CursorButton.Enabled || isOnMovement) return;
             IsPressed = true;
 
             for (int i = 0; i < Digraph.Vertices.Count; i++)
@@ -162,7 +162,7 @@ namespace Graph_WinForms
         /// </summary>
         private void DrawingSurface_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isOnMovement || !IsPressed || CoursorButton.Enabled || MovingVertexIndex == -1) return;
+            if (isOnMovement || !IsPressed || CursorButton.Enabled || MovingVertexIndex == -1) return;
             Digraph.Vertices[MovingVertexIndex] = new Vertex(e.X, e.Y);
             graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
@@ -173,7 +173,7 @@ namespace Graph_WinForms
         /// </summary>
         private void DrawingSurface_MouseUp(object sender, MouseEventArgs e)
         {
-            if (isOnMovement || !IsPressed || CoursorButton.Enabled) return;
+            if (isOnMovement || !IsPressed || CursorButton.Enabled) return;
 
             bool highlight = (DateTime.Now - Ticks).Ticks < 2250000 &&
                 Math.Pow(e.X - MovingVetrex.X, 2) + Math.Pow(e.Y - MovingVetrex.Y, 2) <= graphDrawing.R * graphDrawing.R;

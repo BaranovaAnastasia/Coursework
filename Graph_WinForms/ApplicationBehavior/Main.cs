@@ -245,8 +245,8 @@ namespace Graph_WinForms
         {
             SquareLatticeForm square = new SquareLatticeForm(DrawingSurface.Width, DrawingSurface.Height);
             square.ShowDialog();
-            if (square.Digraph == null) return;
-            Digraph = square.Digraph;
+            if (square.SquareLatticeDigraph == null) return;
+            Digraph = square.SquareLatticeDigraph;
             graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
             UpdateDigraphInfo();
@@ -258,8 +258,8 @@ namespace Graph_WinForms
         {
             TriangularLatticeForm triangle = new TriangularLatticeForm(DrawingSurface.Width, DrawingSurface.Height);
             triangle.ShowDialog();
-            if (triangle.Digraph == null) return;
-            Digraph = triangle.Digraph;
+            if (triangle.TriangularLatticeDigraph == null) return;
+            Digraph = triangle.TriangularLatticeDigraph;
             graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
             UpdateDigraphInfo();

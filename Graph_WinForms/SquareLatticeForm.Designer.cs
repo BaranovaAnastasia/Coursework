@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SquareLatticeForm));
             this.Yvalue = new System.Windows.Forms.NumericUpDown();
             this.SizeLabel = new System.Windows.Forms.Label();
             this.OK = new System.Windows.Forms.Button();
@@ -69,12 +70,12 @@
             this.SizeLabel.AutoSize = true;
             this.SizeLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SizeLabel.Font = new System.Drawing.Font("Segoe UI Emoji", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SizeLabel.Location = new System.Drawing.Point(20, 9);
+            this.SizeLabel.Location = new System.Drawing.Point(69, 9);
             this.SizeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.SizeLabel.Name = "SizeLabel";
-            this.SizeLabel.Size = new System.Drawing.Size(357, 37);
+            this.SizeLabel.Size = new System.Drawing.Size(266, 37);
             this.SizeLabel.TabIndex = 1;
-            this.SizeLabel.Text = "Enter the square lattice size";
+            this.SizeLabel.Text = "Enter the lattice size";
             // 
             // OK
             // 
@@ -100,6 +101,7 @@
             this.Cancel.TabIndex = 4;
             this.Cancel.Text = "Cancel";
             this.Cancel.UseVisualStyleBackColor = true;
+            this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
             // 
             // label1
             // 
@@ -160,6 +162,7 @@
             this.Controls.Add(this.SizeLabel);
             this.Controls.Add(this.Yvalue);
             this.Cursor = System.Windows.Forms.Cursors.Default;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximumSize = new System.Drawing.Size(420, 247);
             this.MinimumSize = new System.Drawing.Size(420, 247);

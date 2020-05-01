@@ -48,11 +48,12 @@ namespace Graph_WinForms
         private void OkWeight_Click(object sender, EventArgs e)
         {
             ArcLength.Text = ArcLength.Text.Trim(' ');
-            if (!ApplicationMethods.IsANumber(ArcLength.Text, out double length) || length <= 0)
+            /*if (!ApplicationMethods.IsANumber(ArcLength.Text, out double length) || length <= 0)
             {
                 MessageBox.Show("Invalid number", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
-            }
+            }*/
+            double length = new MathParserTK.MathParser().Parse(ArcLength.Text);
 
             if (string.IsNullOrEmpty(ArcName.Text))
             {

@@ -84,8 +84,6 @@ namespace Graph_WinForms
         private void GraphBuilder_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Modifiers != Keys.Control) return;
-            RadiusTrackBar.Enabled = false;
-            AppParameters.Enabled = false;
             if (e.KeyCode == Keys.Right)
                 for (int i = 0; i < Digraph.Vertices.Count; i++)
                     Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X + 10, Digraph.Vertices[i].Y);
@@ -104,25 +102,12 @@ namespace Graph_WinForms
             DrawingSurface.Image = graphDrawing.Image;
         }
 
-        private void MainWindow_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode != Keys.ControlKey)
-                return;
-            RadiusTrackBar.Enabled = true;
-            AppParameters.Enabled = true;
-        }
-
-        private void BasicTypeCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
+        private void BasicTypeCheckBox_CheckedChanged(object sender, EventArgs e) =>
             SandpileTypeCheckBox.Checked = !BasicTypeCheckBox.Checked;
-            if (SandpileTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraphSandpile(Digraph);
-            else graphDrawing.DrawTheWholeGraph(Digraph);
-            DrawingSurface.Image = graphDrawing.Image;
-        }
 
         private void SandpileTypeCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            BasicTypeCheckBox.Checked = !SandpileTypeCheckBox.Checked; DrawingSurface.Image = graphDrawing.Image;
+            BasicTypeCheckBox.Checked = !SandpileTypeCheckBox.Checked;
             if (SandpileTypeCheckBox.Checked) ChartCheckBox_CheckedChanged(sender, e);
             else if (ChartCheckBox.Checked)
             {
@@ -146,10 +131,6 @@ namespace Graph_WinForms
             }*/
         }
 
-        private void AppParameters_MouseLeave(object sender, EventArgs e)
-        {
-            Tools.Focus();
-        }
         private static readonly Random rnd = new Random();
         private void StockLabel_Click(object sender, EventArgs e)
         {
@@ -329,6 +310,12 @@ namespace Graph_WinForms
             }
             DeleteButton.Size = new Size(65, 65);
             DeleteButton.Location = new Point(DeleteButton.Location.X + 5, DeleteButton.Location.Y + 5);
+        }
+
+        private void Movement_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.Modifiers == Keys.Control)
+                Tools.Focus();
         }
     }
 }

@@ -487,7 +487,7 @@ namespace Graph_WinForms
             this.AppParameters.Size = new System.Drawing.Size(318, 628);
             this.AppParameters.TabIndex = 23;
             this.AppParameters.Visible = false;
-            this.AppParameters.MouseLeave += new System.EventHandler(this.AppParameters_MouseLeave);
+            this.AppParameters.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Movement_PreviewKeyDown);
             // 
             // AdjacencyPage
             // 
@@ -717,6 +717,8 @@ namespace Graph_WinForms
             // SandpileChartType1
             // 
             this.SandpileChartType1.AutoSize = true;
+            this.SandpileChartType1.Checked = true;
+            this.SandpileChartType1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.SandpileChartType1.Location = new System.Drawing.Point(40, 246);
             this.SandpileChartType1.Name = "SandpileChartType1";
             this.SandpileChartType1.Size = new System.Drawing.Size(226, 32);
@@ -911,6 +913,7 @@ namespace Graph_WinForms
             this.RadiusTrackBar.Value = 8;
             this.RadiusTrackBar.Visible = false;
             this.RadiusTrackBar.ValueChanged += new System.EventHandler(this.RadiusTrackBar_ValueChanged);
+            this.RadiusTrackBar.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Movement_PreviewKeyDown);
             // 
             // RadiusLabel
             // 
@@ -1029,7 +1032,6 @@ namespace Graph_WinForms
             this.Text = "Points Movement Modeling Application";
             this.SizeChanged += new System.EventHandler(this.GraphBuilder_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GraphBuilder_KeyDown);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyUp);
             this.TopMenu.ResumeLayout(false);
             this.TopMenu.PerformLayout();
             this.Tools.ResumeLayout(false);

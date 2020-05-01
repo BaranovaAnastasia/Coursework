@@ -71,6 +71,7 @@ namespace ApplicationClasses
             vertices.RemoveAt(index);
             thresholds.RemoveAt(index);
             refractoryPeriods.RemoveAt(index);
+            state.RemoveAt(index);
             timeTillTheEndOfRefractoryPeriod.RemoveAt(index);
         }
 

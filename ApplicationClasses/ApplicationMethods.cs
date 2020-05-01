@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.IO;
 using System.Drawing;
+using System.Data;
+using OfficeOpenXml.FormulaParsing.ExcelUtilities;
 
 namespace ApplicationClasses
 {
@@ -131,6 +133,11 @@ namespace ApplicationClasses
         /// </summary>
         public static bool IsANumber(string numStr, out double num)
         {
+            //((4 - 2) ^ 2 + 2) ^ 2 - (4 + 4) - 3
+            string test_s_expression = "5 + sin(0.1 * 8) - cos(0.5 - (3/4))";
+            ExpressionEvaluator EE = new ExpressionEvaluator();
+            return EE.TryConvertToDouble(numStr, out num);
+
             if (double.TryParse(numStr, out num)) return true;
             // Checking if it's a math constant
             if (numStr == "pi" || numStr == "Pi" || numStr == "PI")
@@ -143,27 +150,28 @@ namespace ApplicationClasses
                 num = Math.E;
                 return true;
             }
-            // Checking if it's a root
-            if (numStr.Length >= 7 && (numStr.Substring(0, 4) == "sqrt" || numStr.Substring(0, 4) == "Sqrt") &&
-                numStr[4] == '(' && numStr[numStr.Length - 1] == ')' &&
-                IsANumber(numStr.Substring(5, numStr.Length - 6), out double insideNum))
+            double insideNum, insideNum1;
+
+            if (numStr.Contains("(") && numStr.Contains(")"))
             {
-                num = Math.Sqrt(insideNum);
-                return true;
-            }
-            // Multiplication
-            if (numStr.Contains("*") && IsANumber(numStr.Substring(numStr.IndexOf('*') + 1), out insideNum) &&
-                IsANumber(numStr.Substring(0, numStr.IndexOf('*')), out double insideNum1))
-            {
-                num = insideNum * insideNum1;
-                return true;
-            }
-            // Division
-            if (numStr.Contains("/") && IsANumber(numStr.Substring(numStr.IndexOf('/') + 1), out insideNum) &&
-                IsANumber(numStr.Substring(0, numStr.IndexOf('/')), out insideNum1))
-            {
-                num = insideNum1 / insideNum;
-                return true;
+                int index = numStr.LastIndexOf(")");
+                string insideStr = numStr.Substring(numStr.IndexOf('(') + 1, index - numStr.IndexOf('(') - 1);
+                while (insideStr.Contains("(") && insideStr.Contains(")")
+                    && insideStr.LastIndexOf(")") < insideStr.LastIndexOf("("))
+                {
+                    index = insideStr.LastIndexOf(")") + numStr.IndexOf('(') + 1;
+                    insideStr = numStr.Substring(numStr.IndexOf('(') + 1, index - numStr.IndexOf('(') - 1);
+                    int k = 0;
+                }
+
+                if (IsANumber(insideStr, out insideNum))
+                {
+                    int len = index - numStr.IndexOf("(") + 1;
+                    int strt = numStr.IndexOf("(");
+                    numStr = numStr.Replace(numStr.Substring(strt, len), insideNum.ToString());
+                    if (IsANumber(numStr, out num))
+                        return true;
+                }
             }
             // Addition
             if (numStr.Contains("+") && IsANumber(numStr.Substring(numStr.IndexOf('+') + 1), out insideNum) &&
@@ -176,7 +184,29 @@ namespace ApplicationClasses
             if (numStr.Contains("-") && IsANumber(numStr.Substring(numStr.IndexOf('-') + 1), out insideNum) &&
                 IsANumber(numStr.Substring(0, numStr.IndexOf('-')), out insideNum1))
             {
-                num = insideNum - insideNum1;
+                num = insideNum1 - insideNum;
+                return true;
+            }
+            // Division
+            if (numStr.Contains("/") && IsANumber(numStr.Substring(numStr.IndexOf('/') + 1), out insideNum) &&
+                IsANumber(numStr.Substring(0, numStr.IndexOf('/')), out insideNum1))
+            {
+                num = insideNum1 / insideNum;
+                return true;
+            }
+            // Multiplication
+            if (numStr.Contains("*") && IsANumber(numStr.Substring(numStr.IndexOf('*') + 1), out insideNum) &&
+                IsANumber(numStr.Substring(0, numStr.IndexOf('*')), out insideNum1))
+            {
+                num = insideNum * insideNum1;
+                return true;
+            }
+            // Checking if it's a root
+            if (numStr.Length >= 7 && (numStr.Substring(0, 4) == "sqrt" || numStr.Substring(0, 4) == "Sqrt") &&
+                numStr[4] == '(' && numStr[numStr.Length - 1] == ')' &&
+                IsANumber(numStr.Substring(5, numStr.Length - 6), out insideNum))
+            {
+                num = Math.Sqrt(insideNum);
                 return true;
             }
             // Checking if it's a degree
@@ -186,6 +216,7 @@ namespace ApplicationClasses
                 num = Math.Pow(insideNum1, insideNum);
                 return true;
             }
+
             return false;
         }
 
@@ -200,54 +231,6 @@ namespace ApplicationClasses
             foreach (Arc arc in digraph.Arcs)
                 check.AddEdge(arc);
             return check.IsStronglyConnected();
-        }
-
-        public static void TryToDeleteVertexAt(int x, int y, Digraph digraph, float R, out int index)
-        {
-            for (var i = 0; i < digraph.Vertices.Count; i++)
-            {
-                if (Math.Pow(digraph.Vertices[i].X - x, 2) + Math.Pow(digraph.Vertices[i].Y - y, 2) > R * R)
-                    continue;
-                digraph.RemoveVertex(i);
-                index = i;
-                return;
-            }
-            index = -1;
-        }
-
-        public static void TryToDeleteArcAt(int x, int y, Digraph digraph, out int startVertex, out int endVertex)
-        {
-            int selectedArc = FindSelectedArc(x, y, digraph);
-            if (selectedArc != -1)
-            {
-                startVertex = digraph.Arcs[selectedArc].StartVertex;
-                endVertex = digraph.Arcs[selectedArc].EndVertex;
-                digraph.Arcs.RemoveAt(selectedArc);
-                return;
-            }
-            startVertex = -1;
-            endVertex = -1;
-        }
-
-
-        static int FindSelectedArc(int x, int y, Digraph digraph)
-        {
-            for (int i = 0; i < digraph.Arcs.Count; ++i)
-            {
-                if (IsArcSelected(x, y, digraph.Vertices[digraph.Arcs[i].StartVertex].X,
-                    digraph.Vertices[digraph.Arcs[i].StartVertex].Y,
-                    digraph.Vertices[digraph.Arcs[i].EndVertex].X,
-                    digraph.Vertices[digraph.Arcs[i].EndVertex].Y))
-                    return i;
-            }
-            return -1;
-        }
-
-        static bool IsArcSelected(int x, int y, int startVertexX, int startVertexY, int endVertexX, int endVertexY)
-        {
-            return (Math.Abs((x - startVertexX) * (endVertexY - startVertexY) - (y - startVertexY) * (endVertexX - startVertexX)) <= 350 &&
-                (x > Math.Min(startVertexX, endVertexX) && x < Math.Max(startVertexX, endVertexX) ||
-                y > Math.Min(startVertexY, endVertexY) && y < Math.Max(startVertexY, endVertexY)));
         }
     }
 }

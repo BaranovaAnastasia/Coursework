@@ -1,6 +1,5 @@
 ﻿using System;
 using ApplicationClasses;
-using System.Drawing;
 using System.Windows.Forms;
 using ApplicationClasses.Modeling;
 
@@ -18,13 +17,26 @@ namespace Graph_WinForms
         /// </summary>
         Digraph Digraph = new Digraph();
 
-        readonly SaveFileDialog saveDataDialog = new SaveFileDialog(); // In order to save the graph
+        /// <summary>
+        /// SaveFileDialog instance for digraph data saving
+        /// </summary>
+        readonly SaveFileDialog saveDataDialog = new SaveFileDialog();
+        /// <summary>
+        /// SaveFileDialog instance for digraph image saving
+        /// </summary>
         readonly SaveFileDialog saveImageDialog = new SaveFileDialog();
+        /// <summary>
+        /// FolderBrowserDialog instance for digraph saving as data and image files folder
+        /// </summary>
         readonly FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-
-        readonly OpenFileDialog openDialog = new OpenFileDialog();   // In order to open the graph from file
-
-        readonly SaveFileDialog saveGifDialog = new SaveFileDialog(); // In order to save the gif
+        /// <summary>
+        /// OpenFileDialog instance for opening .digraph files
+        /// </summary>
+        readonly OpenFileDialog openDialog = new OpenFileDialog();
+        /// <summary>
+        /// SaveFileDialog instance for saving gif files
+        /// </summary>
+        readonly SaveFileDialog saveGifDialog = new SaveFileDialog();
 
 
         // Indices of the vertices selected for edge drawing
@@ -35,17 +47,20 @@ namespace Graph_WinForms
         int MovingVertexIndex = -1;
         // Moving vertex itself
         Vertex MovingVetrex;
-        // Point where moving of a vertex or the whole graph began
-        Point p;
         // Time during which the movement occurred
         DateTime Ticks;
 
         // Number of vertices of random graph
         internal static int chosenNumber = -1;
 
-        // 
+        /// <summary>
+        /// Models dots movenemt on a digraph
+        /// </summary>
         private MovementModeling movement = null;
 
+        /// <summary>
+        /// Shows if the program is currently modeling the movement
+        /// </summary>
         private bool isOnMovement;
     }
 }

@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
-using System.Runtime.Remoting.Channels;
-using System.Windows.Media.Imaging;
 using ApplicationClasses;
 
 namespace Graph_WinForms
@@ -22,16 +13,6 @@ namespace Graph_WinForms
             GraphBuilder_SizeChanged(null, null);
 
             graphDrawing = new GraphDrawing(DrawingSurface.Width, DrawingSurface.Height);
-
-            
-
-            
-
-            
-
-            
-
-            
 
             graphDrawing.RadiusChanged += (object sender, EventArgs e) =>
             {
@@ -107,8 +88,7 @@ namespace Graph_WinForms
                     Digraph.Vertices[i] = new Vertex((int)(Digraph.Vertices[i].X * 0.9), (int)(Digraph.Vertices[i].Y * 0.9));
 
 
-            if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
-            else graphDrawing.DrawTheWholeGraphSandpile(Digraph);
+            graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
         }
         private void Movement_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)

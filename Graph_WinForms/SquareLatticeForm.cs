@@ -67,7 +67,7 @@ namespace Graph_WinForms
                     if (rnd != null)
                     {
                         int th = rnd.Next(1, 5);
-                        int rp = rnd.Next(1, 5);
+                        int rp = rnd.Next(1, 10001);
                         int s = rnd.Next(0, 2 * th);
                         SquareLatticeDigraph.AddVertex(new Vertex(p.X, p.Y), th, rp, s);
                         continue;

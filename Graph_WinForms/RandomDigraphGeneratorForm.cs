@@ -6,7 +6,7 @@ namespace Graph_WinForms
 {
     public partial class RandomDigraphGeneratorForm : Form
     {
-        private static Random rnd = new Random();   //Random values generator
+        private static readonly Random rnd = new Random();   //Random values generator
 
         /// <summary>
         /// Generated random digraph
@@ -49,7 +49,7 @@ namespace Graph_WinForms
             for (int i = 0; i < (int)NumOfVertices.Value; i++)
             {
                 int th = rnd.Next(1, 5);
-                int p = rnd.Next(1, 5);
+                int p = rnd.Next(1, 10001);
                 int s = rnd.Next(0, 2 * th);
                 Digraph.AddVertex(new Vertex(rnd.Next(10, width - 10), rnd.Next(10, height - 10)), th, p, s);
                 visitedV[i] = i == 0;

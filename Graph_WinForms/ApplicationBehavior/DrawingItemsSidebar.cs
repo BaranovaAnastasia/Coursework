@@ -113,6 +113,31 @@ namespace Graph_WinForms
             EdgeButton.Location = new Point(EdgeButton.Location.X + 5, EdgeButton.Location.Y + 5);
         }
 
+        private void EraserButton_EnabledChanged(object sender, EventArgs e)
+        {
+            if (DeleteButton.Enabled)
+            {
+                DeleteButton.Size = new Size(75, 75);
+                DeleteButton.Location = new Point(DeleteButton.Location.X - 5, DeleteButton.Location.Y - 5);
+                return;
+            }
+            DeleteButton.Size = new Size(65, 65);
+            DeleteButton.Location = new Point(DeleteButton.Location.X + 5, DeleteButton.Location.Y + 5);
+        }
+
+        private void ClearAllButton_EnabledChanged(object sender, EventArgs e)
+        {
+            if (ClearButton.Enabled)
+            {
+                ClearButton.Size = new Size(75, 75);
+                ClearButton.Location = new Point(ClearButton.Location.X - 5, ClearButton.Location.Y - 5);
+                return;
+            }
+            ClearButton.Size = new Size(65, 65);
+            ClearButton.Location = new Point(ClearButton.Location.X + 5, ClearButton.Location.Y + 5);
+        }
+
+
         #endregion
     }
 }

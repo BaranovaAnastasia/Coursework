@@ -10,26 +10,51 @@ namespace ApplicationClasses
         /// <summary>
         /// Digraph vertices list
         /// </summary>
-        private readonly List<Vertex> vertices = new List<Vertex>();
+        public List<Vertex> Vertices { get; private set; }
 
         /// <summary>
         /// Digraph arcs list
         /// </summary>
-        private List<Arc> arcs = new List<Arc>();
+        public List<Arc> Arcs { get; private set; }
 
         /// <summary>
         /// Digraph vertices thresholds list
         /// </summary>
-        private readonly List<int> thresholds = new List<int>();
+        public List<int> Thresholds { get; private set; }
 
         /// <summary>
-        /// Digraph vertices refractory periods list
+        /// Vertices refractory periods in milliseconds 
         /// </summary>
-        private readonly List<int> refractoryPeriods = new List<int>();
+        public List<int> RefractoryPeriods { get; private set; }
 
-        private readonly List<int> state = new List<int>();
-        private readonly List<double> timeTillTheEndOfRefractoryPeriod = new List<double>();
-        private List<int> stock = new List<int>();
+        /// <summary>
+        /// Number of dots at each vertex
+        /// </summary>
+        public List<int> State { get; private set; }
+
+        /// <summary>
+        /// Remaining time until the end of refractory period in milliseconds
+        /// </summary>
+        public List<double> TimeTillTheEndOfRefractoryPeriod { get; private set; }
+
+        /// <summary>
+        /// List of indices of sink vertices (sandpile modeling)
+        /// </summary>
+        public List<int> Stock { get; private set; }
+
+        /// <summary>
+        /// Initializes a new Digraph instance
+        /// </summary>
+        public Digraph()
+        {
+            Vertices = new List<Vertex>();
+            Arcs = new List<Arc>();
+            Thresholds = new List<int>();
+            RefractoryPeriods = new List<int>();
+            State = new List<int>();
+            TimeTillTheEndOfRefractoryPeriod = new List<double>();
+            Stock = new List<int>();
+        }
 
         /// <summary>
         /// Adds vertex to the list of digraph vertices
@@ -48,11 +73,12 @@ namespace ApplicationClasses
             if (initialState < 0)
                 throw new ArgumentOutOfRangeException(nameof(initialState),
                     "The value of the vertex initial state must be a non-negative number, not grater than the value of the vertex");
-            vertices.Add(vertex);
-            thresholds.Add(threshold);
-            refractoryPeriods.Add(refractoryPeriod);
-            state.Add(initialState);
-            timeTillTheEndOfRefractoryPeriod.Add(0);
+
+            Vertices.Add(vertex);
+            Thresholds.Add(threshold);
+            RefractoryPeriods.Add(refractoryPeriod);
+            State.Add(initialState);
+            TimeTillTheEndOfRefractoryPeriod.Add(0);
         }
 
         /// <summary>
@@ -61,29 +87,34 @@ namespace ApplicationClasses
         /// <param name="index">Index of the vertex in the list</param>
         public void RemoveVertex(int index)
         {
-            if (vertices.Count <= index || index < 0)
+            if (Vertices.Count <= index || index < 0)
                 throw new ArgumentOutOfRangeException(nameof(index),
                     "Index of the vertex must be a non-negative number less than the number of elements in the vertices list");
-            arcs = arcs.Where(arc => arc.StartVertex != index && arc.EndVertex != index).ToList();
-            arcs = arcs.ConvertAll(arc =>
+            Arcs = Arcs.Where(arc => arc.StartVertex != index && arc.EndVertex != index).ToList();
+            Arcs = Arcs.ConvertAll(arc =>
                 new Arc(arc.StartVertex > index ? arc.StartVertex - 1 : arc.StartVertex,
                     arc.EndVertex > index ? arc.EndVertex - 1 : arc.EndVertex));
-            vertices.RemoveAt(index);
-            thresholds.RemoveAt(index);
-            refractoryPeriods.RemoveAt(index);
-            state.RemoveAt(index);
-            timeTillTheEndOfRefractoryPeriod.RemoveAt(index);
+
+            Vertices.RemoveAt(index);
+            Thresholds.RemoveAt(index);
+            RefractoryPeriods.RemoveAt(index);
+            State.RemoveAt(index);
+            TimeTillTheEndOfRefractoryPeriod.RemoveAt(index);
         }
 
+        /// <summary>
+        /// Adds arc
+        /// </summary>
         public void AddArc(Arc arc)
         {
-            if (arc.StartVertex >= vertices.Count)
+            if (arc.StartVertex >= Vertices.Count)
                 throw new ArgumentOutOfRangeException(nameof(arc.StartVertex),
                     "Index of the vertex must be a non-negative number less than the number of elements in the vertices list");
-            if (arc.EndVertex >= vertices.Count)
+            if (arc.EndVertex >= Vertices.Count)
                 throw new ArgumentOutOfRangeException(nameof(arc.EndVertex),
                     "Index of the vertex must be a non-negative number less than the number of elements in the vertices list");
-            arcs.Add(arc);
+
+            Arcs.Add(arc);
         }
 
         /// <summary>
@@ -92,20 +123,17 @@ namespace ApplicationClasses
         /// <param name="index">Index of the arc in the list</param>
         public void RemoveArc(int index)
         {
-            if (arcs.Count <= index || index < 0)
+            if (Arcs.Count <= index || index < 0)
                 throw new ArgumentOutOfRangeException(nameof(index),
                     "Index of the arc must be a non-negative number less than the number of elements in the arcs list");
-            arcs.RemoveAt(index);
+
+            Arcs.RemoveAt(index);
         }
 
-        public List<Vertex> Vertices => vertices;
-        public List<Arc> Arcs => arcs;
-        public List<int> Thresholds => thresholds;
-        public List<int> RefractoryPeriods => refractoryPeriods;
-        public List<int> State => state;
-        public List<double> TimeTillTheEndOfRefractoryPeriod => timeTillTheEndOfRefractoryPeriod;
-        public List<int> Stock => stock;
-        public void ResetStock() => stock = new List<int>();
+        /// <summary>
+        /// Resets digraph sink (sanpile modeling)
+        /// </summary>
+        public void ResetStock() => Stock = new List<int>();
 
         /// <summary>
         /// Graph Adjacency Matrix
@@ -114,8 +142,8 @@ namespace ApplicationClasses
         {
             get
             {
-                double[,] adjacencyMatrix = new double[vertices.Count, vertices.Count];
-                foreach (Arc arc in arcs)
+                double[,] adjacencyMatrix = new double[Vertices.Count, Vertices.Count];
+                foreach (Arc arc in Arcs)
                     adjacencyMatrix[arc.StartVertex, arc.EndVertex] = arc.Length;
                 return adjacencyMatrix;
             }

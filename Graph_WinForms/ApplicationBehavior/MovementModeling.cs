@@ -90,7 +90,7 @@ namespace Graph_WinForms
         /// </summary>
         private bool CheckConnectivity()
         {
-            if (!ApplicationMethods.IsGraphValid(Digraph))
+            if (!ConnectivityCheck.IsGraphValid(Digraph))
             {
                 if (Digraph.Vertices.Count >= 3)
                     MessageBox.Show("The graph is not strongly connected", "Graph validation failed", MessageBoxButtons.OK,

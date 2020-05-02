@@ -89,7 +89,6 @@
     <Compile Include="ConnectivityCheck.cs" />
     <Compile Include="Graph\Digraph.cs" />
     <Compile Include="GraphDrawing.cs" />
-    <Compile Include="ApplicationMethods.cs" />
     <Compile Include="Modeling\ChartWindow.cs">
       <SubType>Form</SubType>
     </Compile>

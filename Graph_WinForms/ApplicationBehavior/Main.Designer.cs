@@ -304,6 +304,7 @@ namespace Graph_WinForms
             this.ClearButton.TabIndex = 11;
             this.ClearAllToolTip.SetToolTip(this.ClearButton, "Сlick to delete the digraph");
             this.ClearButton.UseVisualStyleBackColor = true;
+            this.ClearButton.EnabledChanged += new System.EventHandler(this.ClearAllButton_EnabledChanged);
             this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
             // 
             // CursorButton
@@ -336,6 +337,7 @@ namespace Graph_WinForms
             this.DeleteButton.TabIndex = 10;
             this.EraserToolTip.SetToolTip(this.DeleteButton, "Double click on an arc or\nvertex to remove it");
             this.DeleteButton.UseVisualStyleBackColor = true;
+            this.DeleteButton.EnabledChanged += new System.EventHandler(this.EraserButton_EnabledChanged);
             this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
             // 
             // VertexButton

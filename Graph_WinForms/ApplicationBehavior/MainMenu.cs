@@ -150,10 +150,10 @@ namespace Graph_WinForms
             ArcName.Text = String.Empty;
             ArcLength.Text = String.Empty;
             Digraph.Arcs.ForEach(arc => ArcName.Items.Add((arc.StartVertex + 1) + "-" + (arc.EndVertex + 1)));
-            ApplicationMethods.PrintGraphAdjacencyInfo(Digraph.AdjacencyMatrix, GridAdjacencyMatrix);
-            ApplicationMethods.PrintGraphThresholds(Digraph, GridThresholds);
-            ApplicationMethods.PrintGraphRefractoryPeriods(Digraph, GridRefractoryPeriods);
-            ApplicationMethods.PrintGraphInitialState(Digraph, GridInitialState);
+            DigraphBuilding.PrintGraphAdjacencyInfo(Digraph.AdjacencyMatrix, GridAdjacencyMatrix);
+            DigraphBuilding.PrintGraphThresholds(Digraph, GridThresholds);
+            DigraphBuilding.PrintGraphRefractoryPeriods(Digraph, GridRefractoryPeriods);
+            DigraphBuilding.PrintGraphInitialState(Digraph, GridInitialState);
         }
 
         /// <summary>

@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace ApplicationClasses
 {
     public static class DigraphBuilding
     {
+        #region Vertices and arcs deletion
+
         /// <summary>
         /// Searches for a digraph vertex at (x, y) to delete
         /// </summary>
@@ -33,8 +36,7 @@ namespace ApplicationClasses
         /// <param name="x">X coordinate of search point</param>
         /// <param name="y">Y coordinate of search point</param>
         /// <param name="digraph">Digraph among the vertices of which to search</param>
-        /// <param name="startVertex">Index of a starting vertex of deleted arc</param>
-        /// <param name="endVertex">Index of an ending vertex of deleted arc</param>
+        /// <param name="deletedArc">Found arc</param>
         /// <returns>true if the arc was found, false otherwise</returns>
         public static bool TryToDeleteArcAt(int x, int y, Digraph digraph, out Arc deletedArc)
         {
@@ -67,7 +69,7 @@ namespace ApplicationClasses
         }
 
         /// <summary>
-        /// Checks if the arcif the arc is selected for deletion
+        /// Checks if the arc is selected for deletion
         /// </summary>
         private static bool IsArcSelected(int x, int y, int startVertexX, int startVertexY, int endVertexX, int endVertexY)
         {
@@ -75,5 +77,100 @@ namespace ApplicationClasses
                 (x > Math.Min(startVertexX, endVertexX) && x < Math.Max(startVertexX, endVertexX) ||
                 y > Math.Min(startVertexY, endVertexY) && y < Math.Max(startVertexY, endVertexY)));
         }
+
+        #endregion
+
+        #region DataGridView information display
+
+        /// <summary>
+        /// Prints Adjacency Matrix in DataGridView
+        /// </summary>
+        public static void PrintGraphAdjacencyInfo(double[,] adjacencyMatrix, DataGridView dataGridView)
+        {
+            dataGridView.Rows.Clear();
+            dataGridView.Columns.Clear();
+            for (int i = 0; i < adjacencyMatrix.GetLength(1); i++)
+            {
+                dataGridView.Columns.Add("", (i + 1).ToString());
+                dataGridView.Columns[i].FillWeight = 1;
+                dataGridView.Columns[i].Width = 35;
+                dataGridView.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                if (i == 0) dataGridView.Rows.Add(adjacencyMatrix.GetLength(1));
+                for (int j = 0; j < adjacencyMatrix.GetLength(0); j++)
+                {
+                    dataGridView[i, j].Value = adjacencyMatrix[j, i];
+                    dataGridView.Rows[j].HeaderCell.Value = (j + 1).ToString();
+                    dataGridView.Rows[j].Height = 30;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Prints graph thresholds in DataGridView
+        /// </summary>
+        public static void PrintGraphThresholds(Digraph digraph, DataGridView dataGridView)
+        {
+            dataGridView.Rows.Clear();
+            dataGridView.Columns.Clear();
+            dataGridView.Columns.Add(String.Empty, "th");
+            dataGridView.Columns[0].FillWeight = 1;
+            dataGridView.Columns[0].Width = 95;
+            dataGridView.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+            if (digraph.Vertices.Count <= 0) return;
+
+            dataGridView.Rows.Add(digraph.Vertices.Count);
+            for (int i = 0; i < digraph.Vertices.Count; i++)
+            {
+                dataGridView.Rows[i].HeaderCell.Value = (i + 1).ToString();
+                dataGridView.Rows[i].Height = 30;
+                dataGridView[0, i].Value = digraph.Thresholds[i];
+            }
+        }
+
+        /// <summary>
+        /// Prints graph refractory periods in DataGridView
+        /// </summary>
+        public static void PrintGraphRefractoryPeriods(Digraph digraph, DataGridView dataGridView)
+        {
+            dataGridView.Rows.Clear();
+            dataGridView.Columns.Clear();
+            dataGridView.Columns.Add(String.Empty, "p, ms");
+            dataGridView.Columns[0].FillWeight = 1;
+            dataGridView.Columns[0].Width = 95;
+            dataGridView.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+            if (digraph.Vertices.Count <= 0) return;
+
+            dataGridView.Rows.Add(digraph.Vertices.Count);
+            for (int i = 0; i < digraph.Vertices.Count; i++)
+            {
+                dataGridView.Rows[i].HeaderCell.Value = (i + 1).ToString();
+                dataGridView.Rows[i].Height = 30;
+                dataGridView[0, i].Value = digraph.RefractoryPeriods[i];
+            }
+        }
+
+        /// <summary>
+        /// Prints graph state in DataGridView
+        /// </summary>
+        public static void PrintGraphInitialState(Digraph digraph, DataGridView dataGridView)
+        {
+            dataGridView.Rows.Clear();
+            dataGridView.Columns.Clear();
+            dataGridView.Columns.Add(String.Empty, "s");
+            dataGridView.Columns[0].FillWeight = 1;
+            dataGridView.Columns[0].Width = 95;
+            dataGridView.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+            if (digraph.Vertices.Count <= 0) return;
+
+            dataGridView.Rows.Add(digraph.Vertices.Count);
+            for (int i = 0; i < digraph.Vertices.Count; i++)
+            {
+                dataGridView.Rows[i].HeaderCell.Value = (i + 1).ToString();
+                dataGridView.Rows[i].Height = 30;
+                dataGridView[0, i].Value = digraph.State[i];
+            }
+        }
+
+        #endregion
     }
 }

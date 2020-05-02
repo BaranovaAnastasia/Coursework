@@ -5,53 +5,28 @@ using ApplicationClasses.Modeling;
 
 namespace Graph_WinForms
 {
-    public partial class MainWindow : Form
+    public partial class MainWindow
     {
         /// <summary>
         /// GraphDrawing instance containing methods for digraph drawing
         /// </summary>
-        readonly GraphDrawing graphDrawing;
+        private readonly GraphDrawing graphDrawing;
 
         /// <summary>
         /// Digraph instance with lists of vertices and arcs
         /// </summary>
-        Digraph Digraph = new Digraph();
-
-        /// <summary>
-        /// SaveFileDialog instance for digraph data saving
-        /// </summary>
-        readonly SaveFileDialog saveDataDialog = new SaveFileDialog();
-        /// <summary>
-        /// SaveFileDialog instance for digraph image saving
-        /// </summary>
-        readonly SaveFileDialog saveImageDialog = new SaveFileDialog();
-        /// <summary>
-        /// FolderBrowserDialog instance for digraph saving as data and image files folder
-        /// </summary>
-        readonly FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-        /// <summary>
-        /// OpenFileDialog instance for opening .digraph files
-        /// </summary>
-        readonly OpenFileDialog openDialog = new OpenFileDialog();
-        /// <summary>
-        /// SaveFileDialog instance for saving gif files
-        /// </summary>
-        readonly SaveFileDialog saveGifDialog = new SaveFileDialog();
-
+        private Digraph Digraph = new Digraph();
 
         // Indices of the vertices selected for edge drawing
-        int vStart = -1; int vEnd = -1;
+        private int vStart = -1; private int vEnd = -1;
         // Indicator showing whether the mouse button is pressed
-        bool IsPressed = false;
+        private bool IsPressed = false;
         // Index of the moving vertex
-        int MovingVertexIndex = -1;
+        private int MovingVertexIndex = -1;
         // Moving vertex itself
-        Vertex MovingVetrex;
+        private Vertex MovingVetrex;
         // Time during which the movement occurred
-        DateTime Ticks;
-
-        // Number of vertices of random graph
-        internal static int chosenNumber = -1;
+        private DateTime Ticks;
 
         /// <summary>
         /// Models dots movenemt on a digraph
@@ -62,5 +37,60 @@ namespace Graph_WinForms
         /// Shows if the program is currently modeling the movement
         /// </summary>
         private bool isOnMovement;
+
+        /// <summary>
+        /// Random values generator
+        /// </summary>
+        private static readonly Random rnd = new Random();
+
+        /// <summary>
+        /// Information about the application
+        /// </summary>
+        private static readonly string AboutApp =
+            "The application developed as a part of a coursework" + Environment.NewLine +
+            Environment.NewLine +
+            Environment.NewLine + "Developed by Baranova Anastasia Andreevna, BSE196." +
+            Environment.NewLine +
+            "Supervisor: Vsevolod L. Chernyshev, Associate Professor, Big Data and Information Retrieval School, Faculty of Computer Science." +
+            Environment.NewLine +
+            Environment.NewLine + "Higher School of Economics, Moscow, 2020";
+
+
+        #region File dialods
+        private static SaveFileDialog SaveFileDialogForDataSaving() =>
+            new SaveFileDialog()
+            {
+                FileName = "GraphData",
+                DefaultExt = ".digraph",
+                Filter = "Digraph data files (.digraph)|*.digraph"
+            };
+
+        private static SaveFileDialog SaveFileDialogForImageSaving() =>
+            new SaveFileDialog()
+            {
+                FileName = "GraphImage",
+                DefaultExt = ".jpg",
+                Filter = "JPG Image (.jpg)|*.jpg"
+            };
+
+        private static SaveFileDialog SaveFileDialogForGifSaving() =>
+            new SaveFileDialog()
+            {
+                FileName = "Movement",
+                DefaultExt = ".gif",
+                Filter = "Gif Image (.gif)|*.gif",
+            };
+
+        private static FolderBrowserDialog FolderBrowserDialogForGraphSaving() =>
+            new FolderBrowserDialog() { SelectedPath = "Digraph" };
+
+        private static OpenFileDialog DigraphOpenFileDialog() =>
+            new OpenFileDialog()
+            {
+                DefaultExt = ".digraph",
+                Filter = "Digraph data files (.digraph)|*.digraph"
+            };
+
+        #endregion
     }
 }

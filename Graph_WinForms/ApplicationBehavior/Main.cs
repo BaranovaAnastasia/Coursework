@@ -23,22 +23,15 @@ namespace Graph_WinForms
 
             graphDrawing = new GraphDrawing(DrawingSurface.Width, DrawingSurface.Height);
 
-            saveDataDialog.FileName = "GraphData"; // Default file name
-            saveDataDialog.DefaultExt = ".digraph"; // Default file extension
-            saveDataDialog.Filter = "Digraph data files (.digraph)|*.digraph"; // Filter files by extension
+            
 
-            saveImageDialog.FileName = "GraphImage"; // Default file name
-            saveImageDialog.DefaultExt = ".jpg"; // Default file extension
-            saveImageDialog.Filter = "JPG Image (.jpg)|*.jpg"; // Filter files by extension
+            
 
-            folderBrowserDialog.SelectedPath = "Digraph";
+            
 
-            openDialog.DefaultExt = ".digraph"; // Default file extension
-            openDialog.Filter = "Digraph data files (.digraph)|*.digraph"; // Filter files by extension
+            
 
-            saveGifDialog.FileName = "Movement";
-            saveGifDialog.DefaultExt = ".gif";
-            saveGifDialog.Filter = "Gif Image (.gif)|*.gif";
+            
 
             graphDrawing.RadiusChanged += (object sender, EventArgs e) =>
             {
@@ -63,12 +56,17 @@ namespace Graph_WinForms
             AppParameters.Size = new Size(AppParameters.Width, DrawingSurface.Height);
             AppParameters.Location = new Point(Size.Width - AppParameters.Size.Width - 30, AppParameters.Location.Y);
 
-
             if (Size.Width - (Size.Width - AppParameters.Location.X - 10) - Tools.Size.Width - 40 > 0 && Size.Height - 120 > 0)
                 DrawingSurface.Size = new Size(Size.Width - (Size.Width - AppParameters.Location.X - 10) - Tools.Size.Width - 40,
                      Size.Height - 120);
+
             AppParameters.Size = new Size(AppParameters.Width, DrawingSurface.Height);
+            foreach (var page in AppParameters.Controls)
+                foreach (Control control in (page as TabPage).Controls)
+                    if (control is DataGridView) control.Size = new Size(control.Width, AppParameters.Height - 60);
+
             GridAdjacencyMatrix.Size = new Size(AdjacencyPage.Width - 20, AdjacencyPage.Height - GridAdjacencyMatrix.Location.Y - 10);
+
             if (graphDrawing != null)
             {
                 graphDrawing.Size = DrawingSurface.Size;
@@ -76,11 +74,15 @@ namespace Graph_WinForms
                 else graphDrawing.DrawTheWholeGraphSandpile(Digraph);
                 DrawingSurface.Image = graphDrawing.Image;
             }
+
             TimeTextBox.Location =
                 new Point(DrawingSurface.Location.X + DrawingSurface.Size.Width - TimeTextBox.Size.Width,
                     TimeTextBox.Location.Y);
         }
 
+        /// <summary>
+        /// Moves digraph on the drawing surface
+        /// </summary>
         private void GraphBuilder_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Modifiers != Keys.Control) return;
@@ -97,221 +99,18 @@ namespace Graph_WinForms
                 for (int i = 0; i < Digraph.Vertices.Count; i++)
                     Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X, Digraph.Vertices[i].Y + 10);
 
+            if (e.KeyCode == Keys.Oemplus)
+                for (int i = 0; i < Digraph.Vertices.Count; i++)
+                    Digraph.Vertices[i] = new Vertex((int)(Digraph.Vertices[i].X * 1.1), (int)(Digraph.Vertices[i].Y * 1.1));
+            if (e.KeyCode == Keys.OemMinus)
+                for (int i = 0; i < Digraph.Vertices.Count; i++)
+                    Digraph.Vertices[i] = new Vertex((int)(Digraph.Vertices[i].X * 0.9), (int)(Digraph.Vertices[i].Y * 0.9));
+
+
             if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
             else graphDrawing.DrawTheWholeGraphSandpile(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
         }
-
-        private void BasicTypeCheckBox_CheckedChanged(object sender, EventArgs e) =>
-            SandpileTypeCheckBox.Checked = !BasicTypeCheckBox.Checked;
-
-        private void SandpileTypeCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            BasicTypeCheckBox.Checked = !SandpileTypeCheckBox.Checked;
-            if (SandpileTypeCheckBox.Checked) ChartCheckBox_CheckedChanged(sender, e);
-            else if (ChartCheckBox.Checked)
-            {
-                SandpileChartType1.Visible = SandpileChartType2.Visible = false;
-                SaveGifCheckBox.Location = new Point(11, 246);
-                SpeedLabel.Location = new Point(6, 308);
-                SpeedNumeric.Location = new Point(11, 346);
-            }
-        }
-
-        private void DarkToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            /*BackColor = Color.FromArgb(40,40,40);
-            TopMenu.BackColor = Color.FromArgb(40, 40, 40);
-            graphDrawing.BackColor = Color.FromArgb(140, 140, 140);
-            graphDrawing.DrawTheWholeGraph(Digraph);
-            DrawingSurface.Image = graphDrawing.Image;
-            foreach (Control control in Controls)
-            {
-                control.ForeColor = Color.AliceBlue;
-            }*/
-        }
-
-        private static readonly Random rnd = new Random();
-        private void StockLabel_Click(object sender, EventArgs e)
-        {
-            if (SandpilePanel.Size.Height > 60) return;
-            SandpilePanel.Visible = false;
-            TimeTextBox.Visible = true;
-            TimeTextBox.BringToFront();
-            SandpileLabel.Text = "Select vertex to add a grain of sand to       ";
-            SandpileLabel.Font = new Font("Segoe UI", 9);
-            SandpilePanel.Size = new Size(SandpilePanel.Size.Width, 91);
-
-            movement.MovementEnded += MovementEndedSandpileEventHandler;
-
-            movement.Movement();
-        }
-
-        private void ChartCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (SandpileTypeCheckBox.Checked && ChartCheckBox.Checked)
-            {
-                SaveGifCheckBox.Location =
-                    new Point(SaveGifCheckBox.Location.X,
-                        SandpileChartType2.Location.Y + SandpileChartType2.Size.Height + 10);
-                SpeedLabel.Location =
-                    new Point(SpeedLabel.Location.X,
-                        SaveGifCheckBox.Location.Y + SaveGifCheckBox.Size.Height + 28);
-                SpeedNumeric.Location =
-                    new Point(SpeedNumeric.Location.X,
-                        SpeedLabel.Location.Y + SpeedLabel.Size.Height + 10);
-                SandpileChartType1.Visible = SandpileChartType2.Visible = true;
-                return;
-            }
-            if (SandpileTypeCheckBox.Checked && !ChartCheckBox.Checked)
-            {
-                SandpileChartType1.Visible = SandpileChartType2.Visible = false;
-                SaveGifCheckBox.Location = new Point(11, 246);
-                SpeedLabel.Location = new Point(6, 308);
-                SpeedNumeric.Location = new Point(11, 346);
-                return;
-            }
-        }
-
-        private async void RandomAddingLabel_Click(object sender, EventArgs e)
-        {
-            int rndVertex;
-            do { rndVertex = rnd.Next(Digraph.Vertices.Count); }
-            while (Digraph.Stock.Contains(rndVertex));
-
-            Digraph.State[rndVertex]++;
-            SandpilePanel.Visible = false;
-            graphDrawing.HighlightVertexToAddSand(Digraph.Vertices[rndVertex]);
-            DrawingSurface.Image = graphDrawing.Image;
-            if (SaveGifCheckBox.Checked && movement.MovementGif.Frames.Count < 250)
-            {
-                var bmp = (DrawingSurface.Image as Bitmap).GetHbitmap();
-                var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    bmp,
-                    IntPtr.Zero,
-                    System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                movement.MovementGif.Frames.Add(BitmapFrame.Create(src));
-            }
-
-            await Task.Delay(1000);
-            movement.Go();
-        }
-
-        private void RandomAddingCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (RandomAddingCheckBox.Checked)
-            {
-                movement.MovementEnded -= MovementEndedSandpileEventHandler;
-                movement.MovementEnded += RandomAddingLabel_Click;
-            }
-            else
-            {
-                movement.MovementEnded += MovementEndedSandpileEventHandler;
-                movement.MovementEnded -= RandomAddingLabel_Click;
-            }
-        }
-
-        private void MovementEndedSandpileEventHandler(object o, EventArgs args)
-        {
-            SandpilePanel.Visible = true;
-            SandpilePanel.BringToFront();
-        }
-
-        private void RadiusTrackBar_ValueChanged(object sender, EventArgs e)
-        {
-            graphDrawing.R = RadiusTrackBar.Value;
-        }
-
-        private void SquareLattice_Click(object sender, EventArgs e)
-        {
-            SquareLatticeForm square = new SquareLatticeForm(DrawingSurface.Width, DrawingSurface.Height);
-            square.ShowDialog();
-            if (square.SquareLatticeDigraph == null) return;
-            Digraph = square.SquareLatticeDigraph;
-            graphDrawing.DrawTheWholeGraph(Digraph);
-            DrawingSurface.Image = graphDrawing.Image;
-            UpdateDigraphInfo();
-            ChangeMainMenuState(false);
-            ChangeDrawingElementsState(true);
-        }
-
-        private void TriangleLattice_Click(object sender, EventArgs e)
-        {
-            TriangularLatticeForm triangle = new TriangularLatticeForm(DrawingSurface.Width, DrawingSurface.Height);
-            triangle.ShowDialog();
-            if (triangle.TriangularLatticeDigraph == null) return;
-            Digraph = triangle.TriangularLatticeDigraph;
-            graphDrawing.DrawTheWholeGraph(Digraph);
-            DrawingSurface.Image = graphDrawing.Image;
-            UpdateDigraphInfo();
-            ChangeMainMenuState(false);
-            ChangeDrawingElementsState(true);
-        }
-
-        private void EraserToolTip_Draw(object sender, DrawToolTipEventArgs e)
-        {
-            using (var boldFont = new Font(e.Font, FontStyle.Bold))
-            {
-                var headerText = "Eraser";
-                var valueText = "Double-click on the edge or vertex to remove it";
-
-                var headerTextSize = TextRenderer.MeasureText(headerText, e.Font);
-
-                TextRenderer.DrawText(e.Graphics, headerText, e.Font, e.Bounds.Location, Color.Black);
-
-                var valueTextPosition = new Point(e.Bounds.X + headerTextSize.Width, e.Bounds.Y);
-                TextRenderer.DrawText(e.Graphics, valueText, boldFont, valueTextPosition, Color.Black);
-            }
-        }
-
-        private void CursorButton_EnabledChanged(object sender, EventArgs e)
-        {
-            if (CursorButton.Enabled)
-            {
-                CursorButton.Size = new Size(75, 75);
-                CursorButton.Location = new Point(CursorButton.Location.X - 5, CursorButton.Location.Y - 5);
-                return;
-            }
-            CursorButton.Size = new Size(65, 65);
-            CursorButton.Location = new Point(CursorButton.Location.X + 5, CursorButton.Location.Y + 5);
-        }
-
-        private void VertexButton_EnabledChanged(object sender, EventArgs e)
-        {
-            if (VertexButton.Enabled)
-            {
-                VertexButton.Size = new Size(75, 75);
-                VertexButton.Location = new Point(VertexButton.Location.X - 5, VertexButton.Location.Y - 5);
-                return;
-            }
-            VertexButton.Size = new Size(65, 65);
-            VertexButton.Location = new Point(VertexButton.Location.X + 5, VertexButton.Location.Y + 5);
-        }
-
-        private void EdgeButton_EnabledChanged(object sender, EventArgs e)
-        {
-            if (EdgeButton.Enabled)
-            {
-                EdgeButton.Size = new Size(75, 75);
-                EdgeButton.Location = new Point(EdgeButton.Location.X - 5, EdgeButton.Location.Y - 5);
-                return;
-            }
-            EdgeButton.Size = new Size(65, 65);
-            EdgeButton.Location = new Point(EdgeButton.Location.X + 5, EdgeButton.Location.Y + 5);
-        }
-
-        private void DeleteButton_EnabledChanged(object sender, EventArgs e)
-        {
-            if (DeleteButton.Enabled)
-            {
-                DeleteButton.Size = new Size(75, 75);
-                DeleteButton.Location = new Point(DeleteButton.Location.X - 5, DeleteButton.Location.Y - 5);
-                return;
-            }
-            DeleteButton.Size = new Size(65, 65);
-            DeleteButton.Location = new Point(DeleteButton.Location.X + 5, DeleteButton.Location.Y + 5);
-        }
-
         private void Movement_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             if (e.Modifiers == Keys.Control)

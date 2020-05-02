@@ -43,11 +43,6 @@ namespace Graph_WinForms
             this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.modeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.darkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.UserManualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -159,7 +154,6 @@ namespace Graph_WinForms
             this.TopMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.TopMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileToolStripMenuItem,
-            this.SettingsToolStripMenuItem,
             this.UserManualToolStripMenuItem,
             this.AboutToolStripMenuItem,
             this.MainMenuToolStripMenuItem,
@@ -213,21 +207,21 @@ namespace Graph_WinForms
             this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
             this.dataToolStripMenuItem.Size = new System.Drawing.Size(206, 34);
             this.dataToolStripMenuItem.Text = "Save Data";
-            this.dataToolStripMenuItem.Click += new System.EventHandler(this.dataToolStripMenuItem_Click);
+            this.dataToolStripMenuItem.Click += new System.EventHandler(this.DataToolStripMenuItem_Click);
             // 
             // saveImageToolStripMenuItem
             // 
             this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
             this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(206, 34);
             this.saveImageToolStripMenuItem.Text = "Save Image";
-            this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.saveImageToolStripMenuItem_Click);
+            this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.SaveImageToolStripMenuItem_Click);
             // 
             // saveAllToolStripMenuItem
             // 
             this.saveAllToolStripMenuItem.Name = "saveAllToolStripMenuItem";
             this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(206, 34);
             this.saveAllToolStripMenuItem.Text = "Save All";
-            this.saveAllToolStripMenuItem.Click += new System.EventHandler(this.saveAllToolStripMenuItem_Click);
+            this.saveAllToolStripMenuItem.Click += new System.EventHandler(this.SaveAllToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -235,44 +229,6 @@ namespace Graph_WinForms
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(217, 34);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
-            // 
-            // SettingsToolStripMenuItem
-            // 
-            this.SettingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.languageToolStripMenuItem,
-            this.modeToolStripMenuItem});
-            this.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem";
-            this.SettingsToolStripMenuItem.Size = new System.Drawing.Size(92, 29);
-            this.SettingsToolStripMenuItem.Text = "Settings";
-            this.SettingsToolStripMenuItem.Visible = false;
-            // 
-            // languageToolStripMenuItem
-            // 
-            this.languageToolStripMenuItem.Name = "languageToolStripMenuItem";
-            this.languageToolStripMenuItem.Size = new System.Drawing.Size(191, 34);
-            this.languageToolStripMenuItem.Text = "Language";
-            // 
-            // modeToolStripMenuItem
-            // 
-            this.modeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.darkToolStripMenuItem,
-            this.lightToolStripMenuItem});
-            this.modeToolStripMenuItem.Name = "modeToolStripMenuItem";
-            this.modeToolStripMenuItem.Size = new System.Drawing.Size(191, 34);
-            this.modeToolStripMenuItem.Text = "Mode";
-            // 
-            // darkToolStripMenuItem
-            // 
-            this.darkToolStripMenuItem.Name = "darkToolStripMenuItem";
-            this.darkToolStripMenuItem.Size = new System.Drawing.Size(153, 34);
-            this.darkToolStripMenuItem.Text = "Dark";
-            this.darkToolStripMenuItem.Click += new System.EventHandler(this.DarkToolStripMenuItem_Click);
-            // 
-            // lightToolStripMenuItem
-            // 
-            this.lightToolStripMenuItem.Name = "lightToolStripMenuItem";
-            this.lightToolStripMenuItem.Size = new System.Drawing.Size(153, 34);
-            this.lightToolStripMenuItem.Text = "Light";
             // 
             // UserManualToolStripMenuItem
             // 
@@ -380,7 +336,6 @@ namespace Graph_WinForms
             this.DeleteButton.TabIndex = 10;
             this.EraserToolTip.SetToolTip(this.DeleteButton, "Double click on an arc or\nvertex to remove it");
             this.DeleteButton.UseVisualStyleBackColor = true;
-            this.DeleteButton.EnabledChanged += new System.EventHandler(this.DeleteButton_EnabledChanged);
             this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
             // 
             // VertexButton
@@ -575,6 +530,7 @@ namespace Graph_WinForms
             this.ArcLength.Name = "ArcLength";
             this.ArcLength.Size = new System.Drawing.Size(163, 31);
             this.ArcLength.TabIndex = 0;
+            this.ArcLength.TextChanged += new System.EventHandler(this.ArcLength_TextChanged);
             // 
             // AdjacencyMatrixLabel
             // 
@@ -713,6 +669,7 @@ namespace Graph_WinForms
             this.SandpileChartType2.Text = "Distribution of\n\ravalanche sizes chart";
             this.SandpileChartType2.UseVisualStyleBackColor = true;
             this.SandpileChartType2.Visible = false;
+            this.SandpileChartType2.CheckedChanged += new System.EventHandler(this.SandpileChartType2_CheckedChanged);
             // 
             // SandpileChartType1
             // 
@@ -726,6 +683,7 @@ namespace Graph_WinForms
             this.SandpileChartType1.Text = "Number of dots chart";
             this.SandpileChartType1.UseVisualStyleBackColor = true;
             this.SandpileChartType1.Visible = false;
+            this.SandpileChartType1.CheckedChanged += new System.EventHandler(this.SandpileChartType1_CheckedChanged);
             // 
             // ActionsLabel
             // 
@@ -1090,7 +1048,6 @@ namespace Graph_WinForms
         private System.Windows.Forms.ToolStripMenuItem openProjectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem SettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem UserManualToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MainMenuToolStripMenuItem;
@@ -1106,8 +1063,6 @@ namespace Graph_WinForms
         private System.Windows.Forms.Label RefractoryPeriodsLabel;
         private System.Windows.Forms.Label InitialStateLabel;
         private System.Windows.Forms.DataGridView GridInitialState;
-        private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem modeToolStripMenuItem;
         private System.Windows.Forms.NumericUpDown SpeedNumeric;
         private System.Windows.Forms.Label SpeedLabel;
         private System.Windows.Forms.TabPage ModePage;
@@ -1118,8 +1073,6 @@ namespace Graph_WinForms
         private System.Windows.Forms.CheckBox SandpileTypeCheckBox;
         private System.Windows.Forms.CheckBox BasicTypeCheckBox;
         private System.Windows.Forms.Label ActionsLabel;
-        private System.Windows.Forms.ToolStripMenuItem darkToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem lightToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ResetToolStripMenuItem;
         private System.Windows.Forms.TextBox TimeTextBox;
         private System.Windows.Forms.Label SandpileLabel;

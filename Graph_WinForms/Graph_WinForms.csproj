@@ -63,6 +63,12 @@
     <Compile Include="ApplicationBehavior\MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ApplicationBehavior\ModelingParameters.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApplicationBehavior\MovementModeling.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ApplicationBehavior\TopMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,11 +81,11 @@
     <Compile Include="ApplicationBehavior\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Random.cs">
+    <Compile Include="RandomDigraphGeneratorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Random.Designer.cs">
-      <DependentUpon>Random.cs</DependentUpon>
+    <Compile Include="RandomDigraphGeneratorForm.Designer.cs">
+      <DependentUpon>RandomDigraphGeneratorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,8 +107,8 @@
     <EmbeddedResource Include="ApplicationBehavior\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Random.resx">
-      <DependentUpon>Random.cs</DependentUpon>
+    <EmbeddedResource Include="RandomDigraphGeneratorForm.resx">
+      <DependentUpon>RandomDigraphGeneratorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

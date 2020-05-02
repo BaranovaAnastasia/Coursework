@@ -7,7 +7,7 @@ using ApplicationClasses;
 
 namespace Graph_WinForms
 {
-    public partial class MainWindow : Form
+    public partial class MainWindow
     {
         /// <summary>
         /// Draws vertices and arcs by mouse click on a drawing surface 
@@ -289,7 +289,7 @@ namespace Graph_WinForms
         /// <summary>
         /// Searches for a vertex at (x, y) and adds sand to it
         /// </summary>
-        private void SelectVertexToAddSand(int x, int y)
+        private async void SelectVertexToAddSand(int x, int y)
         {
             for (int i = 0; i < Digraph.Vertices.Count; i++)
                 if (Math.Pow((Digraph.Vertices[i].X - x), 2) + Math.Pow((Digraph.Vertices[i].Y - y), 2) <=
@@ -300,7 +300,7 @@ namespace Graph_WinForms
                     SandpilePanel.Visible = false;
                     graphDrawing.HighlightVertexToAddSand(Digraph.Vertices[i]);
                     DrawingSurface.Image = graphDrawing.Image;
-                    Task.Delay(200);
+                    await Task.Delay(200);
                     if (SaveGifCheckBox.Checked && movement.MovementGif.Frames.Count < 250)
                     {
                         var bmp = (DrawingSurface.Image as Bitmap).GetHbitmap();

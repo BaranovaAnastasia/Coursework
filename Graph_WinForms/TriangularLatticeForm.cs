@@ -14,8 +14,8 @@ namespace Graph_WinForms
         /// </summary>
         public Digraph TriangularLatticeDigraph { get; private set; }
 
-        private int width;      //Drawing surface width (maximum width)
-        private int height;     //Drawing surface height (maximum height)
+        private readonly int width;      //Drawing surface width (maximum width)
+        private readonly int height;     //Drawing surface height (maximum height)
 
         /// <summary>
         /// Initializes a new instance of TriangularLatticeForm

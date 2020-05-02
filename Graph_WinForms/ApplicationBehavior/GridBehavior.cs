@@ -6,6 +6,8 @@ namespace Graph_WinForms
 {
     public partial class MainWindow
     {
+        #region Adjacency and arcs
+
         private void GridAdjacencyMatrix_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             for (var i = 0; i < Digraph.Arcs.Count; i++)
@@ -21,6 +23,9 @@ namespace Graph_WinForms
             ArcLength.Text = "Error";
         }
 
+        private void ArcLength_TextChanged(object sender, EventArgs e) =>
+            ArcLength.ReadOnly = ArcLength.Text == "Error";
+
         private void ArcName_TextChanged(object sender, EventArgs e)
         {
             try
@@ -35,11 +40,7 @@ namespace Graph_WinForms
                 }
                 else ArcLength.Text = GridAdjacencyMatrix[end, start].Value.ToString();
             }
-            catch (Exception)
-            {
-                ArcLength.Text = "Error";
-            }
-
+            catch (Exception) { ArcLength.Text = "Error"; }
         }
 
         /// <summary>
@@ -48,12 +49,6 @@ namespace Graph_WinForms
         private void OkWeight_Click(object sender, EventArgs e)
         {
             ArcLength.Text = ArcLength.Text.Trim(' ');
-            /*if (!ApplicationMethods.IsANumber(ArcLength.Text, out double length) || length <= 0)
-            {
-                MessageBox.Show("Invalid number", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }*/
-            double length = new MathParserTK.MathParser().Parse(ArcLength.Text);
 
             if (string.IsNullOrEmpty(ArcName.Text))
             {
@@ -62,21 +57,35 @@ namespace Graph_WinForms
             }
 
             int selectedArc = ArcName.Items.IndexOf(ArcName.Text);
-            if (selectedArc != -1)
+            if (selectedArc == -1)
             {
+                MessageBox.Show("The edge doesn't exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                double length = new MathParserTK.MathParser().Parse(ArcLength.Text);
                 Digraph.Arcs[selectedArc] =
                     new Arc(Digraph.Arcs[selectedArc].StartVertex, Digraph.Arcs[selectedArc].EndVertex, length);
                 GridAdjacencyMatrix[Digraph.Arcs[selectedArc].EndVertex, Digraph.Arcs[selectedArc].StartVertex].Value = length;
-                return;
             }
-            MessageBox.Show("The edge doesn't exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            catch (Exception)
+            {
+                MessageBox.Show("Invalid value", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
+        #endregion
 
         private void GridThresholds_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
             if (int.TryParse(GridThresholds[e.ColumnIndex, e.RowIndex].Value.ToString(), out int th) && th >= 1)
+            {
                 Digraph.Thresholds[e.RowIndex] = th;
+                GridThresholds[e.ColumnIndex, e.RowIndex].Value = th;
+            }
             else
                 GridThresholds[e.ColumnIndex, e.RowIndex].Value = Digraph.Thresholds[e.RowIndex];
         }
@@ -85,7 +94,10 @@ namespace Graph_WinForms
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
             if (int.TryParse(GridRefractoryPeriods[e.ColumnIndex, e.RowIndex].Value.ToString(), out var p) && p >= 0)
+            {
                 Digraph.RefractoryPeriods[e.RowIndex] = p;
+                GridRefractoryPeriods[e.ColumnIndex, e.RowIndex].Value = p;
+            }
             else
                 GridRefractoryPeriods[e.ColumnIndex, e.RowIndex].Value = Digraph.RefractoryPeriods[e.RowIndex];
         }
@@ -94,15 +106,12 @@ namespace Graph_WinForms
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
             if (int.TryParse(GridInitialState[e.ColumnIndex, e.RowIndex].Value.ToString(), out var s) && s >= 0)
+            {
                 Digraph.State[e.RowIndex] = s;
+                GridInitialState[e.ColumnIndex, e.RowIndex].Value = s;
+            }
             else
                 GridInitialState[e.ColumnIndex, e.RowIndex].Value = Digraph.State[e.RowIndex];
-
-            if (SandpileTypeCheckBox.Checked)
-            {
-                graphDrawing.DrawTheWholeGraphSandpile(Digraph);
-                DrawingSurface.Image = graphDrawing.Image;
-            }
         }
     }
 }

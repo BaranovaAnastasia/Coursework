@@ -1,6 +1,6 @@
 ﻿namespace Graph_WinForms
 {
-    partial class Form2
+    partial class RandomDigraphGeneratorForm
     {
         /// <summary>
         /// Required designer variable.

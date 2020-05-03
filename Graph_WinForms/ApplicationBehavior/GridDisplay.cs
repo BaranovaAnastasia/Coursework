@@ -64,5 +64,20 @@ namespace Graph_WinForms
                 Brushes.Black,
                 new PointF(e.RowBounds.X + 5, e.RowBounds.Y + 2));
         }
+
+        private void SandpilePalette_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            e.PaintCells(e.ClipBounds, DataGridViewPaintParts.All);
+            e.PaintHeader(DataGridViewPaintParts.Background
+                          | DataGridViewPaintParts.Border
+                          | DataGridViewPaintParts.Focus
+                          | DataGridViewPaintParts.SelectionBackground);
+            e.Handled = true;
+
+            e.Graphics.DrawString(e.RowIndex.ToString(),
+                e.InheritedRowStyle.Font,
+                Brushes.Black,
+                new PointF(e.RowBounds.X + 2, e.RowBounds.Y + 2));
+        }
     }
 }

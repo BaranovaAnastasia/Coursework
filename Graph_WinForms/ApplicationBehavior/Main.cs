@@ -14,12 +14,16 @@ namespace Graph_WinForms
 
             graphDrawing = new GraphDrawing(DrawingSurface.Width, DrawingSurface.Height);
 
-            graphDrawing.RadiusChanged += (object sender, EventArgs e) =>
+            graphDrawing.RadiusChanged += (object sender, EventArgs args1) =>
             {
                 if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
-                else graphDrawing.DrawTheWholeGraphSandpile(Digraph);
+                else graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
                 DrawingSurface.Image = graphDrawing.Image;
             };
+
+            graphDrawing.SandpilePaletteChanged +=
+                (object IChannelSender, EventArgs args2) =>
+                    DigraphInformationDemonstration.DisplaySandpileColors(graphDrawing, SandpilePalette);
         }
 
         /// <summary>
@@ -52,7 +56,7 @@ namespace Graph_WinForms
             {
                 graphDrawing.Size = DrawingSurface.Size;
                 if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
-                else graphDrawing.DrawTheWholeGraphSandpile(Digraph);
+                else graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
                 DrawingSurface.Image = graphDrawing.Image;
             }
 
@@ -88,13 +92,20 @@ namespace Graph_WinForms
                     Digraph.Vertices[i] = new Vertex((int)(Digraph.Vertices[i].X * 0.9), (int)(Digraph.Vertices[i].Y * 0.9));
 
 
-            graphDrawing.DrawTheWholeGraph(Digraph);
+            if (isOnMovement && SandpileTypeCheckBox.Checked)
+                graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
+            else graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
         }
+
+        /// <summary>
+        /// Shifts focus to allow user to move the graph
+        /// </summary>
         private void Movement_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             if (e.Modifiers == Keys.Control)
                 Tools.Focus();
         }
+
     }
 }

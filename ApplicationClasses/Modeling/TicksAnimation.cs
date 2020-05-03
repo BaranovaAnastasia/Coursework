@@ -131,7 +131,7 @@ namespace ApplicationClasses.Modeling
             for (int i = count; i < timers.Count; i++)
                 timers[i].Start();
 
-            GraphDrawing.DrawTheWholeGraphSandpile(digraph, incidenceList, palette);
+            GraphDrawing.DrawTheWholeGraphSandpile(digraph, false);
             for (var i = 0; i < involvedArcs.Count; i++)
             {
                 if (timers[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
@@ -150,7 +150,7 @@ namespace ApplicationClasses.Modeling
                 GraphDrawing.DrawDot(point);
                 DrawingSurface.Image = GraphDrawing.Image;
             }
-            GraphDrawing.DrawVerticesSandpile(digraph, incidenceList, palette);
+            GraphDrawing.DrawVerticesSandpile(digraph);
             DrawingSurface.Image = GraphDrawing.Image;
 
             if (IsMovementEndedSandpile) MovementEnded?.Invoke(this, null);

@@ -17,17 +17,13 @@ namespace Graph_WinForms
         private void MovementToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (movement != null)
-                if (movement.IsActive || SandpilePanel.Visible) return;
-                else { movement.Go(); return; }
-            if (movement == null && isOnMovement) return;
+                if (movement.IsActive || SandpilePanel.Visible) return; //returns is modeling is active or the app is waiting for other user's action
+                else { movement.Go(); return; }                         //restarts movement if it's not over yet but not active at the moment
+            if (movement == null && isOnMovement) return;               //returns if movement is over but reset button wasn't clicked yet
 
-            if (!CheckConnectivity()) return;
+            if (!CheckConnectivity()) return;   //Connectivity check before movement modeling start
 
-            foreach (var control in Tools.Controls)
-                (control as Button).Enabled = false;
-            foreach (var page in AppParameters.Controls)
-                foreach (var control in (page as TabPage).Controls)
-                    if (!(control is Label)) (control as Control).Enabled = false;
+            ChangeWindowStateForMovementModeling(true);
 
             var type = BasicTypeCheckBox.Checked
                 ? MovementModelingType.Basic
@@ -49,7 +45,7 @@ namespace Graph_WinForms
 
             if (type == MovementModelingType.Sandpile)
             {
-                graphDrawing.DrawTheWholeGraphSandpile(Digraph);
+                graphDrawing.DrawTheWholeGraphSandpile(Digraph, true);
                 DrawingSurface.Image = graphDrawing.Image;
                 SandpilePanel.Visible = true;
                 SandpilePanel.BringToFront();
@@ -127,7 +123,7 @@ namespace Graph_WinForms
             TimeTextBox.Text = " Elapsed time, s:  " + (e.ElapsedTime / 1000.0);
 
         /// <summary>
-        /// Stops movement
+        /// Stops movement modeling
         /// </summary>
         private void StopToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -135,15 +131,17 @@ namespace Graph_WinForms
         }
 
         /// <summary>
-        /// Reset movement
+        /// Resets movement
         /// </summary>
         private void ResetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             StopToolStripMenuItem_Click(sender, e);
             isOnMovement = false;
-            if ((movement != null || SaveGifCheckBox.Checked)
+            //Saves gif if it's needed
+            if ((movement != null || SandpileTypeCheckBox.Checked)
                 && SaveGifCheckBox.Checked) SaveGif(sender, e);
 
+            //Resets graph parameters
             for (int i = 0; i < Digraph.State.Count; i++)
             {
                 Digraph.State[i] = int.Parse(GridInitialState[0, i].Value.ToString());
@@ -164,15 +162,38 @@ namespace Graph_WinForms
             SandpileLabel.Font = new Font("Segoe UI", 9, FontStyle.Underline);
             SandpilePanel.Size = new Size(SandpilePanel.Size.Width, 32);
 
-            foreach (var control in Tools.Controls)
-                (control as Button).Enabled = true;
-            CursorButton.Enabled = false;
-            foreach (var page in AppParameters.Controls)
-                foreach (var control in (page as TabPage).Controls)
-                    (control as Control).Enabled = true;
-            AnimationCheckBox.Enabled = false;
+            ChangeWindowStateForMovementModeling(false);
 
             GC.Collect();
+        }
+
+        /// <summary>
+        /// Clears selection from sandpile palette
+        /// </summary>
+        private void SandpilePalette_SelectionChanged(object sender, EventArgs e) =>
+            SandpilePalette.ClearSelection();
+
+        /// <summary>
+        /// Changes selected controls state
+        /// </summary>
+        /// <param name="state">true if modeling starts, false if it's over</param>
+        private void ChangeWindowStateForMovementModeling(bool state)
+        {
+            foreach (var control in Tools.Controls)
+                if (control is Button button) button.Enabled = !state;
+            if (!state) CursorButton.Enabled = false;
+            if (SandpileTypeCheckBox.Checked)
+            {
+                SandpilePalette.BringToFront();
+                SandpilePalette.Visible = state;
+            }
+
+            foreach (var page in AppParameters.Controls)
+                foreach (var control in (page as TabPage).Controls)
+                    if (control is DataGridView dgv) dgv.ReadOnly = state;
+                    else (control as Control).Enabled = !state;
+
+            if (!state) AnimationCheckBox.Enabled = false;
         }
     }
 }

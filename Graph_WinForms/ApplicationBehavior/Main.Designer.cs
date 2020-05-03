@@ -1,4 +1,5 @@
-﻿using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+﻿using System.Drawing;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Graph_WinForms
 {
@@ -32,6 +33,8 @@ namespace Graph_WinForms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Build = new System.Windows.Forms.Button();
             this.Open = new System.Windows.Forms.Button();
             this.TopMenu = new System.Windows.Forms.MenuStrip();
@@ -55,6 +58,7 @@ namespace Graph_WinForms
             this.DeleteButton = new System.Windows.Forms.Button();
             this.VertexButton = new System.Windows.Forms.Button();
             this.EdgeButton = new System.Windows.Forms.Button();
+            this.SandpilePalette = new System.Windows.Forms.DataGridView();
             this.OkLength = new System.Windows.Forms.Button();
             this.RandomGraph = new System.Windows.Forms.Button();
             this.GridThresholds = new System.Windows.Forms.DataGridView();
@@ -101,8 +105,10 @@ namespace Graph_WinForms
             this.ArcToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.EraserToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.ClearAllToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.RadiusValueLabel = new System.Windows.Forms.Label();
             this.TopMenu.SuspendLayout();
             this.Tools.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SandpilePalette)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridThresholds)).BeginInit();
             this.AppParameters.SuspendLayout();
             this.AdjacencyPage.SuspendLayout();
@@ -284,6 +290,7 @@ namespace Graph_WinForms
             this.Tools.Controls.Add(this.DeleteButton);
             this.Tools.Controls.Add(this.VertexButton);
             this.Tools.Controls.Add(this.EdgeButton);
+            this.Tools.Controls.Add(this.SandpilePalette);
             this.Tools.Location = new System.Drawing.Point(10, 50);
             this.Tools.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Tools.Name = "Tools";
@@ -371,6 +378,41 @@ namespace Graph_WinForms
             this.EdgeButton.UseVisualStyleBackColor = true;
             this.EdgeButton.EnabledChanged += new System.EventHandler(this.EdgeButton_EnabledChanged);
             this.EdgeButton.Click += new System.EventHandler(this.EdgeButton_Click);
+            // 
+            // SandpilePalette
+            // 
+            this.SandpilePalette.AllowUserToAddRows = false;
+            this.SandpilePalette.AllowUserToDeleteRows = false;
+            this.SandpilePalette.BackgroundColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 7F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.SandpilePalette.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.SandpilePalette.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.SandpilePalette.Location = new System.Drawing.Point(0, 0);
+            this.SandpilePalette.Name = "SandpilePalette";
+            this.SandpilePalette.ReadOnly = true;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 7F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.SandpilePalette.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.SandpilePalette.RowHeadersWidth = 25;
+            this.SandpilePalette.RowTemplate.Height = 28;
+            this.SandpilePalette.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.SandpilePalette.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.SandpilePalette.Size = new System.Drawing.Size(93, 433);
+            this.SandpilePalette.TabIndex = 36;
+            this.SandpilePalette.Visible = false;
+            this.SandpilePalette.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.SandpilePalette_RowPrePaint);
+            this.SandpilePalette.SelectionChanged += new System.EventHandler(this.SandpilePalette_SelectionChanged);
             // 
             // OkLength
             // 
@@ -868,7 +910,7 @@ namespace Graph_WinForms
             this.RadiusTrackBar.Minimum = 8;
             this.RadiusTrackBar.Name = "RadiusTrackBar";
             this.RadiusTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.RadiusTrackBar.Size = new System.Drawing.Size(69, 159);
+            this.RadiusTrackBar.Size = new System.Drawing.Size(69, 134);
             this.RadiusTrackBar.TabIndex = 32;
             this.RadiusTrackBar.Value = 8;
             this.RadiusTrackBar.Visible = false;
@@ -965,12 +1007,24 @@ namespace Graph_WinForms
             this.ClearAllToolTip.ReshowDelay = 100;
             this.ClearAllToolTip.ToolTipTitle = "Delete Digraph";
             // 
+            // RadiusValueLabel
+            // 
+            this.RadiusValueLabel.AutoSize = true;
+            this.RadiusValueLabel.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.RadiusValueLabel.Location = new System.Drawing.Point(7, 657);
+            this.RadiusValueLabel.Name = "RadiusValueLabel";
+            this.RadiusValueLabel.Size = new System.Drawing.Size(48, 21);
+            this.RadiusValueLabel.TabIndex = 36;
+            this.RadiusValueLabel.Text = "R = 8";
+            this.RadiusValueLabel.Visible = false;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1236, 697);
+            this.Controls.Add(this.RadiusValueLabel);
             this.Controls.Add(this.TimeTextBox);
             this.Controls.Add(this.TriangleLattice);
             this.Controls.Add(this.SquareLattice);
@@ -995,6 +1049,7 @@ namespace Graph_WinForms
             this.TopMenu.ResumeLayout(false);
             this.TopMenu.PerformLayout();
             this.Tools.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.SandpilePalette)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GridThresholds)).EndInit();
             this.AppParameters.ResumeLayout(false);
             this.AdjacencyPage.ResumeLayout(false);
@@ -1096,6 +1151,8 @@ namespace Graph_WinForms
         private System.Windows.Forms.ToolTip ArcToolTip;
         private System.Windows.Forms.ToolTip EraserToolTip;
         private System.Windows.Forms.ToolTip ClearAllToolTip;
+        private System.Windows.Forms.DataGridView SandpilePalette;
+        private System.Windows.Forms.Label RadiusValueLabel;
     }
 }
 

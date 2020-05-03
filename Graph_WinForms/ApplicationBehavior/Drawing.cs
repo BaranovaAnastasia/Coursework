@@ -280,7 +280,7 @@ namespace Graph_WinForms
                 {
                     if (Digraph.Stock.Contains(i)) Digraph.Stock.Remove(i);
                     else Digraph.Stock.Add(i);
-                    graphDrawing.DrawTheWholeGraphSandpile(Digraph);
+                    graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
                     DrawingSurface.Image = graphDrawing.Image;
                     return;
                 }

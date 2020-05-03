@@ -44,7 +44,7 @@ namespace ApplicationClasses.Modeling
 
             MovementEnded += (object sender, EventArgs e) =>
             {
-                if (type == MovementModelingType.Sandpile) GraphDrawing.DrawTheWholeGraphSandpile(digraph);
+                if (type == MovementModelingType.Sandpile) GraphDrawing.DrawTheWholeGraphSandpile(digraph, false);
                 if (type == MovementModelingType.Basic) GraphDrawing.DrawTheWholeGraph(digraph);
                 DrawingSurface.Image = GraphDrawing.Image;
             };
@@ -117,7 +117,6 @@ namespace ApplicationClasses.Modeling
             else
             {
                 mainTimer.Tick += TickSandpileAnimation;
-                palette = GetGradientColors(Color.Crimson, Color.CadetBlue, incidenceList.Max(arcs => arcs.Count));
             }
             if (Modes.Contains(MovementModelingMode.Chart))
             {
@@ -210,30 +209,6 @@ namespace ApplicationClasses.Modeling
                         return false;
                 return true;
             }
-        }
-
-
-        private Color[] palette;
-        private static Color[] GetGradientColors(Color start, Color end, int steps)
-        {
-            Color[] colors = new Color[steps];
-            colors[0] = start;
-            colors[steps - 1] = end;
-
-            double aStep = (end.A - start.A) / steps;
-            double rStep = (end.R - start.R) / steps;
-            double gStep = (end.G - start.G) / steps;
-            double bStep = (end.B - start.B) / steps;
-
-            for (int i = 1; i < steps - 1; i++)
-            {
-                var a = start.A + (aStep * i);
-                var r = start.R + (rStep * i);
-                var g = start.G + (gStep * i);
-                var b = start.B + (bStep * i);
-                colors[i] = Color.FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
-            }
-            return colors;
         }
     }
 

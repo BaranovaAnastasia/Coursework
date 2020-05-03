@@ -82,7 +82,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DigraphBuilding.cs" />
+    <Compile Include="AppHelpers.cs" />
     <Compile Include="Graph\Arc.cs" />
     <Compile Include="MathParser.cs" />
     <Compile Include="Modeling\MovementModeling.cs" />

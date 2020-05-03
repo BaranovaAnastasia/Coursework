@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Threading;
 using ApplicationClasses.Modeling;
 
 namespace ApplicationClasses
 {
     public class GraphDrawing : IDisposable
     {
+        #region Variables
+
         /// <summary>
         /// Image of the Graph
         /// </summary>
@@ -42,7 +43,6 @@ namespace ApplicationClasses
         /// Font for vertices titles
         /// </summary>
         private Font font = new Font("Segoe UI", 5);
-        private readonly Font sandpileFont = new Font("Segoe UI", 5);
 
         /// <summary>
         /// Brush for writing titles
@@ -53,11 +53,6 @@ namespace ApplicationClasses
         /// Drawing back color
         /// </summary>
         public Color BackColor { get; set; }
-
-        /// <summary>
-        /// Colors palette for sandpile drawing
-        /// </summary>
-        public Color[] SandpilePalette { get; set; }
 
         /// <summary>
         /// Vertices radius
@@ -86,6 +81,8 @@ namespace ApplicationClasses
         /// Occurs when the Vertices radius changes
         /// </summary>
         public event EventHandler RadiusChanged;
+
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the GraphDrawing class
@@ -186,27 +183,76 @@ namespace ApplicationClasses
                 DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1, verticesPen);
         }
 
+        /// <summary>
+        /// Draws a moving dot
+        /// </summary>
+        /// <param name="point"></param>
+        public void DrawDot(PointF point) =>
+            drawing.FillEllipse(Brushes.Black, point.X - 4, point.Y - 4, 8, 8);
+
+
         #region Sandpile
+
+        /// <summary>
+        /// Colors palette for sandpile drawing
+        /// </summary>
+        private Color[] sandpilePalette;
+
+        /// <summary>
+        /// Digraph incidence list
+        /// </summary>
+        private List<Arc>[] incidenceList;
+
+        /// <summary>
+        /// Number of dots in a vertex font
+        /// </summary>
+        private readonly Font sandpileFont = new Font("Segoe UI", 5);
+
+        /// <summary>
+        /// Occurs when the palette colors changes
+        /// </summary>
+        public event EventHandler SandpilePaletteChanged;
+
+        /// <summary>
+        /// Colors palette for sandpile drawing
+        /// </summary>
+        public Color[] SandpilePalette
+        {
+            get => sandpilePalette;
+            set
+            {
+                sandpilePalette = value;
+                SandpilePaletteChanged?.Invoke(value, new EventArgs());
+            }
+        }
 
         /// <summary>
         /// Draws the whole digraph using sandpile palette
         /// </summary>
-        public void DrawTheWholeGraphSandpile(Digraph digraph, List<Arc>[] incidenceList = null, Color[] palette = null)
+        /// <param name="digraph">Digraph</param>
+        /// <param name="update">Is it needed to update an incidence list and colors palette
+        /// (true if digraph has changed since the last call, or if the method is called for the first time)</param>
+        public void DrawTheWholeGraphSandpile(Digraph digraph, bool update)
         {
-            if (incidenceList == null) incidenceList = MovementModeling.GetIncidenceList(digraph);
-            if (palette != null) SandpilePalette = palette;
-            else if(SandpilePalette == null) 
-                SandpilePalette = GetGradientColors(Color.Crimson, Color.CadetBlue, incidenceList.Max(arcs => arcs.Count));
-            
-            ClearTheSurface();
-            for (int i = 0; i < SandpilePalette.Length; i++)
+            if (update)
             {
-                drawing.DrawLine(new Pen(SandpilePalette[i], 7f), Image.Width - 75, i * 10 + 40, Image.Width - 30, i * 10 + 40);
-                drawing.DrawString(i.ToString(), sandpileFont, brush, Image.Width - 10, i * 10 + 35);
+                incidenceList = MovementModeling.GetIncidenceList(digraph);
+                SandpilePalette = GetSandpilePalette(incidenceList.Max(arcs => arcs.Count));
             }
+
+            ClearTheSurface();
+
             digraph.Arcs.ForEach(arc =>
-                    DrawArc(digraph.Vertices[arc.StartVertex], digraph.Vertices[arc.EndVertex], arc));
-            for (int i = 0; i < digraph.Vertices.Count; ++i)
+                DrawArc(digraph.Vertices[arc.StartVertex], digraph.Vertices[arc.EndVertex], arc));
+            DrawVerticesSandpile(digraph);
+        }
+
+        /// <summary>
+        /// Draws all the digraph vertices in sandpile format
+        /// </summary>
+        public void DrawVerticesSandpile(Digraph digraph)
+        {
+            for (int i = 0; i < digraph.State.Count; i++)
             {
                 DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1,
                     new Pen(digraph.State[i] >= incidenceList[i].Count || digraph.Stock.Contains(i)
@@ -214,28 +260,14 @@ namespace ApplicationClasses
                         : SandpilePalette[digraph.State[i]], 4f));
                 if (digraph.Stock.Contains(i))
                     drawing.FillEllipse(Brushes.Black, (digraph.Vertices[i].X - R), (digraph.Vertices[i].Y - R), 2 * R, 2 * R);
-                drawing.DrawString(digraph.State[i].ToString(), sandpileFont, brush,
-                    digraph.Vertices[i].X + R, digraph.Vertices[i].Y - R - 5);
-            }
-        }
-
-        public void DrawDot(PointF point) => drawing.FillEllipse(Brushes.Black, point.X - 4, point.Y - 4, 8, 8);
-
-        public void DrawVerticesSandpile(Digraph digraph, List<Arc>[] incidenceList, Color[] palette)
-        {
-            for (int i = 0; i < digraph.State.Count; i++)
-            {
-                DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1,
-                    new Pen(digraph.State[i] >= incidenceList[i].Count || digraph.Stock.Contains(i)
-                        ? Color.Black
-                        : palette[digraph.State[i]], 4f));
-                if (digraph.Stock.Contains(i))
-                    drawing.FillEllipse(Brushes.Black, (digraph.Vertices[i].X - R), (digraph.Vertices[i].Y - R), 2 * R, 2 * R);
+                else
+                    drawing.DrawString($"({digraph.State[i]})", sandpileFont, brush,
+                        digraph.Vertices[i].X + R, digraph.Vertices[i].Y - R - 5);
             }
         }
 
         /// <summary>
-        /// Creates a gradient colors palette for sandpile graph drawing
+        /// Returns a gradient colors palette
         /// </summary>
         /// <param name="start">Start color</param>
         /// <param name="end">End color</param>
@@ -243,8 +275,8 @@ namespace ApplicationClasses
         private static Color[] GetGradientColors(Color start, Color end, int steps)
         {
             Color[] colors = new Color[steps];
-            colors[0] = start;
             colors[steps - 1] = end;
+            colors[0] = start;
 
             double aStep = (end.A - start.A) / steps;
             double rStep = (end.R - start.R) / steps;
@@ -260,6 +292,73 @@ namespace ApplicationClasses
                 colors[i] = Color.FromArgb((byte)a, (byte)r, (byte)g, (byte)b);
             }
             return colors;
+        }
+
+        /// <summary>
+        /// Returns colors palette for sandpile drawing
+        /// </summary>
+        /// <param name="paletteSize">Number of colors in palette</param>
+        private Color[] GetSandpilePalette(int paletteSize)
+        {
+            List<Color> colors = new List<Color>(paletteSize);
+            int steps = paletteSize > 5 ? 5 : paletteSize;
+            int stepLength = paletteSize / steps;
+            int currStep = stepLength;
+            for (int i = 0; i < steps; i++)
+            {
+                switch (i)
+                {
+                    case 0:
+                        colors.AddRange(GetGradientColors(Color.Red, Color.Yellow,
+                            steps * stepLength < paletteSize
+                            ? stepLength + 1 : stepLength));
+                        break;
+                    case 1:
+                        if (stepLength > 1 || steps * stepLength < paletteSize && stepLength > 0)
+                        {
+                            colors.Remove(Color.Yellow);
+                            currStep++;
+                        }
+                        colors.AddRange(GetGradientColors(Color.Yellow, Color.Green,
+                            steps * stepLength < paletteSize && paletteSize % steps * stepLength >= 2
+                                ? currStep + 1 : currStep));
+                        currStep = stepLength;
+                        break;
+                    case 2:
+                        if (stepLength > 1 || steps * stepLength < paletteSize && steps * stepLength % paletteSize >= 2 && stepLength > 0)
+                        {
+                            colors.Remove(Color.Green);
+                            currStep++;
+                        }
+                        colors.AddRange(GetGradientColors(Color.Green, Color.LightSkyBlue,
+                            steps * stepLength < paletteSize && paletteSize % steps * stepLength >= 3
+                                ? currStep + 1 : currStep));
+                        currStep = stepLength;
+                        break;
+                    case 3:
+                        if (stepLength > 1 || steps * stepLength < paletteSize && steps * stepLength % paletteSize >= 3 && stepLength > 0)
+                        {
+                            colors.Remove(Color.LightSkyBlue);
+                            currStep++;
+                        }
+                        colors.AddRange(GetGradientColors(Color.LightSkyBlue, Color.Blue,
+                            steps * stepLength < paletteSize && paletteSize % steps * stepLength >= 4
+                                ? currStep + 1 : currStep));
+                        currStep = stepLength;
+                        break;
+                    case 4:
+                        if (stepLength > 1 || steps * stepLength < paletteSize && steps * stepLength % paletteSize >= 4 && stepLength > 0)
+                        {
+                            colors.Remove(Color.Blue);
+                            currStep++;
+                        }
+                        colors.AddRange(GetGradientColors(Color.Blue, Color.DeepPink, currStep));
+                        currStep = stepLength;
+                        break;
+                }
+            }
+
+            return colors.ToArray();
         }
 
         #endregion

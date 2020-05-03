@@ -9,7 +9,7 @@ namespace Graph_WinForms
         #region Click handlers for drawing tools buttons
 
         /// <summary>
-        /// Disenables CursorButton and enables other tools buttons
+        /// Disables CursorButton and enables other tools buttons
         /// </summary>
         private void CursorButton_Click(object sender, EventArgs e)
         {
@@ -20,7 +20,7 @@ namespace Graph_WinForms
         }
 
         /// <summary>
-        /// Disenables VertexButton and enables other tools buttons
+        /// Disables VertexButton and enables other tools buttons
         /// </summary>
         private void VertexButton_Click(object sender, EventArgs e)
         {
@@ -31,7 +31,7 @@ namespace Graph_WinForms
         }
 
         /// <summary>
-        /// Disenables EdgeButton and enables other tools buttons
+        /// Disables EdgeButton and enables other tools buttons
         /// </summary>
         private void EdgeButton_Click(object sender, EventArgs e)
         {
@@ -42,7 +42,7 @@ namespace Graph_WinForms
         }
 
         /// <summary>
-        /// Disenables DeleteButton and enables other tools buttons
+        /// Disables DeleteButton and enables other tools buttons
         /// </summary>
         private void DeleteButton_Click(object sender, EventArgs e)
         {
@@ -71,8 +71,11 @@ namespace Graph_WinForms
         /// <summary>
         /// Changes vertices radius
         /// </summary>
-        private void RadiusTrackBar_ValueChanged(object sender, EventArgs e) =>
+        private void RadiusTrackBar_ValueChanged(object sender, EventArgs e)
+        {
             graphDrawing.R = RadiusTrackBar.Value;
+            RadiusValueLabel.Text = "R = " + RadiusTrackBar.Value;
+        }
 
 
         #region EnabledChanged handlers
@@ -83,6 +86,10 @@ namespace Graph_WinForms
             {
                 CursorButton.Size = new Size(75, 75);
                 CursorButton.Location = new Point(CursorButton.Location.X - 5, CursorButton.Location.Y - 5);
+                IsPressed = false;
+                MovingVertexIndex = -1;
+                graphDrawing.DrawTheWholeGraph(Digraph);
+                DrawingSurface.Image = graphDrawing.Image;
                 return;
             }
             CursorButton.Size = new Size(65, 65);
@@ -107,6 +114,9 @@ namespace Graph_WinForms
             {
                 EdgeButton.Size = new Size(75, 75);
                 EdgeButton.Location = new Point(EdgeButton.Location.X - 5, EdgeButton.Location.Y - 5);
+                vStart = vEnd = -1;
+                graphDrawing.DrawTheWholeGraph(Digraph);
+                DrawingSurface.Image = graphDrawing.Image;
                 return;
             }
             EdgeButton.Size = new Size(65, 65);

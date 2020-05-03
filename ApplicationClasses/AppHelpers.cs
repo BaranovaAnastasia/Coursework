@@ -79,13 +79,16 @@ namespace ApplicationClasses
         }
 
         #endregion
+    }
 
+    public static class DigraphInformationDemonstration
+    {
         #region DataGridView information display
 
         /// <summary>
-        /// Prints Adjacency Matrix in DataGridView
+        /// Shows Adjacency Matrix in DataGridView
         /// </summary>
-        public static void PrintGraphAdjacencyInfo(double[,] adjacencyMatrix, DataGridView dataGridView)
+        public static void DisplayGraphAdjacencyInfo(double[,] adjacencyMatrix, DataGridView dataGridView)
         {
             dataGridView.Rows.Clear();
             dataGridView.Columns.Clear();
@@ -106,9 +109,9 @@ namespace ApplicationClasses
         }
 
         /// <summary>
-        /// Prints graph thresholds in DataGridView
+        /// Shows graph thresholds in DataGridView
         /// </summary>
-        public static void PrintGraphThresholds(Digraph digraph, DataGridView dataGridView)
+        public static void DisplayGraphThresholds(Digraph digraph, DataGridView dataGridView)
         {
             dataGridView.Rows.Clear();
             dataGridView.Columns.Clear();
@@ -128,9 +131,9 @@ namespace ApplicationClasses
         }
 
         /// <summary>
-        /// Prints graph refractory periods in DataGridView
+        /// Shows graph refractory periods in DataGridView
         /// </summary>
-        public static void PrintGraphRefractoryPeriods(Digraph digraph, DataGridView dataGridView)
+        public static void DisplayGraphRefractoryPeriods(Digraph digraph, DataGridView dataGridView)
         {
             dataGridView.Rows.Clear();
             dataGridView.Columns.Clear();
@@ -150,9 +153,9 @@ namespace ApplicationClasses
         }
 
         /// <summary>
-        /// Prints graph state in DataGridView
+        /// Shows graph state in DataGridView
         /// </summary>
-        public static void PrintGraphInitialState(Digraph digraph, DataGridView dataGridView)
+        public static void DisplayGraphInitialState(Digraph digraph, DataGridView dataGridView)
         {
             dataGridView.Rows.Clear();
             dataGridView.Columns.Clear();
@@ -169,6 +172,29 @@ namespace ApplicationClasses
                 dataGridView.Rows[i].Height = 30;
                 dataGridView[0, i].Value = digraph.State[i];
             }
+        }
+
+        /// <summary>
+        /// Shows sandpile colors palette in DataGridView
+        /// </summary>
+        public static void DisplaySandpileColors(GraphDrawing graphDrawing, DataGridView dataGridView)
+        {
+            dataGridView.Rows.Clear();
+            dataGridView.Columns.Clear();
+            dataGridView.Columns.Add("colors", "Color");
+            dataGridView.Columns[0].FillWeight = 1;
+            dataGridView.Columns[0].Width = 70;
+            dataGridView.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+
+            dataGridView.Rows.Add(graphDrawing.SandpilePalette.Length);
+            for (int i = 0; i < graphDrawing.SandpilePalette.Length; i++)
+            {
+                dataGridView.Rows[i].HeaderCell.Value = i.ToString();
+                dataGridView.Rows[i].Height = 25;
+                dataGridView.Rows[i].Cells[0].Style.BackColor = graphDrawing.SandpilePalette[i];
+            }
+
+            dataGridView.Visible = true;
         }
 
         #endregion

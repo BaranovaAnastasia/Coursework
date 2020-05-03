@@ -14,6 +14,7 @@ namespace Graph_WinForms
         /// </summary>
         private void Build_Click(object sender, EventArgs e)
         {
+            RefreshVariables();
             UpdateDigraphInfo();
             ChangeMainMenuState(false);
             ChangeDrawingElementsState(true);
@@ -47,6 +48,8 @@ namespace Graph_WinForms
                 using (var openDialog = DigraphOpenFileDialog())
                 {
                     if (openDialog.ShowDialog() != DialogResult.OK) return;
+
+                    RefreshVariables();
                     using (FileStream fs = new FileStream(openDialog.FileName, FileMode.Open))
                     {
                         XmlSerializer formatter = new XmlSerializer(typeof(Digraph));
@@ -123,6 +126,7 @@ namespace Graph_WinForms
 
             RadiusLabel.Visible = state;
             RadiusTrackBar.Visible = state;
+            RadiusValueLabel.Visible = state;
 
             SandpilePanel.Size = new Size(358, 32);
         }
@@ -150,10 +154,10 @@ namespace Graph_WinForms
             ArcName.Text = String.Empty;
             ArcLength.Text = String.Empty;
             Digraph.Arcs.ForEach(arc => ArcName.Items.Add((arc.StartVertex + 1) + "-" + (arc.EndVertex + 1)));
-            DigraphBuilding.PrintGraphAdjacencyInfo(Digraph.AdjacencyMatrix, GridAdjacencyMatrix);
-            DigraphBuilding.PrintGraphThresholds(Digraph, GridThresholds);
-            DigraphBuilding.PrintGraphRefractoryPeriods(Digraph, GridRefractoryPeriods);
-            DigraphBuilding.PrintGraphInitialState(Digraph, GridInitialState);
+            DigraphInformationDemonstration.DisplayGraphAdjacencyInfo(Digraph.AdjacencyMatrix, GridAdjacencyMatrix);
+            DigraphInformationDemonstration.DisplayGraphThresholds(Digraph, GridThresholds);
+            DigraphInformationDemonstration.DisplayGraphRefractoryPeriods(Digraph, GridRefractoryPeriods);
+            DigraphInformationDemonstration.DisplayGraphInitialState(Digraph, GridInitialState);
         }
 
         /// <summary>
@@ -168,17 +172,19 @@ namespace Graph_WinForms
 
             graphDrawing.ClearTheSurface();
             DrawingSurface.Image = graphDrawing.Image;
+
             ArcName.Items.Clear();
             ArcName.Text = String.Empty;
+            ArcLength.Text = String.Empty;
             GridAdjacencyMatrix.Columns.Clear();
             GridThresholds.Columns.Clear();
             GridRefractoryPeriods.Columns.Clear();
             GridInitialState.Columns.Clear();
 
-            vStart = vEnd = -1;
-            IsPressed = false;
-            MovingVertexIndex = -1;
-            ArcLength.Text = String.Empty;
+            BasicTypeCheckBox.Checked = true;
+            ChartCheckBox.Checked = SaveGifCheckBox.Checked = SandpileChartType2.Checked = false;
+            SpeedNumeric.Value = 1;
+            RadiusTrackBar.Value = 8;
         }
 
         #endregion

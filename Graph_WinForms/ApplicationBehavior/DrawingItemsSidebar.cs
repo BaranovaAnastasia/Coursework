@@ -86,8 +86,8 @@ namespace Graph_WinForms
             {
                 CursorButton.Size = new Size(75, 75);
                 CursorButton.Location = new Point(CursorButton.Location.X - 5, CursorButton.Location.Y - 5);
-                IsPressed = false;
-                MovingVertexIndex = -1;
+                isPressed = false;
+                movingVertexIndex = -1;
                 graphDrawing.DrawTheWholeGraph(Digraph);
                 DrawingSurface.Image = graphDrawing.Image;
                 return;

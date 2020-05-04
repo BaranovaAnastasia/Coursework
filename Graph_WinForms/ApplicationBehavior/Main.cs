@@ -5,7 +5,7 @@ using ApplicationClasses;
 
 namespace Graph_WinForms
 {
-    public partial class MainWindow : Form
+    public partial class MainWindow : Form, IDisposable
     {
         public MainWindow()
         {
@@ -22,7 +22,7 @@ namespace Graph_WinForms
             };
 
             graphDrawing.SandpilePaletteChanged +=
-                (object IChannelSender, EventArgs args2) =>
+                (object sender, EventArgs e) =>
                     DigraphInformationDemonstration.DisplaySandpileColors(graphDrawing, SandpilePalette);
         }
 
@@ -46,9 +46,10 @@ namespace Graph_WinForms
                      Size.Height - 120);
 
             AppParameters.Size = new Size(AppParameters.Width, DrawingSurface.Height);
-            foreach (var page in AppParameters.Controls)
-                foreach (Control control in (page as TabPage).Controls)
-                    if (control is DataGridView) control.Size = new Size(control.Width, AppParameters.Height - 60);
+            GridParameters.Size =
+                new Size(GridParameters.Width, AppParameters.Height - ParametersLegendLabel.Height - 60);
+            ParametersLegendLabel.Location =
+                new Point(ParametersLegendLabel.Location.X, AppParameters.Height - ParametersLegendLabel.Height - 15);
 
             GridAdjacencyMatrix.Size = new Size(AdjacencyPage.Width - 20, AdjacencyPage.Height - GridAdjacencyMatrix.Location.Y - 10);
 
@@ -107,5 +108,9 @@ namespace Graph_WinForms
                 Tools.Focus();
         }
 
+        public new void Dispose()
+        {
+            graphDrawing.Dispose();
+        }
     }
 }

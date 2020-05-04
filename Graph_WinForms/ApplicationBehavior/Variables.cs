@@ -20,16 +20,16 @@ namespace Graph_WinForms
         // Indices of the vertices selected for edge drawing
         private int vStart = -1; private int vEnd = -1;
         // Indicator showing whether the mouse button is pressed
-        private bool IsPressed = false;
+        private bool isPressed = false;
         // Index of the moving vertex
-        private int MovingVertexIndex = -1;
+        private int movingVertexIndex = -1;
         // Moving vertex itself
-        private Vertex MovingVetrex;
+        private Vertex movingVertex;
         // Time during which the movement occurred
-        private DateTime Ticks;
+        private DateTime ticks;
 
         /// <summary>
-        /// Models dots movenemt on a digraph
+        /// Models dots movement on a digraph
         /// </summary>
         private MovementModeling movement = null;
 

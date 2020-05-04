@@ -57,9 +57,6 @@
     <Compile Include="ApplicationBehavior\GridBehavior.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ApplicationBehavior\GridDisplay.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="ApplicationBehavior\MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>

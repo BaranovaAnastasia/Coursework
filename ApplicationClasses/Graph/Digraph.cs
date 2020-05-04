@@ -55,7 +55,6 @@ namespace ApplicationClasses
             Thresholds = new List<int>();
             RefractoryPeriods = new List<int>();
             State = new List<int>();
-            TimeTillTheEndOfRefractoryPeriod = new List<Timer>();
             Stock = new List<int>();
         }
 
@@ -81,13 +80,6 @@ namespace ApplicationClasses
             Thresholds.Add(threshold);
             RefractoryPeriods.Add(refractoryPeriod);
             State.Add(initialState);
-            if (refractoryPeriod > 0)
-            {
-                TimeTillTheEndOfRefractoryPeriod.Add(new Timer() { Interval = refractoryPeriod });
-                TimeTillTheEndOfRefractoryPeriod[TimeTillTheEndOfRefractoryPeriod.Count - 1].Tick +=
-                    (object sender, EventArgs e) => TimeTillTheEndOfRefractoryPeriod[TimeTillTheEndOfRefractoryPeriod.Count - 1].Stop();
-            }
-            else TimeTillTheEndOfRefractoryPeriod.Add(null);
         }
 
         /// <summary>
@@ -108,7 +100,6 @@ namespace ApplicationClasses
             Thresholds.RemoveAt(index);
             RefractoryPeriods.RemoveAt(index);
             State.RemoveAt(index);
-            TimeTillTheEndOfRefractoryPeriod.RemoveAt(index);
         }
 
         /// <summary>
@@ -140,7 +131,7 @@ namespace ApplicationClasses
         }
 
         /// <summary>
-        /// Resets digraph sink (sanpile modeling)
+        /// Resets digraph sink (sandpile modeling)
         /// </summary>
         public void ResetStock() => Stock = new List<int>();
 
@@ -149,15 +140,17 @@ namespace ApplicationClasses
         /// </summary>
         public void SetTimeTillTheEndOfRefractoryPeriod()
         {
-            TimeTillTheEndOfRefractoryPeriod = new List<Timer>();
-            for (int i = 0; i < RefractoryPeriods.Count; i++)
+            TimeTillTheEndOfRefractoryPeriod = new List<Timer>(RefractoryPeriods.Count);
+            for (int i = 0; i < RefractoryPeriods.Count; ++i)
+            {
                 if (RefractoryPeriods[i] > 0)
                 {
                     TimeTillTheEndOfRefractoryPeriod.Add(new Timer() { Interval = RefractoryPeriods[i] });
                     TimeTillTheEndOfRefractoryPeriod[i].Tick +=
-                        (object sender, EventArgs e) => TimeTillTheEndOfRefractoryPeriod[i].Stop();
+                        (object sender, EventArgs e) => (sender as Timer).Stop();
                 }
                 else TimeTillTheEndOfRefractoryPeriod.Add(null);
+            }
         }
 
         /// <summary>

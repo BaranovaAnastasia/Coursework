@@ -53,7 +53,7 @@ namespace Graph_WinForms
             }
 
             if (SaveGifCheckBox.Checked) movement.MovementEnded += SaveGif;
-            movement.MovementEnded += (object _sender, EventArgs _e) => movement = null;
+            movement.MovementEnded += (object s, EventArgs ea) => movement = null;
 
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();
@@ -144,7 +144,7 @@ namespace Graph_WinForms
             //Resets graph parameters
             for (int i = 0; i < Digraph.State.Count; i++)
             {
-                Digraph.State[i] = int.Parse(GridInitialState[0, i].Value.ToString());
+                Digraph.State[i] = int.Parse(GridParameters[2, i].Value.ToString());
                 Digraph.TimeTillTheEndOfRefractoryPeriod[i]?.Stop();
             }
             Digraph.ResetStock();

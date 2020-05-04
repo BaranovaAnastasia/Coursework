@@ -57,8 +57,6 @@ namespace Graph_WinForms
                     }
                 }
 
-                Digraph.SetTimeTillTheEndOfRefractoryPeriod();
-
                 UpdateDigraphInfo();
                 ChangeMainMenuState(false);
                 ChangeDrawingElementsState(true);
@@ -157,9 +155,7 @@ namespace Graph_WinForms
             ArcLength.Text = String.Empty;
             Digraph.Arcs.ForEach(arc => ArcName.Items.Add((arc.StartVertex + 1) + "-" + (arc.EndVertex + 1)));
             DigraphInformationDemonstration.DisplayGraphAdjacencyInfo(Digraph.AdjacencyMatrix, GridAdjacencyMatrix);
-            DigraphInformationDemonstration.DisplayGraphThresholds(Digraph, GridThresholds);
-            DigraphInformationDemonstration.DisplayGraphRefractoryPeriods(Digraph, GridRefractoryPeriods);
-            DigraphInformationDemonstration.DisplayGraphInitialState(Digraph, GridInitialState);
+            DigraphInformationDemonstration.DisplayGraphParameters(Digraph, GridParameters);
         }
 
         /// <summary>
@@ -179,9 +175,7 @@ namespace Graph_WinForms
             ArcName.Text = String.Empty;
             ArcLength.Text = String.Empty;
             GridAdjacencyMatrix.Columns.Clear();
-            GridThresholds.Columns.Clear();
-            GridRefractoryPeriods.Columns.Clear();
-            GridInitialState.Columns.Clear();
+            GridParameters.Columns.Clear();
 
             BasicTypeCheckBox.Checked = true;
             ChartCheckBox.Checked = SaveGifCheckBox.Checked = SandpileChartType2.Checked = false;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using ApplicationClasses;
 
@@ -78,47 +79,86 @@ namespace Graph_WinForms
 
         #endregion
 
-        private void GridThresholds_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private void GridParameters_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-            if (int.TryParse(GridThresholds[e.ColumnIndex, e.RowIndex].Value.ToString(), out int th) && th >= 1)
+            if (int.TryParse(GridParameters[e.ColumnIndex, e.RowIndex].Value.ToString(), out int value) && value >= 1)
             {
-                Digraph.Thresholds[e.RowIndex] = th;
-                GridThresholds[e.ColumnIndex, e.RowIndex].Value = th;
-            }
-            else
-                GridThresholds[e.ColumnIndex, e.RowIndex].Value = Digraph.Thresholds[e.RowIndex];
-        }
-
-        private void GridRefractoryPeriods_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-            if (int.TryParse(GridRefractoryPeriods[e.ColumnIndex, e.RowIndex].Value.ToString(), out var p) && p >= 0)
-            {
-                Digraph.RefractoryPeriods[e.RowIndex] = p;
-                GridRefractoryPeriods[e.ColumnIndex, e.RowIndex].Value = p;
-                if (p > 0)
+                switch (e.ColumnIndex)
                 {
-                    Digraph.TimeTillTheEndOfRefractoryPeriod[e.RowIndex] = new Timer() {Interval = p};
-                    Digraph.TimeTillTheEndOfRefractoryPeriod[e.RowIndex].Tick +=
-                        (object s, EventArgs ea) => Digraph.TimeTillTheEndOfRefractoryPeriod[e.RowIndex].Stop();
+                    case 0: Digraph.Thresholds[e.RowIndex] = value; break;
+                    case 1: Digraph.RefractoryPeriods[e.RowIndex] = value; break;
+                    case 2: Digraph.State[e.RowIndex] = value; break;
                 }
-                else Digraph.TimeTillTheEndOfRefractoryPeriod[e.RowIndex] = null;
+                GridParameters[e.ColumnIndex, e.RowIndex].Value = value;
             }
             else
-                GridRefractoryPeriods[e.ColumnIndex, e.RowIndex].Value = Digraph.RefractoryPeriods[e.RowIndex];
+                GridParameters[e.ColumnIndex, e.RowIndex].Value = Digraph.Thresholds[e.RowIndex];
         }
 
-        private void GridInitialState_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private void GridParameters_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-            if (int.TryParse(GridInitialState[e.ColumnIndex, e.RowIndex].Value.ToString(), out var s) && s >= 0)
-            {
-                Digraph.State[e.RowIndex] = s;
-                GridInitialState[e.ColumnIndex, e.RowIndex].Value = s;
-            }
-            else
-                GridInitialState[e.ColumnIndex, e.RowIndex].Value = Digraph.State[e.RowIndex];
+            if (GridParameters.RowCount == 0) return;
+            if ((GridParameters.RowCount + 1) * GridParameters.Rows[0].Height > GridParameters.Height)
+                for (int i = 0; i < GridParameters.ColumnCount; i++)
+                    GridParameters.Columns[i].Width = 61;
         }
+
+        private void GridParameters_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            if (GridParameters.RowCount == 0) return;
+            if ((GridParameters.RowCount + 1) * GridParameters.Rows[0].Height <= GridParameters.Height)
+                for (int i = 0; i < GridParameters.ColumnCount; i++)
+                    GridParameters.Columns[i].Width = 70;
+        }
+
+        #region Displaying
+
+        private void GridAdjacencyMatrix_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            e.PaintCells(e.ClipBounds, DataGridViewPaintParts.All);
+            e.PaintHeader(DataGridViewPaintParts.Background
+                          | DataGridViewPaintParts.Border
+                          | DataGridViewPaintParts.Focus
+                          | DataGridViewPaintParts.SelectionBackground);
+            e.Handled = true;
+
+            e.Graphics.DrawString((e.RowIndex + 1).ToString(),
+                e.InheritedRowStyle.Font,
+                Brushes.Black,
+                new PointF(e.RowBounds.X + 5, e.RowBounds.Y + 2));
+        }
+
+        private void GridParameters_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            e.PaintCells(e.ClipBounds, DataGridViewPaintParts.All);
+            e.PaintHeader(DataGridViewPaintParts.Background
+                          | DataGridViewPaintParts.Border
+                          | DataGridViewPaintParts.Focus
+                          | DataGridViewPaintParts.SelectionBackground);
+            e.Handled = true;
+
+            e.Graphics.DrawString((e.RowIndex + 1).ToString(),
+                e.InheritedRowStyle.Font,
+                Brushes.Black,
+                new PointF(e.RowBounds.X + 3, e.RowBounds.Y + 1));
+        }
+
+        private void SandpilePalette_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
+        {
+            e.PaintCells(e.ClipBounds, DataGridViewPaintParts.All);
+            e.PaintHeader(DataGridViewPaintParts.Background
+                          | DataGridViewPaintParts.Border
+                          | DataGridViewPaintParts.Focus
+                          | DataGridViewPaintParts.SelectionBackground);
+            e.Handled = true;
+
+            e.Graphics.DrawString(e.RowIndex.ToString(),
+                e.InheritedRowStyle.Font,
+                Brushes.Black,
+                new PointF(e.RowBounds.X + 2, e.RowBounds.Y + 2));
+        }
+
+        #endregion
     }
 }

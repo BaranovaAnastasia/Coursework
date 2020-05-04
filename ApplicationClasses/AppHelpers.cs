@@ -109,16 +109,21 @@ namespace ApplicationClasses
         }
 
         /// <summary>
-        /// Shows graph thresholds in DataGridView
+        /// Shows all the digraph parameters in one DataGridView
         /// </summary>
-        public static void DisplayGraphThresholds(Digraph digraph, DataGridView dataGridView)
+        public static void DisplayGraphParameters(Digraph digraph, DataGridView dataGridView)
         {
             dataGridView.Rows.Clear();
             dataGridView.Columns.Clear();
             dataGridView.Columns.Add(String.Empty, "th");
-            dataGridView.Columns[0].FillWeight = 1;
-            dataGridView.Columns[0].Width = 95;
-            dataGridView.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridView.Columns.Add(String.Empty, "p");
+            dataGridView.Columns.Add(String.Empty, "s");
+            for(int i = 0; i < dataGridView.ColumnCount; ++i)
+            {
+                dataGridView.Columns[i].FillWeight = 1;
+                dataGridView.Columns[i].Width = 70;
+                dataGridView.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
             if (digraph.Vertices.Count <= 0) return;
 
             dataGridView.Rows.Add(digraph.Vertices.Count);
@@ -127,50 +132,8 @@ namespace ApplicationClasses
                 dataGridView.Rows[i].HeaderCell.Value = (i + 1).ToString();
                 dataGridView.Rows[i].Height = 30;
                 dataGridView[0, i].Value = digraph.Thresholds[i];
-            }
-        }
-
-        /// <summary>
-        /// Shows graph refractory periods in DataGridView
-        /// </summary>
-        public static void DisplayGraphRefractoryPeriods(Digraph digraph, DataGridView dataGridView)
-        {
-            dataGridView.Rows.Clear();
-            dataGridView.Columns.Clear();
-            dataGridView.Columns.Add(String.Empty, "p, ms");
-            dataGridView.Columns[0].FillWeight = 1;
-            dataGridView.Columns[0].Width = 95;
-            dataGridView.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
-            if (digraph.Vertices.Count <= 0) return;
-
-            dataGridView.Rows.Add(digraph.Vertices.Count);
-            for (int i = 0; i < digraph.Vertices.Count; i++)
-            {
-                dataGridView.Rows[i].HeaderCell.Value = (i + 1).ToString();
-                dataGridView.Rows[i].Height = 30;
-                dataGridView[0, i].Value = digraph.RefractoryPeriods[i];
-            }
-        }
-
-        /// <summary>
-        /// Shows graph state in DataGridView
-        /// </summary>
-        public static void DisplayGraphInitialState(Digraph digraph, DataGridView dataGridView)
-        {
-            dataGridView.Rows.Clear();
-            dataGridView.Columns.Clear();
-            dataGridView.Columns.Add(String.Empty, "s");
-            dataGridView.Columns[0].FillWeight = 1;
-            dataGridView.Columns[0].Width = 95;
-            dataGridView.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
-            if (digraph.Vertices.Count <= 0) return;
-
-            dataGridView.Rows.Add(digraph.Vertices.Count);
-            for (int i = 0; i < digraph.Vertices.Count; i++)
-            {
-                dataGridView.Rows[i].HeaderCell.Value = (i + 1).ToString();
-                dataGridView.Rows[i].Height = 30;
-                dataGridView[0, i].Value = digraph.State[i];
+                dataGridView[1, i].Value = digraph.RefractoryPeriods[i];
+                dataGridView[2, i].Value = digraph.State[i];
             }
         }
 

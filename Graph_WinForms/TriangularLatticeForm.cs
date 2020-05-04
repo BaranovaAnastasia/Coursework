@@ -56,8 +56,8 @@ namespace Graph_WinForms
             int step = (int)((Math.Min(width, height)) * 1.0 / Math.Max((int)Xvalue.Value - 0.5, (int)Yvalue.Value - 1));
 
             //Current vertex coordinates
-            int x = (int)((width - step * ((int)Xvalue.Value - 0.5)) / 2.0 + step / 2);
-            Point p = new Point(x, (height - 100 - step * ((int)Yvalue.Value - 1)) / 2 + 75);
+            var x = (int)((width - step * ((int)Xvalue.Value - 0.5)) / 2.0 + step / 2);
+            var p = new Point(x, (height - 100 - step * ((int)Yvalue.Value - 1)) / 2 + 75);
 
             for (int i = 0; i < Yvalue.Value; i++, p.Y += (int)(step * 0.866),
                  p.X = i % 2 == 0 ? x : x - step / 2)

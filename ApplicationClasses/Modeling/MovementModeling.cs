@@ -116,6 +116,8 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         public void StartMovementModeling()
         {
+            digraph.SetTimeTillTheEndOfRefractoryPeriod();
+
             // Fill incidence list
             incidenceList = GetIncidenceList(digraph);
 

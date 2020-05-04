@@ -29,9 +29,7 @@ namespace Graph_WinForms
                 graphDrawing.DrawVertex(e.X, e.Y, Digraph.Vertices.Count, new Pen(Color.MidnightBlue, 2.5f));
                 DrawingSurface.Image = graphDrawing.Image;
                 AddVertexToGridAdjacencyMatrix();
-                AddVertexToGridThresholds();
-                AddVertexToGridRefractoryPeriods();
-                AddVertexToGridInitialState();
+                AddVertexToGridParameters();
                 return;
             }
 
@@ -62,9 +60,7 @@ namespace Graph_WinForms
             if (DigraphBuilding.TryToDeleteVertexAt(e.X, e.Y, Digraph, graphDrawing.R, out int i))
             {
                 RemoveVertexFromGridAdjacencyMatrix(i);
-                RemoveVertexFromGridThresholds(i);
-                RemoveVertexFromGridRefractoryPeriods(i);
-                RemoveVertexFromGridInitialState(i);
+                RemoveVertexFromGridParameters(i);
                 wasSmthDeleted = true;
             }
             else if (DigraphBuilding.TryToDeleteArcAt(e.X, e.Y, Digraph, out Arc arc))
@@ -88,14 +84,14 @@ namespace Graph_WinForms
         private void DrawingSurface_MouseDown(object sender, MouseEventArgs e)
         {
             if (CursorButton.Enabled || isOnMovement) return;
-            IsPressed = true;
+            isPressed = true;
 
             for (int i = 0; i < Digraph.Vertices.Count; i++)
                 if (Math.Pow((Digraph.Vertices[i].X - e.X), 2) + Math.Pow((Digraph.Vertices[i].Y - e.Y), 2) <= Math.Pow(graphDrawing.R, 2))
                 {
-                    MovingVertexIndex = i;
-                    Ticks = DateTime.Now;
-                    MovingVetrex = Digraph.Vertices[i];
+                    movingVertexIndex = i;
+                    ticks = DateTime.Now;
+                    movingVertex = Digraph.Vertices[i];
                     return;
                 }
         }
@@ -105,8 +101,8 @@ namespace Graph_WinForms
         /// </summary>
         private void DrawingSurface_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isOnMovement || !IsPressed || CursorButton.Enabled || MovingVertexIndex == -1) return;
-            Digraph.Vertices[MovingVertexIndex] = new Vertex(e.X, e.Y);
+            if (isOnMovement || !isPressed || CursorButton.Enabled || movingVertexIndex == -1) return;
+            Digraph.Vertices[movingVertexIndex] = new Vertex(e.X, e.Y);
             graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
         }
@@ -117,13 +113,13 @@ namespace Graph_WinForms
         /// </summary>
         private void DrawingSurface_MouseUp(object sender, MouseEventArgs e)
         {
-            if (isOnMovement || !IsPressed || CursorButton.Enabled) return;
+            if (isOnMovement || !isPressed || CursorButton.Enabled) return;
 
-            bool highlight = (DateTime.Now - Ticks).Ticks < 2250000 &&
-                Math.Pow(e.X - MovingVetrex.X, 2) + Math.Pow(e.Y - MovingVetrex.Y, 2) <= graphDrawing.R * graphDrawing.R;
+            bool highlight = (DateTime.Now - ticks).Ticks < 2250000 &&
+                Math.Pow(e.X - movingVertex.X, 2) + Math.Pow(e.Y - movingVertex.Y, 2) <= graphDrawing.R * graphDrawing.R;
 
             // Keeping the image inside the borders of the sheet
-            if (MovingVertexIndex != -1 && !highlight)
+            if (movingVertexIndex != -1 && !highlight)
             {
                 float x = e.X, y = e.Y;
                 if (x < graphDrawing.R + 5)
@@ -131,29 +127,29 @@ namespace Graph_WinForms
                 if (y < graphDrawing.R + 5)
                 {
                     y = graphDrawing.R + 5;
-                    if (GridAdjacencyMatrix[MovingVertexIndex, MovingVertexIndex].Value.ToString() != "0")
+                    if (GridAdjacencyMatrix[movingVertexIndex, movingVertexIndex].Value.ToString() != "0")
                         y += graphDrawing.R;
                 }
                 if (x > DrawingSurface.Width - graphDrawing.R - 5)
                 {
                     x = DrawingSurface.Width - graphDrawing.R - 5;
-                    if (GridAdjacencyMatrix[MovingVertexIndex, MovingVertexIndex].Value.ToString() != "0")
+                    if (GridAdjacencyMatrix[movingVertexIndex, movingVertexIndex].Value.ToString() != "0")
                         x -= graphDrawing.R;
                 }
                 if (y > DrawingSurface.Height - graphDrawing.R - 5)
                     y = DrawingSurface.Height - graphDrawing.R - 5;
 
-                Digraph.Vertices[MovingVertexIndex] = new Vertex((int)x, (int)y);
+                Digraph.Vertices[movingVertexIndex] = new Vertex((int)x, (int)y);
             }
 
-            if (highlight) Digraph.Vertices[MovingVertexIndex] = new Vertex(MovingVetrex.X, MovingVetrex.Y);
+            if (highlight) Digraph.Vertices[movingVertexIndex] = new Vertex(movingVertex.X, movingVertex.Y);
             graphDrawing.DrawTheWholeGraph(Digraph);
 
-            if (highlight) graphDrawing.HighlightVertex(Digraph.Vertices[MovingVertexIndex]);
+            if (highlight) graphDrawing.HighlightVertex(Digraph.Vertices[movingVertexIndex]);
 
             DrawingSurface.Image = graphDrawing.Image;
-            MovingVertexIndex = -1;
-            IsPressed = false;
+            movingVertexIndex = -1;
+            isPressed = false;
         }
 
         /// <summary>
@@ -187,43 +183,19 @@ namespace Graph_WinForms
             }
         }
 
-        private void AddVertexToGridThresholds()
+        private void AddVertexToGridParameters()
         {
-            GridThresholds.Rows.Add();
-            GridThresholds[0, Digraph.Vertices.Count - 1].Value = Digraph.Thresholds[Digraph.Vertices.Count - 1];
-            GridThresholds.Rows[Digraph.Vertices.Count - 1].HeaderCell.Value = Digraph.Vertices.Count.ToString();
+            GridParameters.Rows.Add();
+            GridParameters.Rows[Digraph.Vertices.Count - 1].HeaderCell.Value = Digraph.Vertices.Count.ToString();
+            GridParameters[0, Digraph.Vertices.Count - 1].Value = Digraph.Thresholds[Digraph.Vertices.Count - 1];
+            GridParameters[1, Digraph.Vertices.Count - 1].Value = Digraph.RefractoryPeriods[Digraph.Vertices.Count - 1];
+            GridParameters[2, Digraph.Vertices.Count - 1].Value = Digraph.State[Digraph.Vertices.Count - 1];
         }
-        private void RemoveVertexFromGridThresholds(int index)
+        private void RemoveVertexFromGridParameters(int index)
         {
-            GridThresholds.Rows.RemoveAt(index);
+            GridParameters.Rows.RemoveAt(index);
             for (int j = index; j < Digraph.Vertices.Count; j++)
-                GridThresholds.Rows[j].HeaderCell.Value = (j + 1).ToString();
-        }
-
-        private void AddVertexToGridRefractoryPeriods()
-        {
-            GridRefractoryPeriods.Rows.Add();
-            GridRefractoryPeriods[0, Digraph.Vertices.Count - 1].Value = Digraph.Thresholds[Digraph.Vertices.Count - 1];
-            GridRefractoryPeriods.Rows[Digraph.Vertices.Count - 1].HeaderCell.Value = Digraph.Vertices.Count.ToString();
-        }
-        private void RemoveVertexFromGridRefractoryPeriods(int index)
-        {
-            GridRefractoryPeriods.Rows.RemoveAt(index);
-            for (int j = index; j < Digraph.Vertices.Count; j++)
-                GridThresholds.Rows[j].HeaderCell.Value = (j + 1).ToString();
-        }
-
-        private void AddVertexToGridInitialState()
-        {
-            GridInitialState.Rows.Add();
-            GridInitialState[0, Digraph.Vertices.Count - 1].Value = Digraph.State[Digraph.Vertices.Count - 1];
-            GridInitialState.Rows[Digraph.Vertices.Count - 1].HeaderCell.Value = Digraph.Vertices.Count.ToString();
-        }
-        private void RemoveVertexFromGridInitialState(int index)
-        {
-            GridInitialState.Rows.RemoveAt(index);
-            for (int j = index; j < Digraph.Vertices.Count; j++)
-                GridInitialState.Rows[j].HeaderCell.Value = (j + 1).ToString();
+                GridParameters.Rows[j].HeaderCell.Value = (j + 1).ToString();
         }
 
 

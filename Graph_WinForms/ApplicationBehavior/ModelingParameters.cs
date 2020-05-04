@@ -73,7 +73,7 @@ namespace Graph_WinForms
 
             movement.MovementEnded += MovementEndedSandpileEventHandler;
 
-            movement.Movement();
+            movement.StartMovementModeling();
         }
 
         /// <summary>

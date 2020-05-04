@@ -97,6 +97,13 @@ namespace Graph_WinForms
             {
                 Digraph.RefractoryPeriods[e.RowIndex] = p;
                 GridRefractoryPeriods[e.ColumnIndex, e.RowIndex].Value = p;
+                if (p > 0)
+                {
+                    Digraph.TimeTillTheEndOfRefractoryPeriod[e.RowIndex] = new Timer() {Interval = p};
+                    Digraph.TimeTillTheEndOfRefractoryPeriod[e.RowIndex].Tick +=
+                        (object s, EventArgs ea) => Digraph.TimeTillTheEndOfRefractoryPeriod[e.RowIndex].Stop();
+                }
+                else Digraph.TimeTillTheEndOfRefractoryPeriod[e.RowIndex] = null;
             }
             else
                 GridRefractoryPeriods[e.ColumnIndex, e.RowIndex].Value = Digraph.RefractoryPeriods[e.RowIndex];

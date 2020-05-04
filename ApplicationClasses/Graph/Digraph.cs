@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Channels;
+using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace ApplicationClasses
 {
@@ -35,7 +38,7 @@ namespace ApplicationClasses
         /// <summary>
         /// Remaining time until the end of refractory period in milliseconds
         /// </summary>
-        public List<double> TimeTillTheEndOfRefractoryPeriod { get; private set; }
+        [XmlIgnore] public List<Timer> TimeTillTheEndOfRefractoryPeriod { get; private set; }
 
         /// <summary>
         /// List of indices of sink vertices (sandpile modeling)
@@ -52,7 +55,7 @@ namespace ApplicationClasses
             Thresholds = new List<int>();
             RefractoryPeriods = new List<int>();
             State = new List<int>();
-            TimeTillTheEndOfRefractoryPeriod = new List<double>();
+            TimeTillTheEndOfRefractoryPeriod = new List<Timer>();
             Stock = new List<int>();
         }
 
@@ -78,7 +81,13 @@ namespace ApplicationClasses
             Thresholds.Add(threshold);
             RefractoryPeriods.Add(refractoryPeriod);
             State.Add(initialState);
-            TimeTillTheEndOfRefractoryPeriod.Add(0);
+            if (refractoryPeriod > 0)
+            {
+                TimeTillTheEndOfRefractoryPeriod.Add(new Timer() { Interval = refractoryPeriod });
+                TimeTillTheEndOfRefractoryPeriod[TimeTillTheEndOfRefractoryPeriod.Count - 1].Tick +=
+                    (object sender, EventArgs e) => TimeTillTheEndOfRefractoryPeriod[TimeTillTheEndOfRefractoryPeriod.Count - 1].Stop();
+            }
+            else TimeTillTheEndOfRefractoryPeriod.Add(null);
         }
 
         /// <summary>
@@ -134,6 +143,22 @@ namespace ApplicationClasses
         /// Resets digraph sink (sanpile modeling)
         /// </summary>
         public void ResetStock() => Stock = new List<int>();
+
+        /// <summary>
+        /// Sets timers responsible for compliance with refractory periods
+        /// </summary>
+        public void SetTimeTillTheEndOfRefractoryPeriod()
+        {
+            TimeTillTheEndOfRefractoryPeriod = new List<Timer>();
+            for (int i = 0; i < RefractoryPeriods.Count; i++)
+                if (RefractoryPeriods[i] > 0)
+                {
+                    TimeTillTheEndOfRefractoryPeriod.Add(new Timer() { Interval = RefractoryPeriods[i] });
+                    TimeTillTheEndOfRefractoryPeriod[i].Tick +=
+                        (object sender, EventArgs e) => TimeTillTheEndOfRefractoryPeriod[i].Stop();
+                }
+                else TimeTillTheEndOfRefractoryPeriod.Add(null);
+        }
 
         /// <summary>
         /// Graph Adjacency Matrix

@@ -172,6 +172,15 @@ namespace ApplicationClasses
         }
 
         /// <summary>
+        /// Draws all the digraph vertices
+        /// </summary>
+        public void DrawVertices(Digraph digraph)
+        {
+            for (int i = 0; i < digraph.Vertices.Count; ++i)
+                DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1,  verticesPen);
+        }
+
+        /// <summary>
         /// Draws the whole digraph
         /// </summary>
         public void DrawTheWholeGraph(Digraph digraph)
@@ -179,8 +188,7 @@ namespace ApplicationClasses
             ClearTheSurface();
             digraph.Arcs.ForEach(arc =>
                 DrawArc(digraph.Vertices[arc.StartVertex], digraph.Vertices[arc.EndVertex], arc));
-            for (int i = 0; i < digraph.Vertices.Count; ++i)
-                DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1, verticesPen);
+            DrawVertices(digraph);
         }
 
         /// <summary>

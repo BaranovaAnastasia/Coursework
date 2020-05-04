@@ -14,7 +14,7 @@ namespace ApplicationClasses.Modeling
 
         /// <summary>
         /// Collects frames for a GIF image of the process of the movement of points on digraph
-        /// (with a limit of 250 frames)
+        /// (with a limit of 300 frames)
         /// </summary>
         private void TickGifCollecting(object source, EventArgs e)
         {
@@ -24,10 +24,8 @@ namespace ApplicationClasses.Modeling
                 IntPtr.Zero,
                 System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             MovementGif.Frames.Add(BitmapFrame.Create(src));
-            if (MovementGif.Frames.Count >= 250)
-            {
-                gifTimer.Stop();
-            }
+            if (MovementGif.Frames.Count >= 300)
+                mainTimer.Tick -= TickGifCollecting;
 
             DeleteObject(bmp);
         }
@@ -35,23 +33,25 @@ namespace ApplicationClasses.Modeling
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]
         public static extern bool DeleteObject(IntPtr hObject);
 
-
+        /// <summary>
+        /// Collects chart data and displays it
+        /// </summary>
         private void TickChartFilling(object source, EventArgs e)
         {
-            if(NumberOfDotsChart != null)
-                NumberOfDotsChart.chart1.Series[0].Points.AddXY(mainStopwatch.ElapsedMilliseconds / 1000.0, involvedArcs.Count);
+            if(numberOfDotsChart != null)
+                numberOfDotsChart.chart1.Series[0].Points.AddXY(mainStopwatch.ElapsedMilliseconds / 1000.0, involvedArcs.Count);
 
-            if (IsMovementEndedSandpile && DistibutionChart != null)
+            if (IsMovementEndedSandpile && distributionChart != null)
             {
                 if(avalancheSize == 0) return;
-                foreach (DataPoint point in DistibutionChart.chart1.Series[0].Points)
+                foreach (DataPoint point in distributionChart.chart1.Series[0].Points)
                 {
                     if (point.XValue != avalancheSize) continue;
-                    DistibutionChart.chart1.Series[0].Points.AddXY(avalancheSize, point.YValues[0] + 1);
-                    DistibutionChart.chart1.Series[0].Points.Remove(point);
+                    distributionChart.chart1.Series[0].Points.AddXY(avalancheSize, point.YValues[0] + 1);
+                    distributionChart.chart1.Series[0].Points.Remove(point);
                     return;
                 }
-                DistibutionChart.chart1.Series[0].Points.AddXY(avalancheSize, 1);
+                distributionChart.chart1.Series[0].Points.AddXY(avalancheSize, 1);
             }
         }
     }

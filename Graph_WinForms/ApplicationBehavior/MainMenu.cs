@@ -56,7 +56,9 @@ namespace Graph_WinForms
                         Digraph = (Digraph)formatter.Deserialize(fs);
                     }
                 }
-                
+
+                Digraph.SetTimeTillTheEndOfRefractoryPeriod();
+
                 UpdateDigraphInfo();
                 ChangeMainMenuState(false);
                 ChangeDrawingElementsState(true);

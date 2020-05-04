@@ -1,160 +1,106 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ApplicationClasses;
-using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
 using System.Drawing;
-using System.IO;
-using System.Data;
-using System.Data.Objects;
-using System.Data.Entity;
-using System.Runtime.Remoting.Channels;
-using System.Windows.Media.Imaging;
 
 namespace ApplicationClasses.Modeling
 {
     public partial class MovementModeling
     {
         /// <summary>
-        /// Draws all the currently moving dots
+        /// Animates the process of basic movement
         /// </summary>
         private void TickBasicAnimation(object source, EventArgs e)
         {
-            if (IsMovementEndedBasic){ MovementEnded?.Invoke(this, null); return;}
+            if (IsMovementEndedBasic) { MovementEnded?.Invoke(this, null); return;}
             if(!mainStopwatch.IsRunning) mainStopwatch.Start();
             Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch));
-            int count = involvedArcs.Count;
-            for (var i = 0; i < digraph.State.Count; i++)
-            {
-                if (digraph.State[i] >= digraph.Thresholds[i] && digraph.TimeTillTheEndOfRefractoryPeriod[i] <= 0)
-                {
-                    involvedArcs.AddRange(incidenceList[i]);
-                    timers.AddRange(incidenceList[i].ConvertAll(arc => new Stopwatch()));
-                    digraph.State[i] -= digraph.Thresholds[i];
-                    digraph.TimeTillTheEndOfRefractoryPeriod[i] += digraph.RefractoryPeriods[i];
 
-                    if (digraph.RefractoryPeriods[i] == 0)
-                        while (digraph.State[i] >= digraph.Thresholds[i])
-                        {
-                            involvedArcs.AddRange(incidenceList[i]);
-                            timers.AddRange(incidenceList[i].ConvertAll(arc => new Stopwatch()));
-                            digraph.State[i] -= digraph.Thresholds[i];
-                        }
+            // Releasing new dots
+            ProcessVertices(
+                i => digraph.State[i] >= digraph.Thresholds[i] 
+                     && (digraph.RefractoryPeriods[i] == 0 || !digraph.TimeTillTheEndOfRefractoryPeriod[i].Enabled),
+                i => digraph.State[i] -= digraph.Thresholds[i]);
 
-                    continue;
-                }
-
-                digraph.TimeTillTheEndOfRefractoryPeriod[i] =
-                    digraph.TimeTillTheEndOfRefractoryPeriod[i] - mainTimer.Interval >= 0
-                        ? digraph.TimeTillTheEndOfRefractoryPeriod[i] - mainTimer.Interval
-                        : 0;
-            }
-
-            for (int i = count; i < timers.Count; i++)
-                timers[i].Start();
-
-            if (involvedArcs.Count == 0)
-            {
-
-                GraphDrawing.DrawTheWholeGraph(digraph);
-                DrawingSurface.Image = GraphDrawing.Image;
-                if (IsMovementEndedBasic) MovementEnded?.Invoke(this, null);
-                return;
-            }
 
             GraphDrawing.DrawTheWholeGraph(digraph);
-            for (var i = 0; i < involvedArcs.Count; i++)
-            {
-                if (timers[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
-                {
-                    digraph.State[involvedArcs[i].EndVertex]++;
-                    timers.RemoveAt(i);
-                    involvedArcs.RemoveAt(i);
-
-                    i--;
-                    continue;
-                }
-                PointF point =
-                    GetPoint(digraph.Vertices[involvedArcs[i].StartVertex],
-                        digraph.Vertices[involvedArcs[i].EndVertex],
-                        involvedArcs[i].Length,
-                        timers[i]);
-                GraphDrawing.DrawDot(point);
-                DrawingSurface.Image = GraphDrawing.Image;
-            }
-            for (int i = 0; i < digraph.Vertices.Count; ++i)
-                GraphDrawing.DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1, new Pen(Color.MidnightBlue, 2.5f));
+            DrawDots();
+            GraphDrawing.DrawVertices(digraph); 
+            DrawingSurface.Image = GraphDrawing.Image;
 
             if (IsMovementEndedBasic) MovementEnded?.Invoke(this, null);
         }
 
+        /// <summary>
+        /// Animates the process of sandpile movement
+        /// </summary>
         private void TickSandpileAnimation(object source, EventArgs e)
         {
             if (IsMovementEndedSandpile) { MovementEnded?.Invoke(this, null); return; }
             if (!mainStopwatch.IsRunning) mainStopwatch.Start();
             Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch));
-            int count = involvedArcs.Count;
-            for (var i = 0; i < digraph.State.Count; i++)
-            { 
-                if(digraph.Stock.Contains(i)) continue;
-                if (digraph.State[i] >= incidenceList[i].Count && digraph.TimeTillTheEndOfRefractoryPeriod[i] <= 0)
-                {
-                    involvedArcs.AddRange(incidenceList[i]);
-                    timers.AddRange(incidenceList[i].ConvertAll(arc => new Stopwatch()));
-                    digraph.State[i] -= incidenceList[i].Count;
-                    digraph.TimeTillTheEndOfRefractoryPeriod[i] += digraph.RefractoryPeriods[i];
 
-                    avalancheSize++;
+            ProcessVertices(i => !digraph.Stock.Contains(i) && digraph.State[i] >= incidenceList[i].Count 
+                                 && (digraph.RefractoryPeriods[i] == 0 || !digraph.TimeTillTheEndOfRefractoryPeriod[i].Enabled),
+                i => digraph.State[i] -= incidenceList[i].Count);
 
-                    if (digraph.RefractoryPeriods[i] == 0)
-                        while (digraph.State[i] >= incidenceList[i].Count)
-                        {
-                            involvedArcs.AddRange(incidenceList[i]);
-                            timers.AddRange(incidenceList[i].ConvertAll(arc => new Stopwatch()));
-                            digraph.State[i] -= incidenceList[i].Count;
-                        }
-
-                    continue;
-                }
-
-                digraph.TimeTillTheEndOfRefractoryPeriod[i] =
-                    digraph.TimeTillTheEndOfRefractoryPeriod[i] - mainTimer.Interval >= 0
-                        ? digraph.TimeTillTheEndOfRefractoryPeriod[i] - mainTimer.Interval
-                        : 0;
-            }
-
-            for (int i = count; i < timers.Count; i++)
-                timers[i].Start();
 
             GraphDrawing.DrawTheWholeGraphSandpile(digraph, false);
-            for (var i = 0; i < involvedArcs.Count; i++)
-            {
-                if (timers[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
-                {
-                    digraph.State[involvedArcs[i].EndVertex]++;
-                    timers.RemoveAt(i);
-                    involvedArcs.RemoveAt(i);
-                    i--;
-                    continue;
-                }
-                PointF point =
-                    GetPoint(digraph.Vertices[involvedArcs[i].StartVertex],
-                        digraph.Vertices[involvedArcs[i].EndVertex],
-                        involvedArcs[i].Length,
-                        timers[i]);
-                GraphDrawing.DrawDot(point);
-                DrawingSurface.Image = GraphDrawing.Image;
-            }
+            DrawDots();
             GraphDrawing.DrawVerticesSandpile(digraph);
             DrawingSurface.Image = GraphDrawing.Image;
 
             if (IsMovementEndedSandpile) MovementEnded?.Invoke(this, null);
         }
 
+        /// <summary>
+        /// Process vertices states to release new dots
+        /// </summary>
+        /// <param name="releaseCondition">Condition under which dots are released</param>
+        /// <param name="stateChanges">How vertex state changes after the dots are releasing</param>
+        private void ProcessVertices(Predicate<int> releaseCondition, Action<int> stateChanges)
+        {
+            int count = involvedArcs.Count; //Number of new dots
+
+            for (var i = 0; i < digraph.Vertices.Count; i++)
+            {
+                if(!releaseCondition(i)) continue;
+                if(distributionChart != null) avalancheSize++;
+                while (releaseCondition(i))
+                {
+                    involvedArcs.AddRange(incidenceList[i]);
+                    timers.AddRange(incidenceList[i].ConvertAll(arc => new Stopwatch()));
+                    stateChanges(i);
+                    digraph.TimeTillTheEndOfRefractoryPeriod[i]?.Start();
+                }
+            }
+
+            for (int i = count; i < timers.Count; i++)
+                timers[i].Start();
+        }
+
+        /// <summary>
+        /// Draws all the moving dots and removes all the dots got to their destination
+        /// </summary>
+        private void DrawDots()
+        {
+            for (var i = 0; i < involvedArcs.Count; i++)
+            {
+                if (timers[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
+                {
+                    digraph.State[involvedArcs[i].EndVertex]++;
+                    timers.RemoveAt(i);
+                    involvedArcs.RemoveAt(i);
+
+                    i--;
+                    continue;
+                }
+                PointF point =
+                    GetPoint(digraph.Vertices[involvedArcs[i].StartVertex],
+                        digraph.Vertices[involvedArcs[i].EndVertex],
+                        involvedArcs[i].Length,
+                        timers[i]);
+                GraphDrawing.DrawDot(point);
+            }
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace ApplicationClasses.Modeling
+﻿using System.Drawing;
+using System.Windows.Forms.DataVisualization.Charting;
+
+namespace ApplicationClasses.Modeling
 {
     partial class ChartWindow
     {
@@ -49,6 +52,22 @@
             this.chart1.Size = new System.Drawing.Size(801, 410);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
+            Series data = new Series("Number of Dots")
+            {
+                ChartType = SeriesChartType.Line,
+                Color = Color.DarkCyan,
+                MarkerStyle = MarkerStyle.Circle,
+                MarkerColor = Color.DarkCyan,
+                ChartArea = "Chart",
+                BorderWidth = 1
+            };
+            this.chart1.Series.Add(data);
+            this.chart1.Series[0].ToolTip = "t = #VALX,\n\rN = #VALY";
+            this.chart1.ChartAreas.Add("Chart");
+            this.chart1.ChartAreas[0].AxisX.Title = "t, s";
+            this.chart1.ChartAreas[0].AxisY.Title = "Amount";
+            this.chart1.ChartAreas[0].AxisX.Interval = 0.5;
+            this.chart1.ChartAreas[0].AxisY.Interval = 5;
             // 
             // menuStrip1
             // 
@@ -85,21 +104,21 @@
             this.saveChartToolStripMenuItem.Name = "saveChartToolStripMenuItem";
             this.saveChartToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.saveChartToolStripMenuItem.Text = "Save Chart";
-            this.saveChartToolStripMenuItem.Click += new System.EventHandler(this.saveChartToolStripMenuItem_Click);
+            this.saveChartToolStripMenuItem.Click += new System.EventHandler(this.SaveImage_Click);
             // 
             // saveDataToolStripMenuItem
             // 
             this.saveDataToolStripMenuItem.Name = "saveDataToolStripMenuItem";
             this.saveDataToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.saveDataToolStripMenuItem.Text = "Save Data";
-            this.saveDataToolStripMenuItem.Click += new System.EventHandler(this.saveDataToolStripMenuItem_Click);
+            this.saveDataToolStripMenuItem.Click += new System.EventHandler(this.SaveData_Click);
             // 
             // saveAllToolStripMenuItem
             // 
             this.saveAllToolStripMenuItem.Name = "saveAllToolStripMenuItem";
             this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.saveAllToolStripMenuItem.Text = "Save All";
-            this.saveAllToolStripMenuItem.Click += new System.EventHandler(this.saveAllToolStripMenuItem_Click);
+            this.saveAllToolStripMenuItem.Click += new System.EventHandler(this.SaveAll_Click);
             // 
             // ChartWindow
             // 

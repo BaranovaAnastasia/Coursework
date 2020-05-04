@@ -58,7 +58,7 @@ namespace Graph_WinForms
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();
 
-            movement.Movement();
+            movement.StartMovementModeling();
         }
 
         #region Params Collecting methods
@@ -145,7 +145,7 @@ namespace Graph_WinForms
             for (int i = 0; i < Digraph.State.Count; i++)
             {
                 Digraph.State[i] = int.Parse(GridInitialState[0, i].Value.ToString());
-                Digraph.TimeTillTheEndOfRefractoryPeriod[i] = 0;
+                Digraph.TimeTillTheEndOfRefractoryPeriod[i]?.Stop();
             }
             Digraph.ResetStock();
 

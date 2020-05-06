@@ -124,10 +124,6 @@ namespace Graph_WinForms
             StopToolStripMenuItem.Visible = state;
             ResetToolStripMenuItem.Visible = state;
 
-            RadiusLabel.Visible = state;
-            RadiusTrackBar.Visible = state;
-            RadiusValueLabel.Visible = state;
-
             SandpilePanel.Size = new Size(358, 32);
         }
 

@@ -83,6 +83,9 @@ namespace Graph_WinForms
         /// </summary>
         private void DrawingSurface_MouseDown(object sender, MouseEventArgs e)
         {
+            if (VertexColorDialogOpen.Visible) VerticesColorPanel_Leave(sender, e);
+            if (ArcsColorDialogOpen.Visible) ArcsColorPanel_Leave(sender, e);
+
             if (CursorButton.Enabled || isOnMovement) return;
             isPressed = true;
 

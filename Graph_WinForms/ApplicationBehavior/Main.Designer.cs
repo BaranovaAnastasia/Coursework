@@ -33,8 +33,8 @@ namespace Graph_WinForms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Build = new System.Windows.Forms.Button();
             this.Open = new System.Windows.Forms.Button();
             this.TopMenu = new System.Windows.Forms.MenuStrip();
@@ -53,20 +53,32 @@ namespace Graph_WinForms
             this.StopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Tools = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.ArcsColorPanel = new System.Windows.Forms.Panel();
+            this.ArcsColorDialogOpen = new System.Windows.Forms.Button();
+            this.VerticesColorPanel = new System.Windows.Forms.Panel();
+            this.VertexColorDialogOpen = new System.Windows.Forms.Button();
+            this.Down = new System.Windows.Forms.Button();
+            this.Up = new System.Windows.Forms.Button();
+            this.Left = new System.Windows.Forms.Button();
+            this.Right = new System.Windows.Forms.Button();
+            this.ReduceButton = new System.Windows.Forms.Button();
+            this.EnlargeButton = new System.Windows.Forms.Button();
+            this.RadiusValueLabel = new System.Windows.Forms.Label();
             this.ClearButton = new System.Windows.Forms.Button();
             this.CursorButton = new System.Windows.Forms.Button();
+            this.RadiusLabel = new System.Windows.Forms.Label();
             this.DeleteButton = new System.Windows.Forms.Button();
             this.VertexButton = new System.Windows.Forms.Button();
             this.EdgeButton = new System.Windows.Forms.Button();
             this.SandpilePalette = new System.Windows.Forms.DataGridView();
+            this.RadiusTrackBar = new System.Windows.Forms.TrackBar();
             this.RandomGraph = new System.Windows.Forms.Button();
             this.TimeTextBox = new System.Windows.Forms.TextBox();
             this.SandpileLabel = new System.Windows.Forms.Label();
             this.RandomAddingLabel = new System.Windows.Forms.Label();
             this.RandomAddingCheckBox = new System.Windows.Forms.CheckBox();
             this.SandpilePanel = new System.Windows.Forms.Panel();
-            this.RadiusTrackBar = new System.Windows.Forms.TrackBar();
-            this.RadiusLabel = new System.Windows.Forms.Label();
             this.SquareLattice = new System.Windows.Forms.Button();
             this.TriangleLattice = new System.Windows.Forms.Button();
             this.DrawingSurface = new System.Windows.Forms.PictureBox();
@@ -75,7 +87,6 @@ namespace Graph_WinForms
             this.ArcToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.EraserToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.ClearAllToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.RadiusValueLabel = new System.Windows.Forms.Label();
             this.ModePage = new System.Windows.Forms.TabPage();
             this.SandpileChartType2 = new System.Windows.Forms.CheckBox();
             this.SandpileChartType1 = new System.Windows.Forms.CheckBox();
@@ -101,11 +112,21 @@ namespace Graph_WinForms
             this.AdjacencyMatrixLabel = new System.Windows.Forms.Label();
             this.OkLength = new System.Windows.Forms.Button();
             this.AppParameters = new System.Windows.Forms.TabControl();
+            this.GraphStyleColorDialog = new System.Windows.Forms.ColorDialog();
+            this.EnlargeToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.ReduceToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.UpToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.LeftToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.RightToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.DownToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.ColorToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.TopMenu.SuspendLayout();
             this.Tools.SuspendLayout();
+            this.ArcsColorPanel.SuspendLayout();
+            this.VerticesColorPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SandpilePalette)).BeginInit();
-            this.SandpilePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RadiusTrackBar)).BeginInit();
+            this.SandpilePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DrawingSurface)).BeginInit();
             this.ModePage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SpeedNumeric)).BeginInit();
@@ -276,18 +297,187 @@ namespace Graph_WinForms
             // Tools
             // 
             this.Tools.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Tools.Controls.Add(this.label1);
+            this.Tools.Controls.Add(this.ArcsColorPanel);
+            this.Tools.Controls.Add(this.VerticesColorPanel);
+            this.Tools.Controls.Add(this.Down);
+            this.Tools.Controls.Add(this.Up);
+            this.Tools.Controls.Add(this.Left);
+            this.Tools.Controls.Add(this.Right);
+            this.Tools.Controls.Add(this.ReduceButton);
+            this.Tools.Controls.Add(this.EnlargeButton);
+            this.Tools.Controls.Add(this.RadiusValueLabel);
             this.Tools.Controls.Add(this.ClearButton);
             this.Tools.Controls.Add(this.CursorButton);
+            this.Tools.Controls.Add(this.RadiusLabel);
             this.Tools.Controls.Add(this.DeleteButton);
             this.Tools.Controls.Add(this.VertexButton);
             this.Tools.Controls.Add(this.EdgeButton);
             this.Tools.Controls.Add(this.SandpilePalette);
+            this.Tools.Controls.Add(this.RadiusTrackBar);
             this.Tools.Location = new System.Drawing.Point(10, 50);
             this.Tools.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Tools.Name = "Tools";
-            this.Tools.Size = new System.Drawing.Size(95, 435);
+            this.Tools.Size = new System.Drawing.Size(95, 628);
             this.Tools.TabIndex = 7;
             this.Tools.Visible = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label1.Location = new System.Drawing.Point(6, 130);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(58, 21);
+            this.label1.TabIndex = 47;
+            this.label1.Text = "Colors:";
+            // 
+            // ArcsColorPanel
+            // 
+            this.ArcsColorPanel.BackColor = System.Drawing.Color.MidnightBlue;
+            this.ArcsColorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ArcsColorPanel.Controls.Add(this.ArcsColorDialogOpen);
+            this.ArcsColorPanel.Location = new System.Drawing.Point(10, 188);
+            this.ArcsColorPanel.Name = "ArcsColorPanel";
+            this.ArcsColorPanel.Size = new System.Drawing.Size(75, 28);
+            this.ArcsColorPanel.TabIndex = 46;
+            this.ColorToolTip.SetToolTip(this.ArcsColorPanel, "Arcs color");
+            this.ArcsColorPanel.Click += new System.EventHandler(this.ArcsColorPanel_Click);
+            this.ArcsColorPanel.Enter += new System.EventHandler(this.ArcsColorPanel_Enter);
+            this.ArcsColorPanel.Leave += new System.EventHandler(this.ArcsColorPanel_Leave);
+            // 
+            // ArcsColorDialogOpen
+            // 
+            this.ArcsColorDialogOpen.BackColor = System.Drawing.SystemColors.Control;
+            this.ArcsColorDialogOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ArcsColorDialogOpen.Location = new System.Drawing.Point(48, 1);
+            this.ArcsColorDialogOpen.Name = "ArcsColorDialogOpen";
+            this.ArcsColorDialogOpen.Size = new System.Drawing.Size(24, 24);
+            this.ArcsColorDialogOpen.TabIndex = 44;
+            this.ArcsColorDialogOpen.Text = ":::";
+            this.ArcsColorDialogOpen.UseVisualStyleBackColor = false;
+            this.ArcsColorDialogOpen.Visible = false;
+            this.ArcsColorDialogOpen.Click += new System.EventHandler(this.ArcsColorDialogOpen_Click);
+            // 
+            // VerticesColorPanel
+            // 
+            this.VerticesColorPanel.BackColor = System.Drawing.Color.MidnightBlue;
+            this.VerticesColorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.VerticesColorPanel.Controls.Add(this.VertexColorDialogOpen);
+            this.VerticesColorPanel.Location = new System.Drawing.Point(10, 156);
+            this.VerticesColorPanel.Name = "VerticesColorPanel";
+            this.VerticesColorPanel.Size = new System.Drawing.Size(75, 28);
+            this.VerticesColorPanel.TabIndex = 45;
+            this.ColorToolTip.SetToolTip(this.VerticesColorPanel, "Vertices color");
+            this.VerticesColorPanel.Click += new System.EventHandler(this.VerticesColorPanel_Click);
+            this.VerticesColorPanel.Enter += new System.EventHandler(this.VerticesColorPanel_Enter);
+            this.VerticesColorPanel.Leave += new System.EventHandler(this.VerticesColorPanel_Leave);
+            // 
+            // VertexColorDialogOpen
+            // 
+            this.VertexColorDialogOpen.BackColor = System.Drawing.SystemColors.Control;
+            this.VertexColorDialogOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.VertexColorDialogOpen.Location = new System.Drawing.Point(48, 1);
+            this.VertexColorDialogOpen.Name = "VertexColorDialogOpen";
+            this.VertexColorDialogOpen.Size = new System.Drawing.Size(24, 24);
+            this.VertexColorDialogOpen.TabIndex = 44;
+            this.VertexColorDialogOpen.Text = ":::";
+            this.VertexColorDialogOpen.UseVisualStyleBackColor = false;
+            this.VertexColorDialogOpen.Visible = false;
+            this.VertexColorDialogOpen.Click += new System.EventHandler(this.VertexColorDialogOpen_Click);
+            // 
+            // Down
+            // 
+            this.Down.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Down.BackgroundImage")));
+            this.Down.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Down.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
+            this.Down.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Down.Location = new System.Drawing.Point(35, 550);
+            this.Down.Name = "Down";
+            this.Down.Size = new System.Drawing.Size(25, 25);
+            this.Down.TabIndex = 42;
+            this.DownToolTip.SetToolTip(this.Down, "Ctrl+Down");
+            this.Down.UseVisualStyleBackColor = true;
+            this.Down.Click += new System.EventHandler(this.Down_Click);
+            // 
+            // Up
+            // 
+            this.Up.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Up.BackgroundImage")));
+            this.Up.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Up.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
+            this.Up.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Up.Location = new System.Drawing.Point(35, 525);
+            this.Up.Name = "Up";
+            this.Up.Size = new System.Drawing.Size(25, 25);
+            this.Up.TabIndex = 41;
+            this.UpToolTip.SetToolTip(this.Up, "Ctrl+Up");
+            this.Up.UseVisualStyleBackColor = true;
+            this.Up.Click += new System.EventHandler(this.Up_Click);
+            // 
+            // Left
+            // 
+            this.Left.BackColor = System.Drawing.SystemColors.Control;
+            this.Left.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Left.BackgroundImage")));
+            this.Left.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Left.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
+            this.Left.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Left.Location = new System.Drawing.Point(10, 550);
+            this.Left.Name = "Left";
+            this.Left.Size = new System.Drawing.Size(25, 25);
+            this.Left.TabIndex = 40;
+            this.LeftToolTip.SetToolTip(this.Left, "Ctrl+Left");
+            this.Left.UseVisualStyleBackColor = false;
+            this.Left.Click += new System.EventHandler(this.Left_Click);
+            // 
+            // Right
+            // 
+            this.Right.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Right.BackgroundImage")));
+            this.Right.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.Right.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
+            this.Right.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Right.Location = new System.Drawing.Point(60, 550);
+            this.Right.Name = "Right";
+            this.Right.Size = new System.Drawing.Size(25, 25);
+            this.Right.TabIndex = 39;
+            this.RightToolTip.SetToolTip(this.Right, "Ctrl+Right");
+            this.Right.UseVisualStyleBackColor = true;
+            this.Right.Click += new System.EventHandler(this.Right_Click);
+            // 
+            // ReduceButton
+            // 
+            this.ReduceButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ReduceButton.BackgroundImage")));
+            this.ReduceButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.ReduceButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ReduceButton.Location = new System.Drawing.Point(50, 92);
+            this.ReduceButton.Name = "ReduceButton";
+            this.ReduceButton.Size = new System.Drawing.Size(33, 33);
+            this.ReduceButton.TabIndex = 38;
+            this.ReduceToolTip.SetToolTip(this.ReduceButton, "Ctrl+Minus");
+            this.ReduceButton.UseVisualStyleBackColor = true;
+            this.ReduceButton.Click += new System.EventHandler(this.ReduceButton_Click);
+            // 
+            // EnlargeButton
+            // 
+            this.EnlargeButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("EnlargeButton.BackgroundImage")));
+            this.EnlargeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.EnlargeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EnlargeButton.Location = new System.Drawing.Point(10, 92);
+            this.EnlargeButton.Name = "EnlargeButton";
+            this.EnlargeButton.Size = new System.Drawing.Size(33, 33);
+            this.EnlargeButton.TabIndex = 37;
+            this.EnlargeToolTip.SetToolTip(this.EnlargeButton, "Ctrl+Plus");
+            this.EnlargeButton.UseVisualStyleBackColor = true;
+            this.EnlargeButton.Click += new System.EventHandler(this.EnlargeButton_Click);
+            // 
+            // RadiusValueLabel
+            // 
+            this.RadiusValueLabel.AutoSize = true;
+            this.RadiusValueLabel.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.RadiusValueLabel.Location = new System.Drawing.Point(5, 485);
+            this.RadiusValueLabel.Name = "RadiusValueLabel";
+            this.RadiusValueLabel.Size = new System.Drawing.Size(48, 21);
+            this.RadiusValueLabel.TabIndex = 36;
+            this.RadiusValueLabel.Text = "R = 8";
             // 
             // ClearButton
             // 
@@ -295,11 +485,14 @@ namespace Graph_WinForms
             this.ClearButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ClearButton.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ClearButton.Location = new System.Drawing.Point(10, 350);
+            this.ClearButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ClearButton.Location = new System.Drawing.Point(10, 585);
             this.ClearButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ClearButton.Name = "ClearButton";
-            this.ClearButton.Size = new System.Drawing.Size(75, 75);
+            this.ClearButton.Size = new System.Drawing.Size(75, 33);
             this.ClearButton.TabIndex = 11;
+            this.ClearButton.Text = "    Clear";
+            this.ClearButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ClearAllToolTip.SetToolTip(this.ClearButton, "Сlick to delete the digraph");
             this.ClearButton.UseVisualStyleBackColor = true;
             this.ClearButton.EnabledChanged += new System.EventHandler(this.ClearAllButton_EnabledChanged);
@@ -312,15 +505,25 @@ namespace Graph_WinForms
             this.CursorButton.Enabled = false;
             this.CursorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CursorButton.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CursorButton.Location = new System.Drawing.Point(15, 15);
+            this.CursorButton.Location = new System.Drawing.Point(10, 10);
             this.CursorButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.CursorButton.Name = "CursorButton";
-            this.CursorButton.Size = new System.Drawing.Size(65, 65);
+            this.CursorButton.Size = new System.Drawing.Size(33, 33);
             this.CursorButton.TabIndex = 8;
             this.CursorToolTip.SetToolTip(this.CursorButton, "Move vertices using cursor");
             this.CursorButton.UseVisualStyleBackColor = true;
             this.CursorButton.EnabledChanged += new System.EventHandler(this.CursorButton_EnabledChanged);
             this.CursorButton.Click += new System.EventHandler(this.CursorButton_Click);
+            // 
+            // RadiusLabel
+            // 
+            this.RadiusLabel.AutoSize = true;
+            this.RadiusLabel.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.RadiusLabel.Location = new System.Drawing.Point(0, 329);
+            this.RadiusLabel.Name = "RadiusLabel";
+            this.RadiusLabel.Size = new System.Drawing.Size(80, 42);
+            this.RadiusLabel.TabIndex = 33;
+            this.RadiusLabel.Text = "Vertex\n     Radius:";
             // 
             // DeleteButton
             // 
@@ -328,10 +531,10 @@ namespace Graph_WinForms
             this.DeleteButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.DeleteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeleteButton.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.DeleteButton.Location = new System.Drawing.Point(10, 265);
+            this.DeleteButton.Location = new System.Drawing.Point(50, 51);
             this.DeleteButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.DeleteButton.Name = "DeleteButton";
-            this.DeleteButton.Size = new System.Drawing.Size(75, 75);
+            this.DeleteButton.Size = new System.Drawing.Size(33, 33);
             this.DeleteButton.TabIndex = 10;
             this.EraserToolTip.SetToolTip(this.DeleteButton, "Double click on an arc or\nvertex to remove it");
             this.DeleteButton.UseVisualStyleBackColor = true;
@@ -344,10 +547,10 @@ namespace Graph_WinForms
             this.VertexButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.VertexButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.VertexButton.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.VertexButton.Location = new System.Drawing.Point(10, 95);
+            this.VertexButton.Location = new System.Drawing.Point(50, 10);
             this.VertexButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.VertexButton.Name = "VertexButton";
-            this.VertexButton.Size = new System.Drawing.Size(75, 75);
+            this.VertexButton.Size = new System.Drawing.Size(33, 33);
             this.VertexButton.TabIndex = 8;
             this.VertexToolTip.SetToolTip(this.VertexButton, "Click on the drawing surface\nto add a new vertex");
             this.VertexButton.UseVisualStyleBackColor = true;
@@ -360,10 +563,10 @@ namespace Graph_WinForms
             this.EdgeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.EdgeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EdgeButton.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.EdgeButton.Location = new System.Drawing.Point(10, 180);
+            this.EdgeButton.Location = new System.Drawing.Point(10, 51);
             this.EdgeButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.EdgeButton.Name = "EdgeButton";
-            this.EdgeButton.Size = new System.Drawing.Size(75, 75);
+            this.EdgeButton.Size = new System.Drawing.Size(33, 33);
             this.EdgeButton.TabIndex = 9;
             this.ArcToolTip.SetToolTip(this.EdgeButton, "Сlick on the starting vertex\nand then on the ending one\nto add a new arc");
             this.EdgeButton.UseVisualStyleBackColor = true;
@@ -374,36 +577,50 @@ namespace Graph_WinForms
             // 
             this.SandpilePalette.AllowUserToAddRows = false;
             this.SandpilePalette.AllowUserToDeleteRows = false;
-            this.SandpilePalette.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.SandpilePalette.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.SandpilePalette.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.SandpilePalette.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 7F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.SandpilePalette.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.SandpilePalette.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.SandpilePalette.Location = new System.Drawing.Point(0, 0);
             this.SandpilePalette.Name = "SandpilePalette";
             this.SandpilePalette.ReadOnly = true;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.SandpilePalette.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 7F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.SandpilePalette.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.SandpilePalette.RowHeadersWidth = 25;
             this.SandpilePalette.RowTemplate.Height = 28;
             this.SandpilePalette.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.SandpilePalette.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.SandpilePalette.Size = new System.Drawing.Size(93, 433);
+            this.SandpilePalette.Size = new System.Drawing.Size(93, 371);
             this.SandpilePalette.TabIndex = 36;
             this.SandpilePalette.Visible = false;
             this.SandpilePalette.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.SandpilePalette_RowPrePaint);
             this.SandpilePalette.SelectionChanged += new System.EventHandler(this.SandpilePalette_SelectionChanged);
+            // 
+            // RadiusTrackBar
+            // 
+            this.RadiusTrackBar.Location = new System.Drawing.Point(10, 345);
+            this.RadiusTrackBar.Maximum = 20;
+            this.RadiusTrackBar.Minimum = 8;
+            this.RadiusTrackBar.Name = "RadiusTrackBar";
+            this.RadiusTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.RadiusTrackBar.Size = new System.Drawing.Size(69, 144);
+            this.RadiusTrackBar.TabIndex = 32;
+            this.RadiusTrackBar.Value = 8;
+            this.RadiusTrackBar.ValueChanged += new System.EventHandler(this.RadiusTrackBar_ValueChanged);
+            this.RadiusTrackBar.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Movement_PreviewKeyDown);
             // 
             // RandomGraph
             // 
@@ -481,31 +698,6 @@ namespace Graph_WinForms
             this.SandpilePanel.Size = new System.Drawing.Size(358, 32);
             this.SandpilePanel.TabIndex = 31;
             this.SandpilePanel.Visible = false;
-            // 
-            // RadiusTrackBar
-            // 
-            this.RadiusTrackBar.Location = new System.Drawing.Point(10, 526);
-            this.RadiusTrackBar.Maximum = 20;
-            this.RadiusTrackBar.Minimum = 8;
-            this.RadiusTrackBar.Name = "RadiusTrackBar";
-            this.RadiusTrackBar.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.RadiusTrackBar.Size = new System.Drawing.Size(69, 134);
-            this.RadiusTrackBar.TabIndex = 32;
-            this.RadiusTrackBar.Value = 8;
-            this.RadiusTrackBar.Visible = false;
-            this.RadiusTrackBar.ValueChanged += new System.EventHandler(this.RadiusTrackBar_ValueChanged);
-            this.RadiusTrackBar.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Movement_PreviewKeyDown);
-            // 
-            // RadiusLabel
-            // 
-            this.RadiusLabel.AutoSize = true;
-            this.RadiusLabel.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.RadiusLabel.Location = new System.Drawing.Point(6, 490);
-            this.RadiusLabel.Name = "RadiusLabel";
-            this.RadiusLabel.Size = new System.Drawing.Size(80, 42);
-            this.RadiusLabel.TabIndex = 33;
-            this.RadiusLabel.Text = "Vertex\n     Radius:";
-            this.RadiusLabel.Visible = false;
             // 
             // SquareLattice
             // 
@@ -585,17 +777,6 @@ namespace Graph_WinForms
             this.ClearAllToolTip.InitialDelay = 300;
             this.ClearAllToolTip.ReshowDelay = 100;
             this.ClearAllToolTip.ToolTipTitle = "Delete Digraph";
-            // 
-            // RadiusValueLabel
-            // 
-            this.RadiusValueLabel.AutoSize = true;
-            this.RadiusValueLabel.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.RadiusValueLabel.Location = new System.Drawing.Point(7, 657);
-            this.RadiusValueLabel.Name = "RadiusValueLabel";
-            this.RadiusValueLabel.Size = new System.Drawing.Size(48, 21);
-            this.RadiusValueLabel.TabIndex = 36;
-            this.RadiusValueLabel.Text = "R = 8";
-            this.RadiusValueLabel.Visible = false;
             // 
             // ModePage
             // 
@@ -943,12 +1124,9 @@ namespace Graph_WinForms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1236, 697);
-            this.Controls.Add(this.RadiusValueLabel);
             this.Controls.Add(this.TimeTextBox);
             this.Controls.Add(this.TriangleLattice);
             this.Controls.Add(this.SquareLattice);
-            this.Controls.Add(this.RadiusLabel);
-            this.Controls.Add(this.RadiusTrackBar);
             this.Controls.Add(this.SandpilePanel);
             this.Controls.Add(this.AppParameters);
             this.Controls.Add(this.RandomGraph);
@@ -968,10 +1146,13 @@ namespace Graph_WinForms
             this.TopMenu.ResumeLayout(false);
             this.TopMenu.PerformLayout();
             this.Tools.ResumeLayout(false);
+            this.Tools.PerformLayout();
+            this.ArcsColorPanel.ResumeLayout(false);
+            this.VerticesColorPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SandpilePalette)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RadiusTrackBar)).EndInit();
             this.SandpilePanel.ResumeLayout(false);
             this.SandpilePanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.RadiusTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DrawingSurface)).EndInit();
             this.ModePage.ResumeLayout(false);
             this.ModePage.PerformLayout();
@@ -1061,6 +1242,25 @@ namespace Graph_WinForms
         private System.Windows.Forms.Label AdjacencyMatrixLabel;
         private System.Windows.Forms.Button OkLength;
         private System.Windows.Forms.TabControl AppParameters;
+        private System.Windows.Forms.Button Down;
+        private System.Windows.Forms.Button Up;
+        private System.Windows.Forms.Button Left;
+        private System.Windows.Forms.Button Right;
+        private System.Windows.Forms.Button ReduceButton;
+        private System.Windows.Forms.Button EnlargeButton;
+        private System.Windows.Forms.Panel ArcsColorPanel;
+        private System.Windows.Forms.Button ArcsColorDialogOpen;
+        private System.Windows.Forms.Panel VerticesColorPanel;
+        private System.Windows.Forms.Button VertexColorDialogOpen;
+        private System.Windows.Forms.ColorDialog GraphStyleColorDialog;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolTip EnlargeToolTip;
+        private System.Windows.Forms.ToolTip ReduceToolTip;
+        private System.Windows.Forms.ToolTip UpToolTip;
+        private System.Windows.Forms.ToolTip LeftToolTip;
+        private System.Windows.Forms.ToolTip RightToolTip;
+        private System.Windows.Forms.ToolTip DownToolTip;
+        private System.Windows.Forms.ToolTip ColorToolTip;
     }
 }
 

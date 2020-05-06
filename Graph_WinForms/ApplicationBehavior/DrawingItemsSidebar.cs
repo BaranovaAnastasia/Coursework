@@ -84,67 +84,52 @@ namespace Graph_WinForms
         {
             if (CursorButton.Enabled)
             {
-                CursorButton.Size = new Size(75, 75);
-                CursorButton.Location = new Point(CursorButton.Location.X - 5, CursorButton.Location.Y - 5);
+                CursorButton.BackColor = Button.DefaultBackColor;
                 isPressed = false;
                 movingVertexIndex = -1;
                 graphDrawing.DrawTheWholeGraph(Digraph);
                 DrawingSurface.Image = graphDrawing.Image;
                 return;
             }
-            CursorButton.Size = new Size(65, 65);
-            CursorButton.Location = new Point(CursorButton.Location.X + 5, CursorButton.Location.Y + 5);
+            CursorButton.BackColor = Color.LightGray;
         }
 
         private void VertexButton_EnabledChanged(object sender, EventArgs e)
         {
             if (VertexButton.Enabled)
             {
-                VertexButton.Size = new Size(75, 75);
-                VertexButton.Location = new Point(VertexButton.Location.X - 5, VertexButton.Location.Y - 5);
+                VertexButton.BackColor = Button.DefaultBackColor;
                 return;
             }
-            VertexButton.Size = new Size(65, 65);
-            VertexButton.Location = new Point(VertexButton.Location.X + 5, VertexButton.Location.Y + 5);
+            VertexButton.BackColor = Color.LightGray;
         }
 
         private void EdgeButton_EnabledChanged(object sender, EventArgs e)
         {
             if (EdgeButton.Enabled)
             {
-                EdgeButton.Size = new Size(75, 75);
-                EdgeButton.Location = new Point(EdgeButton.Location.X - 5, EdgeButton.Location.Y - 5);
+                EdgeButton.BackColor = Button.DefaultBackColor;
                 vStart = vEnd = -1;
                 graphDrawing.DrawTheWholeGraph(Digraph);
                 DrawingSurface.Image = graphDrawing.Image;
                 return;
             }
-            EdgeButton.Size = new Size(65, 65);
-            EdgeButton.Location = new Point(EdgeButton.Location.X + 5, EdgeButton.Location.Y + 5);
+            EdgeButton.BackColor = Color.LightGray;
         }
 
         private void EraserButton_EnabledChanged(object sender, EventArgs e)
         {
             if (DeleteButton.Enabled)
             {
-                DeleteButton.Size = new Size(75, 75);
-                DeleteButton.Location = new Point(DeleteButton.Location.X - 5, DeleteButton.Location.Y - 5);
+                DeleteButton.BackColor = Button.DefaultBackColor;
                 return;
             }
-            DeleteButton.Size = new Size(65, 65);
-            DeleteButton.Location = new Point(DeleteButton.Location.X + 5, DeleteButton.Location.Y + 5);
+            DeleteButton.BackColor = Color.LightGray;
         }
 
         private void ClearAllButton_EnabledChanged(object sender, EventArgs e)
         {
-            if (ClearButton.Enabled)
-            {
-                ClearButton.Size = new Size(75, 75);
-                ClearButton.Location = new Point(ClearButton.Location.X - 5, ClearButton.Location.Y - 5);
-                return;
-            }
-            ClearButton.Size = new Size(65, 65);
-            ClearButton.Location = new Point(ClearButton.Location.X + 5, ClearButton.Location.Y + 5);
+            ClearButton.Visible = ClearButton.Enabled;
         }
 
 

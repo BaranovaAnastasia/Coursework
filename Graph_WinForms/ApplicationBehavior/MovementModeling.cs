@@ -52,8 +52,8 @@ namespace Graph_WinForms
                 return;
             }
 
+            movement.MovementEnded += (object s, EventArgs ea) => { movement.Tick -= UpdateElapsedTime;  movement = null; };
             if (SaveGifCheckBox.Checked) movement.MovementEnded += SaveGif;
-            movement.MovementEnded += (object s, EventArgs ea) => movement = null;
 
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();

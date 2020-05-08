@@ -33,8 +33,8 @@ namespace Graph_WinForms
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Build = new System.Windows.Forms.Button();
             this.Open = new System.Windows.Forms.Button();
             this.TopMenu = new System.Windows.Forms.MenuStrip();
@@ -46,7 +46,6 @@ namespace Graph_WinForms
             this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.UserManualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MovementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -172,7 +171,6 @@ namespace Graph_WinForms
             this.TopMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.TopMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileToolStripMenuItem,
-            this.UserManualToolStripMenuItem,
             this.AboutToolStripMenuItem,
             this.MainMenuToolStripMenuItem,
             this.MovementToolStripMenuItem,
@@ -247,13 +245,6 @@ namespace Graph_WinForms
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(217, 34);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
-            // 
-            // UserManualToolStripMenuItem
-            // 
-            this.UserManualToolStripMenuItem.Name = "UserManualToolStripMenuItem";
-            this.UserManualToolStripMenuItem.Size = new System.Drawing.Size(126, 29);
-            this.UserManualToolStripMenuItem.Text = "User Manual";
-            this.UserManualToolStripMenuItem.Click += new System.EventHandler(this.UserManualToolStripMenuItem_Click);
             // 
             // AboutToolStripMenuItem
             // 
@@ -349,12 +340,13 @@ namespace Graph_WinForms
             // ArcsColorDialogOpen
             // 
             this.ArcsColorDialogOpen.BackColor = System.Drawing.SystemColors.Control;
+            this.ArcsColorDialogOpen.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ArcsColorDialogOpen.BackgroundImage")));
+            this.ArcsColorDialogOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ArcsColorDialogOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ArcsColorDialogOpen.Location = new System.Drawing.Point(48, 1);
             this.ArcsColorDialogOpen.Name = "ArcsColorDialogOpen";
             this.ArcsColorDialogOpen.Size = new System.Drawing.Size(24, 24);
             this.ArcsColorDialogOpen.TabIndex = 44;
-            this.ArcsColorDialogOpen.Text = ":::";
             this.ArcsColorDialogOpen.UseVisualStyleBackColor = false;
             this.ArcsColorDialogOpen.Visible = false;
             this.ArcsColorDialogOpen.Click += new System.EventHandler(this.ArcsColorDialogOpen_Click);
@@ -376,12 +368,13 @@ namespace Graph_WinForms
             // VertexColorDialogOpen
             // 
             this.VertexColorDialogOpen.BackColor = System.Drawing.SystemColors.Control;
+            this.VertexColorDialogOpen.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("VertexColorDialogOpen.BackgroundImage")));
+            this.VertexColorDialogOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.VertexColorDialogOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.VertexColorDialogOpen.Location = new System.Drawing.Point(48, 1);
             this.VertexColorDialogOpen.Name = "VertexColorDialogOpen";
             this.VertexColorDialogOpen.Size = new System.Drawing.Size(24, 24);
             this.VertexColorDialogOpen.TabIndex = 44;
-            this.VertexColorDialogOpen.Text = ":::";
             this.VertexColorDialogOpen.UseVisualStyleBackColor = false;
             this.VertexColorDialogOpen.Visible = false;
             this.VertexColorDialogOpen.Click += new System.EventHandler(this.VertexColorDialogOpen_Click);
@@ -579,26 +572,26 @@ namespace Graph_WinForms
             this.SandpilePalette.AllowUserToDeleteRows = false;
             this.SandpilePalette.BackgroundColor = System.Drawing.SystemColors.Control;
             this.SandpilePalette.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 7F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.SandpilePalette.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.SandpilePalette.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.SandpilePalette.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.SandpilePalette.Location = new System.Drawing.Point(0, 0);
             this.SandpilePalette.Name = "SandpilePalette";
             this.SandpilePalette.ReadOnly = true;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 7F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.SandpilePalette.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.SandpilePalette.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.SandpilePalette.RowHeadersWidth = 25;
             this.SandpilePalette.RowTemplate.Height = 28;
             this.SandpilePalette.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -1191,7 +1184,6 @@ namespace Graph_WinForms
         private System.Windows.Forms.ToolStripMenuItem openProjectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem UserManualToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MainMenuToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem StopToolStripMenuItem;

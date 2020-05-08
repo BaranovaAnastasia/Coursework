@@ -121,7 +121,8 @@ namespace ApplicationClasses.Modeling
             // Fill incidence list
             incidenceList = GetIncidenceList(digraph);
 
-            mainTimer = new Timer() { Interval = (int)(50 / (1000 * speed)) };
+            mainTimer = new Timer() // { Interval = (int)(50 / (1000 * speed)) };
+                {Interval = 1};
 
             //Select animation type by modeling type
             if (type == MovementModelingType.Basic) mainTimer.Tick += TickBasicAnimation;

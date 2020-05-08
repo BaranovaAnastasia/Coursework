@@ -82,18 +82,38 @@ namespace Graph_WinForms
         private void GridParameters_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-            if (int.TryParse(GridParameters[e.ColumnIndex, e.RowIndex].Value.ToString(), out int value) && value >= 1)
+            bool isValid = int.TryParse(GridParameters[e.ColumnIndex, e.RowIndex].Value.ToString(), out int value)
+                           && value >= 0;
+
+            switch (e.ColumnIndex)
             {
-                switch (e.ColumnIndex)
-                {
-                    case 0: Digraph.Thresholds[e.RowIndex] = value; break;
-                    case 1: Digraph.RefractoryPeriods[e.RowIndex] = value; break;
-                    case 2: Digraph.State[e.RowIndex] = value; break;
-                }
-                GridParameters[e.ColumnIndex, e.RowIndex].Value = value;
+                case 0:
+                    if (!isValid || value < 1)
+                    {
+                        GridParameters[e.ColumnIndex, e.RowIndex].Value = Digraph.Thresholds[e.RowIndex];
+                        return;
+                    }
+                    Digraph.Thresholds[e.RowIndex] = value;
+                    break;
+                case 1:
+                    if (!isValid)
+                    {
+                        GridParameters[e.ColumnIndex, e.RowIndex].Value = Digraph.RefractoryPeriods[e.RowIndex];
+                        return;
+                    }
+                    Digraph.RefractoryPeriods[e.RowIndex] = value;
+                    break;
+                case 2:
+                    if (!isValid)
+                    {
+                        GridParameters[e.ColumnIndex, e.RowIndex].Value = Digraph.State[e.RowIndex];
+                        return;
+                    }
+                    Digraph.State[e.RowIndex] = value;
+                    return;
             }
-            else
-                GridParameters[e.ColumnIndex, e.RowIndex].Value = Digraph.Thresholds[e.RowIndex];
+            GridParameters[e.ColumnIndex, e.RowIndex].Value = value;
+
         }
 
         private void GridParameters_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)

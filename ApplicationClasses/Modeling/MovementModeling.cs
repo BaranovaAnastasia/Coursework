@@ -122,7 +122,7 @@ namespace ApplicationClasses.Modeling
             incidenceList = GetIncidenceList(digraph);
 
             mainTimer = new Timer() // { Interval = (int)(50 / (1000 * speed)) };
-                {Interval = 1};
+            { Interval = 1 };
 
             //Select animation type by modeling type
             if (type == MovementModelingType.Basic) mainTimer.Tick += TickBasicAnimation;
@@ -216,19 +216,19 @@ namespace ApplicationClasses.Modeling
             if (SandpileChartTypes.Contains(SandpileChartType.NumberOfDotsChart))
             {
                 numberOfDotsChart = new ChartWindow();
-                numberOfDotsChart.Closing +=
-                    delegate (object sender, System.ComponentModel.CancelEventArgs e)
-                    { mainTimer.Tick -= TickChartFilling; };
-                mainTimer.Tick += TickChartFilling;
+                //numberOfDotsChart.Closing +=
+                //    delegate (object sender, System.ComponentModel.CancelEventArgs e)
+                //    { mainTimer.Tick -= TickChartFilling; };
+                //mainTimer.Tick += TickChartFilling;
             }
 
             if (SandpileChartTypes.Contains(SandpileChartType.AvalancheSizesDistributionChart))
             {
                 distributionChart = new ChartWindow();
-                distributionChart.Closing +=
-                    delegate (object sender, System.ComponentModel.CancelEventArgs e)
-                    { MovementEnded -= TickChartFilling; };
-                MovementEnded += TickChartFilling;
+                //distributionChart.Closing +=
+                //    delegate (object sender, System.ComponentModel.CancelEventArgs e)
+                //    { MovementEnded -= TickChartFilling; };
+                //MovementEnded += TickChartFilling;
                 MovementEnded += delegate (object sender, EventArgs args) { avalancheSize = 0; };
                 distributionChart.AvalancheSizesDistributionChartPrepare();
             }
@@ -241,10 +241,10 @@ namespace ApplicationClasses.Modeling
         {
             if (type != MovementModelingType.Basic) return;
             numberOfDotsChart = new ChartWindow();
-            mainTimer.Tick += TickChartFilling;
-            numberOfDotsChart.Closing +=
-                delegate (object sender, System.ComponentModel.CancelEventArgs e)
-                    { mainTimer.Tick -= TickChartFilling; };
+            //mainTimer.Tick += TickChartFilling;
+            //numberOfDotsChart.Closing +=
+            //    delegate (object sender, System.ComponentModel.CancelEventArgs e)
+            //        { mainTimer.Tick -= TickChartFilling; };
         }
 
         #region Helper static methods
@@ -303,7 +303,7 @@ namespace ApplicationClasses.Modeling
         NumberOfDotsChart,
         AvalancheSizesDistributionChart
     }
-    
+
     public class MovementTickEventArgs : EventArgs
     {
         private readonly Stopwatch Time;

@@ -66,7 +66,7 @@ namespace ApplicationClasses.Modeling
             this.chart1.ChartAreas.Add("Chart");
             this.chart1.ChartAreas[0].AxisX.Title = "t, s";
             this.chart1.ChartAreas[0].AxisY.Title = "Amount";
-            this.chart1.ChartAreas[0].AxisX.Interval = 0.5;
+            this.chart1.ChartAreas[0].AxisX.Interval = 1;
             this.chart1.ChartAreas[0].AxisY.Interval = 5;
             // 
             // menuStrip1

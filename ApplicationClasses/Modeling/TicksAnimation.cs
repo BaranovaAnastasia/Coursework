@@ -22,7 +22,7 @@ namespace ApplicationClasses.Modeling
             ProcessDots(i => digraph.State[i] >= digraph.Thresholds[i]
                      && (digraph.RefractoryPeriods[i] == 0 || !digraph.TimeTillTheEndOfRefractoryPeriod[i].Enabled),
                 i => digraph.State[i] -= digraph.Thresholds[i]);
-            
+
             GraphDrawing.DrawVertices(digraph);
             DrawingSurface.Image = GraphDrawing.Image;
 
@@ -48,7 +48,7 @@ namespace ApplicationClasses.Modeling
             ProcessDots(i => !digraph.Stock.Contains(i) && digraph.State[i] >= incidenceList[i].Count
                                                         && (digraph.RefractoryPeriods[i] == 0 || !digraph.TimeTillTheEndOfRefractoryPeriod[i].Enabled),
                 i => digraph.State[i] -= incidenceList[i].Count);
-            
+
             GraphDrawing.DrawVerticesSandpile(digraph);
             DrawingSurface.Image = GraphDrawing.Image;
 
@@ -66,22 +66,24 @@ namespace ApplicationClasses.Modeling
         private void ProcessVertices(Predicate<int> releaseCondition, Action<int> stateChanges)
         {
             int count = involvedArcs.Count; //Number of new dots
-
+            int initialCount = count;
+            bool added = false;
             for (var i = 0; i < digraph.Vertices.Count; i++)
             {
                 if (!releaseCondition(i)) continue;
                 if (distributionChart != null) avalancheSize++;
-                while (releaseCondition(i))
-                {
-                    involvedArcs.AddRange(incidenceList[i]);
-                    timers.AddRange(incidenceList[i].ConvertAll(arc => new Stopwatch()));
-                    stateChanges(i);
-                    digraph.TimeTillTheEndOfRefractoryPeriod[i]?.Start();
-                }
+                ReleaseDots(i, releaseCondition, stateChanges, out added);
             }
 
+            if (timers.Count == 0) TickChartFilling(mainStopwatch.ElapsedMilliseconds, initialCount);
+            if (initialCount != timers.Count || added) TickChartFilling(mainStopwatch.ElapsedMilliseconds, involvedArcs.Count);
+
             for (int i = count; i < timers.Count; i++)
+            {
                 timers[i].Start();
+                digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Stop();
+                digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Start();
+            }
 
             if (timers.Count > 15000)
             {
@@ -98,12 +100,14 @@ namespace ApplicationClasses.Modeling
         private void ProcessDots(Predicate<int> releaseCondition, Action<int> stateChanges)
         {
             int currentCount = timers.Count;
+            int initialCount = currentCount;
+            bool added = false;
             for (var i = 0; i < currentCount; i++)
             {
                 if (timers[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
                 {
                     digraph.State[involvedArcs[i].EndVertex]++;
-                    ReleaseDots(involvedArcs[i].EndVertex, releaseCondition, stateChanges);
+                    ReleaseDots(involvedArcs[i].EndVertex, releaseCondition, stateChanges, out added);
                     timers.RemoveAt(i);
                     involvedArcs.RemoveAt(i);
 
@@ -121,6 +125,9 @@ namespace ApplicationClasses.Modeling
                 GraphDrawing.DrawDot(point);
             }
 
+            if (timers.Count == 0) TickChartFilling(mainStopwatch.ElapsedMilliseconds, initialCount);
+            if (initialCount != timers.Count || added) TickChartFilling(mainStopwatch.ElapsedMilliseconds, involvedArcs.Count);
+
             for (int i = currentCount; i < timers.Count; i++)
             {
                 timers[i].Start();
@@ -137,14 +144,16 @@ namespace ApplicationClasses.Modeling
             }
         }
 
-        private void ReleaseDots(int vertexIndex, Predicate<int> releaseCondition, Action<int> stateChanges)
+        private void ReleaseDots(int vertexIndex, Predicate<int> releaseCondition, Action<int> stateChanges, out bool added)
         {
+            added = false;
             while (releaseCondition(vertexIndex))
             {
                 involvedArcs.AddRange(incidenceList[vertexIndex]);
                 timers.AddRange(incidenceList[vertexIndex].ConvertAll(arc => new Stopwatch()));
                 stateChanges(vertexIndex);
                 digraph.TimeTillTheEndOfRefractoryPeriod[vertexIndex]?.Start();
+                added = true;
             }
         }
     }

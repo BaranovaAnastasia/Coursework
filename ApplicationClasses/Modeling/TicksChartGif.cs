@@ -36,10 +36,26 @@ namespace ApplicationClasses.Modeling
         /// <summary>
         /// Collects chart data and displays it
         /// </summary>
-        private void TickChartFilling(object source, EventArgs e)
+        private void TickChartFilling(long time, int count)
         {
             if(numberOfDotsChart != null)
-                numberOfDotsChart.chart1.Series[0].Points.AddXY(mainStopwatch.ElapsedMilliseconds / 1000.0, involvedArcs.Count);
+            {
+                numberOfDotsChart.chart1.Series[0].Points.AddXY(time / 1000.0, count);
+                if (count > 10000) numberOfDotsChart.chart1.ChartAreas[0].AxisY.Interval = 2000;
+                else if(count > 5000) numberOfDotsChart.chart1.ChartAreas[0].AxisY.Interval = 1000;
+                else if (count > 1000) numberOfDotsChart.chart1.ChartAreas[0].AxisY.Interval = 200;
+                else if (count > 500) numberOfDotsChart.chart1.ChartAreas[0].AxisY.Interval = 100;
+                else if (count > 100) numberOfDotsChart.chart1.ChartAreas[0].AxisY.Interval = 20;
+                else if (count > 50) numberOfDotsChart.chart1.ChartAreas[0].AxisY.Interval = 10;
+
+                numberOfDotsChart.chart1.ChartAreas[0].AxisX.Interval = time / 1000.0 > 100
+                    ? 20
+                    : time / 1000.0 > 50
+                        ? 10
+                        : time / 1000.0 > 10
+                            ? 2
+                            : 1;
+            }
 
             if (IsMovementEndedSandpile && distributionChart != null)
             {

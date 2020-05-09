@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Media.Imaging;
 
@@ -36,14 +37,14 @@ namespace ApplicationClasses.Modeling
         /// <summary>
         /// Collects chart data and displays it
         /// </summary>
-        private void TickChartFilling(object source, EventArgs e)
+        private async void TickChartFilling(long[] parameters/*, int avalancheSize*/)
         {
-            if(numberOfDotsChart != null)
-                numberOfDotsChart.chart1.Series[0].Points.AddXY(mainStopwatch.ElapsedMilliseconds / 1000.0, involvedArcs.Count);
+            //if(numberOfDotsChart != null)
+            numberOfDotsChart.chart1.Series[0].Points.AddXY(parameters[0] / 1000.0, parameters[1]);
 
-            if (IsMovementEndedSandpile && distributionChart != null)
+            /*if (IsMovementEndedSandpile && distributionChart != null)
             {
-                if(avalancheSize == 0) return;
+                if(avalancheSize <= 0) return;
                 foreach (DataPoint point in distributionChart.chart1.Series[0].Points)
                 {
                     if (point.XValue != avalancheSize) continue;
@@ -52,7 +53,7 @@ namespace ApplicationClasses.Modeling
                     return;
                 }
                 distributionChart.chart1.Series[0].Points.AddXY(avalancheSize, 1);
-            }
+            }*/
         }
     }
 }

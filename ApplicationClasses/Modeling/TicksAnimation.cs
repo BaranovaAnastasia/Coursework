@@ -98,12 +98,13 @@ namespace ApplicationClasses.Modeling
         private void ProcessDots(Predicate<int> releaseCondition, Action<int> stateChanges)
         {
             int currentCount = timers.Count;
+            bool added = false;
             for (var i = 0; i < currentCount; i++)
             {
                 if (timers[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
                 {
                     digraph.State[involvedArcs[i].EndVertex]++;
-                    ReleaseDots(involvedArcs[i].EndVertex, releaseCondition, stateChanges);
+                    ReleaseDots(involvedArcs[i].EndVertex, releaseCondition, stateChanges, out added);
                     timers.RemoveAt(i);
                     involvedArcs.RemoveAt(i);
 
@@ -127,6 +128,7 @@ namespace ApplicationClasses.Modeling
                 digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Stop();
                 digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Start();
             }
+            if(added) TickChartFilling();
 
             if (timers.Count > 15000)
             {
@@ -137,14 +139,16 @@ namespace ApplicationClasses.Modeling
             }
         }
 
-        private void ReleaseDots(int vertexIndex, Predicate<int> releaseCondition, Action<int> stateChanges)
+        private void ReleaseDots(int vertexIndex, Predicate<int> releaseCondition, Action<int> stateChanges, out bool added)
         {
+            added = false;
             while (releaseCondition(vertexIndex))
             {
                 involvedArcs.AddRange(incidenceList[vertexIndex]);
                 timers.AddRange(incidenceList[vertexIndex].ConvertAll(arc => new Stopwatch()));
                 stateChanges(vertexIndex);
                 digraph.TimeTillTheEndOfRefractoryPeriod[vertexIndex]?.Start();
+                added = true;
             }
         }
     }

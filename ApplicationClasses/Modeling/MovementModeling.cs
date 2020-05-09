@@ -87,11 +87,11 @@ namespace ApplicationClasses.Modeling
         /// <summary>
         /// List of arcs along which dots are currently moving
         /// </summary>
-        private List<Arc> involvedArcs = new List<Arc>();
+        private readonly List<Arc> involvedArcs = new List<Arc>();
         /// <summary>
         /// Stopwatches for each moving dot
         /// </summary>
-        private List<Stopwatch> timers = new List<Stopwatch>();
+        private readonly List<Stopwatch> timers = new List<Stopwatch>();
         /// <summary>
         /// Stopwatch counting the time of the whole process
         /// </summary>
@@ -104,6 +104,9 @@ namespace ApplicationClasses.Modeling
         /// Current avalanche size
         /// </summary>
         private int avalancheSize;
+
+        private Predicate<int> releaseCondition;
+        private Action<int> stateChange;
 
         private ChartWindow numberOfDotsChart = null;
         private ChartWindow distributionChart = null;
@@ -123,9 +126,24 @@ namespace ApplicationClasses.Modeling
 
             mainTimer = new Timer { Interval = 1 };
 
+            mainTimer.Tick += TickModeling;
+
             //Select animation type by modeling type
-            if (type == MovementModelingType.Basic) mainTimer.Tick += TickBasicAnimation;
-            else mainTimer.Tick += TickSandpileAnimation;
+            if (type == MovementModelingType.Basic)
+            {
+                releaseCondition = i => digraph.State[i] >= digraph.Thresholds[i]
+                                        && (digraph.RefractoryPeriods[i] == 0 ||
+                                            !digraph.TimeTillTheEndOfRefractoryPeriod[i].Enabled);
+                stateChange = i => digraph.State[i] -= digraph.Thresholds[i];
+            }
+            else
+            {
+                releaseCondition = i => !digraph.Stock.Contains(i) && digraph.State[i] >= incidenceList[i].Count
+                                                                   && (digraph.RefractoryPeriods[i] == 0 ||
+                                                                       !digraph.TimeTillTheEndOfRefractoryPeriod[i]
+                                                                           .Enabled);
+                stateChange = i => digraph.State[i] -= incidenceList[i].Count;
+            }
 
             //Prepare chart windows if it's needed
             if (modes.Contains(MovementModelingMode.Chart))
@@ -176,7 +194,7 @@ namespace ApplicationClasses.Modeling
         /// <summary>
         /// Shows if modeling of basic movement is ended
         /// </summary>
-        public bool IsMovementEndedBasic
+        private bool IsMovementEndedBasic
         {
             get
             {
@@ -191,7 +209,7 @@ namespace ApplicationClasses.Modeling
         /// <summary>
         /// Shows if modeling of sandpile movement is ended
         /// </summary>
-        public bool IsMovementEndedSandpile
+        private bool IsMovementEndedSandpile
         {
             get
             {
@@ -200,6 +218,15 @@ namespace ApplicationClasses.Modeling
                     if (!digraph.Stock.Contains(i) && digraph.State[i] >= incidenceList[i].Count)
                         return false;
                 return true;
+            }
+        }
+
+        public bool IsMovementEnded
+        {
+            get
+            {
+                if (type == MovementModelingType.Basic) return IsMovementEndedBasic;
+                return IsMovementEndedSandpile;
             }
         }
 

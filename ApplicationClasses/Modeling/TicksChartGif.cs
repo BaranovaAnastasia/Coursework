@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Media.Imaging;
 
@@ -32,6 +33,8 @@ namespace ApplicationClasses.Modeling
 
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]
         public static extern bool DeleteObject(IntPtr hObject);
+
+
 
         /// <summary>
         /// Collects chart data and displays it

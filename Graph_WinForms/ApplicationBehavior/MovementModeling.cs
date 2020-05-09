@@ -145,6 +145,7 @@ namespace Graph_WinForms
             for (int i = 0; i < Digraph.State.Count; i++)
             {
                 Digraph.State[i] = int.Parse(GridParameters[2, i].Value.ToString());
+                if(Digraph.RefractoryPeriods[i] == 0) continue;
                 Digraph.TimeTillTheEndOfRefractoryPeriod[i]?.Stop();
             }
             Digraph.ResetStock();

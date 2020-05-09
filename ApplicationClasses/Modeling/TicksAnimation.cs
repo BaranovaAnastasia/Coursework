@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows;
 
 namespace ApplicationClasses.Modeling
@@ -8,100 +9,58 @@ namespace ApplicationClasses.Modeling
     public partial class MovementModeling
     {
         /// <summary>
-        /// Animates the process of basic movement
+        /// Models and animates the process of dots movement
         /// </summary>
-        private void TickBasicAnimation(object source, EventArgs e)
+        private void TickModeling(object source, EventArgs e)
         {
-            ProcessVertices(i => digraph.State[i] >= digraph.Thresholds[i]
-                     && (digraph.RefractoryPeriods[i] == 0 || !digraph.TimeTillTheEndOfRefractoryPeriod[i].Enabled),
-                i => digraph.State[i] -= digraph.Thresholds[i]);
-
-
-            GraphDrawing.DrawTheWholeGraph(digraph);
-
-            ProcessDots(i => digraph.State[i] >= digraph.Thresholds[i]
-                     && (digraph.RefractoryPeriods[i] == 0 || !digraph.TimeTillTheEndOfRefractoryPeriod[i].Enabled),
-                i => digraph.State[i] -= digraph.Thresholds[i]);
-
-            GraphDrawing.DrawVertices(digraph);
-            DrawingSurface.Image = GraphDrawing.Image;
-
-
-            if (!mainStopwatch.IsRunning) mainStopwatch.Start();
             Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch));
 
-            if (IsMovementEndedBasic)
-                MovementEnded?.Invoke(this, null);
-        }
+            int initialCount = involvedArcs.Count;
+            int numberOfNewDots = ProcessVertices() + ProcessDots();
 
-        /// <summary>
-        /// Animates the process of sandpile movement
-        /// </summary>
-        private void TickSandpileAnimation(object source, EventArgs e)
-        {
-            ProcessVertices(i => !digraph.Stock.Contains(i) && digraph.State[i] >= incidenceList[i].Count
-                                 && (digraph.RefractoryPeriods[i] == 0 || !digraph.TimeTillTheEndOfRefractoryPeriod[i].Enabled),
-                i => digraph.State[i] -= incidenceList[i].Count);
-
-
-            GraphDrawing.DrawTheWholeGraphSandpile(digraph, false);
-
-            ProcessDots(i => !digraph.Stock.Contains(i) && digraph.State[i] >= incidenceList[i].Count
-                                                        && (digraph.RefractoryPeriods[i] == 0 || !digraph.TimeTillTheEndOfRefractoryPeriod[i].Enabled),
-                i => digraph.State[i] -= incidenceList[i].Count);
-
-            GraphDrawing.DrawVerticesSandpile(digraph);
-            DrawingSurface.Image = GraphDrawing.Image;
-
-            if (IsMovementEndedSandpile) MovementEnded?.Invoke(this, null);
+            UpdateChart(initialCount);
+            StartNewTimers(numberOfNewDots);
 
             if (!mainStopwatch.IsRunning) mainStopwatch.Start();
-            Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch));
+            if (IsMovementEnded) MovementEnded?.Invoke(this, null);
         }
 
         /// <summary>
         /// Process vertices states to release new dots
         /// </summary>
-        /// <param name="releaseCondition">Condition under which dots are released</param>
-        /// <param name="stateChanges">How vertex state changes after the dots are releasing</param>
-        private void ProcessVertices(Predicate<int> releaseCondition, Action<int> stateChanges)
+        private int ProcessVertices()
         {
-            int count = involvedArcs.Count; 
-            int initialCount = count;
-            bool added = false;
+            int count = involvedArcs.Count; // number of 'old' dots 
+
             for (var i = 0; i < digraph.Vertices.Count; i++)
             {
                 if (!releaseCondition(i)) continue;
-                if (distributionChart != null) avalancheSize++;
-                ReleaseDots(i, releaseCondition, stateChanges, out added);
+                ReleaseDots(i);
             }
 
-            if (timers.Count == 0) TickChartFilling(mainStopwatch.ElapsedMilliseconds, initialCount);
-            if (initialCount != timers.Count || added) TickChartFilling(mainStopwatch.ElapsedMilliseconds, involvedArcs.Count);
-
-            StartNewTimers(count);
-
-            CheckDotsNumber(15000);
+            CheckDotsNumber(20000);
+            return timers.Count - count;
         }
 
         /// <summary>
-        /// Draws all the moving dots and removes all the dots got to their destination
+        /// Draws all the moving dots, removes all the dots got to their destination
+        /// and releases new dots if destination vertices are ready
         /// </summary>
-        private void ProcessDots(Predicate<int> releaseCondition, Action<int> stateChanges)
+        private int ProcessDots()
         {
-            int currentCount = timers.Count;
-            int initialCount = currentCount;
-            bool added = false;
-            for (var i = 0; i < currentCount; i++)
+            GraphDrawing.DrawTheWholeGraph(digraph);
+
+            int count = timers.Count;    // number of 'old' dots
+            for (var i = 0; i < count; i++)
             {
                 if (timers[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
                 {
                     digraph.State[involvedArcs[i].EndVertex]++;
-                    ReleaseDots(involvedArcs[i].EndVertex, releaseCondition, stateChanges, out added);
+                    ReleaseDots(involvedArcs[i].EndVertex);
                     timers.RemoveAt(i);
                     involvedArcs.RemoveAt(i);
 
-                    currentCount--;
+                    count--;
                     i--;
                     continue;
                 }
@@ -115,45 +74,71 @@ namespace ApplicationClasses.Modeling
                 GraphDrawing.DrawDot(point);
             }
 
-            if (timers.Count == 0) TickChartFilling(mainStopwatch.ElapsedMilliseconds, initialCount);
-            if (initialCount != timers.Count || added) TickChartFilling(mainStopwatch.ElapsedMilliseconds, involvedArcs.Count);
+            CheckDotsNumber(20000);
 
-            StartNewTimers(currentCount);
+            GraphDrawing.DrawVertices(digraph);
+            DrawingSurface.Image = GraphDrawing.Image;
 
-            CheckDotsNumber(15000);
+            return timers.Count - count;
         }
 
-        private void ReleaseDots(int vertexIndex, Predicate<int> releaseCondition, Action<int> stateChanges, out bool added)
+        /// <summary>
+        /// Checks if the vertex is ready to fire and releases new dots
+        /// </summary>
+        private void ReleaseDots(int vertexIndex)
         {
-            added = false;
+            if(!releaseCondition(vertexIndex)) return;
             while (releaseCondition(vertexIndex))
             {
                 involvedArcs.AddRange(incidenceList[vertexIndex]);
                 timers.AddRange(incidenceList[vertexIndex].ConvertAll(arc => new Stopwatch()));
-                stateChanges(vertexIndex);
+                stateChange(vertexIndex);
                 digraph.TimeTillTheEndOfRefractoryPeriod[vertexIndex]?.Start();
-                added = true;
             }
+            if (distributionChart != null) avalancheSize++;
         }
 
+        /// <summary>
+        /// Checks current number of dots
+        /// and aborts the process if it exceeds the limit
+        /// </summary>
         private void CheckDotsNumber(int limit)
         {
             if (timers.Count > limit)
             {
                 Stop();
-                MessageBox.Show("Operation has been aborted prematurely. The number of dots exceeded the allowable mark of 15.000",
+                MessageBox.Show("Operation has been aborted prematurely." + Environment.NewLine +
+                                $"The number of dots exceeded the allowable mark of {limit}",
                     "Operation Aborted");
                 MovementEnded?.Invoke(this, null);
             }
         }
 
-        private void StartNewTimers(int startIndex)
+        /// <summary>
+        /// Starts count last timers
+        /// </summary>
+        /// <param name="count">Number of timers to start</param>
+        private void StartNewTimers(int count)
         {
-            for (int i = startIndex; i < timers.Count; i++)
+            int fired = 0;
+            for (int i = timers.Count - 1; fired < count; i--, fired++)
             {
                 timers[i].Start();
                 digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Stop();
                 digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Start();
+            }
+        }
+
+        /// <summary>
+        /// Updates number of dots chart
+        /// </summary>
+        /// <param name="val">Number of dots before changes</param>
+        private void UpdateChart(int val)
+        {
+            if (modes.Contains(MovementModelingMode.Chart) && val != timers.Count)
+            {
+                TickChartFilling(mainStopwatch.ElapsedMilliseconds, val);
+                TickChartFilling(mainStopwatch.ElapsedMilliseconds, involvedArcs.Count);
             }
         }
     }

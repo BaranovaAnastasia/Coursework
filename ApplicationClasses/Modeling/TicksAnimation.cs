@@ -26,11 +26,12 @@ namespace ApplicationClasses.Modeling
             GraphDrawing.DrawVertices(digraph);
             DrawingSurface.Image = GraphDrawing.Image;
 
-            if (IsMovementEndedBasic)
-                MovementEnded?.Invoke(this, null);
 
             if (!mainStopwatch.IsRunning) mainStopwatch.Start();
             Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch));
+
+            if (IsMovementEndedBasic)
+                MovementEnded?.Invoke(this, null);
         }
 
         /// <summary>
@@ -65,7 +66,7 @@ namespace ApplicationClasses.Modeling
         /// <param name="stateChanges">How vertex state changes after the dots are releasing</param>
         private void ProcessVertices(Predicate<int> releaseCondition, Action<int> stateChanges)
         {
-            int count = involvedArcs.Count; //Number of new dots
+            int count = involvedArcs.Count; 
             int initialCount = count;
             bool added = false;
             for (var i = 0; i < digraph.Vertices.Count; i++)
@@ -78,20 +79,9 @@ namespace ApplicationClasses.Modeling
             if (timers.Count == 0) TickChartFilling(mainStopwatch.ElapsedMilliseconds, initialCount);
             if (initialCount != timers.Count || added) TickChartFilling(mainStopwatch.ElapsedMilliseconds, involvedArcs.Count);
 
-            for (int i = count; i < timers.Count; i++)
-            {
-                timers[i].Start();
-                digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Stop();
-                digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Start();
-            }
+            StartNewTimers(count);
 
-            if (timers.Count > 15000)
-            {
-                Stop();
-                MessageBox.Show("Operation has been aborted prematurely. The number of dots exceeded the allowable mark of 15.000",
-                    "Operation Aborted");
-                MovementEnded?.Invoke(this, null);
-            }
+            CheckDotsNumber(15000);
         }
 
         /// <summary>
@@ -128,20 +118,9 @@ namespace ApplicationClasses.Modeling
             if (timers.Count == 0) TickChartFilling(mainStopwatch.ElapsedMilliseconds, initialCount);
             if (initialCount != timers.Count || added) TickChartFilling(mainStopwatch.ElapsedMilliseconds, involvedArcs.Count);
 
-            for (int i = currentCount; i < timers.Count; i++)
-            {
-                timers[i].Start();
-                digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Stop();
-                digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Start();
-            }
+            StartNewTimers(currentCount);
 
-            if (timers.Count > 15000)
-            {
-                Stop();
-                MessageBox.Show("Operation has been aborted prematurely. The number of dots exceeded the allowable mark of 15.000",
-                    "Operation Aborted");
-                MovementEnded?.Invoke(this, null);
-            }
+            CheckDotsNumber(15000);
         }
 
         private void ReleaseDots(int vertexIndex, Predicate<int> releaseCondition, Action<int> stateChanges, out bool added)
@@ -154,6 +133,27 @@ namespace ApplicationClasses.Modeling
                 stateChanges(vertexIndex);
                 digraph.TimeTillTheEndOfRefractoryPeriod[vertexIndex]?.Start();
                 added = true;
+            }
+        }
+
+        private void CheckDotsNumber(int limit)
+        {
+            if (timers.Count > limit)
+            {
+                Stop();
+                MessageBox.Show("Operation has been aborted prematurely. The number of dots exceeded the allowable mark of 15.000",
+                    "Operation Aborted");
+                MovementEnded?.Invoke(this, null);
+            }
+        }
+
+        private void StartNewTimers(int startIndex)
+        {
+            for (int i = startIndex; i < timers.Count; i++)
+            {
+                timers[i].Start();
+                digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Stop();
+                digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Start();
             }
         }
     }

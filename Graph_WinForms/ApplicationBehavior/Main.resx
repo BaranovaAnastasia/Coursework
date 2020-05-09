@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <metadata name="TopMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 0</value>
+    <value>14, 9</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="ArcsColorDialogOpen.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -158,8 +158,8 @@
         TkSuQmCC
 </value>
   </data>
-  <metadata name="ColorToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 0</value>
+  <metadata name="EmptyToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>20, 95</value>
   </metadata>
   <data name="VertexColorDialogOpen.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -222,9 +222,6 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAgCm9vPwLX7BumOLVM0QAAAAASUVORK5CYII=
 </value>
   </data>
-  <metadata name="DownToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 0</value>
-  </metadata>
   <data name="Up.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAK4AAADiCAYAAADXlvz5AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAM
@@ -250,9 +247,6 @@
         AAAAAAAAAAAAAAAAAAAAgIG8vf0H2Y1umNbVZ+QAAAAASUVORK5CYII=
 </value>
   </data>
-  <metadata name="UpToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 0</value>
-  </metadata>
   <data name="Left.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAOIAAACuCAYAAAAritHAAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAM
@@ -279,9 +273,6 @@
         AAAAAAAAAAAAAAAAAEzk7e0/FpNumHV6JaEAAAAASUVORK5CYII=
 </value>
   </data>
-  <metadata name="LeftToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 0</value>
-  </metadata>
   <data name="Right.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAOIAAACuCAYAAAAritHAAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAM
@@ -304,9 +295,6 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAGBILy+/AMOQbpjpnzN0AAAAAElFTkSuQmCC
 </value>
   </data>
-  <metadata name="RightToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 0</value>
-  </metadata>
   <data name="ReduceButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAA1wAAAOOCAYAAAAUExPgAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -847,9 +835,6 @@
         AAAAAAAAAAAAAAAAAAAAAADA8j70of8L+QR5QMYZZpoAAAAASUVORK5CYII=
 </value>
   </data>
-  <metadata name="ReduceToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 0</value>
-  </metadata>
   <data name="EnlargeButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAA1wAAAOOCAYAAAAUExPgAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -1433,9 +1418,6 @@
         AAAAAAAAAAAAAAAAAAAAAAAAgI36kz/5/wB1HzRYUdw2NAAAAABJRU5ErkJggg==
 </value>
   </data>
-  <metadata name="EnlargeToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 0</value>
-  </metadata>
   <data name="ClearButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAA44AAAGSCAYAAACsfJ9dAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -1587,7 +1569,7 @@
 </value>
   </data>
   <metadata name="ClearAllToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>829, 0</value>
+    <value>787, 47</value>
   </metadata>
   <data name="CursorButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1652,7 +1634,7 @@
 </value>
   </data>
   <metadata name="CursorToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>178, 6</value>
+    <value>987, 102</value>
   </metadata>
   <data name="DeleteButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1775,7 +1757,7 @@
 </value>
   </data>
   <metadata name="EraserToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>657, 0</value>
+    <value>608, 49</value>
   </metadata>
   <data name="VertexButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1817,7 +1799,7 @@
 </value>
   </data>
   <metadata name="VertexToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>333, 0</value>
+    <value>236, 53</value>
   </metadata>
   <data name="EdgeButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -2156,12 +2138,12 @@
 </value>
   </data>
   <metadata name="ArcToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>508, 0</value>
+    <value>438, 55</value>
   </metadata>
   <metadata name="GraphStyleColorDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1014, 0</value>
+    <value>1010, 53</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>76</value>
+    <value>142</value>
   </metadata>
 </root>

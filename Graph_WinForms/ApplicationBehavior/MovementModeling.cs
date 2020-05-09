@@ -120,7 +120,7 @@ namespace Graph_WinForms
         }
 
         public void UpdateElapsedTime(object sender, MovementTickEventArgs e) =>
-            TimeTextBox.Text = " Elapsed time, s:  " + (e.ElapsedTime / 1000.0);
+            TimeTextBox.Text = " Elapsed time, s:  " + (e.ElapsedTime / 1000.0) + "*";
 
         /// <summary>
         /// Stops movement modeling

@@ -112,13 +112,7 @@ namespace Graph_WinForms
             this.OkLength = new System.Windows.Forms.Button();
             this.AppParameters = new System.Windows.Forms.TabControl();
             this.GraphStyleColorDialog = new System.Windows.Forms.ColorDialog();
-            this.EnlargeToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.ReduceToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.UpToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.LeftToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.RightToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.DownToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.ColorToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.EmptyToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.TopMenu.SuspendLayout();
             this.Tools.SuspendLayout();
             this.ArcsColorPanel.SuspendLayout();
@@ -332,7 +326,7 @@ namespace Graph_WinForms
             this.ArcsColorPanel.Name = "ArcsColorPanel";
             this.ArcsColorPanel.Size = new System.Drawing.Size(75, 28);
             this.ArcsColorPanel.TabIndex = 46;
-            this.ColorToolTip.SetToolTip(this.ArcsColorPanel, "Arcs color");
+            this.EmptyToolTip.SetToolTip(this.ArcsColorPanel, "Arcs color");
             this.ArcsColorPanel.Click += new System.EventHandler(this.ArcsColorPanel_Click);
             this.ArcsColorPanel.Enter += new System.EventHandler(this.ArcsColorPanel_Enter);
             this.ArcsColorPanel.Leave += new System.EventHandler(this.ArcsColorPanel_Leave);
@@ -360,7 +354,7 @@ namespace Graph_WinForms
             this.VerticesColorPanel.Name = "VerticesColorPanel";
             this.VerticesColorPanel.Size = new System.Drawing.Size(75, 28);
             this.VerticesColorPanel.TabIndex = 45;
-            this.ColorToolTip.SetToolTip(this.VerticesColorPanel, "Vertices color");
+            this.EmptyToolTip.SetToolTip(this.VerticesColorPanel, "Vertices color");
             this.VerticesColorPanel.Click += new System.EventHandler(this.VerticesColorPanel_Click);
             this.VerticesColorPanel.Enter += new System.EventHandler(this.VerticesColorPanel_Enter);
             this.VerticesColorPanel.Leave += new System.EventHandler(this.VerticesColorPanel_Leave);
@@ -389,7 +383,7 @@ namespace Graph_WinForms
             this.Down.Name = "Down";
             this.Down.Size = new System.Drawing.Size(25, 25);
             this.Down.TabIndex = 42;
-            this.DownToolTip.SetToolTip(this.Down, "Ctrl+Down");
+            this.EmptyToolTip.SetToolTip(this.Down, "Ctrl+Down");
             this.Down.UseVisualStyleBackColor = true;
             this.Down.Click += new System.EventHandler(this.Down_Click);
             // 
@@ -403,7 +397,7 @@ namespace Graph_WinForms
             this.Up.Name = "Up";
             this.Up.Size = new System.Drawing.Size(25, 25);
             this.Up.TabIndex = 41;
-            this.UpToolTip.SetToolTip(this.Up, "Ctrl+Up");
+            this.EmptyToolTip.SetToolTip(this.Up, "Ctrl+Up");
             this.Up.UseVisualStyleBackColor = true;
             this.Up.Click += new System.EventHandler(this.Up_Click);
             // 
@@ -418,9 +412,9 @@ namespace Graph_WinForms
             this.Left.Name = "Left";
             this.Left.Size = new System.Drawing.Size(25, 25);
             this.Left.TabIndex = 40;
-            this.LeftToolTip.SetToolTip(this.Left, "Ctrl+Left");
             this.Left.UseVisualStyleBackColor = false;
             this.Left.Click += new System.EventHandler(this.Left_Click);
+            this.EmptyToolTip.SetToolTip(this.Left, "Ctrl+Left");
             // 
             // Right
             // 
@@ -432,7 +426,7 @@ namespace Graph_WinForms
             this.Right.Name = "Right";
             this.Right.Size = new System.Drawing.Size(25, 25);
             this.Right.TabIndex = 39;
-            this.RightToolTip.SetToolTip(this.Right, "Ctrl+Right");
+            this.EmptyToolTip.SetToolTip(this.Right, "Ctrl+Right");
             this.Right.UseVisualStyleBackColor = true;
             this.Right.Click += new System.EventHandler(this.Right_Click);
             // 
@@ -445,7 +439,7 @@ namespace Graph_WinForms
             this.ReduceButton.Name = "ReduceButton";
             this.ReduceButton.Size = new System.Drawing.Size(33, 33);
             this.ReduceButton.TabIndex = 38;
-            this.ReduceToolTip.SetToolTip(this.ReduceButton, "Ctrl+Minus");
+            this.EmptyToolTip.SetToolTip(this.ReduceButton, "Ctrl+Minus");
             this.ReduceButton.UseVisualStyleBackColor = true;
             this.ReduceButton.Click += new System.EventHandler(this.ReduceButton_Click);
             // 
@@ -458,7 +452,7 @@ namespace Graph_WinForms
             this.EnlargeButton.Name = "EnlargeButton";
             this.EnlargeButton.Size = new System.Drawing.Size(33, 33);
             this.EnlargeButton.TabIndex = 37;
-            this.EnlargeToolTip.SetToolTip(this.EnlargeButton, "Ctrl+Plus");
+            this.EmptyToolTip.SetToolTip(this.EnlargeButton, "Ctrl+Plus");
             this.EnlargeButton.UseVisualStyleBackColor = true;
             this.EnlargeButton.Click += new System.EventHandler(this.EnlargeButton_Click);
             // 
@@ -639,6 +633,7 @@ namespace Graph_WinForms
             this.TimeTextBox.TabIndex = 27;
             this.TimeTextBox.Text = " Elapsed time, s:  0";
             this.TimeTextBox.Visible = false;
+            this.EmptyToolTip.SetToolTip(this.TimeTextBox, "* Indicated time value is approximate");
             // 
             // SandpileLabel
             // 
@@ -1246,13 +1241,7 @@ namespace Graph_WinForms
         private System.Windows.Forms.Button VertexColorDialogOpen;
         private System.Windows.Forms.ColorDialog GraphStyleColorDialog;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ToolTip EnlargeToolTip;
-        private System.Windows.Forms.ToolTip ReduceToolTip;
-        private System.Windows.Forms.ToolTip UpToolTip;
-        private System.Windows.Forms.ToolTip LeftToolTip;
-        private System.Windows.Forms.ToolTip RightToolTip;
-        private System.Windows.Forms.ToolTip DownToolTip;
-        private System.Windows.Forms.ToolTip ColorToolTip;
+        private System.Windows.Forms.ToolTip EmptyToolTip;
     }
 }
 

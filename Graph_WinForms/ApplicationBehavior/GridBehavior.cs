@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using ApplicationClasses;
+using GraphClasses.Commands;
 
 namespace Graph_WinForms
 {
@@ -15,7 +16,7 @@ namespace Graph_WinForms
             {
                 if (Digraph.Arcs[i].StartVertex != e.RowIndex || Digraph.Arcs[i].EndVertex != e.ColumnIndex)
                     continue;
-                ArcName.SelectedItem = ArcName.Items[i];
+                ArcName.SelectedIndex = ArcName.Items.IndexOf(Digraph.Arcs[i].ToString());
                 ArcLength.Text = Digraph.Arcs[i].Length.ToString();
                 return;
             }
@@ -67,9 +68,9 @@ namespace Graph_WinForms
             try
             {
                 double length = new MathParserTK.MathParser().Parse(ArcLength.Text);
-                Digraph.Arcs[selectedArc] =
-                    new Arc(Digraph.Arcs[selectedArc].StartVertex, Digraph.Arcs[selectedArc].EndVertex, length);
-                GridAdjacencyMatrix[Digraph.Arcs[selectedArc].EndVertex, Digraph.Arcs[selectedArc].StartVertex].Value = length;
+                var command = new ChangeArcLengthCommand(Digraph, selectedArc, Digraph.Arcs[selectedArc].Length, length);
+                command.Executed += (s, ea) => GridAdjacencyMatrix[Digraph.Arcs[selectedArc].EndVertex, Digraph.Arcs[selectedArc].StartVertex].Value = s;
+                commandsManager.Execute(command);
             }
             catch (Exception)
             {

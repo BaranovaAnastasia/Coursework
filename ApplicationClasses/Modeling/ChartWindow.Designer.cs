@@ -70,6 +70,8 @@ namespace ApplicationClasses.Modeling
             this.chart1.ChartAreas[0].AxisY.Title = "Amount";
             this.chart1.ChartAreas[0].AxisX.Interval = 0.5;
             this.chart1.ChartAreas[0].AxisY.Interval = 5;
+            this.chart1.ChartAreas[0].AxisX.IsStartedFromZero = true;
+            this.chart1.ChartAreas[0].AxisY.IsStartedFromZero = true;
             // 
             // menuStrip1
             // 

@@ -58,6 +58,12 @@ namespace ApplicationClasses
             Stock = new List<int>();
         }
 
+        public static event EventHandler<DigraphChangedEventArgs> VertexAdded;
+        public static event EventHandler<DigraphChangedEventArgs> VertexRemoved;
+        public static event EventHandler<DigraphChangedEventArgs> ArcAdded;
+        public static event EventHandler<DigraphChangedEventArgs> ArcRemoved;
+
+
         /// <summary>
         /// Adds vertex to the list of digraph vertices
         /// </summary>
@@ -65,7 +71,8 @@ namespace ApplicationClasses
         /// <param name="threshold">Vertex threshold</param>
         /// <param name="refractoryPeriod">Vertex refractory period</param>
         /// <param name="initialState">Vertex initial state</param>
-        public void AddVertex(Vertex vertex, int threshold = 1, int refractoryPeriod = 0, int initialState = 0)
+        /// <param name="index">Vertex index</param>
+        public void AddVertex(Vertex vertex, int threshold = 1, int refractoryPeriod = 0, int initialState = 0, int index = -1)
         {
             if (threshold <= 0)
                 throw new ArgumentOutOfRangeException(nameof(threshold), "The value of the vertex threshold must be a positive number");
@@ -76,10 +83,17 @@ namespace ApplicationClasses
                 throw new ArgumentOutOfRangeException(nameof(initialState),
                     "The value of the vertex initial state must be a non-negative number, not grater than the value of the vertex");
 
-            Vertices.Add(vertex);
-            Thresholds.Add(threshold);
-            RefractoryPeriods.Add(refractoryPeriod);
-            State.Add(initialState);
+            if (index == -1) index = Vertices.Count;
+            Vertices.Insert(index, vertex);
+            Thresholds.Insert(index, threshold);
+            RefractoryPeriods.Insert(index, refractoryPeriod);
+            State.Insert(index, initialState);
+
+            Arcs = Arcs.ConvertAll(arc =>
+                new Arc(arc.StartVertex >= index ? arc.StartVertex + 1 : arc.StartVertex,
+                    arc.EndVertex >= index ? arc.EndVertex + 1 : arc.EndVertex));
+
+            VertexAdded?.Invoke(vertex, new DigraphChangedEventArgs(index));
         }
 
         /// <summary>
@@ -91,21 +105,26 @@ namespace ApplicationClasses
             if (Vertices.Count <= index || index < 0)
                 throw new ArgumentOutOfRangeException(nameof(index),
                     "Index of the vertex must be a non-negative number less than the number of elements in the vertices list");
+
             Arcs = Arcs.Where(arc => arc.StartVertex != index && arc.EndVertex != index).ToList();
             Arcs = Arcs.ConvertAll(arc =>
                 new Arc(arc.StartVertex > index ? arc.StartVertex - 1 : arc.StartVertex,
                     arc.EndVertex > index ? arc.EndVertex - 1 : arc.EndVertex));
 
+            var removed = Vertices[index];
+
             Vertices.RemoveAt(index);
             Thresholds.RemoveAt(index);
             RefractoryPeriods.RemoveAt(index);
             State.RemoveAt(index);
+
+            VertexRemoved?.Invoke(removed, new DigraphChangedEventArgs(index));
         }
 
         /// <summary>
         /// Adds arc
         /// </summary>
-        public void AddArc(Arc arc)
+        public void AddArc(Arc arc, int index = -1)
         {
             if (arc.StartVertex >= Vertices.Count)
                 throw new ArgumentOutOfRangeException(nameof(arc.StartVertex),
@@ -114,7 +133,10 @@ namespace ApplicationClasses
                 throw new ArgumentOutOfRangeException(nameof(arc.EndVertex),
                     "Index of the vertex must be a non-negative number less than the number of elements in the vertices list");
 
-            Arcs.Add(arc);
+            if (index == -1) index = Arcs.Count;
+            Arcs.Insert(index, arc);
+
+            ArcAdded.Invoke(arc, new DigraphChangedEventArgs(index));
         }
 
         /// <summary>
@@ -127,7 +149,11 @@ namespace ApplicationClasses
                 throw new ArgumentOutOfRangeException(nameof(index),
                     "Index of the arc must be a non-negative number less than the number of elements in the arcs list");
 
+            var removed = Arcs[index];
+
             Arcs.RemoveAt(index);
+
+            ArcRemoved?.Invoke(removed, new DigraphChangedEventArgs(index));
         }
 
         /// <summary>
@@ -166,5 +192,12 @@ namespace ApplicationClasses
                 return adjacencyMatrix;
             }
         }
+    }
+
+    public class DigraphChangedEventArgs : EventArgs
+    {
+        public readonly int Index;
+
+        public DigraphChangedEventArgs(int index) => Index = index;
     }
 }

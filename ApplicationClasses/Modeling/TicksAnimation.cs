@@ -48,7 +48,9 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private int ProcessDots()
         {
-            GraphDrawing.DrawTheWholeGraph(digraph);
+            if (type == MovementModelingType.Basic)
+                GraphDrawing.DrawTheWholeGraph(digraph);
+            else GraphDrawing.DrawTheWholeGraphSandpile(digraph, false);
 
             int count = timers.Count;    // number of 'old' dots
             for (var i = 0; i < count; i++)
@@ -76,7 +78,9 @@ namespace ApplicationClasses.Modeling
 
             CheckDotsNumber(20000);
 
-            GraphDrawing.DrawVertices(digraph);
+            if (type == MovementModelingType.Basic)
+                GraphDrawing.DrawVertices(digraph);
+            else GraphDrawing.DrawVerticesSandpile(digraph);
             DrawingSurface.Image = GraphDrawing.Image;
 
             return timers.Count - count;
@@ -87,7 +91,7 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private void ReleaseDots(int vertexIndex)
         {
-            if(!releaseCondition(vertexIndex)) return;
+            if (!releaseCondition(vertexIndex)) return;
             while (releaseCondition(vertexIndex))
             {
                 involvedArcs.AddRange(incidenceList[vertexIndex]);
@@ -135,11 +139,12 @@ namespace ApplicationClasses.Modeling
         /// <param name="val">Number of dots before changes</param>
         private void UpdateChart(int val)
         {
-            if (modes.Contains(MovementModelingMode.Chart) && val != timers.Count)
-            {
-                TickChartFilling(mainStopwatch.ElapsedMilliseconds, val);
-                TickChartFilling(mainStopwatch.ElapsedMilliseconds, involvedArcs.Count);
-            }
+            if (!modes.Contains(MovementModelingMode.Chart)
+                || numberOfDotsChart == null
+                || val == timers.Count) return;
+
+            AddNumberOfDotsChartPoint(mainStopwatch.ElapsedMilliseconds, val);
+            AddNumberOfDotsChartPoint(mainStopwatch.ElapsedMilliseconds, involvedArcs.Count);
         }
     }
 }

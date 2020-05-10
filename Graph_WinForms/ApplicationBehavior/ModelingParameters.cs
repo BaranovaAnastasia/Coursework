@@ -129,10 +129,16 @@ namespace Graph_WinForms
         }
 
 
-        private void SandpileChartType1_CheckedChanged(object sender, EventArgs e) =>
-            SandpileChartType2.Checked = !SandpileChartType1.Checked;
+        private void SandpileChartType1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!SandpileChartType1.Checked)
+                SandpileChartType2.Checked = true;
+        }
 
-        private void SandpileChartType2_CheckedChanged(object sender, EventArgs e) =>
-            SandpileChartType1.Checked = !SandpileChartType2.Checked;
+        private void SandpileChartType2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!SandpileChartType2.Checked)
+                SandpileChartType1.Checked = true;
+        }
     }
 }

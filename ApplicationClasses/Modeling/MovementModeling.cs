@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using System.Drawing;
+using Timer = System.Windows.Forms.Timer;
 
 namespace ApplicationClasses.Modeling
 {
@@ -125,10 +126,10 @@ namespace ApplicationClasses.Modeling
             incidenceList = GetIncidenceList(digraph);
 
             mainTimer = new Timer { Interval = 1 };
-
             mainTimer.Tick += TickModeling;
 
-            //Select animation type by modeling type
+            // Select dots release condition
+            // and changes occurring to vertex state after the release
             if (type == MovementModelingType.Basic)
             {
                 releaseCondition = i => digraph.State[i] >= digraph.Thresholds[i]
@@ -140,8 +141,7 @@ namespace ApplicationClasses.Modeling
             {
                 releaseCondition = i => !digraph.Stock.Contains(i) && digraph.State[i] >= incidenceList[i].Count
                                                                    && (digraph.RefractoryPeriods[i] == 0 ||
-                                                                       !digraph.TimeTillTheEndOfRefractoryPeriod[i]
-                                                                           .Enabled);
+                                                                       !digraph.TimeTillTheEndOfRefractoryPeriod[i].Enabled);
                 stateChange = i => digraph.State[i] -= incidenceList[i].Count;
             }
 
@@ -156,9 +156,9 @@ namespace ApplicationClasses.Modeling
 
             //Add gif frames collecting
             if (modes.Contains(MovementModelingMode.Gif))
-                mainTimer.Tick += TickGifCollecting;
+                mainTimer.Tick += TickAddFrame;
 
-            Go();
+            Go(); 
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace ApplicationClasses.Modeling
         }
 
         /// <summary>
-        /// Restarts the movement
+        /// Starts or restarts the movement
         /// </summary>
         public void Go()
         {
@@ -221,6 +221,9 @@ namespace ApplicationClasses.Modeling
             }
         }
 
+        /// <summary>
+        /// Shows if the movement is ended
+        /// </summary>
         public bool IsMovementEnded
         {
             get
@@ -242,7 +245,11 @@ namespace ApplicationClasses.Modeling
             if (SandpileChartTypes.Contains(SandpileChartType.AvalancheSizesDistributionChart))
             {
                 distributionChart = new ChartWindow();
-                MovementEnded += delegate (object sender, EventArgs args) { avalancheSize = 0; };
+                MovementEnded += delegate
+                {
+                    AddAvalancheSize();
+                    avalancheSize = 0;
+                };
                 distributionChart.AvalancheSizesDistributionChartPrepare();
             }
         }

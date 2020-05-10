@@ -123,8 +123,9 @@ namespace ApplicationClasses
         /// <param name="y">Y coordinate of the point where the vertex is</param>
         /// <param name="number">Number of the point</param>
         /// <param name="pen">Pen to draw</param>
-        public void DrawVertex(int x, int y, int number, Pen pen)
+        public void DrawVertex(int x, int y, int number, Pen pen = null)
         {
+            if (pen == null) pen = verticesPen;
             drawing.FillEllipse(Brushes.White, (x - R), (y - R), 2 * R, 2 * R);
             drawing.DrawEllipse(pen, (x - R), (y - R), 2 * R, 2 * R);
             point = number >= 100
@@ -166,8 +167,8 @@ namespace ApplicationClasses
             if (arc.StartVertex == arc.EndVertex)
                 throw new ArgumentException("Arc cannot be a loop");
             drawing.DrawLine(arcsPen, startVertex.X, startVertex.Y, endVertex.X, endVertex.Y);
-            DrawVertex(startVertex.X, startVertex.Y, arc.StartVertex + 1, verticesPen);
-            DrawVertex(endVertex.X, endVertex.Y, arc.EndVertex + 1, verticesPen);
+            DrawVertex(startVertex.X, startVertex.Y, arc.StartVertex + 1);
+            DrawVertex(endVertex.X, endVertex.Y, arc.EndVertex + 1);
 
             // Drawing the edge's direction
             double[] l = { startVertex.X - endVertex.X, startVertex.Y - endVertex.Y };
@@ -189,7 +190,7 @@ namespace ApplicationClasses
         public void DrawVertices(Digraph digraph)
         {
             for (int i = 0; i < digraph.Vertices.Count; ++i)
-                DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1,  verticesPen);
+                DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1);
         }
 
         /// <summary>

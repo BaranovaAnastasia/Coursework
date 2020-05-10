@@ -2,6 +2,7 @@
 using ApplicationClasses;
 using System.Windows.Forms;
 using ApplicationClasses.Modeling;
+using GraphClasses.Commands;
 
 namespace Graph_WinForms
 {
@@ -16,6 +17,8 @@ namespace Graph_WinForms
         /// Digraph instance with lists of vertices and arcs
         /// </summary>
         private Digraph Digraph = new Digraph();
+
+        CommandsManager commandsManager = new CommandsManager();
 
         // Indices of the vertices selected for edge drawing
         private int vStart = -1; private int vEnd = -1;

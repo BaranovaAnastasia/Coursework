@@ -22,7 +22,6 @@ namespace ApplicationClasses
             {
                 if (Math.Pow(digraph.Vertices[i].X - x, 2) + Math.Pow(digraph.Vertices[i].Y - y, 2) > R * R)
                     continue;
-                digraph.RemoveVertex(i);
                 index = i;
                 return true;
             }
@@ -44,7 +43,6 @@ namespace ApplicationClasses
             if (selectedArc != -1)
             {
                 deletedArc = digraph.Arcs[selectedArc];
-                digraph.Arcs.RemoveAt(selectedArc);
                 return true;
             }
             deletedArc = new Arc();

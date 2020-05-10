@@ -14,7 +14,7 @@ namespace Graph_WinForms
 
             graphDrawing = new GraphDrawing(DrawingSurface.Width, DrawingSurface.Height);
 
-            graphDrawing.RadiusChanged += (object sender, EventArgs args1) =>
+            graphDrawing.RadiusChanged += (sender, args1) =>
             {
                 if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
                 else graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
@@ -22,8 +22,43 @@ namespace Graph_WinForms
             };
 
             graphDrawing.SandpilePaletteChanged +=
-                (object sender, EventArgs e) =>
+                (sender, e) =>
                     DigraphInformationDemonstration.DisplaySandpileColors(graphDrawing, SandpilePalette);
+
+            Digraph.VertexAdded += (sender, e) =>
+            {
+                graphDrawing.DrawVertex(((Vertex) sender).X, ((Vertex) sender).Y,
+                    e.Index + 1);
+                DrawingSurface.Image = graphDrawing.Image;
+                AddVertexToGridAdjacencyMatrix(e.Index);
+                AddVertexToGridParameters(e.Index);
+            };
+
+            Digraph.ArcAdded += (sender, e) =>
+            {
+                ArcName.Items.Insert(e.Index, ((Arc)sender).ToString());
+                graphDrawing.DrawArc(Digraph.Vertices[((Arc)sender).StartVertex], 
+                    Digraph.Vertices[((Arc)sender).EndVertex],
+                    (Arc)sender);
+                DrawingSurface.Image = graphDrawing.Image;
+                GridAdjacencyMatrix[((Arc)sender).EndVertex, ((Arc)sender).StartVertex].Value = ((Arc)sender).Length;
+                vStart = vEnd = -1;
+            };
+
+            Digraph.VertexRemoved += (sender, e) =>
+            {
+                RemoveVertexFromGridAdjacencyMatrix(e.Index);
+                RemoveVertexFromGridParameters(e.Index);
+                ArcName.Items.Clear();
+                foreach (var arc in Digraph.Arcs)
+                    ArcName.Items.Add(arc.ToString());
+            };
+
+            Digraph.ArcRemoved += (sender, e) =>
+            {
+                GridAdjacencyMatrix[((Arc) sender).EndVertex, ((Arc) sender).StartVertex].Value = 0;
+                ArcName.Items.RemoveAt(e.Index);
+            };
         }
 
         /// <summary>
@@ -131,6 +166,10 @@ namespace Graph_WinForms
 
         private void EnlargeButton_Click(object sender, EventArgs e)
         {
+            commandsManager.Undo();
+            graphDrawing.DrawTheWholeGraph(Digraph);
+            DrawingSurface.Image = graphDrawing.Image;
+            return;
             for (int i = 0; i < Digraph.Vertices.Count; i++)
                     Digraph.Vertices[i] = new Vertex((int)(Digraph.Vertices[i].X * 1.1), (int)(Digraph.Vertices[i].Y * 1.1));
             UpdateImage();
@@ -138,6 +177,10 @@ namespace Graph_WinForms
 
         private void ReduceButton_Click(object sender, EventArgs e)
         {
+            commandsManager.Redo();
+            graphDrawing.DrawTheWholeGraph(Digraph);
+            DrawingSurface.Image = graphDrawing.Image;
+            return;
             for (int i = 0; i < Digraph.Vertices.Count; i++)
                 Digraph.Vertices[i] = new Vertex((int)(Digraph.Vertices[i].X * 0.9), (int)(Digraph.Vertices[i].Y * 0.9));
             UpdateImage();

@@ -322,7 +322,7 @@ namespace Graph_WinForms
             this.ArcsColorPanel.BackColor = System.Drawing.Color.MidnightBlue;
             this.ArcsColorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ArcsColorPanel.Controls.Add(this.ArcsColorDialogOpen);
-            this.ArcsColorPanel.Location = new System.Drawing.Point(10, 188);
+            this.ArcsColorPanel.Location = new System.Drawing.Point(10, 193);
             this.ArcsColorPanel.Name = "ArcsColorPanel";
             this.ArcsColorPanel.Size = new System.Drawing.Size(75, 28);
             this.ArcsColorPanel.TabIndex = 46;
@@ -412,9 +412,9 @@ namespace Graph_WinForms
             this.Left.Name = "Left";
             this.Left.Size = new System.Drawing.Size(25, 25);
             this.Left.TabIndex = 40;
+            this.EmptyToolTip.SetToolTip(this.Left, "Ctrl+Left");
             this.Left.UseVisualStyleBackColor = false;
             this.Left.Click += new System.EventHandler(this.Left_Click);
-            this.EmptyToolTip.SetToolTip(this.Left, "Ctrl+Left");
             // 
             // Right
             // 
@@ -447,6 +447,7 @@ namespace Graph_WinForms
             // 
             this.EnlargeButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("EnlargeButton.BackgroundImage")));
             this.EnlargeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.EnlargeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.EnlargeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EnlargeButton.Location = new System.Drawing.Point(10, 92);
             this.EnlargeButton.Name = "EnlargeButton";
@@ -632,8 +633,8 @@ namespace Graph_WinForms
             this.TimeTextBox.Size = new System.Drawing.Size(260, 29);
             this.TimeTextBox.TabIndex = 27;
             this.TimeTextBox.Text = " Elapsed time, s:  0";
-            this.TimeTextBox.Visible = false;
             this.EmptyToolTip.SetToolTip(this.TimeTextBox, "* Indicated time value is approximate");
+            this.TimeTextBox.Visible = false;
             // 
             // SandpileLabel
             // 
@@ -1111,6 +1112,7 @@ namespace Graph_WinForms
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.CancelButton = this.EnlargeButton;
             this.ClientSize = new System.Drawing.Size(1236, 697);
             this.Controls.Add(this.TimeTextBox);
             this.Controls.Add(this.TriangleLattice);

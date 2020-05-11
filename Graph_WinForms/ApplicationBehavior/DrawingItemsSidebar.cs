@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using ApplicationClasses;
 
 namespace Graph_WinForms
 {
@@ -77,6 +78,125 @@ namespace Graph_WinForms
             RadiusValueLabel.Text = "R = " + RadiusTrackBar.Value;
         }
 
+        /// <summary>
+        /// Enlarges digraph image by moving vertices
+        /// </summary>
+        private void EnlargeButton_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < Digraph.Vertices.Count; i++)
+                Digraph.Vertices[i] = new Vertex((int)(Digraph.Vertices[i].X * 1.1), (int)(Digraph.Vertices[i].Y * 1.1));
+            UpdateImage();
+        }
+
+        /// <summary>
+        /// Reduces digraph image by moving vertices
+        /// </summary>
+        private void ReduceButton_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < Digraph.Vertices.Count; i++)
+                Digraph.Vertices[i] = new Vertex((int)(Digraph.Vertices[i].X * 0.9), (int)(Digraph.Vertices[i].Y * 0.9));
+            UpdateImage();
+        }
+
+        #region Graph moving
+
+        private void Up_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < Digraph.Vertices.Count; i++)
+                Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X, Digraph.Vertices[i].Y - 10);
+            UpdateImage();
+        }
+
+        private void Left_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < Digraph.Vertices.Count; i++)
+                Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X - 10, Digraph.Vertices[i].Y);
+            UpdateImage();
+        }
+
+        private void Right_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < Digraph.Vertices.Count; i++)
+                Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X + 10, Digraph.Vertices[i].Y);
+            UpdateImage();
+        }
+
+        private void Down_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < Digraph.Vertices.Count; i++)
+                Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X, Digraph.Vertices[i].Y + 10);
+            UpdateImage();
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Redraws the digraph
+        /// </summary>
+        private void UpdateImage()
+        {
+            if (isOnMovement && SandpileTypeCheckBox.Checked)
+                graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
+            else graphDrawing.DrawTheWholeGraph(Digraph);
+            DrawingSurface.Image = graphDrawing.Image;
+        }
+
+        #region Color panels
+
+        private void VertexColorDialogOpen_Click(object sender, EventArgs e)
+        {
+            if (GraphStyleColorDialog.ShowDialog() == DialogResult.Cancel) return;
+
+            VerticesColorPanel.BackColor = GraphStyleColorDialog.Color;
+            graphDrawing.VerticesPen = new Pen(GraphStyleColorDialog.Color, graphDrawing.VerticesPen.Width);
+            graphDrawing.DrawTheWholeGraph(Digraph);
+            DrawingSurface.Image = graphDrawing.Image;
+
+        }
+
+        private void ArcsColorDialogOpen_Click(object sender, EventArgs e)
+        {
+            if (GraphStyleColorDialog.ShowDialog() == DialogResult.Cancel) return;
+
+            ArcsColorPanel.BackColor = GraphStyleColorDialog.Color;
+            graphDrawing.ArcsPen = new Pen(Color.FromArgb(80, GraphStyleColorDialog.Color), graphDrawing.ArcsPen.Width);
+            graphDrawing.DrawTheWholeGraph(Digraph);
+            DrawingSurface.Image = graphDrawing.Image;
+        }
+
+        private void VerticesColorPanel_Leave(object sender, EventArgs e) =>
+            VertexColorDialogOpen.Visible = false;
+
+        private void VerticesColorPanel_Enter(object sender, EventArgs e) =>
+            VertexColorDialogOpen.Visible = true;
+
+        private void VerticesColorPanel_Click(object sender, EventArgs e) =>
+            VerticesColorPanel.Focus();
+
+        private void ArcsColorPanel_Click(object sender, EventArgs e) =>
+            ArcsColorPanel.Focus();
+
+        private void ArcsColorPanel_Enter(object sender, EventArgs e) =>
+            ArcsColorDialogOpen.Visible = true;
+
+        private void ArcsColorPanel_Leave(object sender, EventArgs e) =>
+            ArcsColorDialogOpen.Visible = false;
+
+        #endregion
+
+        private void UndoButton_Click(object sender, EventArgs e)
+        {
+            commandsManager.Undo();
+            graphDrawing.DrawTheWholeGraph(Digraph);
+            DrawingSurface.Image = graphDrawing.Image;
+        }
+
+        private void RedoButton_Click(object sender, EventArgs e)
+        {
+            commandsManager.Redo();
+            graphDrawing.DrawTheWholeGraph(Digraph);
+            DrawingSurface.Image = graphDrawing.Image;
+        }
 
         #region EnabledChanged handlers
 

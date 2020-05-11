@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GraphClasses.Commands
 {
@@ -40,6 +41,8 @@ namespace GraphClasses.Commands
             var command = UndoStack.Pop();
             command.UnExecute();
             RedoStack.Push(command);
+            if(!CanUndo) CanUndoChanged?.Invoke(false, null);
+            if(RedoStack.Count == 1) CanRedoChanged?.Invoke(true, null);
         }
 
         /// <summary>
@@ -51,6 +54,8 @@ namespace GraphClasses.Commands
             var command = RedoStack.Pop();
             command.Execute();
             UndoStack.Push(command);
+            if (!CanRedo) CanRedoChanged?.Invoke(false, null);
+            if (UndoStack.Count == 1) CanUndoChanged?.Invoke(true, null);
         }
 
         /// <summary>
@@ -62,6 +67,11 @@ namespace GraphClasses.Commands
             command.Execute();
             UndoStack.Push(command);
             RedoStack.Clear();
+            if (UndoStack.Count == 1) CanUndoChanged?.Invoke(true, null);
+            CanRedoChanged?.Invoke(false, null);
         }
+
+        public static event EventHandler CanUndoChanged;
+        public static event EventHandler CanRedoChanged;
     }
 }

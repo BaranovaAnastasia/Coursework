@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using ApplicationClasses;
+using GraphClasses.Commands;
 
 namespace Graph_WinForms
 {
@@ -11,6 +12,8 @@ namespace Graph_WinForms
         {
             InitializeComponent();
             GraphBuilder_SizeChanged(null, null);
+
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
 
             graphDrawing = new GraphDrawing(DrawingSurface.Width, DrawingSurface.Height);
 
@@ -25,40 +28,10 @@ namespace Graph_WinForms
                 (sender, e) =>
                     DigraphInformationDemonstration.DisplaySandpileColors(graphDrawing, SandpilePalette);
 
-            Digraph.VertexAdded += (sender, e) =>
-            {
-                graphDrawing.DrawVertex(((Vertex) sender).X, ((Vertex) sender).Y,
-                    e.Index + 1);
-                DrawingSurface.Image = graphDrawing.Image;
-                AddVertexToGridAdjacencyMatrix(e.Index);
-                AddVertexToGridParameters(e.Index);
-            };
+            SubscribeToDigraphEvents();
 
-            Digraph.ArcAdded += (sender, e) =>
-            {
-                ArcName.Items.Insert(e.Index, ((Arc)sender).ToString());
-                graphDrawing.DrawArc(Digraph.Vertices[((Arc)sender).StartVertex], 
-                    Digraph.Vertices[((Arc)sender).EndVertex],
-                    (Arc)sender);
-                DrawingSurface.Image = graphDrawing.Image;
-                GridAdjacencyMatrix[((Arc)sender).EndVertex, ((Arc)sender).StartVertex].Value = ((Arc)sender).Length;
-                vStart = vEnd = -1;
-            };
-
-            Digraph.VertexRemoved += (sender, e) =>
-            {
-                RemoveVertexFromGridAdjacencyMatrix(e.Index);
-                RemoveVertexFromGridParameters(e.Index);
-                ArcName.Items.Clear();
-                foreach (var arc in Digraph.Arcs)
-                    ArcName.Items.Add(arc.ToString());
-            };
-
-            Digraph.ArcRemoved += (sender, e) =>
-            {
-                GridAdjacencyMatrix[((Arc) sender).EndVertex, ((Arc) sender).StartVertex].Value = 0;
-                ArcName.Items.RemoveAt(e.Index);
-            };
+            CommandsManager.CanRedoChanged += (sender, e) => RedoButton.Enabled = (bool) sender;
+            CommandsManager.CanUndoChanged += (sender, e) => UndoButton.Enabled = (bool)sender;
         }
 
         /// <summary>
@@ -96,9 +69,14 @@ namespace Graph_WinForms
 
             Tools.Height = DrawingSurface.Height;
             ClearButton.Location = new Point(10, Tools.Height - ClearButton.Height - 10);
-            //RadiusValueLabel.Location = new Point(10, ClearButton.Location.Y - RadiusValueLabel.Height - 10);
-            //RadiusTrackBar.Location = new Point(10, RadiusValueLabel.Location.Y - RadiusTrackBar.Height);
-            //RadiusLabel.Location = new Point(10, RadiusTrackBar.Location.Y - RadiusLabel.Height);
+            Right.Location = new Point(Right.Location.X, ClearButton.Location.Y - RadiusValueLabel.Height - 10);
+            Down.Location = new Point(Down.Location.X, ClearButton.Location.Y - RadiusValueLabel.Height - 10);
+            Left.Location = new Point(Left.Location.X, ClearButton.Location.Y - RadiusValueLabel.Height - 10);
+            Up.Location = new Point(Up.Location.X, Down.Location.Y - Up.Height);
+
+            RadiusValueLabel.Location = new Point(10, Up.Location.Y - RadiusValueLabel.Height - 10);
+            RadiusTrackBar.Location = new Point(10, RadiusValueLabel.Location.Y - RadiusTrackBar.Height);
+            RadiusLabel.Location = new Point(10, RadiusTrackBar.Location.Y - RadiusLabel.Height);
             SandpilePalette.Height = RadiusLabel.Location.Y - 10;
 
             #endregion
@@ -123,6 +101,9 @@ namespace Graph_WinForms
         private void GraphBuilder_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Modifiers != Keys.Control) return;
+
+            #region Graph moving
+
             if (e.KeyCode == Keys.Right)
                 for (int i = 0; i < Digraph.Vertices.Count; i++)
                     Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X + 10, Digraph.Vertices[i].Y);
@@ -136,6 +117,10 @@ namespace Graph_WinForms
                 for (int i = 0; i < Digraph.Vertices.Count; i++)
                     Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X, Digraph.Vertices[i].Y + 10);
 
+            #endregion
+
+            #region Scaling
+
             if (e.KeyCode == Keys.Oemplus)
                 for (int i = 0; i < Digraph.Vertices.Count; i++)
                     Digraph.Vertices[i] = new Vertex((int)(Digraph.Vertices[i].X * 1.1), (int)(Digraph.Vertices[i].Y * 1.1));
@@ -143,6 +128,15 @@ namespace Graph_WinForms
                 for (int i = 0; i < Digraph.Vertices.Count; i++)
                     Digraph.Vertices[i] = new Vertex((int)(Digraph.Vertices[i].X * 0.9), (int)(Digraph.Vertices[i].Y * 0.9));
 
+            #endregion
+
+            if (!isOnMovement)
+            {
+                if(e.KeyCode == Keys.Z)
+                    UndoButton_Click(sender, e);
+                if(e.KeyCode == Keys.Y)
+                    RedoButton_Click(sender, e);
+            }
 
             if (isOnMovement && SandpileTypeCheckBox.Checked)
                 graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
@@ -164,102 +158,45 @@ namespace Graph_WinForms
             graphDrawing.Dispose();
         }
 
-        private void EnlargeButton_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Subscribes handlers to digraph events
+        /// </summary>
+        private void SubscribeToDigraphEvents()
         {
-            commandsManager.Undo();
-            graphDrawing.DrawTheWholeGraph(Digraph);
-            DrawingSurface.Image = graphDrawing.Image;
-            return;
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
-                    Digraph.Vertices[i] = new Vertex((int)(Digraph.Vertices[i].X * 1.1), (int)(Digraph.Vertices[i].Y * 1.1));
-            UpdateImage();
+            Digraph.VertexAdded += (sender, e) =>
+            {
+                graphDrawing.DrawVertex(((Vertex)sender).X, ((Vertex)sender).Y,
+                    e.Index + 1);
+                DrawingSurface.Image = graphDrawing.Image;
+                AddVertexToGridAdjacencyMatrix(e.Index);
+                AddVertexToGridParameters(e.Index);
+            };
+
+            Digraph.ArcAdded += (sender, e) =>
+            {
+                ArcName.Items.Insert(e.Index, ((Arc)sender).ToString());
+                graphDrawing.DrawArc(Digraph.Vertices[((Arc)sender).StartVertex],
+                    Digraph.Vertices[((Arc)sender).EndVertex],
+                    (Arc)sender);
+                DrawingSurface.Image = graphDrawing.Image;
+                GridAdjacencyMatrix[((Arc)sender).EndVertex, ((Arc)sender).StartVertex].Value = ((Arc)sender).Length;
+                vStart = vEnd = -1;
+            };
+
+            Digraph.VertexRemoved += (sender, e) =>
+            {
+                RemoveVertexFromGridAdjacencyMatrix(e.Index);
+                RemoveVertexFromGridParameters(e.Index);
+                ArcName.Items.Clear();
+                foreach (var arc in Digraph.Arcs)
+                    ArcName.Items.Add(arc.ToString());
+            };
+
+            Digraph.ArcRemoved += (sender, e) =>
+            {
+                GridAdjacencyMatrix[((Arc)sender).EndVertex, ((Arc)sender).StartVertex].Value = 0;
+                ArcName.Items.RemoveAt(e.Index);
+            };
         }
-
-        private void ReduceButton_Click(object sender, EventArgs e)
-        {
-            commandsManager.Redo();
-            graphDrawing.DrawTheWholeGraph(Digraph);
-            DrawingSurface.Image = graphDrawing.Image;
-            return;
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
-                Digraph.Vertices[i] = new Vertex((int)(Digraph.Vertices[i].X * 0.9), (int)(Digraph.Vertices[i].Y * 0.9));
-            UpdateImage();
-        }
-
-        private void Up_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
-                Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X, Digraph.Vertices[i].Y - 10);
-            UpdateImage();
-        }
-
-        private void Left_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
-                Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X - 10, Digraph.Vertices[i].Y);
-            UpdateImage();
-        }
-
-        private void Right_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
-                Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X + 10, Digraph.Vertices[i].Y);
-            UpdateImage();
-        }
-
-        private void Down_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
-                Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X, Digraph.Vertices[i].Y + 10);
-            UpdateImage();
-        }
-
-        private void UpdateImage()
-        {
-            if (isOnMovement && SandpileTypeCheckBox.Checked)
-                graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
-            else graphDrawing.DrawTheWholeGraph(Digraph);
-            DrawingSurface.Image = graphDrawing.Image;
-        }
-
-
-        private void VertexColorDialogOpen_Click(object sender, EventArgs e)
-        {
-            if (GraphStyleColorDialog.ShowDialog() == DialogResult.Cancel) return;
-
-            VerticesColorPanel.BackColor = GraphStyleColorDialog.Color;
-            graphDrawing.VerticesPen = new Pen(GraphStyleColorDialog.Color, graphDrawing.VerticesPen.Width);
-            graphDrawing.DrawTheWholeGraph(Digraph);
-            DrawingSurface.Image = graphDrawing.Image;
-
-        }
-
-        private void ArcsColorDialogOpen_Click(object sender, EventArgs e)
-        {
-            if (GraphStyleColorDialog.ShowDialog() == DialogResult.Cancel) return;
-
-            ArcsColorPanel.BackColor = GraphStyleColorDialog.Color;
-            graphDrawing.ArcsPen = new Pen(Color.FromArgb(80, GraphStyleColorDialog.Color), graphDrawing.ArcsPen.Width);
-            graphDrawing.DrawTheWholeGraph(Digraph);
-            DrawingSurface.Image = graphDrawing.Image;
-        }
-
-        private void VerticesColorPanel_Leave(object sender, EventArgs e) =>
-            VertexColorDialogOpen.Visible = false;
-
-        private void VerticesColorPanel_Enter(object sender, EventArgs e) =>
-            VertexColorDialogOpen.Visible = true;
-
-        private void VerticesColorPanel_Click(object sender, EventArgs e) =>
-            VerticesColorPanel.Focus();
-
-        private void ArcsColorPanel_Click(object sender, EventArgs e) =>
-            ArcsColorPanel.Focus();
-
-        private void ArcsColorPanel_Enter(object sender, EventArgs e) =>
-            ArcsColorDialogOpen.Visible = true;
-
-        private void ArcsColorPanel_Leave(object sender, EventArgs e) =>
-            ArcsColorDialogOpen.Visible = false;
     }
 }

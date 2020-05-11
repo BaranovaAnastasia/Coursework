@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using System.Drawing;
-using System.Threading;
-using System.Windows.Forms.DataVisualization.Charting;
 using Timer = System.Windows.Forms.Timer;
 
 namespace ApplicationClasses.Modeling
@@ -90,11 +88,11 @@ namespace ApplicationClasses.Modeling
         /// <summary>
         /// List of arcs along which dots are currently moving
         /// </summary>
-        private List<Arc> involvedArcs;
+        private readonly List<Arc> involvedArcs = new List<Arc>();
         /// <summary>
         /// Stopwatches for each moving dot
         /// </summary>
-        private List<Stopwatch> timers;
+        private readonly List<Stopwatch> timers = new List<Stopwatch>();
         /// <summary>
         /// Stopwatch counting the time of the whole process
         /// </summary>
@@ -107,6 +105,9 @@ namespace ApplicationClasses.Modeling
         /// Current avalanche size
         /// </summary>
         private int avalancheSize;
+
+        private Predicate<int> releaseCondition;
+        private Action<int> stateChange;
 
         private ChartWindow numberOfDotsChart = null;
         private ChartWindow distributionChart = null;
@@ -124,12 +125,25 @@ namespace ApplicationClasses.Modeling
             // Fill incidence list
             incidenceList = GetIncidenceList(digraph);
 
-            mainTimer = new Timer() // { Interval = (int)(50 / (1000 * speed)) };
-            { Interval = 1 };
+            mainTimer = new Timer { Interval = 1 };
+            mainTimer.Tick += TickModeling;
 
-            //Select animation type by modeling type
-            if (type == MovementModelingType.Basic) mainTimer.Tick += TickBasicAnimation;
-            else mainTimer.Tick += TickSandpileAnimation;
+            // Select dots release condition
+            // and changes occurring to vertex state after the release
+            if (type == MovementModelingType.Basic)
+            {
+                releaseCondition = i => digraph.State[i] >= digraph.Thresholds[i]
+                                        && (digraph.RefractoryPeriods[i] == 0 ||
+                                            !digraph.TimeTillTheEndOfRefractoryPeriod[i].Enabled);
+                stateChange = i => digraph.State[i] -= digraph.Thresholds[i];
+            }
+            else
+            {
+                releaseCondition = i => !digraph.Stock.Contains(i) && digraph.State[i] >= incidenceList[i].Count
+                                                                   && (digraph.RefractoryPeriods[i] == 0 ||
+                                                                       !digraph.TimeTillTheEndOfRefractoryPeriod[i].Enabled);
+                stateChange = i => digraph.State[i] -= incidenceList[i].Count;
+            }
 
             //Prepare chart windows if it's needed
             if (modes.Contains(MovementModelingMode.Chart))
@@ -142,12 +156,9 @@ namespace ApplicationClasses.Modeling
 
             //Add gif frames collecting
             if (modes.Contains(MovementModelingMode.Gif))
-                mainTimer.Tick += TickGifCollecting;
+                mainTimer.Tick += TickAddFrame;
 
-            //Start movement
-            involvedArcs = new List<Arc>();
-            timers = new List<Stopwatch>();
-            Go();
+            Go(); 
         }
 
         /// <summary>
@@ -162,7 +173,7 @@ namespace ApplicationClasses.Modeling
         }
 
         /// <summary>
-        /// Restarts the movement
+        /// Starts or restarts the movement
         /// </summary>
         public void Go()
         {
@@ -183,7 +194,7 @@ namespace ApplicationClasses.Modeling
         /// <summary>
         /// Shows if modeling of basic movement is ended
         /// </summary>
-        public bool IsMovementEndedBasic
+        private bool IsMovementEndedBasic
         {
             get
             {
@@ -198,7 +209,7 @@ namespace ApplicationClasses.Modeling
         /// <summary>
         /// Shows if modeling of sandpile movement is ended
         /// </summary>
-        public bool IsMovementEndedSandpile
+        private bool IsMovementEndedSandpile
         {
             get
             {
@@ -211,28 +222,34 @@ namespace ApplicationClasses.Modeling
         }
 
         /// <summary>
+        /// Shows if the movement is ended
+        /// </summary>
+        public bool IsMovementEnded
+        {
+            get
+            {
+                if (type == MovementModelingType.Basic) return IsMovementEndedBasic;
+                return IsMovementEndedSandpile;
+            }
+        }
+
+        /// <summary>
         /// Processes selected types of sandpile chart and prepares windows for displaying these charts
         /// </summary>
         private void PrepareSandpileCharts()
         {
             if (type != MovementModelingType.Sandpile) return;
             if (SandpileChartTypes.Contains(SandpileChartType.NumberOfDotsChart))
-            {
                 numberOfDotsChart = new ChartWindow();
-                //numberOfDotsChart.Closing +=
-                 //   delegate (object sender, System.ComponentModel.CancelEventArgs e)
-                   // { mainTimer.Tick -= TickChartFilling; };
-               // mainTimer.Tick += TickChartFilling;
-            }
 
             if (SandpileChartTypes.Contains(SandpileChartType.AvalancheSizesDistributionChart))
             {
                 distributionChart = new ChartWindow();
-               // distributionChart.Closing +=
-                   // delegate (object sender, System.ComponentModel.CancelEventArgs e)
-                   // { MovementEnded -= TickChartFilling; };
-                //MovementEnded += TickChartFilling;
-                MovementEnded += delegate (object sender, EventArgs args) { avalancheSize = 0; };
+                MovementEnded += delegate
+                {
+                    AddAvalancheSize();
+                    avalancheSize = 0;
+                };
                 distributionChart.AvalancheSizesDistributionChartPrepare();
             }
         }
@@ -244,10 +261,6 @@ namespace ApplicationClasses.Modeling
         {
             if (type != MovementModelingType.Basic) return;
             numberOfDotsChart = new ChartWindow();
-            //mainTimer.Tick += TickChartFilling;
-            //numberOfDotsChart.Closing +=
-              //  delegate (object sender, System.ComponentModel.CancelEventArgs e)
-            //        {mainTimer.Tick -= TickChartFilling; };
         }
 
         #region Helper static methods

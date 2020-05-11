@@ -23,12 +23,12 @@ namespace ApplicationClasses
         /// <summary>
         /// Pen for drawing vertices
         /// </summary>
-        private Pen verticesPen = new Pen(Color.MidnightBlue, 2.5f);
+        private readonly Pen verticesPen = new Pen(Color.MidnightBlue, 2.5f);
 
-        public Pen VerticesPen
+        public Color VerticesColor
         {
-            get => verticesPen;
-            set => verticesPen = value ?? throw new ArgumentNullException(nameof(value));
+            get => verticesPen.Color;
+            set => verticesPen.Color = value;
         }
 
         /// <summary>
@@ -36,10 +36,10 @@ namespace ApplicationClasses
         /// </summary>
         private Pen arcsPen = new Pen(Color.FromArgb(80, Color.MidnightBlue), 3);
 
-        public Pen ArcsPen
+        public Color ArcsColor
         {
-            get => arcsPen;
-            set => arcsPen = value ?? throw new ArgumentNullException(nameof(value));
+            get => arcsPen.Color;
+            set => arcsPen = new Pen(Color.FromArgb(80, value), 3);
         }
 
         /// <summary>
@@ -123,8 +123,9 @@ namespace ApplicationClasses
         /// <param name="y">Y coordinate of the point where the vertex is</param>
         /// <param name="number">Number of the point</param>
         /// <param name="pen">Pen to draw</param>
-        public void DrawVertex(int x, int y, int number, Pen pen)
+        public void DrawVertex(int x, int y, int number, Pen pen = null)
         {
+            if (pen == null) pen = verticesPen;
             drawing.FillEllipse(Brushes.White, (x - R), (y - R), 2 * R, 2 * R);
             drawing.DrawEllipse(pen, (x - R), (y - R), 2 * R, 2 * R);
             point = number >= 100
@@ -166,8 +167,8 @@ namespace ApplicationClasses
             if (arc.StartVertex == arc.EndVertex)
                 throw new ArgumentException("Arc cannot be a loop");
             drawing.DrawLine(arcsPen, startVertex.X, startVertex.Y, endVertex.X, endVertex.Y);
-            DrawVertex(startVertex.X, startVertex.Y, arc.StartVertex + 1, verticesPen);
-            DrawVertex(endVertex.X, endVertex.Y, arc.EndVertex + 1, verticesPen);
+            DrawVertex(startVertex.X, startVertex.Y, arc.StartVertex + 1);
+            DrawVertex(endVertex.X, endVertex.Y, arc.EndVertex + 1);
 
             // Drawing the edge's direction
             double[] l = { startVertex.X - endVertex.X, startVertex.Y - endVertex.Y };
@@ -189,7 +190,7 @@ namespace ApplicationClasses
         public void DrawVertices(Digraph digraph)
         {
             for (int i = 0; i < digraph.Vertices.Count; ++i)
-                DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1,  verticesPen);
+                DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1);
         }
 
         /// <summary>

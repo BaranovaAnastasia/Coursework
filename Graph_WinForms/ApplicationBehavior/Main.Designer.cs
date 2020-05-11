@@ -35,6 +35,7 @@ namespace Graph_WinForms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Build = new System.Windows.Forms.Button();
             this.Open = new System.Windows.Forms.Button();
             this.TopMenu = new System.Windows.Forms.MenuStrip();
@@ -52,6 +53,8 @@ namespace Graph_WinForms
             this.StopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Tools = new System.Windows.Forms.Panel();
+            this.RedoButton = new System.Windows.Forms.Button();
+            this.UndoButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.ArcsColorPanel = new System.Windows.Forms.Panel();
             this.ArcsColorDialogOpen = new System.Windows.Forms.Button();
@@ -112,13 +115,7 @@ namespace Graph_WinForms
             this.OkLength = new System.Windows.Forms.Button();
             this.AppParameters = new System.Windows.Forms.TabControl();
             this.GraphStyleColorDialog = new System.Windows.Forms.ColorDialog();
-            this.EnlargeToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.ReduceToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.UpToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.LeftToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.RightToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.DownToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.ColorToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.EmptyToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.TopMenu.SuspendLayout();
             this.Tools.SuspendLayout();
             this.ArcsColorPanel.SuspendLayout();
@@ -263,24 +260,27 @@ namespace Graph_WinForms
             // 
             // MovementToolStripMenuItem
             // 
+            this.MovementToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("MovementToolStripMenuItem.Image")));
             this.MovementToolStripMenuItem.Name = "MovementToolStripMenuItem";
-            this.MovementToolStripMenuItem.Size = new System.Drawing.Size(114, 29);
+            this.MovementToolStripMenuItem.Size = new System.Drawing.Size(138, 29);
             this.MovementToolStripMenuItem.Text = "Movement";
             this.MovementToolStripMenuItem.Visible = false;
             this.MovementToolStripMenuItem.Click += new System.EventHandler(this.MovementToolStripMenuItem_Click);
             // 
             // StopToolStripMenuItem
             // 
+            this.StopToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("StopToolStripMenuItem.Image")));
             this.StopToolStripMenuItem.Name = "StopToolStripMenuItem";
-            this.StopToolStripMenuItem.Size = new System.Drawing.Size(65, 29);
+            this.StopToolStripMenuItem.Size = new System.Drawing.Size(89, 29);
             this.StopToolStripMenuItem.Text = "Stop";
             this.StopToolStripMenuItem.Visible = false;
             this.StopToolStripMenuItem.Click += new System.EventHandler(this.StopToolStripMenuItem_Click);
             // 
             // ResetToolStripMenuItem
             // 
+            this.ResetToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("ResetToolStripMenuItem.Image")));
             this.ResetToolStripMenuItem.Name = "ResetToolStripMenuItem";
-            this.ResetToolStripMenuItem.Size = new System.Drawing.Size(70, 29);
+            this.ResetToolStripMenuItem.Size = new System.Drawing.Size(94, 29);
             this.ResetToolStripMenuItem.Text = "Reset";
             this.ResetToolStripMenuItem.Visible = false;
             this.ResetToolStripMenuItem.Click += new System.EventHandler(this.ResetToolStripMenuItem_Click);
@@ -288,6 +288,8 @@ namespace Graph_WinForms
             // Tools
             // 
             this.Tools.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Tools.Controls.Add(this.RedoButton);
+            this.Tools.Controls.Add(this.UndoButton);
             this.Tools.Controls.Add(this.label1);
             this.Tools.Controls.Add(this.ArcsColorPanel);
             this.Tools.Controls.Add(this.VerticesColorPanel);
@@ -313,11 +315,40 @@ namespace Graph_WinForms
             this.Tools.TabIndex = 7;
             this.Tools.Visible = false;
             // 
+            // RedoButton
+            // 
+            this.RedoButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.RedoButton.Enabled = false;
+            this.RedoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RedoButton.Image = ((System.Drawing.Image)(resources.GetObject("RedoButton.Image")));
+            this.RedoButton.Location = new System.Drawing.Point(50, 131);
+            this.RedoButton.Name = "RedoButton";
+            this.RedoButton.Size = new System.Drawing.Size(33, 33);
+            this.RedoButton.TabIndex = 49;
+            this.EmptyToolTip.SetToolTip(this.RedoButton, "Ctrl+Minus");
+            this.RedoButton.UseVisualStyleBackColor = true;
+            this.RedoButton.Click += new System.EventHandler(this.RedoButton_Click);
+            // 
+            // UndoButton
+            // 
+            this.UndoButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.UndoButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.UndoButton.Enabled = false;
+            this.UndoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UndoButton.Image = ((System.Drawing.Image)(resources.GetObject("UndoButton.Image")));
+            this.UndoButton.Location = new System.Drawing.Point(10, 131);
+            this.UndoButton.Name = "UndoButton";
+            this.UndoButton.Size = new System.Drawing.Size(33, 33);
+            this.UndoButton.TabIndex = 48;
+            this.EmptyToolTip.SetToolTip(this.UndoButton, "Ctrl+Plus");
+            this.UndoButton.UseVisualStyleBackColor = true;
+            this.UndoButton.Click += new System.EventHandler(this.UndoButton_Click);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label1.Location = new System.Drawing.Point(6, 130);
+            this.label1.Location = new System.Drawing.Point(6, 180);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(58, 21);
             this.label1.TabIndex = 47;
@@ -328,11 +359,11 @@ namespace Graph_WinForms
             this.ArcsColorPanel.BackColor = System.Drawing.Color.MidnightBlue;
             this.ArcsColorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ArcsColorPanel.Controls.Add(this.ArcsColorDialogOpen);
-            this.ArcsColorPanel.Location = new System.Drawing.Point(10, 188);
+            this.ArcsColorPanel.Location = new System.Drawing.Point(10, 233);
             this.ArcsColorPanel.Name = "ArcsColorPanel";
             this.ArcsColorPanel.Size = new System.Drawing.Size(75, 28);
             this.ArcsColorPanel.TabIndex = 46;
-            this.ColorToolTip.SetToolTip(this.ArcsColorPanel, "Arcs color");
+            this.EmptyToolTip.SetToolTip(this.ArcsColorPanel, "Arcs color");
             this.ArcsColorPanel.Click += new System.EventHandler(this.ArcsColorPanel_Click);
             this.ArcsColorPanel.Enter += new System.EventHandler(this.ArcsColorPanel_Enter);
             this.ArcsColorPanel.Leave += new System.EventHandler(this.ArcsColorPanel_Leave);
@@ -356,11 +387,11 @@ namespace Graph_WinForms
             this.VerticesColorPanel.BackColor = System.Drawing.Color.MidnightBlue;
             this.VerticesColorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.VerticesColorPanel.Controls.Add(this.VertexColorDialogOpen);
-            this.VerticesColorPanel.Location = new System.Drawing.Point(10, 156);
+            this.VerticesColorPanel.Location = new System.Drawing.Point(10, 202);
             this.VerticesColorPanel.Name = "VerticesColorPanel";
             this.VerticesColorPanel.Size = new System.Drawing.Size(75, 28);
             this.VerticesColorPanel.TabIndex = 45;
-            this.ColorToolTip.SetToolTip(this.VerticesColorPanel, "Vertices color");
+            this.EmptyToolTip.SetToolTip(this.VerticesColorPanel, "Vertices color");
             this.VerticesColorPanel.Click += new System.EventHandler(this.VerticesColorPanel_Click);
             this.VerticesColorPanel.Enter += new System.EventHandler(this.VerticesColorPanel_Enter);
             this.VerticesColorPanel.Leave += new System.EventHandler(this.VerticesColorPanel_Leave);
@@ -389,7 +420,7 @@ namespace Graph_WinForms
             this.Down.Name = "Down";
             this.Down.Size = new System.Drawing.Size(25, 25);
             this.Down.TabIndex = 42;
-            this.DownToolTip.SetToolTip(this.Down, "Ctrl+Down");
+            this.EmptyToolTip.SetToolTip(this.Down, "Ctrl+Down");
             this.Down.UseVisualStyleBackColor = true;
             this.Down.Click += new System.EventHandler(this.Down_Click);
             // 
@@ -403,7 +434,7 @@ namespace Graph_WinForms
             this.Up.Name = "Up";
             this.Up.Size = new System.Drawing.Size(25, 25);
             this.Up.TabIndex = 41;
-            this.UpToolTip.SetToolTip(this.Up, "Ctrl+Up");
+            this.EmptyToolTip.SetToolTip(this.Up, "Ctrl+Up");
             this.Up.UseVisualStyleBackColor = true;
             this.Up.Click += new System.EventHandler(this.Up_Click);
             // 
@@ -418,7 +449,7 @@ namespace Graph_WinForms
             this.Left.Name = "Left";
             this.Left.Size = new System.Drawing.Size(25, 25);
             this.Left.TabIndex = 40;
-            this.LeftToolTip.SetToolTip(this.Left, "Ctrl+Left");
+            this.EmptyToolTip.SetToolTip(this.Left, "Ctrl+Left");
             this.Left.UseVisualStyleBackColor = false;
             this.Left.Click += new System.EventHandler(this.Left_Click);
             // 
@@ -432,33 +463,34 @@ namespace Graph_WinForms
             this.Right.Name = "Right";
             this.Right.Size = new System.Drawing.Size(25, 25);
             this.Right.TabIndex = 39;
-            this.RightToolTip.SetToolTip(this.Right, "Ctrl+Right");
+            this.EmptyToolTip.SetToolTip(this.Right, "Ctrl+Right");
             this.Right.UseVisualStyleBackColor = true;
             this.Right.Click += new System.EventHandler(this.Right_Click);
             // 
             // ReduceButton
             // 
-            this.ReduceButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ReduceButton.BackgroundImage")));
             this.ReduceButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ReduceButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ReduceButton.Image = ((System.Drawing.Image)(resources.GetObject("ReduceButton.Image")));
             this.ReduceButton.Location = new System.Drawing.Point(50, 92);
             this.ReduceButton.Name = "ReduceButton";
             this.ReduceButton.Size = new System.Drawing.Size(33, 33);
             this.ReduceButton.TabIndex = 38;
-            this.ReduceToolTip.SetToolTip(this.ReduceButton, "Ctrl+Minus");
+            this.EmptyToolTip.SetToolTip(this.ReduceButton, "Ctrl+Minus");
             this.ReduceButton.UseVisualStyleBackColor = true;
             this.ReduceButton.Click += new System.EventHandler(this.ReduceButton_Click);
             // 
             // EnlargeButton
             // 
-            this.EnlargeButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("EnlargeButton.BackgroundImage")));
             this.EnlargeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.EnlargeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.EnlargeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EnlargeButton.Image = ((System.Drawing.Image)(resources.GetObject("EnlargeButton.Image")));
             this.EnlargeButton.Location = new System.Drawing.Point(10, 92);
             this.EnlargeButton.Name = "EnlargeButton";
             this.EnlargeButton.Size = new System.Drawing.Size(33, 33);
             this.EnlargeButton.TabIndex = 37;
-            this.EnlargeToolTip.SetToolTip(this.EnlargeButton, "Ctrl+Plus");
+            this.EmptyToolTip.SetToolTip(this.EnlargeButton, "Ctrl+Plus");
             this.EnlargeButton.UseVisualStyleBackColor = true;
             this.EnlargeButton.Click += new System.EventHandler(this.EnlargeButton_Click);
             // 
@@ -474,11 +506,11 @@ namespace Graph_WinForms
             // 
             // ClearButton
             // 
-            this.ClearButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ClearButton.BackgroundImage")));
             this.ClearButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ClearButton.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ClearButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ClearButton.Image = ((System.Drawing.Image)(resources.GetObject("ClearButton.Image")));
+            this.ClearButton.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ClearButton.Location = new System.Drawing.Point(10, 585);
             this.ClearButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ClearButton.Name = "ClearButton";
@@ -488,16 +520,15 @@ namespace Graph_WinForms
             this.ClearButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ClearAllToolTip.SetToolTip(this.ClearButton, "Сlick to delete the digraph");
             this.ClearButton.UseVisualStyleBackColor = true;
-            this.ClearButton.EnabledChanged += new System.EventHandler(this.ClearAllButton_EnabledChanged);
             this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
             // 
             // CursorButton
             // 
-            this.CursorButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("CursorButton.BackgroundImage")));
             this.CursorButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.CursorButton.Enabled = false;
             this.CursorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CursorButton.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CursorButton.Image = ((System.Drawing.Image)(resources.GetObject("CursorButton.Image")));
             this.CursorButton.Location = new System.Drawing.Point(10, 10);
             this.CursorButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.CursorButton.Name = "CursorButton";
@@ -505,7 +536,6 @@ namespace Graph_WinForms
             this.CursorButton.TabIndex = 8;
             this.CursorToolTip.SetToolTip(this.CursorButton, "Move vertices using cursor");
             this.CursorButton.UseVisualStyleBackColor = true;
-            this.CursorButton.EnabledChanged += new System.EventHandler(this.CursorButton_EnabledChanged);
             this.CursorButton.Click += new System.EventHandler(this.CursorButton_Click);
             // 
             // RadiusLabel
@@ -520,10 +550,10 @@ namespace Graph_WinForms
             // 
             // DeleteButton
             // 
-            this.DeleteButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("DeleteButton.BackgroundImage")));
             this.DeleteButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.DeleteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeleteButton.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.DeleteButton.Image = ((System.Drawing.Image)(resources.GetObject("DeleteButton.Image")));
             this.DeleteButton.Location = new System.Drawing.Point(50, 51);
             this.DeleteButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.DeleteButton.Name = "DeleteButton";
@@ -531,15 +561,14 @@ namespace Graph_WinForms
             this.DeleteButton.TabIndex = 10;
             this.EraserToolTip.SetToolTip(this.DeleteButton, "Double click on an arc or\nvertex to remove it");
             this.DeleteButton.UseVisualStyleBackColor = true;
-            this.DeleteButton.EnabledChanged += new System.EventHandler(this.EraserButton_EnabledChanged);
             this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
             // 
             // VertexButton
             // 
-            this.VertexButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("VertexButton.BackgroundImage")));
             this.VertexButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.VertexButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.VertexButton.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.VertexButton.Image = ((System.Drawing.Image)(resources.GetObject("VertexButton.Image")));
             this.VertexButton.Location = new System.Drawing.Point(50, 10);
             this.VertexButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.VertexButton.Name = "VertexButton";
@@ -547,15 +576,14 @@ namespace Graph_WinForms
             this.VertexButton.TabIndex = 8;
             this.VertexToolTip.SetToolTip(this.VertexButton, "Click on the drawing surface\nto add a new vertex");
             this.VertexButton.UseVisualStyleBackColor = true;
-            this.VertexButton.EnabledChanged += new System.EventHandler(this.VertexButton_EnabledChanged);
             this.VertexButton.Click += new System.EventHandler(this.VertexButton_Click);
             // 
             // EdgeButton
             // 
-            this.EdgeButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("EdgeButton.BackgroundImage")));
             this.EdgeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.EdgeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EdgeButton.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.EdgeButton.Image = ((System.Drawing.Image)(resources.GetObject("EdgeButton.Image")));
             this.EdgeButton.Location = new System.Drawing.Point(10, 51);
             this.EdgeButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.EdgeButton.Name = "EdgeButton";
@@ -563,7 +591,6 @@ namespace Graph_WinForms
             this.EdgeButton.TabIndex = 9;
             this.ArcToolTip.SetToolTip(this.EdgeButton, "Сlick on the starting vertex\nand then on the ending one\nto add a new arc");
             this.EdgeButton.UseVisualStyleBackColor = true;
-            this.EdgeButton.EnabledChanged += new System.EventHandler(this.EdgeButton_EnabledChanged);
             this.EdgeButton.Click += new System.EventHandler(this.EdgeButton_Click);
             // 
             // SandpilePalette
@@ -581,17 +608,25 @@ namespace Graph_WinForms
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.SandpilePalette.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.SandpilePalette.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.SandpilePalette.DefaultCellStyle = dataGridViewCellStyle2;
             this.SandpilePalette.Location = new System.Drawing.Point(0, 0);
             this.SandpilePalette.Name = "SandpilePalette";
             this.SandpilePalette.ReadOnly = true;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.SandpilePalette.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 7F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.SandpilePalette.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.SandpilePalette.RowHeadersWidth = 25;
             this.SandpilePalette.RowTemplate.Height = 28;
             this.SandpilePalette.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -638,6 +673,7 @@ namespace Graph_WinForms
             this.TimeTextBox.Size = new System.Drawing.Size(260, 29);
             this.TimeTextBox.TabIndex = 27;
             this.TimeTextBox.Text = " Elapsed time, s:  0";
+            this.EmptyToolTip.SetToolTip(this.TimeTextBox, "* Indicated time value is approximate");
             this.TimeTextBox.Visible = false;
             // 
             // SandpileLabel
@@ -1116,6 +1152,7 @@ namespace Graph_WinForms
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.CancelButton = this.EnlargeButton;
             this.ClientSize = new System.Drawing.Size(1236, 697);
             this.Controls.Add(this.TimeTextBox);
             this.Controls.Add(this.TriangleLattice);
@@ -1246,13 +1283,9 @@ namespace Graph_WinForms
         private System.Windows.Forms.Button VertexColorDialogOpen;
         private System.Windows.Forms.ColorDialog GraphStyleColorDialog;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ToolTip EnlargeToolTip;
-        private System.Windows.Forms.ToolTip ReduceToolTip;
-        private System.Windows.Forms.ToolTip UpToolTip;
-        private System.Windows.Forms.ToolTip LeftToolTip;
-        private System.Windows.Forms.ToolTip RightToolTip;
-        private System.Windows.Forms.ToolTip DownToolTip;
-        private System.Windows.Forms.ToolTip ColorToolTip;
+        private System.Windows.Forms.ToolTip EmptyToolTip;
+        private System.Windows.Forms.Button RedoButton;
+        private System.Windows.Forms.Button UndoButton;
     }
 }
 

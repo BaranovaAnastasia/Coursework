@@ -84,5 +84,7 @@ namespace ApplicationClasses
                 length = value;
             }
         }
+
+        public override string ToString() => $"{startVertex + 1}-{endVertex + 1}";
     }
 }

@@ -83,6 +83,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppHelpers.cs" />
+    <Compile Include="Commands\AddArcCommand.cs" />
+    <Compile Include="Commands\AddVertexCommand.cs" />
+    <Compile Include="Commands\ChangeColorCommand.cs" />
+    <Compile Include="Commands\ChangeGraphParameterCommand.cs" />
+    <Compile Include="Commands\CommandsManager.cs" />
+    <Compile Include="Commands\EraseArcCommand.cs" />
+    <Compile Include="Commands\EraseVertexCommand.cs" />
+    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\MoveVertexCommand.cs" />
     <Compile Include="Graph\Arc.cs" />
     <Compile Include="MathParser.cs" />
     <Compile Include="Modeling\MovementModeling.cs" />
@@ -108,5 +117,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

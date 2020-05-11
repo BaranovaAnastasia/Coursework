@@ -4,6 +4,7 @@ using ApplicationClasses;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.IO;
+using GraphClasses.Commands;
 
 namespace Graph_WinForms
 {
@@ -177,6 +178,8 @@ namespace Graph_WinForms
             ChartCheckBox.Checked = SaveGifCheckBox.Checked = SandpileChartType2.Checked = false;
             SpeedNumeric.Value = 1;
             RadiusTrackBar.Value = 8;
+
+            commandsManager = new CommandsManager();
         }
 
         #endregion

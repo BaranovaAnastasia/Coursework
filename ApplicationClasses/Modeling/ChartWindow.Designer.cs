@@ -31,6 +31,7 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -39,6 +40,7 @@ namespace ApplicationClasses.Modeling
             this.saveChartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -68,6 +70,8 @@ namespace ApplicationClasses.Modeling
             this.chart1.ChartAreas[0].AxisY.Title = "Amount";
             this.chart1.ChartAreas[0].AxisX.Interval = 0.5;
             this.chart1.ChartAreas[0].AxisY.Interval = 5;
+            this.chart1.ChartAreas[0].AxisX.IsStartedFromZero = true;
+            this.chart1.ChartAreas[0].AxisY.IsStartedFromZero = true;
             // 
             // menuStrip1
             // 
@@ -96,35 +100,47 @@ namespace ApplicationClasses.Modeling
             this.saveDataToolStripMenuItem,
             this.saveAllToolStripMenuItem});
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(151, 34);
             this.saveToolStripMenuItem.Text = "Save";
             // 
             // saveChartToolStripMenuItem
             // 
             this.saveChartToolStripMenuItem.Name = "saveChartToolStripMenuItem";
-            this.saveChartToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveChartToolStripMenuItem.Size = new System.Drawing.Size(198, 34);
             this.saveChartToolStripMenuItem.Text = "Save Chart";
             this.saveChartToolStripMenuItem.Click += new System.EventHandler(this.SaveImage_Click);
             // 
             // saveDataToolStripMenuItem
             // 
             this.saveDataToolStripMenuItem.Name = "saveDataToolStripMenuItem";
-            this.saveDataToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveDataToolStripMenuItem.Size = new System.Drawing.Size(198, 34);
             this.saveDataToolStripMenuItem.Text = "Save Data";
             this.saveDataToolStripMenuItem.Click += new System.EventHandler(this.SaveData_Click);
             // 
             // saveAllToolStripMenuItem
             // 
             this.saveAllToolStripMenuItem.Name = "saveAllToolStripMenuItem";
-            this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(198, 34);
             this.saveAllToolStripMenuItem.Text = "Save All";
             this.saveAllToolStripMenuItem.Click += new System.EventHandler(this.SaveAll_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
+            this.label1.Location = new System.Drawing.Point(-4, 426);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(304, 24);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "* Indicated time value is approximate";
             // 
             // ChartWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.chart1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -148,5 +164,6 @@ namespace ApplicationClasses.Modeling
         private System.Windows.Forms.ToolStripMenuItem saveChartToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAllToolStripMenuItem;
+        private System.Windows.Forms.Label label1;
     }
 }

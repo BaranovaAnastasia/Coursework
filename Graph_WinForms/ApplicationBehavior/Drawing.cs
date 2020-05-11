@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using ApplicationClasses;
+using GraphClasses.Commands;
 
 namespace Graph_WinForms
 {
@@ -25,11 +26,8 @@ namespace Graph_WinForms
 
             if (!VertexButton.Enabled)
             {
-                Digraph.AddVertex(new Vertex(e.X, e.Y));
-                graphDrawing.DrawVertex(e.X, e.Y, Digraph.Vertices.Count, new Pen(Color.MidnightBlue, 2.5f));
-                DrawingSurface.Image = graphDrawing.Image;
-                AddVertexToGridAdjacencyMatrix();
-                AddVertexToGridParameters();
+                var command = new AddVertexCommand(Digraph, new Vertex(e.X, e.Y));
+                commandsManager.Execute(command);
                 return;
             }
 
@@ -37,12 +35,8 @@ namespace Graph_WinForms
             {
                 if (FindArcVertices(e.X, e.Y))
                 {
-                    Digraph.AddArc(new Arc(vStart, vEnd));
-                    ArcName.Items.Add(((vStart + 1) + "-" + (vEnd + 1)));
-                    graphDrawing.DrawArc(Digraph.Vertices[vStart], Digraph.Vertices[vEnd], Digraph.Arcs[Digraph.Arcs.Count - 1]);
-                    DrawingSurface.Image = graphDrawing.Image;
-                    GridAdjacencyMatrix[vEnd, vStart].Value = 1;
-                    vStart = vEnd = -1;
+                    var command = new AddArcCommand(Digraph, new Arc(vStart, vEnd));
+                    commandsManager.Execute(command);
                 }
             }
         }
@@ -59,14 +53,14 @@ namespace Graph_WinForms
 
             if (DigraphBuilding.TryToDeleteVertexAt(e.X, e.Y, Digraph, graphDrawing.R, out int i))
             {
-                RemoveVertexFromGridAdjacencyMatrix(i);
-                RemoveVertexFromGridParameters(i);
+                var command = new EraseVertexCommand(Digraph, Digraph.Vertices[i]);
+                commandsManager.Execute(command);
                 wasSmthDeleted = true;
             }
             else if (DigraphBuilding.TryToDeleteArcAt(e.X, e.Y, Digraph, out Arc arc))
             {
-                GridAdjacencyMatrix[arc.EndVertex, arc.StartVertex].Value = 0;
-                ArcName.Items.Remove((arc.StartVertex + 1) + "-" + (arc.EndVertex + 1));
+                var command = new EraseArcCommand(Digraph, arc);
+                commandsManager.Execute(command);
                 wasSmthDeleted = true;
             }
 
@@ -93,8 +87,8 @@ namespace Graph_WinForms
                 if (Math.Pow((Digraph.Vertices[i].X - e.X), 2) + Math.Pow((Digraph.Vertices[i].Y - e.Y), 2) <= Math.Pow(graphDrawing.R, 2))
                 {
                     movingVertexIndex = i;
-                    ticks = DateTime.Now;
                     movingVertex = Digraph.Vertices[i];
+                    ticks = DateTime.Now;
                     return;
                 }
         }
@@ -142,7 +136,10 @@ namespace Graph_WinForms
                 if (y > DrawingSurface.Height - graphDrawing.R - 5)
                     y = DrawingSurface.Height - graphDrawing.R - 5;
 
-                Digraph.Vertices[movingVertexIndex] = new Vertex((int)x, (int)y);
+                var command = new MoveVertexCommand(Digraph, movingVertexIndex,
+                    new Point(movingVertex.X, movingVertex.Y),
+                    new Point((int)x, (int)y));
+                commandsManager.Execute(command);
             }
 
             if (highlight) Digraph.Vertices[movingVertexIndex] = new Vertex(movingVertex.X, movingVertex.Y);
@@ -158,20 +155,28 @@ namespace Graph_WinForms
         /// <summary>
         /// Adds a new line and a row to Adjacency Matrix in DataGridView
         /// </summary>
-        private void AddVertexToGridAdjacencyMatrix()
+        private void AddVertexToGridAdjacencyMatrix(int index)
         {
-            GridAdjacencyMatrix.Columns.Add(String.Empty, Digraph.Vertices.Count.ToString());
-            GridAdjacencyMatrix.Columns[Digraph.Vertices.Count - 1].FillWeight = 1;
-            GridAdjacencyMatrix.Columns[Digraph.Vertices.Count - 1].Width = 35;
-            GridAdjacencyMatrix.Columns[Digraph.Vertices.Count - 1].SortMode = DataGridViewColumnSortMode.NotSortable;
-            GridAdjacencyMatrix.Rows.Add();
+            var column = new DataGridViewColumn
+            {
+                Name = string.Empty,
+                HeaderText = (index + 1).ToString(),
+                FillWeight = 1,
+                Width = 35,
+                SortMode = DataGridViewColumnSortMode.NotSortable,
+                CellTemplate = new DataGridViewButtonCell()
+            };
+            GridAdjacencyMatrix.Columns.Insert(index, column);
+            GridAdjacencyMatrix.Rows.Insert(index);
 
             for (int i = 0; i < Digraph.Vertices.Count; i++)
             {
-                GridAdjacencyMatrix[Digraph.Vertices.Count - 1, i].Value = 0;
-                GridAdjacencyMatrix[i, Digraph.Vertices.Count - 1].Value = 0;
+                GridAdjacencyMatrix[index, i].Value = 0;
+                GridAdjacencyMatrix[i, index].Value = 0;
+                GridAdjacencyMatrix.Columns[i].HeaderCell.Value = (i + 1).ToString();
+                GridAdjacencyMatrix.Rows[i].HeaderCell.Value = (i + 1).ToString();
             }
-            GridAdjacencyMatrix.Rows[Digraph.Vertices.Count - 1].HeaderCell.Value = Digraph.Vertices.Count.ToString();
+            GridAdjacencyMatrix.Rows[index].HeaderCell.Value = (index + 1).ToString();
         }
 
 
@@ -186,13 +191,13 @@ namespace Graph_WinForms
             }
         }
 
-        private void AddVertexToGridParameters()
+        private void AddVertexToGridParameters(int index)
         {
-            GridParameters.Rows.Add();
-            GridParameters.Rows[Digraph.Vertices.Count - 1].HeaderCell.Value = Digraph.Vertices.Count.ToString();
-            GridParameters[0, Digraph.Vertices.Count - 1].Value = Digraph.Thresholds[Digraph.Vertices.Count - 1];
-            GridParameters[1, Digraph.Vertices.Count - 1].Value = Digraph.RefractoryPeriods[Digraph.Vertices.Count - 1];
-            GridParameters[2, Digraph.Vertices.Count - 1].Value = Digraph.State[Digraph.Vertices.Count - 1];
+            GridParameters.Rows.Insert(index);
+            GridParameters.Rows[index].HeaderCell.Value = Digraph.Vertices.Count.ToString();
+            GridParameters[0, index].Value = Digraph.Thresholds[index];
+            GridParameters[1, index].Value = Digraph.RefractoryPeriods[index];
+            GridParameters[2, index].Value = Digraph.State[index];
         }
         private void RemoveVertexFromGridParameters(int index)
         {

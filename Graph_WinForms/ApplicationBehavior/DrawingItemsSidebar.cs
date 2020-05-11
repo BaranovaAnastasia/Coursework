@@ -215,7 +215,6 @@ namespace Graph_WinForms
             graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
         }
-
         private void RedoButton_Click(object sender, EventArgs e)
         {
             commandsManager.Redo();

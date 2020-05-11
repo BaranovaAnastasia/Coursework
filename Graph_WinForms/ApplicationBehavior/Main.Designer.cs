@@ -520,7 +520,6 @@ namespace Graph_WinForms
             this.ClearButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ClearAllToolTip.SetToolTip(this.ClearButton, "Сlick to delete the digraph");
             this.ClearButton.UseVisualStyleBackColor = true;
-            this.ClearButton.EnabledChanged += new System.EventHandler(this.ClearAllButton_EnabledChanged);
             this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
             // 
             // CursorButton
@@ -537,7 +536,6 @@ namespace Graph_WinForms
             this.CursorButton.TabIndex = 8;
             this.CursorToolTip.SetToolTip(this.CursorButton, "Move vertices using cursor");
             this.CursorButton.UseVisualStyleBackColor = true;
-            this.CursorButton.EnabledChanged += new System.EventHandler(this.CursorButton_EnabledChanged);
             this.CursorButton.Click += new System.EventHandler(this.CursorButton_Click);
             // 
             // RadiusLabel
@@ -563,7 +561,6 @@ namespace Graph_WinForms
             this.DeleteButton.TabIndex = 10;
             this.EraserToolTip.SetToolTip(this.DeleteButton, "Double click on an arc or\nvertex to remove it");
             this.DeleteButton.UseVisualStyleBackColor = true;
-            this.DeleteButton.EnabledChanged += new System.EventHandler(this.EraserButton_EnabledChanged);
             this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
             // 
             // VertexButton
@@ -579,7 +576,6 @@ namespace Graph_WinForms
             this.VertexButton.TabIndex = 8;
             this.VertexToolTip.SetToolTip(this.VertexButton, "Click on the drawing surface\nto add a new vertex");
             this.VertexButton.UseVisualStyleBackColor = true;
-            this.VertexButton.EnabledChanged += new System.EventHandler(this.VertexButton_EnabledChanged);
             this.VertexButton.Click += new System.EventHandler(this.VertexButton_Click);
             // 
             // EdgeButton
@@ -595,7 +591,6 @@ namespace Graph_WinForms
             this.EdgeButton.TabIndex = 9;
             this.ArcToolTip.SetToolTip(this.EdgeButton, "Сlick on the starting vertex\nand then on the ending one\nto add a new arc");
             this.EdgeButton.UseVisualStyleBackColor = true;
-            this.EdgeButton.EnabledChanged += new System.EventHandler(this.EdgeButton_EnabledChanged);
             this.EdgeButton.Click += new System.EventHandler(this.EdgeButton_Click);
             // 
             // SandpilePalette

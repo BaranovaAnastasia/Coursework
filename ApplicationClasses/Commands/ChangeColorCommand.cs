@@ -4,34 +4,41 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ApplicationClasses;
 
 namespace GraphClasses.Commands
 {
     public class ChangeColorCommand : ICommand
     {
-        private Color target;
+        private GraphDrawing target;
+        private Type type;
         private Color initialColor;
         private Color newColor;
 
         public event EventHandler Executed;
 
-        public ChangeColorCommand(Color target, Color initialColor, Color newColor)
+        public ChangeColorCommand(GraphDrawing target, Type type, Color initialColor, Color newColor)
         {
+            if(type != typeof(Arc) && type != typeof(Vertex))
+                throw new ArgumentException(nameof(type));
             this.target = target;
+            this.type = type;
             this.initialColor = initialColor;
             this.newColor = newColor;
         }
 
         public void Execute()
         {
-            target = newColor;
+            if (type == typeof(Vertex)) target.VerticesColor = newColor;
+            else target.ArcsColor = newColor;
             Executed?.Invoke(newColor, null);
         }
 
         public void UnExecute()
         {
-            target = initialColor;
-            Executed?.Invoke(newColor, null);
+            if (type == typeof(Vertex)) target.VerticesColor = initialColor;
+            else target.ArcsColor = initialColor;
+            Executed?.Invoke(initialColor, null);
         }
     }
 }

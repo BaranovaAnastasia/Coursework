@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using ApplicationClasses;
+using GraphClasses.Commands;
 
 namespace Graph_WinForms
 {
@@ -143,26 +144,48 @@ namespace Graph_WinForms
 
         #region Color panels
 
+        /// <summary>
+        /// Opens color dialog to select new vertices color
+        /// </summary>
         private void VertexColorDialogOpen_Click(object sender, EventArgs e)
         {
             if (GraphStyleColorDialog.ShowDialog() == DialogResult.Cancel) return;
 
-            VerticesColorPanel.BackColor = GraphStyleColorDialog.Color;
-            graphDrawing.VerticesPen = new Pen(GraphStyleColorDialog.Color, graphDrawing.VerticesPen.Width);
-            graphDrawing.DrawTheWholeGraph(Digraph);
-            DrawingSurface.Image = graphDrawing.Image;
+            var command = new ChangeColorCommand(graphDrawing, typeof(Vertex),
+                graphDrawing.VerticesColor, GraphStyleColorDialog.Color);
+
+            command.Executed += (s, ea) =>
+            {
+                VerticesColorPanel.BackColor = (Color)s;
+                graphDrawing.DrawTheWholeGraph(Digraph);
+                DrawingSurface.Image = graphDrawing.Image;
+            };
+
+            commandsManager.Execute(command);
 
         }
 
+        /// <summary>
+        /// Opens color dialog to select new arcs color
+        /// </summary>
         private void ArcsColorDialogOpen_Click(object sender, EventArgs e)
         {
             if (GraphStyleColorDialog.ShowDialog() == DialogResult.Cancel) return;
 
-            ArcsColorPanel.BackColor = GraphStyleColorDialog.Color;
-            graphDrawing.ArcsPen = new Pen(Color.FromArgb(80, GraphStyleColorDialog.Color), graphDrawing.ArcsPen.Width);
-            graphDrawing.DrawTheWholeGraph(Digraph);
-            DrawingSurface.Image = graphDrawing.Image;
+            var command = new ChangeColorCommand(graphDrawing, typeof(Arc),
+                graphDrawing.ArcsColor, GraphStyleColorDialog.Color);
+
+            command.Executed += (s, ea) =>
+            {
+                ArcsColorPanel.BackColor = (Color)s;
+                graphDrawing.DrawTheWholeGraph(Digraph);
+                DrawingSurface.Image = graphDrawing.Image;
+            };
+
+            commandsManager.Execute(command);
         }
+
+        #region behavior
 
         private void VerticesColorPanel_Leave(object sender, EventArgs e) =>
             VertexColorDialogOpen.Visible = false;
@@ -184,6 +207,8 @@ namespace Graph_WinForms
 
         #endregion
 
+        #endregion
+
         private void UndoButton_Click(object sender, EventArgs e)
         {
             commandsManager.Undo();
@@ -197,62 +222,5 @@ namespace Graph_WinForms
             graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
         }
-
-        #region EnabledChanged handlers
-
-        private void CursorButton_EnabledChanged(object sender, EventArgs e)
-        {
-            if (CursorButton.Enabled)
-            {
-                CursorButton.BackColor = Button.DefaultBackColor;
-                isPressed = false;
-                movingVertexIndex = -1;
-                graphDrawing.DrawTheWholeGraph(Digraph);
-                DrawingSurface.Image = graphDrawing.Image;
-                return;
-            }
-            CursorButton.BackColor = Color.LightGray;
-        }
-
-        private void VertexButton_EnabledChanged(object sender, EventArgs e)
-        {
-            if (VertexButton.Enabled)
-            {
-                VertexButton.BackColor = Button.DefaultBackColor;
-                return;
-            }
-            VertexButton.BackColor = Color.LightGray;
-        }
-
-        private void EdgeButton_EnabledChanged(object sender, EventArgs e)
-        {
-            if (EdgeButton.Enabled)
-            {
-                EdgeButton.BackColor = Button.DefaultBackColor;
-                vStart = vEnd = -1;
-                graphDrawing.DrawTheWholeGraph(Digraph);
-                DrawingSurface.Image = graphDrawing.Image;
-                return;
-            }
-            EdgeButton.BackColor = Color.LightGray;
-        }
-
-        private void EraserButton_EnabledChanged(object sender, EventArgs e)
-        {
-            if (DeleteButton.Enabled)
-            {
-                DeleteButton.BackColor = Button.DefaultBackColor;
-                return;
-            }
-            DeleteButton.BackColor = Color.LightGray;
-        }
-
-        private void ClearAllButton_EnabledChanged(object sender, EventArgs e)
-        {
-            ClearButton.Visible = ClearButton.Enabled;
-        }
-
-
-        #endregion
     }
 }

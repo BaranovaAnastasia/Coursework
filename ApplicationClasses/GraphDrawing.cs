@@ -162,8 +162,10 @@ namespace ApplicationClasses
         /// <param name="startVertex">Starting vertex</param>
         /// <param name="endVertex">Ending vertex</param>
         /// <param name="arc">Arc itself</param>
-        public void DrawArc(Vertex startVertex, Vertex endVertex, Arc arc)
+        public void DrawArc(Vertex startVertex, Vertex endVertex, Arc arc, int xOffset = 0, int yOffset = 0)
         {
+            startVertex.X += xOffset; startVertex.Y += yOffset;
+            endVertex.X += xOffset; endVertex.Y += yOffset;
             if (arc.StartVertex == arc.EndVertex)
                 throw new ArgumentException("Arc cannot be a loop");
             drawing.DrawLine(arcsPen, startVertex.X, startVertex.Y, endVertex.X, endVertex.Y);
@@ -187,21 +189,22 @@ namespace ApplicationClasses
         /// <summary>
         /// Draws all the digraph vertices
         /// </summary>
-        public void DrawVertices(Digraph digraph)
+        public void DrawVertices(Digraph digraph, int xOffset = 0, int yOffset = 0)
         {
             for (int i = 0; i < digraph.Vertices.Count; ++i)
-                DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1);
+                DrawVertex(digraph.Vertices[i].X + xOffset, digraph.Vertices[i].Y + yOffset, i + 1);
         }
 
         /// <summary>
         /// Draws the whole digraph
         /// </summary>
-        public void DrawTheWholeGraph(Digraph digraph)
+        public void DrawTheWholeGraph(Digraph digraph, int xOffset = 0, int yOffset = 0)
         {
             ClearTheSurface();
             digraph.Arcs.ForEach(arc =>
-                DrawArc(digraph.Vertices[arc.StartVertex], digraph.Vertices[arc.EndVertex], arc));
-            DrawVertices(digraph);
+                DrawArc(digraph.Vertices[arc.StartVertex], digraph.Vertices[arc.EndVertex], arc,
+                    xOffset, yOffset));
+            DrawVertices(digraph, xOffset, yOffset);
         }
 
         /// <summary>

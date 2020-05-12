@@ -1173,6 +1173,7 @@ namespace Graph_WinForms
             this.Text = "Points Movement Modeling Application";
             this.SizeChanged += new System.EventHandler(this.GraphBuilder_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GraphBuilder_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyUp);
             this.TopMenu.ResumeLayout(false);
             this.TopMenu.PerformLayout();
             this.Tools.ResumeLayout(false);

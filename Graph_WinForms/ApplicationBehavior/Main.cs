@@ -95,6 +95,9 @@ namespace Graph_WinForms
 
         }
 
+        private int xCoefficient = 0;
+        private int yCoefficient = 0;
+
         /// <summary>
         /// Moves digraph on the drawing surface
         /// </summary>
@@ -105,17 +108,34 @@ namespace Graph_WinForms
             #region Graph moving
 
             if (e.KeyCode == Keys.Right)
-                for (int i = 0; i < Digraph.Vertices.Count; i++)
-                    Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X + 10, Digraph.Vertices[i].Y);
+            {
+                if (isOnMovement && SandpileTypeCheckBox.Checked)
+                    graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
+                else graphDrawing.DrawTheWholeGraph(Digraph, xCoefficient + 10, yCoefficient);
+                xCoefficient += 10;
+            }
             if (e.KeyCode == Keys.Left)
-                for (int i = 0; i < Digraph.Vertices.Count; i++)
-                    Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X - 10, Digraph.Vertices[i].Y);
+            {
+                if (isOnMovement && SandpileTypeCheckBox.Checked)
+                    graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
+                else graphDrawing.DrawTheWholeGraph(Digraph, xCoefficient - 10, yCoefficient);
+                xCoefficient -= 10;
+            }
+
             if (e.KeyCode == Keys.Up)
-                for (int i = 0; i < Digraph.Vertices.Count; i++)
-                    Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X, Digraph.Vertices[i].Y - 10);
+            {
+                if (isOnMovement && SandpileTypeCheckBox.Checked)
+                    graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
+                else graphDrawing.DrawTheWholeGraph(Digraph, xCoefficient, yCoefficient - 10);
+                yCoefficient -= 10;
+            }
             if (e.KeyCode == Keys.Down)
-                for (int i = 0; i < Digraph.Vertices.Count; i++)
-                    Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X, Digraph.Vertices[i].Y + 10);
+            {
+                if (isOnMovement && SandpileTypeCheckBox.Checked)
+                    graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
+                else graphDrawing.DrawTheWholeGraph(Digraph, xCoefficient, yCoefficient + 10);
+                yCoefficient += 10;
+            }
 
             #endregion
 
@@ -138,9 +158,9 @@ namespace Graph_WinForms
                     RedoButton_Click(sender, e);
             }
 
-            if (isOnMovement && SandpileTypeCheckBox.Checked)
-                graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
-            else graphDrawing.DrawTheWholeGraph(Digraph);
+            //if (isOnMovement && SandpileTypeCheckBox.Checked)
+            //    graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
+            //else graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
         }
 
@@ -197,6 +217,18 @@ namespace Graph_WinForms
                 GridAdjacencyMatrix[((Arc)sender).EndVertex, ((Arc)sender).StartVertex].Value = 0;
                 ArcName.Items.RemoveAt(e.Index);
             };
+        }
+
+        private void MainWindow_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.Modifiers != Keys.Control) return;
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down ||
+                 e.KeyCode == Keys.Right || e.KeyCode == Keys.Left)
+            {
+                var command = new MoveDigraphCommand(Digraph, xCoefficient, yCoefficient);
+                commandsManager.Execute(command);
+                xCoefficient = yCoefficient = 0;
+            }
         }
     }
 }

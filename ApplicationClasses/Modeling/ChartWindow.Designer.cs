@@ -61,14 +61,16 @@ namespace ApplicationClasses.Modeling
                 MarkerStyle = MarkerStyle.Circle,
                 MarkerColor = Color.DarkCyan,
                 ChartArea = "Chart",
-                BorderWidth = 1
+                BorderWidth = 3,
+                XValueType = ChartValueType.UInt32,
+                YValueType = ChartValueType.Int32
             };
             this.chart1.Series.Add(data);
             this.chart1.Series[0].ToolTip = "t = #VALX,\n\rN = #VALY";
             this.chart1.ChartAreas.Add("Chart");
             this.chart1.ChartAreas[0].AxisX.Title = "t, s";
             this.chart1.ChartAreas[0].AxisY.Title = "Amount";
-            this.chart1.ChartAreas[0].AxisX.Interval = 0.5;
+            this.chart1.ChartAreas[0].AxisX.Interval = 1;
             this.chart1.ChartAreas[0].AxisY.Interval = 5;
             this.chart1.ChartAreas[0].AxisX.IsStartedFromZero = true;
             this.chart1.ChartAreas[0].AxisY.IsStartedFromZero = true;

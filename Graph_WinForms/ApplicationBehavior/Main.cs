@@ -28,9 +28,7 @@ namespace Graph_WinForms
                 (sender, e) =>
                     DigraphInformationDemonstration.DisplaySandpileColors(graphDrawing, SandpilePalette);
 
-            SubscribeToDigraphEvents();
-
-            CommandsManager.CanRedoChanged += (sender, e) => RedoButton.Enabled = (bool) sender;
+            CommandsManager.CanRedoChanged += (sender, e) => RedoButton.Enabled = (bool)sender;
             CommandsManager.CanUndoChanged += (sender, e) => UndoButton.Enabled = (bool)sender;
         }
 
@@ -55,7 +53,7 @@ namespace Graph_WinForms
             AppParameters.Location = new Point(Size.Width - AppParameters.Size.Width - 30, AppParameters.Location.Y);
             AppParameters.Height = Height - 120 > 0 ? Height - 120 : 0;
             GridParameters.Height = AppParameters.Height - ParametersLegendLabel.Height - 60;
-            ParametersLegendLabel.Location = 
+            ParametersLegendLabel.Location =
                 new Point(ParametersLegendLabel.Location.X, AppParameters.Height - ParametersLegendLabel.Height - 15);
             GridAdjacencyMatrix.Height = AdjacencyPage.Height - GridAdjacencyMatrix.Location.Y - 10;
 
@@ -97,6 +95,7 @@ namespace Graph_WinForms
 
         private int xCoefficient = 0;
         private int yCoefficient = 0;
+        private double enlargeCoefficient = 1;
 
         /// <summary>
         /// Moves digraph on the drawing surface
@@ -105,62 +104,27 @@ namespace Graph_WinForms
         {
             if (e.Modifiers != Keys.Control) return;
 
-            #region Graph moving
-
             if (e.KeyCode == Keys.Right)
-            {
-                if (isOnMovement && SandpileTypeCheckBox.Checked)
-                    graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
-                else graphDrawing.DrawTheWholeGraph(Digraph, xCoefficient + 10, yCoefficient);
                 xCoefficient += 10;
-            }
-            if (e.KeyCode == Keys.Left)
-            {
-                if (isOnMovement && SandpileTypeCheckBox.Checked)
-                    graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
-                else graphDrawing.DrawTheWholeGraph(Digraph, xCoefficient - 10, yCoefficient);
+            else if (e.KeyCode == Keys.Left)
                 xCoefficient -= 10;
-            }
-
-            if (e.KeyCode == Keys.Up)
-            {
-                if (isOnMovement && SandpileTypeCheckBox.Checked)
-                    graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
-                else graphDrawing.DrawTheWholeGraph(Digraph, xCoefficient, yCoefficient - 10);
+            else if (e.KeyCode == Keys.Up)
                 yCoefficient -= 10;
-            }
-            if (e.KeyCode == Keys.Down)
-            {
-                if (isOnMovement && SandpileTypeCheckBox.Checked)
-                    graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
-                else graphDrawing.DrawTheWholeGraph(Digraph, xCoefficient, yCoefficient + 10);
+            else if (e.KeyCode == Keys.Down)
                 yCoefficient += 10;
-            }
+            else if (e.KeyCode == Keys.Oemplus)
+                enlargeCoefficient *= 1.1;
+            else if (e.KeyCode == Keys.OemMinus)
+                enlargeCoefficient *= 0.9;
+            else if(!isOnMovement && e.KeyCode == Keys.Z)
+                UndoButton_Click(sender, e);
+            else if (!isOnMovement && e.KeyCode == Keys.Y)
+                RedoButton_Click(sender, e);
+            else return;
 
-            #endregion
-
-            #region Scaling
-
-            if (e.KeyCode == Keys.Oemplus)
-                for (int i = 0; i < Digraph.Vertices.Count; i++)
-                    Digraph.Vertices[i] = new Vertex((int)(Digraph.Vertices[i].X * 1.1), (int)(Digraph.Vertices[i].Y * 1.1));
-            if (e.KeyCode == Keys.OemMinus)
-                for (int i = 0; i < Digraph.Vertices.Count; i++)
-                    Digraph.Vertices[i] = new Vertex((int)(Digraph.Vertices[i].X * 0.9), (int)(Digraph.Vertices[i].Y * 0.9));
-
-            #endregion
-
-            if (!isOnMovement)
-            {
-                if(e.KeyCode == Keys.Z)
-                    UndoButton_Click(sender, e);
-                if(e.KeyCode == Keys.Y)
-                    RedoButton_Click(sender, e);
-            }
-
-            //if (isOnMovement && SandpileTypeCheckBox.Checked)
-            //    graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
-            //else graphDrawing.DrawTheWholeGraph(Digraph);
+            if (isOnMovement && SandpileTypeCheckBox.Checked)
+                graphDrawing.DrawTheWholeGraphSandpile(Digraph, false, xCoefficient, yCoefficient, enlargeCoefficient);
+            else graphDrawing.DrawTheWholeGraph(Digraph, xCoefficient, yCoefficient, enlargeCoefficient);
             DrawingSurface.Image = graphDrawing.Image;
         }
 
@@ -221,13 +185,21 @@ namespace Graph_WinForms
 
         private void MainWindow_KeyUp(object sender, KeyEventArgs e)
         {
-            if(e.Modifiers != Keys.Control) return;
+            if (e.Modifiers != Keys.Control) return;
             if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down ||
                  e.KeyCode == Keys.Right || e.KeyCode == Keys.Left)
             {
+                if(xCoefficient == 0 && yCoefficient == 0) return;
                 var command = new MoveDigraphCommand(Digraph, xCoefficient, yCoefficient);
                 commandsManager.Execute(command);
                 xCoefficient = yCoefficient = 0;
+            }
+
+            if (e.KeyCode == Keys.OemMinus || e.KeyCode == Keys.Oemplus)
+            {
+                var command = new EnlargeDigraphCommand(Digraph, enlargeCoefficient);
+                commandsManager.Execute(command);
+                enlargeCoefficient = 1;
             }
         }
     }

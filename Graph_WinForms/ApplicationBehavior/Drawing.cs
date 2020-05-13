@@ -193,6 +193,18 @@ namespace Graph_WinForms
 
         private void AddVertexToGridParameters(int index)
         {
+            if (GridParameters.ColumnCount == 0)
+            {
+                GridParameters.Columns.Add(String.Empty, "th");
+                GridParameters.Columns.Add(String.Empty, "p");
+                GridParameters.Columns.Add(String.Empty, "s");
+                for (int i = 0; i < GridParameters.ColumnCount; ++i)
+                {
+                    GridParameters.Columns[i].FillWeight = 1;
+                    GridParameters.Columns[i].Width = 70;
+                    GridParameters.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
+            }
             GridParameters.Rows.Insert(index);
             GridParameters.Rows[index].HeaderCell.Value = Digraph.Vertices.Count.ToString();
             GridParameters[0, index].Value = Digraph.Thresholds[index];

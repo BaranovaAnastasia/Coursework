@@ -58,10 +58,10 @@ namespace ApplicationClasses
             Stock = new List<int>();
         }
 
-        public static event EventHandler<DigraphChangedEventArgs> VertexAdded;
-        public static event EventHandler<DigraphChangedEventArgs> VertexRemoved;
-        public static event EventHandler<DigraphChangedEventArgs> ArcAdded;
-        public static event EventHandler<DigraphChangedEventArgs> ArcRemoved;
+        public  event EventHandler<DigraphChangedEventArgs> VertexAdded;
+        public  event EventHandler<DigraphChangedEventArgs> VertexRemoved;
+        public  event EventHandler<DigraphChangedEventArgs> ArcAdded;
+        public  event EventHandler<DigraphChangedEventArgs> ArcRemoved;
 
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace ApplicationClasses
             if (index == -1) index = Arcs.Count;
             Arcs.Insert(index, arc);
 
-            ArcAdded.Invoke(arc, new DigraphChangedEventArgs(index));
+            ArcAdded?.Invoke(arc, new DigraphChangedEventArgs(index));
         }
 
         /// <summary>

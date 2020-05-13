@@ -33,6 +33,7 @@ namespace Graph_WinForms
                 Digraph = randomDigraphForm.Digraph;
             }
 
+            SubscribeToDigraphEvents();
             UpdateDigraphInfo();
             ChangeMainMenuState(false);
             ChangeDrawingElementsState(true);
@@ -58,6 +59,7 @@ namespace Graph_WinForms
                     }
                 }
 
+                SubscribeToDigraphEvents();
                 UpdateDigraphInfo();
                 ChangeMainMenuState(false);
                 ChangeDrawingElementsState(true);
@@ -80,6 +82,7 @@ namespace Graph_WinForms
                 Digraph = square.SquareLatticeDigraph;
             }
 
+            SubscribeToDigraphEvents();
             UpdateDigraphInfo();
             ChangeMainMenuState(false);
             ChangeDrawingElementsState(true);
@@ -97,6 +100,7 @@ namespace Graph_WinForms
                 Digraph = triangle.TriangularLatticeDigraph;
             }
 
+            SubscribeToDigraphEvents();
             UpdateDigraphInfo();
             ChangeMainMenuState(false);
             ChangeDrawingElementsState(true);
@@ -164,6 +168,7 @@ namespace Graph_WinForms
             if (isOnMovement) ResetToolStripMenuItem_Click(null, null);
 
             Digraph = new Digraph();
+            SubscribeToDigraphEvents();
 
             graphDrawing.ClearTheSurface();
             DrawingSurface.Image = graphDrawing.Image;

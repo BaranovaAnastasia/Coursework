@@ -71,7 +71,7 @@ namespace ApplicationClasses.Modeling
         private void ChangeChartInterval(Chart chart)
         {
             chart.ChartAreas[0].AxisY.Interval = (int)(chart.ChartAreas[0].AxisY.Maximum / 5);
-            chart.ChartAreas[0].AxisX.Interval = (int)(chart.ChartAreas[0].AxisX.Maximum / 5);
+            chart.ChartAreas[0].AxisX.Interval = (int)(chart.ChartAreas[0].AxisX.Maximum / 10);
         }
     }
 }

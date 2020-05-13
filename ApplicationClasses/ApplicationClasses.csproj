@@ -89,6 +89,7 @@
     <Compile Include="Commands\ChangeColorCommand.cs" />
     <Compile Include="Commands\ChangeGraphParameterCommand.cs" />
     <Compile Include="Commands\CommandsManager.cs" />
+    <Compile Include="Commands\EnlargeDigraphCommand.cs" />
     <Compile Include="Commands\EraseArcCommand.cs" />
     <Compile Include="Commands\EraseVertexCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />

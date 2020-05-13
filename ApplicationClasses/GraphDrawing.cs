@@ -162,10 +162,12 @@ namespace ApplicationClasses
         /// <param name="startVertex">Starting vertex</param>
         /// <param name="endVertex">Ending vertex</param>
         /// <param name="arc">Arc itself</param>
-        public void DrawArc(Vertex startVertex, Vertex endVertex, Arc arc, int xOffset = 0, int yOffset = 0)
+        public void DrawArc(Vertex startVertex, Vertex endVertex, Arc arc, int xOffset = 0, int yOffset = 0, double sizeCoef = 1)
         {
-            startVertex.X += xOffset; startVertex.Y += yOffset;
-            endVertex.X += xOffset; endVertex.Y += yOffset;
+            startVertex.X = (int) ((startVertex.X + xOffset) * sizeCoef);
+            startVertex.Y = (int)((startVertex.Y + yOffset) * sizeCoef);
+            endVertex.X = (int)((endVertex.X + xOffset) * sizeCoef);
+            endVertex.Y = (int)((endVertex.Y + yOffset) * sizeCoef);
             if (arc.StartVertex == arc.EndVertex)
                 throw new ArgumentException("Arc cannot be a loop");
             drawing.DrawLine(arcsPen, startVertex.X, startVertex.Y, endVertex.X, endVertex.Y);
@@ -189,22 +191,22 @@ namespace ApplicationClasses
         /// <summary>
         /// Draws all the digraph vertices
         /// </summary>
-        public void DrawVertices(Digraph digraph, int xOffset = 0, int yOffset = 0)
+        public void DrawVertices(Digraph digraph, int xOffset = 0, int yOffset = 0, double sizeCoef = 1)
         {
             for (int i = 0; i < digraph.Vertices.Count; ++i)
-                DrawVertex(digraph.Vertices[i].X + xOffset, digraph.Vertices[i].Y + yOffset, i + 1);
+                DrawVertex((int)((digraph.Vertices[i].X + xOffset)*sizeCoef), (int)((digraph.Vertices[i].Y + yOffset) * sizeCoef), i + 1);
         }
 
         /// <summary>
         /// Draws the whole digraph
         /// </summary>
-        public void DrawTheWholeGraph(Digraph digraph, int xOffset = 0, int yOffset = 0)
+        public void DrawTheWholeGraph(Digraph digraph, int xOffset = 0, int yOffset = 0, double sizeCoef = 1)
         {
             ClearTheSurface();
             digraph.Arcs.ForEach(arc =>
                 DrawArc(digraph.Vertices[arc.StartVertex], digraph.Vertices[arc.EndVertex], arc,
-                    xOffset, yOffset));
-            DrawVertices(digraph, xOffset, yOffset);
+                    xOffset, yOffset, sizeCoef));
+            DrawVertices(digraph, xOffset, yOffset, sizeCoef);
         }
 
         /// <summary>
@@ -256,7 +258,7 @@ namespace ApplicationClasses
         /// <param name="digraph">Digraph</param>
         /// <param name="update">Is it needed to update an incidence list and colors palette
         /// (true if digraph has changed since the last call, or if the method is called for the first time)</param>
-        public void DrawTheWholeGraphSandpile(Digraph digraph, bool update)
+        public void DrawTheWholeGraphSandpile(Digraph digraph, bool update, int xOffset = 0, int yOffset = 0, double sizeCoef = 1)
         {
             if (update)
             {
@@ -265,28 +267,35 @@ namespace ApplicationClasses
             }
 
             ClearTheSurface();
-
             digraph.Arcs.ForEach(arc =>
-                DrawArc(digraph.Vertices[arc.StartVertex], digraph.Vertices[arc.EndVertex], arc));
-            DrawVerticesSandpile(digraph);
+                DrawArc(digraph.Vertices[arc.StartVertex], digraph.Vertices[arc.EndVertex], arc,
+                    xOffset, yOffset, sizeCoef));
+            DrawVerticesSandpile(digraph, xOffset, yOffset, sizeCoef);
         }
 
         /// <summary>
         /// Draws all the digraph vertices in sandpile format
         /// </summary>
-        public void DrawVerticesSandpile(Digraph digraph)
+        public void DrawVerticesSandpile(Digraph digraph, int xOffset = 0, int yOffset = 0, double sizeCoef = 1)
         {
             for (int i = 0; i < digraph.State.Count; i++)
             {
-                DrawVertex(digraph.Vertices[i].X, digraph.Vertices[i].Y, i + 1,
+                DrawVertex((int)((digraph.Vertices[i].X + xOffset) * sizeCoef),
+                    (int)((digraph.Vertices[i].Y + yOffset) * sizeCoef), 
+                    i + 1,
                     new Pen(digraph.State[i] >= incidenceList[i].Count || digraph.Stock.Contains(i)
                         ? Color.Black
                         : SandpilePalette[digraph.State[i]], 4f));
+
                 if (digraph.Stock.Contains(i))
-                    drawing.FillEllipse(Brushes.Black, (digraph.Vertices[i].X - R), (digraph.Vertices[i].Y - R), 2 * R, 2 * R);
+                    drawing.FillEllipse(Brushes.Black, 
+                        (int)((digraph.Vertices[i].X + xOffset) * sizeCoef) - R, 
+                        (int)((digraph.Vertices[i].Y + yOffset) * sizeCoef) - R, 
+                        2 * R, 2 * R);
                 else
                     drawing.DrawString($"({digraph.State[i]})", sandpileFont, brush,
-                        digraph.Vertices[i].X + R, digraph.Vertices[i].Y - R - 5);
+                        (int)((digraph.Vertices[i].X + xOffset) * sizeCoef) + R,
+                        (int)((digraph.Vertices[i].Y + yOffset) * sizeCoef) - R - 5);
             }
         }
 

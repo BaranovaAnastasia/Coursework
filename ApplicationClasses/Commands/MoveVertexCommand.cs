@@ -30,6 +30,8 @@ namespace GraphClasses.Commands
         /// <param name="index">Vertex index</param>
         /// <param name="initialPoint">Vertex coordinates before moving</param>
         /// <param name="newPoint">New vertex coordinates</param>
+        /// <exception cref="ArgumentNullException"/>
+        /// <exception cref="ArgumentOutOfRangeException"/>
         public MoveVertexCommand(Digraph digraph, int index, Point initialPoint, Point newPoint)
         {
             this.digraph = digraph ?? throw new ArgumentNullException(nameof(digraph));
@@ -43,17 +45,13 @@ namespace GraphClasses.Commands
         /// <summary>
         /// Executes the command
         /// </summary>
-        public void Execute()
-        {
+        public void Execute() =>
             digraph.Vertices[index] = new Vertex(newPoint.X, newPoint.Y);
-        }
 
         /// <summary>
         /// UnExecutes the command
         /// </summary>
-        public void UnExecute()
-        {
+        public void UnExecute() =>
             digraph.Vertices[index] = new Vertex(initialPoint.X, initialPoint.Y);
-        }
     }
 }

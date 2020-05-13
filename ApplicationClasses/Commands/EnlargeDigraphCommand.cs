@@ -19,6 +19,7 @@ namespace GraphClasses.Commands
         /// </summary>
         /// <param name="digraph">Digraph whose vertex is moving</param>
         /// <param name="coefficient">X axis offset</param>
+        /// <exception cref="ArgumentNullException"/>
         public EnlargeDigraphCommand(Digraph digraph, double coefficient)
         {
             this.digraph = digraph ?? throw new ArgumentNullException(nameof(digraph));
@@ -31,7 +32,7 @@ namespace GraphClasses.Commands
         public void Execute()
         {
             for (int i = 0; i < digraph.Vertices.Count; i++)
-                digraph.Vertices[i] = 
+                digraph.Vertices[i] =
                     new Vertex((int)(digraph.Vertices[i].X * coefficient), (int)(digraph.Vertices[i].Y * coefficient));
         }
 

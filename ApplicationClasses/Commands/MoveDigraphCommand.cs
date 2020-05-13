@@ -24,6 +24,7 @@ namespace GraphClasses.Commands
         /// <param name="digraph">Digraph whose vertex is moving</param>
         /// <param name="xCoefficient">X axis offset</param>
         /// <param name="yCoefficient">Y axis offset</param>
+        /// <exception cref="ArgumentNullException"/>
         public MoveDigraphCommand(Digraph digraph, int xCoefficient, int yCoefficient)
         {
             this.digraph = digraph ?? throw new ArgumentNullException(nameof(digraph));

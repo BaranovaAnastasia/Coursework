@@ -18,7 +18,7 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private void TickAddFrame(object source, EventArgs e)
         {
-            var bmp = (DrawingSurface.Image as Bitmap).GetHbitmap();
+            var bmp = ((Bitmap) DrawingSurface.Image).GetHbitmap();
             var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                 bmp,
                 IntPtr.Zero,
@@ -55,9 +55,9 @@ namespace ApplicationClasses.Modeling
             if (distributionChart == null || !IsMovementEndedSandpile) return;
             if (avalancheSize == 0) return;
 
-            foreach (DataPoint point in distributionChart.chart1.Series[0].Points)
+            foreach (var point in distributionChart.chart1.Series[0].Points)
             {
-                if (point.XValue != avalancheSize) continue;
+                if (Math.Abs(point.XValue - avalancheSize) > 0) continue;
                 distributionChart.chart1.Series[0].Points.AddXY(avalancheSize, point.YValues[0] + 1);
                 distributionChart.chart1.Series[0].Points.Remove(point);
                 return;
@@ -68,7 +68,7 @@ namespace ApplicationClasses.Modeling
         /// <summary>
         /// Changes chart area axis intervals to fit values
         /// </summary>
-        private void ChangeChartInterval(Chart chart)
+        private static void ChangeChartInterval(Chart chart)
         {
             chart.ChartAreas[0].AxisY.Interval = (int)(chart.ChartAreas[0].AxisY.Maximum / 5);
             chart.ChartAreas[0].AxisX.Interval = (int)(chart.ChartAreas[0].AxisX.Maximum / 10);

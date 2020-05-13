@@ -71,7 +71,13 @@ namespace GraphClasses.Commands
             CanRedoChanged?.Invoke(false, null);
         }
 
+        /// <summary>
+        /// Occurs when CanUndo value changes
+        /// </summary>
         public static event EventHandler CanUndoChanged;
+        /// <summary>
+        /// Occurs when CanRedo value changes
+        /// </summary>
         public static event EventHandler CanRedoChanged;
     }
 }

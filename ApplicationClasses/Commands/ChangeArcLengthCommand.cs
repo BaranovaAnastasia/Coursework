@@ -16,12 +16,15 @@ namespace GraphClasses.Commands
         /// <summary>
         /// Parameter value before changes
         /// </summary>
-        private readonly double initialValue;
+        private readonly double oldValue;
         /// <summary>
         /// New Parameter value
         /// </summary>
         private readonly double newValue;
 
+        /// <summary>
+        /// Occurs when the command executes or unexecutes 
+        /// </summary>
         public event EventHandler Executed;
 
         /// <summary>
@@ -29,17 +32,19 @@ namespace GraphClasses.Commands
         /// </summary>
         /// <param name="digraph">Digraph whose arc is changed</param>
         /// <param name="index">Changed arc index</param>
-        /// <param name="initialValue">Arc length before changes</param>
+        /// <param name="oldValue">Arc length before changes</param>
         /// <param name="newValue">New length</param>
-        public ChangeArcLengthCommand(Digraph digraph, int index, double initialValue, double newValue)
+        /// <exception cref="ArgumentNullException"/>
+        /// <exception cref="ArgumentOutOfRangeException"/>
+        public ChangeArcLengthCommand(Digraph digraph, int index, double oldValue, double newValue)
         {
             this.digraph = digraph ?? throw new ArgumentNullException(nameof(digraph));
-            if (initialValue <= 0)
-                throw new ArgumentOutOfRangeException(nameof(newValue), "Arc length must be positive");
+            if (oldValue <= 0)
+                throw new ArgumentOutOfRangeException(nameof(newValue), @"Arc length must be positive");
             if (newValue <= 0)
-                throw new ArgumentOutOfRangeException(nameof(newValue), "Arc length must be positive");
+                throw new ArgumentOutOfRangeException(nameof(newValue), @"Arc length must be positive");
             this.index = index;
-            this.initialValue = initialValue;
+            this.oldValue = oldValue;
             this.newValue = newValue;
         }
 
@@ -57,8 +62,8 @@ namespace GraphClasses.Commands
         /// </summary>
         public void UnExecute()
         {
-            digraph.Arcs[index] = new Arc(digraph.Arcs[index].StartVertex, digraph.Arcs[index].EndVertex, initialValue);
-            Executed?.Invoke(initialValue, null);
+            digraph.Arcs[index] = new Arc(digraph.Arcs[index].StartVertex, digraph.Arcs[index].EndVertex, oldValue);
+            Executed?.Invoke(oldValue, null);
         }
     }
 }

@@ -6,30 +6,19 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace ApplicationClasses.Modeling
 {
-    public partial class ChartWindow : Form, IDisposable
+    public partial class ChartWindow : Form
     {
-        private readonly SaveFileDialog saveImageDialog = new SaveFileDialog();
-        private readonly SaveFileDialog saveDataDialog = new SaveFileDialog();
-        private readonly FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-
+        /// <summary>
+        /// Initializes a new ChartWindow instance
+        /// </summary>
         public ChartWindow()
         {
             InitializeComponent();
             ChartWindow_SizeChanged(null, null);
-
-            saveImageDialog.FileName = "ChartImage"; // Default file name
-            saveImageDialog.DefaultExt = ".jpg"; // Default file extension
-            saveImageDialog.Filter = "JPEG Image (.jpeg)|*.jpeg"; // Filter files by extension
-
-            saveDataDialog.FileName = "ChartData"; // Default file name
-            saveDataDialog.DefaultExt = ".csv"; // Default file extension
-            saveDataDialog.Filter = "CSV file (.csv)|*.csv"; // Filter files by extension
-
-            folderBrowserDialog.SelectedPath = "Chart";
         }
 
         /// <summary>
-        /// Adjusts chart size to fit window size
+        /// Adjusts controls sizes to fit window size
         /// </summary>
         private void ChartWindow_SizeChanged(object sender, EventArgs e)
         {
@@ -42,7 +31,7 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         public void AvalancheSizesDistributionChartPrepare()
         {
-            Text = "Distribution of Avalanche Sizes Chart";
+            Text = @"Distribution of Avalanche Sizes Chart";
             chart1.Series[0] = new Series("Distribution of\n\rAvalanche Sizes")
             {
                 ChartType = SeriesChartType.Point,
@@ -64,9 +53,18 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private void SaveImage_Click(object sender, EventArgs e)
         {
-            if (saveImageDialog.ShowDialog() == DialogResult.OK)
-                using (FileStream stream = new FileStream(saveImageDialog.FileName, FileMode.Create))
+            using (var saveDialog = new SaveFileDialog
+            {
+                FileName = "ChartData",
+                DefaultExt = ".csv",
+                Filter = @"CSV file (.csv)|*.csv"
+            })
+            {
+
+                if (saveDialog.ShowDialog() != DialogResult.OK) return;
+                using (var stream = new FileStream(saveDialog.FileName, FileMode.Create))
                     chart1.SaveImage(stream, ChartImageFormat.Jpeg);
+            }
         }
 
         /// <summary>
@@ -74,13 +72,22 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private void SaveData_Click(object sender, EventArgs e)
         {
-            if (saveDataDialog.ShowDialog() == DialogResult.OK)
-                using (var sw = new StreamWriter(saveDataDialog.FileName, false))
+            using (var saveDialog = new SaveFileDialog
+            {
+                FileName = "ChartImage",
+                DefaultExt = ".jpg",
+                Filter = @"JPEG Image (.jpeg)|*.jpeg"
+            })
+            {
+
+                if (saveDialog.ShowDialog() != DialogResult.OK) return;
+                using (var stream = new StreamWriter(saveDialog.FileName, false))
                 {
-                    sw.WriteLine(chart1.ChartAreas[0].AxisX.Title + ";" + chart1.ChartAreas[0].AxisY.Title);
+                    stream.WriteLine(chart1.ChartAreas[0].AxisX.Title + ";" + chart1.ChartAreas[0].AxisY.Title);
                     foreach (var point in chart1.Series[0].Points)
-                        sw.WriteLine(point.XValue + ";" + point.YValues[0]);
+                        stream.WriteLine(point.XValue + ";" + point.YValues[0]);
                 }
+            }
         }
 
         /// <summary>
@@ -88,25 +95,20 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private void SaveAll_Click(object sender, EventArgs e)
         {
-            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            using (var folderBrowser = new FolderBrowserDialog {SelectedPath = @"Chart"})
             {
-                using (FileStream stream = new FileStream(folderBrowserDialog.SelectedPath + @"\ChartImage.jpg", FileMode.Create))
+                if(folderBrowser.ShowDialog() != DialogResult.OK) return;
+
+                using (var stream = new FileStream(folderBrowser.SelectedPath + @"\ChartImage.jpg", FileMode.Create))
                     chart1.SaveImage(stream, ChartImageFormat.Jpeg);
 
-                using (var sw = new StreamWriter(folderBrowserDialog.SelectedPath + @"\Data.csv", false))
+                using (var stream = new StreamWriter(folderBrowser.SelectedPath + @"\Data.csv", false))
                 {
-                    sw.WriteLine(chart1.ChartAreas[0].AxisX.Title + ";" + chart1.ChartAreas[0].AxisY.Title);
+                    stream.WriteLine(chart1.ChartAreas[0].AxisX.Title + ";" + chart1.ChartAreas[0].AxisY.Title);
                     foreach (var point in chart1.Series[0].Points)
-                        sw.WriteLine(point.XValue + ";" + point.YValues[0]);
+                        stream.WriteLine(point.XValue + ";" + point.YValues[0]);
                 }
             }
-        }
-
-        public new void Dispose()
-        {
-            saveImageDialog.Dispose();
-            saveDataDialog.Dispose();
-            folderBrowserDialog.Dispose();
         }
     }
 }

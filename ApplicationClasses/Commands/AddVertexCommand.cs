@@ -21,11 +21,11 @@ namespace GraphClasses.Commands
         /// <summary>
         /// Vertex refractory period
         /// </summary>
-        private int refractoryPeriod = 0;
+        private int refractoryPeriod;
         /// <summary>
         /// Vertex initial state
         /// </summary>
-        private int state = 0;
+        private int state;
         /// <summary>
         /// Vertex index
         /// </summary>
@@ -36,6 +36,7 @@ namespace GraphClasses.Commands
         /// </summary>
         /// <param name="digraph">Digraph to which a vertex is added</param>
         /// <param name="vertex">Adding vertex</param>
+        /// <exception cref="ArgumentNullException"/>
         public AddVertexCommand(Digraph digraph, Vertex vertex)
         {
             this.digraph = digraph ?? throw new ArgumentNullException(nameof(digraph));
@@ -61,7 +62,7 @@ namespace GraphClasses.Commands
             refractoryPeriod = digraph.RefractoryPeriods[index];
             state = digraph.State[index];
 
-            digraph.RemoveVertex(digraph.Vertices.IndexOf(vertex));
+            digraph.RemoveVertex(index);
         }
     }
 }

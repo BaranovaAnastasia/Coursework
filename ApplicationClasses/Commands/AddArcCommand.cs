@@ -23,6 +23,7 @@ namespace GraphClasses.Commands
         /// </summary>
         /// <param name="digraph">Digraph to which an arc is added</param>
         /// <param name="arc">Adding Arc</param>
+        /// <exception cref="ArgumentNullException"/>
         public AddArcCommand(Digraph digraph, Arc arc)
         {
             this.digraph = digraph ?? throw new ArgumentNullException(nameof(digraph));

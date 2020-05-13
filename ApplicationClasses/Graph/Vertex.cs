@@ -3,7 +3,7 @@
 namespace ApplicationClasses
 {
     /// <summary>
-    /// Graph vertex
+    /// Represents a digraph vertex
     /// </summary>
     [Serializable]
     public struct Vertex

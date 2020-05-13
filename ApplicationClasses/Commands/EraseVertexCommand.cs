@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using ApplicationClasses;
 
 namespace GraphClasses.Commands
@@ -21,11 +21,11 @@ namespace GraphClasses.Commands
         /// <summary>
         /// Vertex refractory period
         /// </summary>
-        private int refractoryPeriod = 0;
+        private int refractoryPeriod;
         /// <summary>
         /// Vertex initial state
         /// </summary>
-        private int state = 0;
+        private int state;
         /// <summary>
         /// Vertex index
         /// </summary>
@@ -34,19 +34,25 @@ namespace GraphClasses.Commands
         /// <summary>
         /// Array of arcs incident to this vertex
         /// </summary>
-        private Arc[] incidentArcs;
+        private readonly List<Arc> incidentArcs = new List<Arc>();
+        /// <summary>
+        /// Array of indices of the arcs incident to this vertex
+        /// </summary>
+        private readonly List<int> arcsIndices = new List<int>();
 
         /// <summary>
         /// Initializes a new EraseVertexCommand instance
         /// </summary>
         /// <param name="digraph">Digraph from which a vertex is removed</param>
         /// <param name="vertex">Removing vertex</param>
+        /// <exception cref="ArgumentNullException"/>
+        /// <exception cref="ArgumentException"/>
         public EraseVertexCommand(Digraph digraph, Vertex vertex)
         {
             this.digraph = digraph ?? throw new ArgumentNullException(nameof(digraph));
             index = digraph.Vertices.IndexOf(vertex);
             if (index == -1)
-                throw new ArgumentException("The digraph doesn't contain this vertex", nameof(vertex));
+                throw new ArgumentException(@"The digraph doesn't contain this vertex", nameof(vertex));
             this.vertex = vertex;
         }
 
@@ -59,7 +65,14 @@ namespace GraphClasses.Commands
             threshold = digraph.Thresholds[index];
             refractoryPeriod = digraph.RefractoryPeriods[index];
             state = digraph.State[index];
-            incidentArcs = digraph.Arcs.Where(arc => arc.StartVertex == index || arc.EndVertex == index).ToArray();
+
+            for (var i = 0; i < digraph.Arcs.Count; i++)
+            {
+                if (digraph.Arcs[i].StartVertex != index && digraph.Arcs[i].EndVertex != index)
+                    continue;
+                arcsIndices.Add(i);
+                incidentArcs.Add(digraph.Arcs[i]);
+            }
 
             digraph.RemoveVertex(index);
         }
@@ -70,7 +83,8 @@ namespace GraphClasses.Commands
         public void UnExecute()
         {
             digraph.AddVertex(vertex, threshold, refractoryPeriod, state, index);
-            Array.ForEach(incidentArcs, arc => digraph.AddArc(arc));
+            for (int i = 0; i < incidentArcs.Count; i++)
+                digraph.AddArc(incidentArcs[i], arcsIndices[i]);
         }
     }
 }

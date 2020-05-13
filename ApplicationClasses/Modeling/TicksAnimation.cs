@@ -13,7 +13,7 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private void TickModeling(object source, EventArgs e)
         {
-            Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch));
+            Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch.ElapsedMilliseconds));
 
             int initialCount = involvedArcs.Count;
             int numberOfNewDots = ProcessVertices() + ProcessDots();

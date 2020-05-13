@@ -69,20 +69,20 @@ namespace ApplicationClasses
         /// <summary>
         /// Vertices radius
         /// </summary>
-        private static int radius = 8;
+        private static int _radius = 8;
 
         /// <summary>
         /// Vertices radius
         /// </summary>
         public int R
         {
-            get => radius;
+            get => _radius;
             set
             {
                 if (value < 8)
                     throw new ArgumentOutOfRangeException(nameof(value));
-                radius = value;
-                font = new Font(font.FontFamily.Name, radius * 0.625f);
+                _radius = value;
+                font = new Font(font.FontFamily.Name, _radius * 0.625f);
                 RadiusChanged?.Invoke(null, EventArgs.Empty);
             }
         }
@@ -101,6 +101,7 @@ namespace ApplicationClasses
         /// </summary>
         /// <param name="width">Width of the drawing surface</param>
         /// <param name="height">Height of the drawing surface</param>
+        /// <exception cref="ArgumentException"/>
         public GraphDrawing(int width, int height)
         {
             if (width <= 0 || height <= 0)
@@ -162,6 +163,9 @@ namespace ApplicationClasses
         /// <param name="startVertex">Starting vertex</param>
         /// <param name="endVertex">Ending vertex</param>
         /// <param name="arc">Arc itself</param>
+        /// <param name="xOffset">X-axis image offset</param>
+        /// <param name="yOffset">Y-axis image offset</param>
+        /// <param name="sizeCoef">Resizing coefficient</param>
         public void DrawArc(Vertex startVertex, Vertex endVertex, Arc arc, int xOffset = 0, int yOffset = 0, double sizeCoef = 1)
         {
             startVertex.X = (int) ((startVertex.X + xOffset) * sizeCoef);
@@ -212,9 +216,9 @@ namespace ApplicationClasses
         /// <summary>
         /// Draws a moving dot
         /// </summary>
-        /// <param name="point"></param>
-        public void DrawDot(PointF point) =>
-            drawing.FillEllipse(Brushes.Black, point.X - 4, point.Y - 4, 8, 8);
+        /// <param name="p"></param>
+        public void DrawDot(PointF p) =>
+            drawing.FillEllipse(Brushes.Black, p.X - 4, p.Y - 4, 8, 8);
 
 
         #region Sandpile
@@ -258,6 +262,9 @@ namespace ApplicationClasses
         /// <param name="digraph">Digraph</param>
         /// <param name="update">Is it needed to update an incidence list and colors palette
         /// (true if digraph has changed since the last call, or if the method is called for the first time)</param>
+        /// <param name="xOffset">X-axis image offset</param>
+        /// <param name="yOffset">Y-axis image offset</param>
+        /// <param name="sizeCoef">Resizing coefficient</param>
         public void DrawTheWholeGraphSandpile(Digraph digraph, bool update, int xOffset = 0, int yOffset = 0, double sizeCoef = 1)
         {
             if (update)
@@ -276,6 +283,10 @@ namespace ApplicationClasses
         /// <summary>
         /// Draws all the digraph vertices in sandpile format
         /// </summary>
+        /// <param name="digraph">Digraph</param>
+        /// <param name="xOffset">X-axis image offset</param>
+        /// <param name="yOffset">Y-axis image offset</param>
+        /// <param name="sizeCoef">Resizing coefficient</param>
         public void DrawVerticesSandpile(Digraph digraph, int xOffset = 0, int yOffset = 0, double sizeCoef = 1)
         {
             for (int i = 0; i < digraph.State.Count; i++)
@@ -311,10 +322,10 @@ namespace ApplicationClasses
             colors[steps - 1] = end;
             colors[0] = start;
 
-            double aStep = (end.A - start.A) / steps;
-            double rStep = (end.R - start.R) / steps;
-            double gStep = (end.G - start.G) / steps;
-            double bStep = (end.B - start.B) / steps;
+            var aStep = (end.A - start.A) * 1.0 / steps;
+            var rStep = (end.R - start.R) * 1.0 / steps;
+            var gStep = (end.G - start.G) * 1.0 / steps;
+            var bStep = (end.B - start.B) * 1.0 / steps;
 
             for (int i = 1; i < steps - 1; i++)
             {

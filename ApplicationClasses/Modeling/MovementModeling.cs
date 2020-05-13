@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Drawing;
 using Timer = System.Windows.Forms.Timer;
+#pragma warning disable 67
 
 namespace ApplicationClasses.Modeling
 {
@@ -15,7 +16,7 @@ namespace ApplicationClasses.Modeling
     public partial class MovementModeling
     {
         /// <summary>
-        /// Initialize new instance of MovementModeling class
+        /// Initializes new instance of MovementModeling class
         /// </summary>
         /// <param name="digraph">Digraph</param>
         /// <param name="speed">Speed in unit per millisecond</param>
@@ -26,14 +27,14 @@ namespace ApplicationClasses.Modeling
         public MovementModeling(Digraph digraph, double speed, MovementModelingType type, MovementModelingMode[] modes)
         {
             if (speed <= 0)
-                throw new ArgumentOutOfRangeException(nameof(speed), "Speed of movement should be positive");
+                throw new ArgumentOutOfRangeException(nameof(speed), @"Speed of movement should be positive");
             this.digraph = digraph ?? throw new ArgumentNullException(nameof(digraph));
             this.speed = speed;
             this.type = type;
             this.modes = modes;
             IsActive = false;
 
-            MovementEnded += (object sender, EventArgs e) =>
+            MovementEnded += (sender, e) =>
             {
                 if (type == MovementModelingType.Sandpile) GraphDrawing.DrawTheWholeGraphSandpile(digraph, false);
                 if (type == MovementModelingType.Basic) GraphDrawing.DrawTheWholeGraph(digraph);
@@ -100,7 +101,7 @@ namespace ApplicationClasses.Modeling
         /// <summary>
         /// Timer updating the process data every few milliseconds
         /// </summary>
-        private Timer mainTimer = null;
+        private Timer mainTimer;
         /// <summary>
         /// Current avalanche size
         /// </summary>
@@ -109,11 +110,10 @@ namespace ApplicationClasses.Modeling
         private Predicate<int> releaseCondition;
         private Action<int> stateChange;
 
-        private ChartWindow numberOfDotsChart = null;
-        private ChartWindow distributionChart = null;
+        private ChartWindow numberOfDotsChart;
+        private ChartWindow distributionChart;
 
         #endregion
-
 
         /// <summary>
         /// Starts dots movement
@@ -322,12 +322,13 @@ namespace ApplicationClasses.Modeling
 
     public class MovementTickEventArgs : EventArgs
     {
-        private readonly Stopwatch Time;
-        public long ElapsedTime => Time.ElapsedMilliseconds;
+        public readonly long ElapsedTime;
 
-        public MovementTickEventArgs(Stopwatch time)
-        {
-            Time = time;
-        }
+        /// <summary>
+        /// Initializes a new MovementTickEventArgs instance
+        /// </summary>
+        /// <param name="time">Elapsed time in milliseconds</param>
+        public MovementTickEventArgs(long time) =>
+            ElapsedTime = time;
     }
 }

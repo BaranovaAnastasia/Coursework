@@ -3,6 +3,9 @@ using System.Windows.Forms;
 
 namespace ApplicationClasses
 {
+    /// <summary>
+    /// Provides static methods for arcs and vertices deletion
+    /// </summary>
     public static class DigraphBuilding
     {
         #region Vertices and arcs deletion
@@ -13,14 +16,14 @@ namespace ApplicationClasses
         /// <param name="x">X coordinate of search point</param>
         /// <param name="y">Y coordinate of search point</param>
         /// <param name="digraph">Digraph among the vertices of which to search</param>
-        /// <param name="R">Vertex radius</param>
+        /// <param name="r">Vertex radius</param>
         /// <param name="index">Index of the found vertex</param>
         /// <returns>true if the vertex was found, false otherwise</returns>
-        public static bool TryToDeleteVertexAt(int x, int y, Digraph digraph, float R, out int index)
+        public static bool TryToDeleteVertexAt(int x, int y, Digraph digraph, float r, out int index)
         {
             for (var i = 0; i < digraph.Vertices.Count; i++)
             {
-                if (Math.Pow(digraph.Vertices[i].X - x, 2) + Math.Pow(digraph.Vertices[i].Y - y, 2) > R * R)
+                if (Math.Pow(digraph.Vertices[i].X - x, 2) + Math.Pow(digraph.Vertices[i].Y - y, 2) > r * r)
                     continue;
                 index = i;
                 return true;
@@ -39,7 +42,7 @@ namespace ApplicationClasses
         /// <returns>true if the arc was found, false otherwise</returns>
         public static bool TryToDeleteArcAt(int x, int y, Digraph digraph, out Arc deletedArc)
         {
-            int selectedArc = FindSelectedArc(x, y, digraph);
+            var selectedArc = FindSelectedArc(x, y, digraph);
             if (selectedArc != -1)
             {
                 deletedArc = digraph.Arcs[selectedArc];
@@ -79,6 +82,9 @@ namespace ApplicationClasses
         #endregion
     }
 
+    /// <summary>
+    /// Provides static methods for digraph parameters displaying
+    /// </summary>
     public static class DigraphInformationDemonstration
     {
         #region DataGridView information display
@@ -116,7 +122,7 @@ namespace ApplicationClasses
             dataGridView.Columns.Add(String.Empty, "th");
             dataGridView.Columns.Add(String.Empty, "p");
             dataGridView.Columns.Add(String.Empty, "s");
-            for(int i = 0; i < dataGridView.ColumnCount; ++i)
+            for (int i = 0; i < dataGridView.ColumnCount; ++i)
             {
                 dataGridView.Columns[i].FillWeight = 1;
                 dataGridView.Columns[i].Width = 70;

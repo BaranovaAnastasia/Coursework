@@ -22,7 +22,7 @@ namespace ApplicationClasses
         {
             if (numberOfVertices <= 0)
                 throw new ArgumentOutOfRangeException(nameof(numberOfVertices),
-                    "Number of vertices of the graph should be a positive number");
+                    @"Number of vertices of the graph should be a positive number");
             this.numberOfVertices = numberOfVertices;
             adjacencyList = new List<int>[numberOfVertices];
             for (int i = 0; i < numberOfVertices; ++i)
@@ -43,7 +43,7 @@ namespace ApplicationClasses
         private void DFS(int startVertex, bool[] visited)
         {
             visited[startVertex] = true;
-            foreach (int i in adjacencyList[startVertex])
+            foreach (var i in adjacencyList[startVertex])
                 if (!visited[i])
                     DFS(i, visited);
         }

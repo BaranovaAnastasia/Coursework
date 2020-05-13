@@ -23,12 +23,14 @@ namespace GraphClasses.Commands
         /// </summary>
         /// <param name="digraph">Digraph from which an arc is removed</param>
         /// <param name="arc">Removing Arc</param>
+        /// <exception cref="ArgumentNullException"/>
+        /// <exception cref="ArgumentException"/>
         public EraseArcCommand(Digraph digraph, Arc arc)
         {
             this.digraph = digraph ?? throw new ArgumentNullException(nameof(digraph));
             index = digraph.Arcs.IndexOf(arc);
             if (index == -1)
-                throw new ArgumentException("The digraph doesn't contain this arc", nameof(arc));
+                throw new ArgumentException(@"The digraph doesn't contain this arc", nameof(arc));
             this.arc = arc;
         }
 

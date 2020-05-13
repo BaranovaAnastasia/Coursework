@@ -1274,8 +1274,8 @@ namespace Graph_WinForms
         private System.Windows.Forms.TabControl AppParameters;
         private System.Windows.Forms.Button Down;
         private System.Windows.Forms.Button Up;
-        private System.Windows.Forms.Button Left;
-        private System.Windows.Forms.Button Right;
+        private new System.Windows.Forms.Button Left;
+        private new System.Windows.Forms.Button Right;
         private System.Windows.Forms.Button ReduceButton;
         private System.Windows.Forms.Button EnlargeButton;
         private System.Windows.Forms.Panel ArcsColorPanel;

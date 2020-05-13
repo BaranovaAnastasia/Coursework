@@ -27,7 +27,7 @@ namespace CourseworkApp
                 using (FileStream stream = new FileStream(fileDialog.FileName, FileMode.Create))
                 {
                     XmlSerializer format = new XmlSerializer(typeof(Digraph));
-                    format.Serialize(stream, Digraph);
+                    format.Serialize(stream, digraph);
                 }
             }
         }
@@ -43,7 +43,7 @@ namespace CourseworkApp
 
                 using (FileStream stream = new FileStream(fileDialog.FileName, FileMode.Create))
                 {
-                    graphDrawing.DrawTheWholeGraph(Digraph);
+                    graphDrawing.DrawTheWholeGraph(digraph);
                     graphDrawing.Image.Save(stream, ImageFormat.Jpeg);
                 }
             }
@@ -60,14 +60,14 @@ namespace CourseworkApp
 
                 using (var stream = new FileStream(folderDialog.SelectedPath + @"\Image.jpg", FileMode.Create))
                 {
-                    graphDrawing.DrawTheWholeGraph(Digraph);
+                    graphDrawing.DrawTheWholeGraph(digraph);
                     graphDrawing.Image.Save(stream, ImageFormat.Jpeg);
                 }
 
                 using (var stream = new StreamWriter(folderDialog.SelectedPath + @"\Data.digraph", false))
                 {
                     XmlSerializer format = new XmlSerializer(typeof(Digraph));
-                    format.Serialize(stream, Digraph);
+                    format.Serialize(stream, digraph);
                 }
             }
         }
@@ -80,11 +80,11 @@ namespace CourseworkApp
         /// </summary>
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Digraph.Vertices.Count != 0
+            if (digraph.Vertices.Count != 0
                     && SaveGraph("Would you like to save the graph before leaving?", "Saving") == DialogResult.Cancel)
                 return;
 
-            if (MessageBox.Show("Are you sure you want to leave?", "Leaving",
+            if (MessageBox.Show(@"Are you sure you want to leave?", @"Leaving",
                 MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
                 Close();
         }
@@ -94,7 +94,7 @@ namespace CourseworkApp
         /// </summary>
         private void MainMenuToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Digraph.Vertices.Count != 0
+            if (digraph.Vertices.Count != 0
                 && SaveGraph("Would you like to save the graph? Otherwise, your graph will be lost.",
                     "Saving") == DialogResult.Cancel) return;
 
@@ -105,19 +105,10 @@ namespace CourseworkApp
 
 
         /// <summary>
-        /// Shows a user manual (maybe in the future)
-        /// </summary>
-        private void UserManualToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Coming soon...", "In development");
-        }
-
-
-        /// <summary>
         /// Giving information about the application and the developer
         /// </summary>
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e) =>
-            MessageBox.Show(AboutApp, "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(AboutApp, @"About", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
         
         /// <summary>

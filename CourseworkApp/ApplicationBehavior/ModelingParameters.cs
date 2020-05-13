@@ -67,7 +67,7 @@ namespace CourseworkApp
             SandpilePanel.Visible = false;
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();
-            SandpileLabel.Text = "Select vertex to add a grain of sand to       ";
+            SandpileLabel.Text = @"Select vertex to add a grain of sand to       ";
             SandpileLabel.Font = new Font("Segoe UI", 9);
             SandpilePanel.Size = new Size(SandpilePanel.Size.Width, 91);
 
@@ -92,17 +92,17 @@ namespace CourseworkApp
         private async void RandomAddingLabel_Click(object sender, EventArgs e)
         {
             int rndVertex;
-            do { rndVertex = rnd.Next(Digraph.Vertices.Count); }
-            while (Digraph.Stock.Contains(rndVertex));
+            do { rndVertex = Rnd.Next(digraph.Vertices.Count); }
+            while (digraph.Stock.Contains(rndVertex));
 
-            Digraph.State[rndVertex]++;
+            digraph.State[rndVertex]++;
             SandpilePanel.Visible = false;
-            graphDrawing.HighlightVertexToAddSand(Digraph.Vertices[rndVertex]);
+            graphDrawing.HighlightVertexToAddSand(digraph.Vertices[rndVertex]);
             DrawingSurface.Image = graphDrawing.Image;
 
             if (SaveGifCheckBox.Checked && movement.MovementGif.Frames.Count < 250)
             {
-                var bmp = (DrawingSurface.Image as Bitmap).GetHbitmap();
+                var bmp = ((Bitmap) DrawingSurface.Image).GetHbitmap();
                 var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                     bmp,
                     IntPtr.Zero,

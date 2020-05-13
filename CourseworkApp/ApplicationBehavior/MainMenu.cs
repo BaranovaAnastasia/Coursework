@@ -30,7 +30,7 @@ namespace CourseworkApp
             {
                 randomDigraphForm.ShowDialog();
                 if (randomDigraphForm.Digraph == null) return;
-                Digraph = randomDigraphForm.Digraph;
+                digraph = randomDigraphForm.Digraph;
             }
 
             SubscribeToDigraphEvents();
@@ -55,7 +55,7 @@ namespace CourseworkApp
                     using (FileStream fs = new FileStream(openDialog.FileName, FileMode.Open))
                     {
                         XmlSerializer formatter = new XmlSerializer(typeof(Digraph));
-                        Digraph = (Digraph)formatter.Deserialize(fs);
+                        digraph = (Digraph)formatter.Deserialize(fs);
                     }
                 }
 
@@ -66,7 +66,8 @@ namespace CourseworkApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Invalid file:" + Environment.NewLine + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@"Invalid file:" + Environment.NewLine + ex.Message, @"Error", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -79,7 +80,7 @@ namespace CourseworkApp
             {
                 square.ShowDialog();
                 if (square.SquareLatticeDigraph == null) return;
-                Digraph = square.SquareLatticeDigraph;
+                digraph = square.SquareLatticeDigraph;
             }
 
             SubscribeToDigraphEvents();
@@ -97,7 +98,7 @@ namespace CourseworkApp
             {
                 triangle.ShowDialog();
                 if (triangle.TriangularLatticeDigraph == null) return;
-                Digraph = triangle.TriangularLatticeDigraph;
+                digraph = triangle.TriangularLatticeDigraph;
             }
 
             SubscribeToDigraphEvents();
@@ -149,14 +150,14 @@ namespace CourseworkApp
         /// </summary>
         private void UpdateDigraphInfo()
         {
-            graphDrawing.DrawTheWholeGraph(Digraph);
+            graphDrawing.DrawTheWholeGraph(digraph);
             DrawingSurface.Image = graphDrawing.Image;
             ArcName.Items.Clear();
             ArcName.Text = String.Empty;
             ArcLength.Text = String.Empty;
-            Digraph.Arcs.ForEach(arc => ArcName.Items.Add((arc.StartVertex + 1) + "-" + (arc.EndVertex + 1)));
-            DigraphInformationDemonstration.DisplayGraphAdjacencyInfo(Digraph.AdjacencyMatrix, GridAdjacencyMatrix);
-            DigraphInformationDemonstration.DisplayGraphParameters(Digraph, GridParameters);
+            digraph.Arcs.ForEach(arc => ArcName.Items.Add((arc.StartVertex + 1) + "-" + (arc.EndVertex + 1)));
+            DigraphInformationDemonstration.DisplayGraphAdjacencyInfo(digraph.AdjacencyMatrix, GridAdjacencyMatrix);
+            DigraphInformationDemonstration.DisplayGraphParameters(digraph, GridParameters);
         }
 
         /// <summary>
@@ -167,7 +168,7 @@ namespace CourseworkApp
             CursorButton_Click(null, null);
             if (isOnMovement) ResetToolStripMenuItem_Click(null, null);
 
-            Digraph = new Digraph();
+            digraph = new Digraph();
             SubscribeToDigraphEvents();
 
             graphDrawing.ClearTheSurface();

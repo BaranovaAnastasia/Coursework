@@ -12,7 +12,7 @@ namespace CourseworkApp
 
         private void GridAdjacencyMatrix_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            foreach (var arc in Digraph.Arcs)
+            foreach (var arc in digraph.Arcs)
             {
                 if (arc.StartVertex != e.RowIndex || arc.EndVertex != e.ColumnIndex)
                     continue;
@@ -68,8 +68,8 @@ namespace CourseworkApp
             try
             {
                 double length = new MathParserTK.MathParser().Parse(ArcLength.Text);
-                var command = new ChangeArcLengthCommand(Digraph, selectedArc, Digraph.Arcs[selectedArc].Length, length);
-                command.Executed += (s, ea) => GridAdjacencyMatrix[Digraph.Arcs[selectedArc].EndVertex, Digraph.Arcs[selectedArc].StartVertex].Value = s;
+                var command = new ChangeArcLengthCommand(digraph, selectedArc, digraph.Arcs[selectedArc].Length, length);
+                command.Executed += (s, ea) => GridAdjacencyMatrix[digraph.Arcs[selectedArc].EndVertex, digraph.Arcs[selectedArc].StartVertex].Value = s;
                 commandsManager.Execute(command);
             }
             catch (Exception)
@@ -91,26 +91,26 @@ namespace CourseworkApp
                 case 0:
                     if (!isValid || value < 1)
                     {
-                        GridParameters[e.ColumnIndex, e.RowIndex].Value = Digraph.Thresholds[e.RowIndex];
+                        GridParameters[e.ColumnIndex, e.RowIndex].Value = digraph.Thresholds[e.RowIndex];
                         return;
                     }
-                    Digraph.Thresholds[e.RowIndex] = value;
+                    digraph.Thresholds[e.RowIndex] = value;
                     break;
                 case 1:
                     if (!isValid)
                     {
-                        GridParameters[e.ColumnIndex, e.RowIndex].Value = Digraph.RefractoryPeriods[e.RowIndex];
+                        GridParameters[e.ColumnIndex, e.RowIndex].Value = digraph.RefractoryPeriods[e.RowIndex];
                         return;
                     }
-                    Digraph.RefractoryPeriods[e.RowIndex] = value;
+                    digraph.RefractoryPeriods[e.RowIndex] = value;
                     break;
                 case 2:
                     if (!isValid)
                     {
-                        GridParameters[e.ColumnIndex, e.RowIndex].Value = Digraph.State[e.RowIndex];
+                        GridParameters[e.ColumnIndex, e.RowIndex].Value = digraph.State[e.RowIndex];
                         return;
                     }
-                    Digraph.State[e.RowIndex] = value;
+                    digraph.State[e.RowIndex] = value;
                     return;
             }
             GridParameters[e.ColumnIndex, e.RowIndex].Value = value;

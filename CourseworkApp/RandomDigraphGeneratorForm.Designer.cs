@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RandomDigraphGeneratorForm));
             this.NumOfVertices = new System.Windows.Forms.NumericUpDown();
             this.VNLabel = new System.Windows.Forms.Label();
             this.VNRandom = new System.Windows.Forms.Button();
@@ -112,7 +113,7 @@
             this.Cancel.UseVisualStyleBackColor = true;
             this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
             // 
-            // Form2
+            // RandomDigraphGeneratorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -123,9 +124,10 @@
             this.Controls.Add(this.VNLabel);
             this.Controls.Add(this.NumOfVertices);
             this.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximumSize = new System.Drawing.Size(420, 312);
-            this.Name = "Form2";
+            this.Name = "RandomDigraphGeneratorForm";
             this.Text = "Random Graph";
             ((System.ComponentModel.ISupportInitialize)(this.NumOfVertices)).EndInit();
             this.ResumeLayout(false);

@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace Graph_WinForms
+namespace CourseworkApp
 {
     partial class MainWindow
     {

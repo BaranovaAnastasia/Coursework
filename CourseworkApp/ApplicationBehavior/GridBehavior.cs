@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Windows.Forms;
 using GraphClasses.Commands;
 
-namespace Graph_WinForms
+namespace CourseworkApp
 {
     public partial class MainWindow
     {

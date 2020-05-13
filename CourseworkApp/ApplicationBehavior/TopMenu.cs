@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 using System.Xml.Serialization;
 using System.IO;
 
-namespace Graph_WinForms
+namespace CourseworkApp
 {
     public partial class MainWindow
     {

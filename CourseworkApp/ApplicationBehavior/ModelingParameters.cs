@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace Graph_WinForms
+namespace CourseworkApp
 {
     public partial class MainWindow
     {

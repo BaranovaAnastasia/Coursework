@@ -3,27 +3,27 @@ using System.Drawing;
 using System.Windows.Forms;
 using ApplicationClasses;
 
-namespace Graph_WinForms
+namespace CourseworkApp
 {
-    public partial class SquareLatticeForm : Form
+    public partial class TriangularLatticeForm : Form
     {
-        private static Random rnd = null;   //Random values generator
+        private static Random rnd = null;   // Random values generator
 
         /// <summary>
         /// Generated square lattice digraph
         /// </summary>
-        public Digraph SquareLatticeDigraph { get; private set; }
+        public Digraph TriangularLatticeDigraph { get; private set; }
 
         private readonly int width;      //Drawing surface width (maximum width)
         private readonly int height;     //Drawing surface height (maximum height)
 
         /// <summary>
-        /// Initializes a new instance of SquareLatticeForm
+        /// Initializes a new instance of TriangularLatticeForm
         /// </summary>
         /// <param name="width">Drawing surface width (maximum width)</param>
         /// <param name="height">Drawing surface height (maximum height)</param>
         /// <exception cref="ArgumentOutOfRangeException"/>
-        public SquareLatticeForm(int width, int height)
+        public TriangularLatticeForm(int width, int height)
         {
             if (width <= 0)
                 throw new ArgumentOutOfRangeException(nameof(width));
@@ -32,22 +32,20 @@ namespace Graph_WinForms
 
             InitializeComponent();
 
-            SquareLatticeDigraph = null;
+            TriangularLatticeDigraph = null;
             this.width = width;
             this.height = height;
         }
 
-        /// <summary>
-        /// Generates square lattice digraph with chosen parameters
-        /// and closes the form
-        /// </summary>
+
         private void OK_Click(object sender, EventArgs e)
         {
-            SquareLatticeDigraph = new Digraph();
+            TriangularLatticeDigraph = new Digraph();
             AddVertices();
             AddArcs();
             Close();
         }
+
 
         /// <summary>
         /// Adds vertices to the digraph
@@ -55,24 +53,25 @@ namespace Graph_WinForms
         private void AddVertices()
         {
             //Distance between adjacent vertices 
-            int step = (Math.Min(width, height) - 100) / Math.Max((int)Xvalue.Value - 1, (int)Yvalue.Value - 1);
+            int step = (int)((Math.Min(width, height)) * 1.0 / Math.Max((int)Xvalue.Value - 0.5, (int)Yvalue.Value - 1));
 
             //Current vertex coordinates
-            Point p = new Point((width - 100 - step * ((int)Yvalue.Value - 1)) / 2 + 50,
-                (height - 100 - step * ((int)Xvalue.Value - 1)) / 2 + 50);
+            var x = (int)((width - step * ((int)Xvalue.Value - 0.5)) / 2.0 + step / 2);
+            var p = new Point(x, (height - 100 - step * ((int)Yvalue.Value - 1)) / 2 + 75);
 
-            for (int i = 0; i < Xvalue.Value; i++, p.Y += step, p.X = (width - 100 - step * ((int)Yvalue.Value - 1)) / 2 + 50)
-                for (int j = 0; j < Yvalue.Value; j++, p.X += step)
+            for (int i = 0; i < Yvalue.Value; i++, p.Y += (int)(step * 0.866),
+                 p.X = i % 2 == 0 ? x : x - step / 2)
+                for (int j = 0; j < Xvalue.Value; j++, p.X += step)
                 {
                     if (rnd != null)
                     {
                         int th = rnd.Next(1, 5);
                         int rp = rnd.Next(1, 10001);
                         int s = rnd.Next(0, 2 * th);
-                        SquareLatticeDigraph.AddVertex(new Vertex(p.X, p.Y), th, rp, s);
+                        TriangularLatticeDigraph.AddVertex(new Vertex(p.X, p.Y), th, rp, s);
                         continue;
                     }
-                    SquareLatticeDigraph.AddVertex(new Vertex(p.X, p.Y));
+                    TriangularLatticeDigraph.AddVertex(new Vertex(p.X, p.Y));
                 }
         }
 
@@ -81,26 +80,35 @@ namespace Graph_WinForms
         /// </summary>
         private void AddArcs()
         {
-            for (int i = 0; i < Xvalue.Value; i++)
-                for (int j = 0; j < Yvalue.Value; j++)
+            for (int i = 0; i < Yvalue.Value; i++)
+                for (int j = 0; j < Xvalue.Value; j++)
                 {
-                    if (j != Yvalue.Value - 1)
+                    if (j != Xvalue.Value - 1)
                     {
-                        SquareLatticeDigraph.AddArc(new Arc(i * (int)Yvalue.Value + j, i * (int)Yvalue.Value + 1 + j,
+                        TriangularLatticeDigraph.AddArc(new Arc(i * (int)Xvalue.Value + j, i * (int)Xvalue.Value + 1 + j,
                             rnd != null ? rnd.Next(1, 5) + rnd.NextDouble() : 1));
-                        SquareLatticeDigraph.AddArc(new Arc(i * (int)Yvalue.Value + 1 + j, i * (int)Yvalue.Value + j,
+                        TriangularLatticeDigraph.AddArc(new Arc(i * (int)Xvalue.Value + 1 + j, i * (int)Xvalue.Value + j,
                             rnd != null ? rnd.Next(1, 5) + rnd.NextDouble() : 1));
                     }
 
-                    if (i != Xvalue.Value - 1)
+                    if (i != Yvalue.Value - 1)
                     {
-                        SquareLatticeDigraph.AddArc(new Arc(i * (int)Yvalue.Value + j, i * (int)Yvalue.Value + j % (int)Yvalue.Value + (int)Yvalue.Value,
+                        TriangularLatticeDigraph.AddArc(new Arc(i * (int)Xvalue.Value + j, i * (int)Xvalue.Value + j % (int)Xvalue.Value + (int)Xvalue.Value,
                             rnd != null ? rnd.Next(1, 5) + rnd.NextDouble() : 1));
-                        SquareLatticeDigraph.AddArc(new Arc(i * (int)Yvalue.Value + j % (int)Yvalue.Value + (int)Yvalue.Value, i * (int)Yvalue.Value + j,
+                        TriangularLatticeDigraph.AddArc(new Arc(i * (int)Xvalue.Value + j % (int)Xvalue.Value + (int)Xvalue.Value, i * (int)Xvalue.Value + j,
+                            rnd != null ? rnd.Next(1, 5) + rnd.NextDouble() : 1));
+                    }
+
+                    if (i != Yvalue.Value - 1 && ((j != 0 && i % 2 != 0) || (j != Xvalue.Value - 1 && i % 2 == 0)))
+                    {
+                        TriangularLatticeDigraph.AddArc(new Arc(i * (int)Xvalue.Value + j, i * (int)Xvalue.Value + j % (int)Xvalue.Value + (int)Xvalue.Value + (int)Math.Pow(-1, i),
+                            rnd != null ? rnd.Next(1, 5) + rnd.NextDouble() : 1));
+                        TriangularLatticeDigraph.AddArc(new Arc(i * (int)Xvalue.Value + j % (int)Xvalue.Value + (int)Xvalue.Value + (int)Math.Pow(-1, i), i * (int)Xvalue.Value + j,
                             rnd != null ? rnd.Next(1, 5) + rnd.NextDouble() : 1));
                     }
                 }
         }
+
 
         /// <summary>
         /// Changes the random values generator value

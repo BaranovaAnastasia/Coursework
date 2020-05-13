@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 using System.IO;
 using GraphClasses.Commands;
 
-namespace Graph_WinForms
+namespace CourseworkApp
 {
     public partial class MainWindow
     {

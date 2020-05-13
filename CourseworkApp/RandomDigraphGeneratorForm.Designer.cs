@@ -1,4 +1,4 @@
-﻿namespace Graph_WinForms
+﻿namespace CourseworkApp
 {
     partial class RandomDigraphGeneratorForm
     {

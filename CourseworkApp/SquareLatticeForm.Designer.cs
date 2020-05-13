@@ -1,6 +1,6 @@
-﻿namespace Graph_WinForms
+﻿namespace CourseworkApp
 {
-    partial class TriangularLatticeForm
+    partial class SquareLatticeForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,38 +28,38 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TriangularLatticeForm));
-            this.Xvalue = new System.Windows.Forms.NumericUpDown();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SquareLatticeForm));
+            this.Yvalue = new System.Windows.Forms.NumericUpDown();
             this.SizeLabel = new System.Windows.Forms.Label();
             this.OK = new System.Windows.Forms.Button();
             this.Cancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.Yvalue = new System.Windows.Forms.NumericUpDown();
+            this.Xvalue = new System.Windows.Forms.NumericUpDown();
             this.ParamsCheckBox = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.Xvalue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Yvalue)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Xvalue)).BeginInit();
             this.SuspendLayout();
             // 
-            // Xvalue
+            // Yvalue
             // 
-            this.Xvalue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Xvalue.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.Xvalue.Location = new System.Drawing.Point(116, 54);
-            this.Xvalue.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.Xvalue.Maximum = new decimal(new int[] {
+            this.Yvalue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Yvalue.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.Yvalue.Location = new System.Drawing.Point(116, 54);
+            this.Yvalue.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Yvalue.Maximum = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.Xvalue.Minimum = new decimal(new int[] {
+            this.Yvalue.Minimum = new decimal(new int[] {
             2,
             0,
             0,
             0});
-            this.Xvalue.Name = "Xvalue";
-            this.Xvalue.Size = new System.Drawing.Size(69, 42);
-            this.Xvalue.TabIndex = 0;
-            this.Xvalue.Value = new decimal(new int[] {
+            this.Yvalue.Name = "Yvalue";
+            this.Yvalue.Size = new System.Drawing.Size(69, 42);
+            this.Yvalue.TabIndex = 0;
+            this.Yvalue.Value = new decimal(new int[] {
             2,
             0,
             0,
@@ -70,7 +70,7 @@
             this.SizeLabel.AutoSize = true;
             this.SizeLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SizeLabel.Font = new System.Drawing.Font("Segoe UI Emoji", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SizeLabel.Location = new System.Drawing.Point(72, 9);
+            this.SizeLabel.Location = new System.Drawing.Point(69, 9);
             this.SizeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.SizeLabel.Name = "SizeLabel";
             this.SizeLabel.Size = new System.Drawing.Size(266, 37);
@@ -112,26 +112,26 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "X";
             // 
-            // Yvalue
+            // Xvalue
             // 
-            this.Yvalue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Yvalue.Font = new System.Drawing.Font("Segoe UI", 13F);
-            this.Yvalue.Location = new System.Drawing.Point(227, 54);
-            this.Yvalue.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.Yvalue.Maximum = new decimal(new int[] {
+            this.Xvalue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Xvalue.Font = new System.Drawing.Font("Segoe UI", 13F);
+            this.Xvalue.Location = new System.Drawing.Point(227, 54);
+            this.Xvalue.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Xvalue.Maximum = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.Yvalue.Minimum = new decimal(new int[] {
+            this.Xvalue.Minimum = new decimal(new int[] {
             2,
             0,
             0,
             0});
-            this.Yvalue.Name = "Yvalue";
-            this.Yvalue.Size = new System.Drawing.Size(69, 42);
-            this.Yvalue.TabIndex = 6;
-            this.Yvalue.Value = new decimal(new int[] {
+            this.Xvalue.Name = "Xvalue";
+            this.Xvalue.Size = new System.Drawing.Size(69, 42);
+            this.Xvalue.TabIndex = 6;
+            this.Xvalue.Value = new decimal(new int[] {
             2,
             0,
             0,
@@ -149,27 +149,27 @@
             this.ParamsCheckBox.UseVisualStyleBackColor = true;
             this.ParamsCheckBox.CheckedChanged += new System.EventHandler(this.ParamsCheckBox_CheckedChanged);
             // 
-            // TriangularLatticeForm
+            // SquareLatticeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(398, 191);
             this.Controls.Add(this.ParamsCheckBox);
-            this.Controls.Add(this.Yvalue);
+            this.Controls.Add(this.Xvalue);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.OK);
             this.Controls.Add(this.SizeLabel);
-            this.Controls.Add(this.Xvalue);
+            this.Controls.Add(this.Yvalue);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximumSize = new System.Drawing.Size(420, 247);
             this.MinimumSize = new System.Drawing.Size(420, 247);
-            this.Name = "TriangularLatticeForm";
-            this.Text = "Triangle Lattice";
-            ((System.ComponentModel.ISupportInitialize)(this.Xvalue)).EndInit();
+            this.Name = "SquareLatticeForm";
+            this.Text = "Square Lattice";
             ((System.ComponentModel.ISupportInitialize)(this.Yvalue)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Xvalue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -177,12 +177,12 @@
 
         #endregion
 
-        private System.Windows.Forms.NumericUpDown Xvalue;
+        private System.Windows.Forms.NumericUpDown Yvalue;
         private System.Windows.Forms.Label SizeLabel;
         private System.Windows.Forms.Button OK;
         private System.Windows.Forms.Button Cancel;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown Yvalue;
+        private System.Windows.Forms.NumericUpDown Xvalue;
         private System.Windows.Forms.CheckBox ParamsCheckBox;
     }
 }

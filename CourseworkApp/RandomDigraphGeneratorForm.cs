@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using ApplicationClasses;
 
-namespace Graph_WinForms
+namespace CourseworkApp
 {
     public partial class RandomDigraphGeneratorForm : Form
     {

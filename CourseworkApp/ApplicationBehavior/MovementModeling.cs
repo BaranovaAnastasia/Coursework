@@ -7,7 +7,7 @@ using System.Windows.Media.Imaging;
 using ApplicationClasses;
 using ApplicationClasses.Modeling;
 
-namespace Graph_WinForms
+namespace CourseworkApp
 {
     public partial class MainWindow
     {

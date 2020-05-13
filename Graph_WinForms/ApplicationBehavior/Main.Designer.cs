@@ -141,7 +141,7 @@ namespace Graph_WinForms
             // 
             this.Build.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Build.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.Build.Location = new System.Drawing.Point(426, 350);
+            this.Build.Location = new System.Drawing.Point(429, 264);
             this.Build.Name = "Build";
             this.Build.Size = new System.Drawing.Size(400, 62);
             this.Build.TabIndex = 0;
@@ -153,7 +153,7 @@ namespace Graph_WinForms
             // 
             this.Open.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Open.Font = new System.Drawing.Font("Segoe UI", 15.75F);
-            this.Open.Location = new System.Drawing.Point(426, 490);
+            this.Open.Location = new System.Drawing.Point(429, 402);
             this.Open.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Open.Name = "Open";
             this.Open.Size = new System.Drawing.Size(400, 62);
@@ -175,7 +175,7 @@ namespace Graph_WinForms
             this.ResetToolStripMenuItem});
             this.TopMenu.Location = new System.Drawing.Point(0, 0);
             this.TopMenu.Name = "TopMenu";
-            this.TopMenu.Size = new System.Drawing.Size(1236, 33);
+            this.TopMenu.Size = new System.Drawing.Size(1236, 36);
             this.TopMenu.TabIndex = 4;
             this.TopMenu.Text = "menuStrip1";
             // 
@@ -187,7 +187,7 @@ namespace Graph_WinForms
             this.saveToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.FileToolStripMenuItem.Name = "FileToolStripMenuItem";
-            this.FileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
+            this.FileToolStripMenuItem.Size = new System.Drawing.Size(54, 32);
             this.FileToolStripMenuItem.Text = "File";
             // 
             // newProjectToolStripMenuItem
@@ -246,7 +246,7 @@ namespace Graph_WinForms
             // AboutToolStripMenuItem
             // 
             this.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem";
-            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(78, 29);
+            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(78, 32);
             this.AboutToolStripMenuItem.Text = "About";
             this.AboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
@@ -287,6 +287,8 @@ namespace Graph_WinForms
             // 
             // Tools
             // 
+            this.Tools.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.Tools.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Tools.Controls.Add(this.RedoButton);
             this.Tools.Controls.Add(this.UndoButton);
@@ -412,6 +414,8 @@ namespace Graph_WinForms
             // 
             // Down
             // 
+            this.Down.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Down.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Down.BackgroundImage")));
             this.Down.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Down.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
@@ -426,6 +430,8 @@ namespace Graph_WinForms
             // 
             // Up
             // 
+            this.Up.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Up.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Up.BackgroundImage")));
             this.Up.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Up.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
@@ -440,6 +446,8 @@ namespace Graph_WinForms
             // 
             // Left
             // 
+            this.Left.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Left.BackColor = System.Drawing.SystemColors.Control;
             this.Left.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Left.BackgroundImage")));
             this.Left.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -455,6 +463,8 @@ namespace Graph_WinForms
             // 
             // Right
             // 
+            this.Right.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Right.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Right.BackgroundImage")));
             this.Right.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Right.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
@@ -496,6 +506,8 @@ namespace Graph_WinForms
             // 
             // RadiusValueLabel
             // 
+            this.RadiusValueLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.RadiusValueLabel.AutoSize = true;
             this.RadiusValueLabel.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.RadiusValueLabel.Location = new System.Drawing.Point(5, 485);
@@ -506,6 +518,8 @@ namespace Graph_WinForms
             // 
             // ClearButton
             // 
+            this.ClearButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ClearButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ClearButton.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -540,6 +554,8 @@ namespace Graph_WinForms
             // 
             // RadiusLabel
             // 
+            this.RadiusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.RadiusLabel.AutoSize = true;
             this.RadiusLabel.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.RadiusLabel.Location = new System.Drawing.Point(0, 329);
@@ -597,6 +613,8 @@ namespace Graph_WinForms
             // 
             this.SandpilePalette.AllowUserToAddRows = false;
             this.SandpilePalette.AllowUserToDeleteRows = false;
+            this.SandpilePalette.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.SandpilePalette.BackgroundColor = System.Drawing.SystemColors.Control;
             this.SandpilePalette.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -631,7 +649,7 @@ namespace Graph_WinForms
             this.SandpilePalette.RowTemplate.Height = 28;
             this.SandpilePalette.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.SandpilePalette.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.SandpilePalette.Size = new System.Drawing.Size(93, 371);
+            this.SandpilePalette.Size = new System.Drawing.Size(93, 326);
             this.SandpilePalette.TabIndex = 36;
             this.SandpilePalette.Visible = false;
             this.SandpilePalette.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.SandpilePalette_RowPrePaint);
@@ -639,6 +657,8 @@ namespace Graph_WinForms
             // 
             // RadiusTrackBar
             // 
+            this.RadiusTrackBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.RadiusTrackBar.Location = new System.Drawing.Point(10, 345);
             this.RadiusTrackBar.Maximum = 20;
             this.RadiusTrackBar.Minimum = 8;
@@ -654,7 +674,7 @@ namespace Graph_WinForms
             // 
             this.RandomGraph.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RandomGraph.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.RandomGraph.Location = new System.Drawing.Point(426, 418);
+            this.RandomGraph.Location = new System.Drawing.Point(429, 332);
             this.RandomGraph.Name = "RandomGraph";
             this.RandomGraph.Size = new System.Drawing.Size(400, 62);
             this.RandomGraph.TabIndex = 10;
@@ -664,6 +684,7 @@ namespace Graph_WinForms
             // 
             // TimeTextBox
             // 
+            this.TimeTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.TimeTextBox.BackColor = System.Drawing.SystemColors.Window;
             this.TimeTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.TimeTextBox.Font = new System.Drawing.Font("Segoe UI", 8F);
@@ -733,7 +754,7 @@ namespace Graph_WinForms
             this.SquareLattice.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.SquareLattice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SquareLattice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SquareLattice.Location = new System.Drawing.Point(426, 560);
+            this.SquareLattice.Location = new System.Drawing.Point(429, 472);
             this.SquareLattice.Name = "SquareLattice";
             this.SquareLattice.Size = new System.Drawing.Size(195, 37);
             this.SquareLattice.TabIndex = 34;
@@ -746,7 +767,7 @@ namespace Graph_WinForms
             this.TriangleLattice.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.TriangleLattice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.TriangleLattice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TriangleLattice.Location = new System.Drawing.Point(631, 560);
+            this.TriangleLattice.Location = new System.Drawing.Point(634, 472);
             this.TriangleLattice.Name = "TriangleLattice";
             this.TriangleLattice.Size = new System.Drawing.Size(195, 37);
             this.TriangleLattice.TabIndex = 35;
@@ -756,6 +777,9 @@ namespace Graph_WinForms
             // 
             // DrawingSurface
             // 
+            this.DrawingSurface.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.DrawingSurface.BackColor = System.Drawing.Color.White;
             this.DrawingSurface.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.DrawingSurface.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -984,6 +1008,9 @@ namespace Graph_WinForms
             this.GridParameters.AllowUserToDeleteRows = false;
             this.GridParameters.AllowUserToResizeColumns = false;
             this.GridParameters.AllowUserToResizeRows = false;
+            this.GridParameters.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.GridParameters.BackgroundColor = System.Drawing.SystemColors.Control;
             this.GridParameters.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.GridParameters.Location = new System.Drawing.Point(10, 42);
@@ -1000,6 +1027,8 @@ namespace Graph_WinForms
             // 
             // ParametersLegendLabel
             // 
+            this.ParametersLegendLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ParametersLegendLabel.AutoSize = true;
             this.ParametersLegendLabel.Location = new System.Drawing.Point(10, 530);
             this.ParametersLegendLabel.Name = "ParametersLegendLabel";
@@ -1050,6 +1079,9 @@ namespace Graph_WinForms
             this.GridAdjacencyMatrix.AllowUserToDeleteRows = false;
             this.GridAdjacencyMatrix.AllowUserToResizeColumns = false;
             this.GridAdjacencyMatrix.AllowUserToResizeRows = false;
+            this.GridAdjacencyMatrix.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.GridAdjacencyMatrix.BackgroundColor = System.Drawing.SystemColors.Control;
             this.GridAdjacencyMatrix.ColumnHeadersHeight = 33;
             this.GridAdjacencyMatrix.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
@@ -1134,6 +1166,8 @@ namespace Graph_WinForms
             // AppParameters
             // 
             this.AppParameters.Alignment = System.Windows.Forms.TabAlignment.Right;
+            this.AppParameters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.AppParameters.Controls.Add(this.AdjacencyPage);
             this.AppParameters.Controls.Add(this.ParamsPage);
             this.AppParameters.Controls.Add(this.ModePage);

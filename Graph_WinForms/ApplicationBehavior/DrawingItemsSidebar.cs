@@ -76,7 +76,7 @@ namespace Graph_WinForms
         private void RadiusTrackBar_ValueChanged(object sender, EventArgs e)
         {
             graphDrawing.R = RadiusTrackBar.Value;
-            RadiusValueLabel.Text = "R = " + RadiusTrackBar.Value;
+            RadiusValueLabel.Text = @"R = " + RadiusTrackBar.Value;
         }
 
         /// <summary>
@@ -84,8 +84,8 @@ namespace Graph_WinForms
         /// </summary>
         private void EnlargeButton_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
-                Digraph.Vertices[i] = new Vertex((int)(Digraph.Vertices[i].X * 1.1), (int)(Digraph.Vertices[i].Y * 1.1));
+            var command = new EnlargeDigraphCommand(Digraph, 1.1);
+            commandsManager.Execute(command);
             UpdateImage();
         }
 
@@ -94,8 +94,8 @@ namespace Graph_WinForms
         /// </summary>
         private void ReduceButton_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
-                Digraph.Vertices[i] = new Vertex((int)(Digraph.Vertices[i].X * 0.9), (int)(Digraph.Vertices[i].Y * 0.9));
+            var command = new EnlargeDigraphCommand(Digraph, 0.9);
+            commandsManager.Execute(command);
             UpdateImage();
         }
 
@@ -103,29 +103,29 @@ namespace Graph_WinForms
 
         private void Up_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
-                Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X, Digraph.Vertices[i].Y - 10);
+            var command = new MoveDigraphCommand(Digraph, 0, 10);
+            commandsManager.Execute(command);
             UpdateImage();
         }
 
         private void Left_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
-                Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X - 10, Digraph.Vertices[i].Y);
+            var command = new MoveDigraphCommand(Digraph, -10, 0);
+            commandsManager.Execute(command);
             UpdateImage();
         }
 
         private void Right_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
-                Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X + 10, Digraph.Vertices[i].Y);
+            var command = new MoveDigraphCommand(Digraph, 10, 0);
+            commandsManager.Execute(command);
             UpdateImage();
         }
 
         private void Down_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
-                Digraph.Vertices[i] = new Vertex(Digraph.Vertices[i].X, Digraph.Vertices[i].Y + 10);
+            var command = new MoveDigraphCommand(Digraph, -10, 0);
+            commandsManager.Execute(command);
             UpdateImage();
         }
 
@@ -211,12 +211,14 @@ namespace Graph_WinForms
 
         private void UndoButton_Click(object sender, EventArgs e)
         {
+            if(isOnMovement) return;
             commandsManager.Undo();
             graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
         }
         private void RedoButton_Click(object sender, EventArgs e)
         {
+            if(isOnMovement) return;
             commandsManager.Redo();
             graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image;

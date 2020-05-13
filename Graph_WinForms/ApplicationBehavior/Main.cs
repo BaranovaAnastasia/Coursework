@@ -48,54 +48,13 @@ namespace Graph_WinForms
 
             #endregion
 
-            #region App parameters items
+            if (graphDrawing == null) return;
 
-            AppParameters.Location = new Point(Size.Width - AppParameters.Size.Width - 30, AppParameters.Location.Y);
-            AppParameters.Height = Height - 120 > 0 ? Height - 120 : 0;
-            GridParameters.Height = AppParameters.Height - ParametersLegendLabel.Height - 60;
-            ParametersLegendLabel.Location =
-                new Point(ParametersLegendLabel.Location.X, AppParameters.Height - ParametersLegendLabel.Height - 15);
-            GridAdjacencyMatrix.Height = AdjacencyPage.Height - GridAdjacencyMatrix.Location.Y - 10;
-
-            #endregion
-
-            if (Size.Width - (Size.Width - AppParameters.Location.X - 10) - Tools.Size.Width - 40 > 0 && Size.Height - 120 > 0)
-                DrawingSurface.Size = new Size(Size.Width - (Size.Width - AppParameters.Location.X - 10) - Tools.Size.Width - 40,
-                     AppParameters.Height);
-
-            #region Tools Items
-
-            Tools.Height = DrawingSurface.Height;
-            ClearButton.Location = new Point(10, Tools.Height - ClearButton.Height - 10);
-            Right.Location = new Point(Right.Location.X, ClearButton.Location.Y - RadiusValueLabel.Height - 10);
-            Down.Location = new Point(Down.Location.X, ClearButton.Location.Y - RadiusValueLabel.Height - 10);
-            Left.Location = new Point(Left.Location.X, ClearButton.Location.Y - RadiusValueLabel.Height - 10);
-            Up.Location = new Point(Up.Location.X, Down.Location.Y - Up.Height);
-
-            RadiusValueLabel.Location = new Point(10, Up.Location.Y - RadiusValueLabel.Height - 10);
-            RadiusTrackBar.Location = new Point(10, RadiusValueLabel.Location.Y - RadiusTrackBar.Height);
-            RadiusLabel.Location = new Point(10, RadiusTrackBar.Location.Y - RadiusLabel.Height);
-            SandpilePalette.Height = RadiusLabel.Location.Y - 10;
-
-            #endregion
-
-            if (graphDrawing != null)
-            {
-                graphDrawing.Size = DrawingSurface.Size;
-                if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
-                else graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
-                DrawingSurface.Image = graphDrawing.Image;
-            }
-
-            TimeTextBox.Location =
-                new Point(DrawingSurface.Location.X + DrawingSurface.Size.Width - TimeTextBox.Size.Width,
-                    TimeTextBox.Location.Y);
-
+            graphDrawing.Size = DrawingSurface.Size;
+            if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
+            else graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
+            DrawingSurface.Image = graphDrawing.Image;
         }
-
-        private int xCoefficient = 0;
-        private int yCoefficient = 0;
-        private double enlargeCoefficient = 1;
 
         /// <summary>
         /// Moves digraph on the drawing surface

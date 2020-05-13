@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
-using ApplicationClasses;
 using GraphClasses.Commands;
 
 namespace Graph_WinForms
@@ -12,21 +12,21 @@ namespace Graph_WinForms
 
         private void GridAdjacencyMatrix_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            for (var i = 0; i < Digraph.Arcs.Count; i++)
+            foreach (var arc in Digraph.Arcs)
             {
-                if (Digraph.Arcs[i].StartVertex != e.RowIndex || Digraph.Arcs[i].EndVertex != e.ColumnIndex)
+                if (arc.StartVertex != e.RowIndex || arc.EndVertex != e.ColumnIndex)
                     continue;
-                ArcName.SelectedIndex = ArcName.Items.IndexOf(Digraph.Arcs[i].ToString());
-                ArcLength.Text = Digraph.Arcs[i].Length.ToString();
+                ArcName.SelectedIndex = ArcName.Items.IndexOf(arc.ToString());
+                ArcLength.Text = arc.Length.ToString(CultureInfo.CurrentCulture);
                 return;
             }
             GridAdjacencyMatrix.ClearSelection();
-            ArcName.Text = (e.RowIndex + 1) + "-" + (e.ColumnIndex + 1);
-            ArcLength.Text = "Error";
+            ArcName.Text = (e.RowIndex + 1) + @"-" + (e.ColumnIndex + 1);
+            ArcLength.Text = @"Error";
         }
 
         private void ArcLength_TextChanged(object sender, EventArgs e) =>
-            ArcLength.ReadOnly = ArcLength.Text == "Error";
+            ArcLength.ReadOnly = ArcLength.Text == @"Error";
 
         private void ArcName_TextChanged(object sender, EventArgs e)
         {
@@ -37,12 +37,12 @@ namespace Graph_WinForms
                 GridAdjacencyMatrix[end, start].Selected = true;
                 if (GridAdjacencyMatrix[end, start].Value.ToString() == "0")
                 {
-                    ArcLength.Text = "Error";
+                    ArcLength.Text = @"Error";
                     GridAdjacencyMatrix.ClearSelection();
                 }
                 else ArcLength.Text = GridAdjacencyMatrix[end, start].Value.ToString();
             }
-            catch (Exception) { ArcLength.Text = "Error"; }
+            catch (Exception) { ArcLength.Text = @"Error"; }
         }
 
         /// <summary>
@@ -54,14 +54,14 @@ namespace Graph_WinForms
 
             if (string.IsNullOrEmpty(ArcName.Text))
             {
-                MessageBox.Show("Please, select an edge", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@"Please, select an edge", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             int selectedArc = ArcName.Items.IndexOf(ArcName.Text);
             if (selectedArc == -1)
             {
-                MessageBox.Show("The edge doesn't exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@"The edge doesn't exist", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -74,7 +74,7 @@ namespace Graph_WinForms
             }
             catch (Exception)
             {
-                MessageBox.Show("Invalid value", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@"Invalid value", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

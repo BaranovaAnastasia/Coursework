@@ -49,7 +49,7 @@ namespace Graph_WinForms
         {
             if (DeleteButton.Enabled || isOnMovement) return;
 
-            bool wasSmthDeleted = false;
+            var wasSmthDeleted = false;
 
             if (DigraphBuilding.TryToDeleteVertexAt(e.X, e.Y, Digraph, graphDrawing.R, out int i))
             {
@@ -99,6 +99,7 @@ namespace Graph_WinForms
         private void DrawingSurface_MouseMove(object sender, MouseEventArgs e)
         {
             if (isOnMovement || !isPressed || CursorButton.Enabled || movingVertexIndex == -1) return;
+
             Digraph.Vertices[movingVertexIndex] = new Vertex(e.X, e.Y);
             graphDrawing.DrawTheWholeGraph(Digraph);
             DrawingSurface.Image = graphDrawing.Image;
@@ -115,9 +116,9 @@ namespace Graph_WinForms
             bool highlight = (DateTime.Now - ticks).Ticks < 2250000 &&
                 Math.Pow(e.X - movingVertex.X, 2) + Math.Pow(e.Y - movingVertex.Y, 2) <= graphDrawing.R * graphDrawing.R;
 
-            // Keeping the image inside the borders of the sheet
             if (movingVertexIndex != -1 && !highlight)
             {
+                // Keeping the image inside the borders of the sheet
                 float x = e.X, y = e.Y;
                 if (x < graphDrawing.R + 5)
                     x = graphDrawing.R + 5;
@@ -152,6 +153,9 @@ namespace Graph_WinForms
             isPressed = false;
         }
 
+
+        #region Adding and removing vertices 
+
         /// <summary>
         /// Adds a new line and a row to Adjacency Matrix in DataGridView
         /// </summary>
@@ -178,7 +182,6 @@ namespace Graph_WinForms
             }
             GridAdjacencyMatrix.Rows[index].HeaderCell.Value = (index + 1).ToString();
         }
-
 
         private void RemoveVertexFromGridAdjacencyMatrix(int index)
         {
@@ -218,6 +221,8 @@ namespace Graph_WinForms
                 GridParameters.Rows[j].HeaderCell.Value = (j + 1).ToString();
         }
 
+        #endregion
+
 
         /// <summary>
         /// Finds vertices chosen for creating a new arc 
@@ -243,10 +248,10 @@ namespace Graph_WinForms
                             graphDrawing.UnhighlightVertex(Digraph.Vertices[vStart]);
                             DrawingSurface.Image = graphDrawing.Image;
                             if (GridAdjacencyMatrix[i, vStart].Value.ToString() != "0")
-                                MessageBox.Show("The edge already exists", "Error",
+                                MessageBox.Show(@"The edge already exists", @"Error",
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                             if (vStart == i)
-                                MessageBox.Show("Arc cannot be a loop", "Error",
+                                MessageBox.Show(@"Arc cannot be a loop", @"Error",
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                             vStart = vEnd = -1;
                             return false;
@@ -295,7 +300,7 @@ namespace Graph_WinForms
                     await Task.Delay(200);
                     if (SaveGifCheckBox.Checked && movement.MovementGif.Frames.Count < 250)
                     {
-                        var bmp = (DrawingSurface.Image as Bitmap).GetHbitmap();
+                        var bmp = ((Bitmap)DrawingSurface.Image).GetHbitmap();
                         var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                             bmp,
                             IntPtr.Zero,

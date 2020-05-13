@@ -58,6 +58,18 @@ namespace Graph_WinForms
             Environment.NewLine +
             Environment.NewLine + "Higher School of Economics, Moscow, 2020";
 
+        /// <summary>
+        /// X-axis offset
+        /// </summary>
+        private int xCoefficient;
+        /// <summary>
+        /// Y-axis offset
+        /// </summary>
+        private int yCoefficient;
+        /// <summary>
+        /// Resize coefficient
+        /// </summary>
+        private double enlargeCoefficient = 1;
 
         #region File dialods
         private static SaveFileDialog SaveFileDialogForDataSaving() =>

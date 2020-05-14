@@ -181,8 +181,9 @@ namespace CourseworkApp
         /// <param name="state">true if modeling starts, false if it's over</param>
         private void ChangeWindowStateForMovementModeling(bool state)
         {
-            foreach (var control in Tools.Controls)
-                if (control is Button button) button.Enabled = !state;
+            CursorButton.Enabled = VertexButton.Enabled = EdgeButton.Enabled =
+                DeleteButton.Enabled = ClearButton.Enabled = !state;
+
             if (!state) CursorButton.Enabled = false;
             if (SandpileTypeCheckBox.Checked)
             {
@@ -191,11 +192,14 @@ namespace CourseworkApp
             }
 
             foreach (var page in AppParameters.Controls)
-                foreach (var control in (page as TabPage).Controls)
+                foreach (var control in ((TabPage) page).Controls)
                     if (control is DataGridView dgv) dgv.ReadOnly = state;
                     else ((Control) control).Enabled = !state;
 
             if (!state) AnimationCheckBox.Enabled = false;
+
+            StopToolStripMenuItem.Visible = state;
+            ResetToolStripMenuItem.Visible = state;
         }
     }
 }

@@ -3,6 +3,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using ApplicationClasses;
 using GraphClasses.Commands;
+using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
+using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace CourseworkApp
 {
@@ -54,12 +56,15 @@ namespace CourseworkApp
             DrawingSurface.Image = graphDrawing.Image;
         }
 
+        private bool isControlPressed;
+
         /// <summary>
         /// Moves digraph image on the drawing surface
         /// </summary>
         private void GraphBuilder_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Modifiers != Keys.Control) return;
+            if (e.KeyCode == Keys.ControlKey) isControlPressed = true;
+            if (e.Modifiers != Keys.Control && !(sender is MouseEventArgs)) return;
 
             if (e.KeyCode == Keys.Right)
                 xCoefficient += 10;
@@ -73,7 +78,7 @@ namespace CourseworkApp
                 enlargeCoefficient *= 1.1;
             else if (e.KeyCode == Keys.OemMinus)
                 enlargeCoefficient *= 0.9;
-            else if(!isOnMovement && e.KeyCode == Keys.Z)
+            else if (!isOnMovement && e.KeyCode == Keys.Z)
                 UndoButton_Click(sender, e);
             else if (!isOnMovement && e.KeyCode == Keys.Y)
                 RedoButton_Click(sender, e);
@@ -89,7 +94,8 @@ namespace CourseworkApp
         /// </summary>
         private void MainWindow_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Modifiers != Keys.Control) return;
+            if (e.KeyCode == Keys.ControlKey) isControlPressed = false;
+            if (e.Modifiers != Keys.Control && sender != MouseWheelTimer) return;
             if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down ||
                 e.KeyCode == Keys.Right || e.KeyCode == Keys.Left)
             {
@@ -116,6 +122,35 @@ namespace CourseworkApp
                 Tools.Focus();
         }
 
+        /// <summary>
+        /// Moves digraph image according to mouse wheel scrolling
+        /// </summary>
+        private void MainWindow_MouseWheel(object sender, MouseEventArgs e)
+        {
+            MouseWheelTimer.Start();
+            if (isControlPressed)
+            {
+                if (e.Delta > 0) GraphBuilder_KeyDown(e, new KeyEventArgs(Keys.Oemplus));
+                else if (e.Delta < 0) GraphBuilder_KeyDown(e, new KeyEventArgs(Keys.OemMinus));
+            }
+            else
+            {
+                if (e.Delta > 0) GraphBuilder_KeyDown(e, new KeyEventArgs(Keys.Up));
+                else if (e.Delta < 0) GraphBuilder_KeyDown(e, new KeyEventArgs(Keys.Down));
+            }
+        }
+        /// <summary>
+        /// Moves digraph itself according to mouse wheel scrolling
+        /// </summary>
+        private void WheelStopped(object sender, EventArgs e)
+        {
+            MouseWheelTimer.Stop();
+            if (xCoefficient != 0 || yCoefficient != 0)
+                MainWindow_KeyUp(MouseWheelTimer, new KeyEventArgs(Keys.Up));
+            if (Math.Abs(enlargeCoefficient - 1) > 0)
+                MainWindow_KeyUp(MouseWheelTimer, new KeyEventArgs(Keys.OemMinus));
+        }
+
         public new void Dispose()
         {
             graphDrawing.Dispose();
@@ -133,6 +168,9 @@ namespace CourseworkApp
                 DrawingSurface.Image = graphDrawing.Image;
                 AddVertexToGridAdjacencyMatrix(e.Index);
                 AddVertexToGridParameters(e.Index);
+                ArcName.Items.Clear();
+                foreach (var arc in digraph.Arcs)
+                    ArcName.Items.Add(arc.ToString());
             };
 
             digraph.ArcAdded += (sender, e) =>

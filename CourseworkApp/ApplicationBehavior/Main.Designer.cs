@@ -1,4 +1,6 @@
 ﻿using System.Drawing;
+using System.Runtime.Remoting.Channels;
+using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CourseworkApp
@@ -49,6 +51,7 @@ namespace CourseworkApp
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.separator = new System.Windows.Forms.ToolStripSeparator();
             this.MovementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -116,6 +119,7 @@ namespace CourseworkApp
             this.GraphStyleColorDialog = new System.Windows.Forms.ColorDialog();
             this.EmptyToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.DrawingSurface = new System.Windows.Forms.PictureBox();
+            this.MouseWheelTimer = new System.Windows.Forms.Timer(this.components);
             this.TopMenu.SuspendLayout();
             this.Tools.SuspendLayout();
             this.ArcsColorPanel.SuspendLayout();
@@ -170,6 +174,7 @@ namespace CourseworkApp
             this.FileToolStripMenuItem,
             this.AboutToolStripMenuItem,
             this.MainMenuToolStripMenuItem,
+            this.separator,
             this.MovementToolStripMenuItem,
             this.StopToolStripMenuItem,
             this.ResetToolStripMenuItem});
@@ -257,6 +262,11 @@ namespace CourseworkApp
             this.MainMenuToolStripMenuItem.Text = "Main Menu";
             this.MainMenuToolStripMenuItem.Visible = false;
             this.MainMenuToolStripMenuItem.Click += new System.EventHandler(this.MainMenuToolStripMenuItem_Click);
+            // 
+            // separator
+            // 
+            this.separator.Name = "separator";
+            this.separator.Size = new System.Drawing.Size(6, 29);
             // 
             // MovementToolStripMenuItem
             // 
@@ -558,7 +568,7 @@ namespace CourseworkApp
             | System.Windows.Forms.AnchorStyles.Right)));
             this.RadiusLabel.AutoSize = true;
             this.RadiusLabel.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.RadiusLabel.Location = new System.Drawing.Point(0, 329);
+            this.RadiusLabel.Location = new System.Drawing.Point(0, 313);
             this.RadiusLabel.Name = "RadiusLabel";
             this.RadiusLabel.Size = new System.Drawing.Size(80, 42);
             this.RadiusLabel.TabIndex = 33;
@@ -613,8 +623,9 @@ namespace CourseworkApp
             // 
             this.SandpilePalette.AllowUserToAddRows = false;
             this.SandpilePalette.AllowUserToDeleteRows = false;
-            this.SandpilePalette.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.SandpilePalette.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.SandpilePalette.BackgroundColor = System.Drawing.SystemColors.Control;
             this.SandpilePalette.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -649,7 +660,7 @@ namespace CourseworkApp
             this.SandpilePalette.RowTemplate.Height = 28;
             this.SandpilePalette.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.SandpilePalette.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.SandpilePalette.Size = new System.Drawing.Size(93, 326);
+            this.SandpilePalette.Size = new System.Drawing.Size(93, 310);
             this.SandpilePalette.TabIndex = 36;
             this.SandpilePalette.Visible = false;
             this.SandpilePalette.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.SandpilePalette_RowPrePaint);
@@ -1182,6 +1193,11 @@ namespace CourseworkApp
             this.DrawingSurface.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DrawingSurface_MouseMove);
             this.DrawingSurface.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawingSurface_MouseUp);
             // 
+            // MouseWheelTimer
+            // 
+            this.MouseWheelTimer.Interval = 500;
+            this.MouseWheelTimer.Tick += new System.EventHandler(this.WheelStopped);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -1210,6 +1226,7 @@ namespace CourseworkApp
             this.SizeChanged += new System.EventHandler(this.GraphBuilder_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GraphBuilder_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyUp);
+            this.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.MainWindow_MouseWheel);
             this.TopMenu.ResumeLayout(false);
             this.TopMenu.PerformLayout();
             this.Tools.ResumeLayout(false);
@@ -1246,6 +1263,7 @@ namespace CourseworkApp
         private System.Windows.Forms.Button Build;
         private System.Windows.Forms.Button Open;
         private System.Windows.Forms.MenuStrip TopMenu;
+        private System.Windows.Forms.ToolStripSeparator separator;
         private System.Windows.Forms.Panel Tools;
         private System.Windows.Forms.Button ClearButton;
         private System.Windows.Forms.Button CursorButton;
@@ -1323,6 +1341,7 @@ namespace CourseworkApp
         private System.Windows.Forms.ToolTip EmptyToolTip;
         private System.Windows.Forms.Button RedoButton;
         private System.Windows.Forms.Button UndoButton;
+        private Timer MouseWheelTimer;
     }
 }
 

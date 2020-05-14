@@ -127,8 +127,6 @@ namespace CourseworkApp
             saveToolStripMenuItem.Visible = state;
             MainMenuToolStripMenuItem.Visible = state;
             MovementToolStripMenuItem.Visible = state;
-            StopToolStripMenuItem.Visible = state;
-            ResetToolStripMenuItem.Visible = state;
 
             SandpilePanel.Size = new Size(358, 32);
         }

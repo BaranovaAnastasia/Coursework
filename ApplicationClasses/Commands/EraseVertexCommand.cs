@@ -34,11 +34,11 @@ namespace GraphClasses.Commands
         /// <summary>
         /// Array of arcs incident to this vertex
         /// </summary>
-        private readonly List<Arc> incidentArcs = new List<Arc>();
+        private List<Arc> incidentArcs = new List<Arc>();
         /// <summary>
         /// Array of indices of the arcs incident to this vertex
         /// </summary>
-        private readonly List<int> arcsIndices = new List<int>();
+        private List<int> arcsIndices = new List<int>();
 
         /// <summary>
         /// Initializes a new EraseVertexCommand instance
@@ -66,6 +66,8 @@ namespace GraphClasses.Commands
             refractoryPeriod = digraph.RefractoryPeriods[index];
             state = digraph.State[index];
 
+            incidentArcs = new List<Arc>();
+            arcsIndices = new List<int>();
             for (var i = 0; i < digraph.Arcs.Count; i++)
             {
                 if (digraph.Arcs[i].StartVertex != index && digraph.Arcs[i].EndVertex != index)

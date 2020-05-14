@@ -168,7 +168,7 @@ namespace CourseworkApp
                 FillWeight = 1,
                 Width = 35,
                 SortMode = DataGridViewColumnSortMode.NotSortable,
-                CellTemplate = new DataGridViewButtonCell()
+                CellTemplate = new DataGridViewTextBoxCell()
             };
             GridAdjacencyMatrix.Columns.Insert(index, column);
             GridAdjacencyMatrix.Rows.Insert(index);

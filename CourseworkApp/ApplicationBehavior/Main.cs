@@ -50,10 +50,16 @@ namespace CourseworkApp
 
             if (graphDrawing == null) return;
 
+            Cursor = Cursors.WaitCursor;
+            SplashScreen.Visible = true;
+
             graphDrawing.Size = DrawingSurface.Size;
             if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(digraph);
             else graphDrawing.DrawTheWholeGraphSandpile(digraph, false);
             DrawingSurface.Image = graphDrawing.Image;
+
+            SplashScreen.Visible = false;
+            Cursor = Cursors.Default;
         }
 
         private bool isControlPressed;

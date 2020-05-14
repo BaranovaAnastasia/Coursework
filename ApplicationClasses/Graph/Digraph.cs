@@ -97,6 +97,8 @@ namespace ApplicationClasses
         /// <exception cref="ArgumentOutOfRangeException"/>
         public void AddVertex(Vertex vertex, int threshold = 1, int refractoryPeriod = 0, int initialState = 0, int index = -1)
         {
+            if(Vertices.Count >= 100)
+                throw new InvalidOperationException(@"Too many vertices. Unable to add a new one.");
             if (threshold <= 0)
                 throw new ArgumentOutOfRangeException(nameof(threshold), @"The value of the vertex threshold must be a positive number");
             if (refractoryPeriod < 0)

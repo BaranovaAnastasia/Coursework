@@ -32,7 +32,7 @@ namespace CourseworkApp
             var modes = GetModelingModes();
             var sandpileChartTypes = GetChartTypes();
 
-            movement = new MovementModeling(Digraph, (double)SpeedNumeric.Value / 1000, type, modes)
+            movement = new MovementModeling(digraph, (double)SpeedNumeric.Value / 1000, type, modes)
             {
                 GraphDrawing = graphDrawing,
                 DrawingSurface = DrawingSurface,
@@ -45,14 +45,14 @@ namespace CourseworkApp
 
             if (type == MovementModelingType.Sandpile)
             {
-                graphDrawing.DrawTheWholeGraphSandpile(Digraph, true);
+                graphDrawing.DrawTheWholeGraphSandpile(digraph, true);
                 DrawingSurface.Image = graphDrawing.Image;
                 SandpilePanel.Visible = true;
                 SandpilePanel.BringToFront();
                 return;
             }
 
-            movement.MovementEnded += (object s, EventArgs ea) => { movement.Tick -= UpdateElapsedTime;  movement = null; };
+            movement.MovementEnded += (s, ea) => { movement.Tick -= UpdateElapsedTime; movement = null; };
             if (SaveGifCheckBox.Checked) movement.MovementEnded += SaveGif;
 
             TimeTextBox.Visible = true;
@@ -86,12 +86,13 @@ namespace CourseworkApp
         /// </summary>
         private bool CheckConnectivity()
         {
-            if (!ConnectivityCheck.IsGraphValid(Digraph))
+            if (!ConnectivityCheck.IsGraphValid(digraph))
             {
-                if (Digraph.Vertices.Count >= 3)
-                    MessageBox.Show("The graph is not strongly connected", "Graph validation failed", MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                else MessageBox.Show("Not enough vertices", "Graph validation failed", MessageBoxButtons.OK,
+                MessageBox.Show(
+                    digraph.Vertices.Count >= 3 
+                        ? @"The graph is not strongly connected" 
+                        : @"Not enough vertices",
+                    @"Graph validation failed", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 return false;
             }
@@ -107,7 +108,7 @@ namespace CourseworkApp
                 if (fileDialog.ShowDialog() == DialogResult.OK)
                     using (FileStream stream = new FileStream(fileDialog.FileName, FileMode.Create))
                     {
-                        var bmp = (DrawingSurface.Image as Bitmap).GetHbitmap();
+                        var bmp = ((Bitmap) DrawingSurface.Image).GetHbitmap();
                         var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                             bmp,
                             IntPtr.Zero,
@@ -120,7 +121,7 @@ namespace CourseworkApp
         }
 
         public void UpdateElapsedTime(object sender, MovementTickEventArgs e) =>
-            TimeTextBox.Text = " Elapsed time, s:  " + (e.ElapsedTime / 1000.0) + "*";
+            TimeTextBox.Text = @" Elapsed time, s:  " + (e.ElapsedTime / 1000.0) + @"*";
 
         /// <summary>
         /// Stops movement modeling
@@ -142,24 +143,24 @@ namespace CourseworkApp
                 && SaveGifCheckBox.Checked) SaveGif(sender, e);
 
             //Resets graph parameters
-            for (int i = 0; i < Digraph.State.Count; i++)
+            for (int i = 0; i < digraph.State.Count; i++)
             {
-                Digraph.State[i] = int.Parse(GridParameters[2, i].Value.ToString());
-                if(Digraph.RefractoryPeriods[i] == 0) continue;
-                Digraph.TimeTillTheEndOfRefractoryPeriod[i]?.Stop();
+                digraph.State[i] = int.Parse(GridParameters[2, i].Value.ToString());
+                if (digraph.RefractoryPeriods[i] == 0) continue;
+                digraph.TimeTillTheEndOfRefractoryPeriod[i]?.Stop();
             }
-            Digraph.ResetStock();
+            digraph.ResetStock();
 
-            graphDrawing.DrawTheWholeGraph(Digraph);
+            graphDrawing.DrawTheWholeGraph(digraph);
             DrawingSurface.Image = graphDrawing.Image;
 
             movement = null;
 
             TimeTextBox.Visible = false;
-            TimeTextBox.Text = " Elapsed time, s:  0";
+            TimeTextBox.Text = @" Elapsed time, s:  0";
 
             SandpilePanel.Visible = false;
-            SandpileLabel.Text = "Select sink vertices and then click here          ";
+            SandpileLabel.Text = @"Select sink vertices and then click here          ";
             SandpileLabel.Font = new Font("Segoe UI", 9, FontStyle.Underline);
             SandpilePanel.Size = new Size(SandpilePanel.Size.Width, 32);
 
@@ -180,8 +181,9 @@ namespace CourseworkApp
         /// <param name="state">true if modeling starts, false if it's over</param>
         private void ChangeWindowStateForMovementModeling(bool state)
         {
-            foreach (var control in Tools.Controls)
-                if (control is Button button) button.Enabled = !state;
+            CursorButton.Enabled = VertexButton.Enabled = EdgeButton.Enabled =
+                DeleteButton.Enabled = ClearButton.Enabled = !state;
+
             if (!state) CursorButton.Enabled = false;
             if (SandpileTypeCheckBox.Checked)
             {
@@ -190,11 +192,14 @@ namespace CourseworkApp
             }
 
             foreach (var page in AppParameters.Controls)
-                foreach (var control in (page as TabPage).Controls)
+                foreach (var control in ((TabPage) page).Controls)
                     if (control is DataGridView dgv) dgv.ReadOnly = state;
-                    else (control as Control).Enabled = !state;
+                    else ((Control) control).Enabled = !state;
 
             if (!state) AnimationCheckBox.Enabled = false;
+
+            StopToolStripMenuItem.Visible = state;
+            ResetToolStripMenuItem.Visible = state;
         }
     }
 }

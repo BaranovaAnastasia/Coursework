@@ -2,11 +2,11 @@
 using System.Windows.Forms;
 using ApplicationClasses;
 
-namespace Graph_WinForms
+namespace CourseworkApp
 {
     public partial class RandomDigraphGeneratorForm : Form
     {
-        private static readonly Random rnd = new Random();   //Random values generator
+        private static readonly Random Rnd = new Random();   //Random values generator
 
         /// <summary>
         /// Generated random digraph
@@ -37,7 +37,7 @@ namespace Graph_WinForms
         }
 
         private void VNRandom_Click(object sender, EventArgs e) =>
-            NumOfVertices.Value = rnd.Next(3, 21);
+            NumOfVertices.Value = Rnd.Next(3, 21);
 
         /// <summary>
         /// Generates a random digraph
@@ -48,23 +48,23 @@ namespace Graph_WinForms
             bool[] visitedV = new bool[(int)NumOfVertices.Value];
             for (int i = 0; i < (int)NumOfVertices.Value; i++)
             {
-                int th = rnd.Next(1, 5);
-                int p = rnd.Next(1, 10001);
-                int s = rnd.Next(0, 2 * th);
-                Digraph.AddVertex(new Vertex(rnd.Next(10, width - 10), rnd.Next(10, height - 10)), th, p, s);
+                int th = Rnd.Next(1, 5);
+                int p = Rnd.Next(1, 10001);
+                int s = Rnd.Next(0, 2 * th);
+                Digraph.AddVertex(new Vertex(Rnd.Next(10, width - 10), Rnd.Next(10, height - 10)), th, p, s);
                 visitedV[i] = i == 0;
             }
 
             int start = 0;
-            int end;
             for (int i = 0; i < (int)NumOfVertices.Value - 1; i++)
             {
-                do { } while ((end = rnd.Next(1, visitedV.Length)) == start || visitedV[end]);
-                Digraph.AddArc(new Arc(start, end, rnd.Next(3, 11) + rnd.NextDouble()));
+                int end;
+                do { } while ((end = Rnd.Next(1, visitedV.Length)) == start || visitedV[end]);
+                Digraph.AddArc(new Arc(start, end, Rnd.Next(3, 11) + Rnd.NextDouble()));
                 visitedV[end] = true;
                 start = end;
             }
-            Digraph.AddArc(new Arc(start, 0, rnd.Next(3, 11) + rnd.NextDouble()));
+            Digraph.AddArc(new Arc(start, 0, Rnd.Next(3, 11) + Rnd.NextDouble()));
             this.Close();
         }
 

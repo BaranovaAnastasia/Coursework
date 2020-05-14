@@ -98,10 +98,16 @@ namespace ApplicationClasses
             dataGridView.Columns.Clear();
             for (int i = 0; i < adjacencyMatrix.GetLength(1); i++)
             {
-                dataGridView.Columns.Add("", (i + 1).ToString());
-                dataGridView.Columns[i].FillWeight = 1;
-                dataGridView.Columns[i].Width = 35;
-                dataGridView.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                var column = new DataGridViewColumn
+                {
+                    Name = string.Empty,
+                    HeaderText = (i + 1).ToString(),
+                    FillWeight = 1,
+                    Width = 35,
+                    SortMode = DataGridViewColumnSortMode.NotSortable,
+                    CellTemplate = new DataGridViewTextBoxCell(),
+                };
+                dataGridView.Columns.Add(column);
                 if (i == 0) dataGridView.Rows.Add(adjacencyMatrix.GetLength(1));
                 for (int j = 0; j < adjacencyMatrix.GetLength(0); j++)
                 {

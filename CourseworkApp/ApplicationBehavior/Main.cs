@@ -3,6 +3,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using ApplicationClasses;
 using GraphClasses.Commands;
+using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
+using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace CourseworkApp
 {
@@ -13,14 +15,12 @@ namespace CourseworkApp
             InitializeComponent();
             GraphBuilder_SizeChanged(null, null);
 
-            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
-
             graphDrawing = new GraphDrawing(DrawingSurface.Width, DrawingSurface.Height);
 
             graphDrawing.RadiusChanged += (sender, args1) =>
             {
-                if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
-                else graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
+                if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(digraph);
+                else graphDrawing.DrawTheWholeGraphSandpile(digraph, false);
                 DrawingSurface.Image = graphDrawing.Image;
             };
 
@@ -51,17 +51,20 @@ namespace CourseworkApp
             if (graphDrawing == null) return;
 
             graphDrawing.Size = DrawingSurface.Size;
-            if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(Digraph);
-            else graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
+            if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(digraph);
+            else graphDrawing.DrawTheWholeGraphSandpile(digraph, false);
             DrawingSurface.Image = graphDrawing.Image;
         }
 
+        private bool isControlPressed;
+
         /// <summary>
-        /// Moves digraph on the drawing surface
+        /// Moves digraph image on the drawing surface
         /// </summary>
         private void GraphBuilder_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Modifiers != Keys.Control) return;
+            if (e.KeyCode == Keys.ControlKey) isControlPressed = true;
+            if (e.Modifiers != Keys.Control && !(sender is MouseEventArgs)) return;
 
             if (e.KeyCode == Keys.Right)
                 xCoefficient += 10;
@@ -75,16 +78,39 @@ namespace CourseworkApp
                 enlargeCoefficient *= 1.1;
             else if (e.KeyCode == Keys.OemMinus)
                 enlargeCoefficient *= 0.9;
-            else if(!isOnMovement && e.KeyCode == Keys.Z)
+            else if (!isOnMovement && e.KeyCode == Keys.Z)
                 UndoButton_Click(sender, e);
             else if (!isOnMovement && e.KeyCode == Keys.Y)
                 RedoButton_Click(sender, e);
             else return;
 
             if (isOnMovement && SandpileTypeCheckBox.Checked)
-                graphDrawing.DrawTheWholeGraphSandpile(Digraph, false, xCoefficient, yCoefficient, enlargeCoefficient);
-            else graphDrawing.DrawTheWholeGraph(Digraph, xCoefficient, yCoefficient, enlargeCoefficient);
+                graphDrawing.DrawTheWholeGraphSandpile(digraph, false, xCoefficient, yCoefficient, enlargeCoefficient);
+            else graphDrawing.DrawTheWholeGraph(digraph, xCoefficient, yCoefficient, enlargeCoefficient);
             DrawingSurface.Image = graphDrawing.Image;
+        }
+        /// <summary>
+        /// Executes commands to move digraph itself
+        /// </summary>
+        private void MainWindow_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ControlKey) isControlPressed = false;
+            if (e.Modifiers != Keys.Control && sender != MouseWheelTimer) return;
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down ||
+                e.KeyCode == Keys.Right || e.KeyCode == Keys.Left)
+            {
+                if (xCoefficient == 0 && yCoefficient == 0) return;
+                var command = new MoveDigraphCommand(digraph, xCoefficient, yCoefficient);
+                commandsManager.Execute(command);
+                xCoefficient = yCoefficient = 0;
+            }
+
+            if (e.KeyCode == Keys.OemMinus || e.KeyCode == Keys.Oemplus)
+            {
+                var command = new EnlargeDigraphCommand(digraph, enlargeCoefficient);
+                commandsManager.Execute(command);
+                enlargeCoefficient = 1;
+            }
         }
 
         /// <summary>
@@ -94,6 +120,35 @@ namespace CourseworkApp
         {
             if (e.Modifiers == Keys.Control)
                 Tools.Focus();
+        }
+
+        /// <summary>
+        /// Moves digraph image according to mouse wheel scrolling
+        /// </summary>
+        private void MainWindow_MouseWheel(object sender, MouseEventArgs e)
+        {
+            MouseWheelTimer.Start();
+            if (isControlPressed)
+            {
+                if (e.Delta > 0) GraphBuilder_KeyDown(e, new KeyEventArgs(Keys.Oemplus));
+                else if (e.Delta < 0) GraphBuilder_KeyDown(e, new KeyEventArgs(Keys.OemMinus));
+            }
+            else
+            {
+                if (e.Delta > 0) GraphBuilder_KeyDown(e, new KeyEventArgs(Keys.Up));
+                else if (e.Delta < 0) GraphBuilder_KeyDown(e, new KeyEventArgs(Keys.Down));
+            }
+        }
+        /// <summary>
+        /// Moves digraph itself according to mouse wheel scrolling
+        /// </summary>
+        private void WheelStopped(object sender, EventArgs e)
+        {
+            MouseWheelTimer.Stop();
+            if (xCoefficient != 0 || yCoefficient != 0)
+                MainWindow_KeyUp(MouseWheelTimer, new KeyEventArgs(Keys.Up));
+            if (Math.Abs(enlargeCoefficient - 1) > 0)
+                MainWindow_KeyUp(MouseWheelTimer, new KeyEventArgs(Keys.OemMinus));
         }
 
         public new void Dispose()
@@ -106,60 +161,43 @@ namespace CourseworkApp
         /// </summary>
         private void SubscribeToDigraphEvents()
         {
-            Digraph.VertexAdded += (sender, e) =>
+            digraph.VertexAdded += (sender, e) =>
             {
                 graphDrawing.DrawVertex(((Vertex)sender).X, ((Vertex)sender).Y,
                     e.Index + 1);
                 DrawingSurface.Image = graphDrawing.Image;
                 AddVertexToGridAdjacencyMatrix(e.Index);
                 AddVertexToGridParameters(e.Index);
+                ArcName.Items.Clear();
+                foreach (var arc in digraph.Arcs)
+                    ArcName.Items.Add(arc.ToString());
             };
 
-            Digraph.ArcAdded += (sender, e) =>
+            digraph.ArcAdded += (sender, e) =>
             {
                 ArcName.Items.Insert(e.Index, ((Arc)sender).ToString());
-                graphDrawing.DrawArc(Digraph.Vertices[((Arc)sender).StartVertex],
-                    Digraph.Vertices[((Arc)sender).EndVertex],
+                graphDrawing.DrawArc(digraph.Vertices[((Arc)sender).StartVertex],
+                    digraph.Vertices[((Arc)sender).EndVertex],
                     (Arc)sender);
                 DrawingSurface.Image = graphDrawing.Image;
                 GridAdjacencyMatrix[((Arc)sender).EndVertex, ((Arc)sender).StartVertex].Value = ((Arc)sender).Length;
                 vStart = vEnd = -1;
             };
 
-            Digraph.VertexRemoved += (sender, e) =>
+            digraph.VertexRemoved += (sender, e) =>
             {
                 RemoveVertexFromGridAdjacencyMatrix(e.Index);
                 RemoveVertexFromGridParameters(e.Index);
                 ArcName.Items.Clear();
-                foreach (var arc in Digraph.Arcs)
+                foreach (var arc in digraph.Arcs)
                     ArcName.Items.Add(arc.ToString());
             };
 
-            Digraph.ArcRemoved += (sender, e) =>
+            digraph.ArcRemoved += (sender, e) =>
             {
                 GridAdjacencyMatrix[((Arc)sender).EndVertex, ((Arc)sender).StartVertex].Value = 0;
                 ArcName.Items.RemoveAt(e.Index);
             };
-        }
-
-        private void MainWindow_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Modifiers != Keys.Control) return;
-            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down ||
-                 e.KeyCode == Keys.Right || e.KeyCode == Keys.Left)
-            {
-                if(xCoefficient == 0 && yCoefficient == 0) return;
-                var command = new MoveDigraphCommand(Digraph, xCoefficient, yCoefficient);
-                commandsManager.Execute(command);
-                xCoefficient = yCoefficient = 0;
-            }
-
-            if (e.KeyCode == Keys.OemMinus || e.KeyCode == Keys.Oemplus)
-            {
-                var command = new EnlargeDigraphCommand(Digraph, enlargeCoefficient);
-                commandsManager.Execute(command);
-                enlargeCoefficient = 1;
-            }
         }
     }
 }

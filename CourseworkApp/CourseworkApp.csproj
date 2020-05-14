@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9131F40F-6940-42DF-A7A6-D85C6E08D888}</ProjectGuid>
+    <ProjectGuid>{04E9C74F-0AD3-4E88-A07B-A8ED73DCE944}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Graph_WinForms</RootNamespace>
     <AssemblyName>Graph_WinForms</AssemblyName>
@@ -109,8 +109,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <EmbeddedResource Include="SquareLatticeForm.resx">
       <DependentUpon>SquareLatticeForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -138,6 +144,45 @@
       <Project>{eabe1dc0-cb89-4af3-95b6-5466b037b9ad}</Project>
       <Name>ApplicationClasses</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cursor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vertex.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eraser.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\plus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\minus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\redo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dots.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\right.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\clear.png" />

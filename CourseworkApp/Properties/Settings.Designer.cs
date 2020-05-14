@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Graph_WinForms.Properties
+namespace CourseworkApp.Properties
 {
 
 

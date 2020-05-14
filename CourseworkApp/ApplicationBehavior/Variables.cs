@@ -16,14 +16,17 @@ namespace CourseworkApp
         /// <summary>
         /// Digraph instance with lists of vertices and arcs
         /// </summary>
-        private Digraph Digraph = new Digraph();
+        private Digraph digraph = new Digraph();
 
-        CommandsManager commandsManager = new CommandsManager();
+        /// <summary>
+        /// Commands manager providing udo redo functions
+        /// </summary>
+        private CommandsManager commandsManager = new CommandsManager();
 
         // Indices of the vertices selected for edge drawing
         private int vStart = -1; private int vEnd = -1;
         // Indicator showing whether the mouse button is pressed
-        private bool isPressed = false;
+        private bool isPressed;
         // Index of the moving vertex
         private int movingVertexIndex = -1;
         // Moving vertex itself
@@ -34,7 +37,7 @@ namespace CourseworkApp
         /// <summary>
         /// Models dots movement on a digraph
         /// </summary>
-        private MovementModeling movement = null;
+        private MovementModeling movement;
 
         /// <summary>
         /// Shows if the program is currently modeling the movement
@@ -44,7 +47,7 @@ namespace CourseworkApp
         /// <summary>
         /// Random values generator
         /// </summary>
-        private static readonly Random rnd = new Random();
+        private static readonly Random Rnd = new Random();
 
         /// <summary>
         /// Information about the application
@@ -77,7 +80,7 @@ namespace CourseworkApp
             {
                 FileName = "GraphData",
                 DefaultExt = ".digraph",
-                Filter = "Digraph data files (.digraph)|*.digraph"
+                Filter = @"Digraph data files (.digraph)|*.digraph"
             };
 
         private static SaveFileDialog SaveFileDialogForImageSaving() =>
@@ -85,7 +88,7 @@ namespace CourseworkApp
             {
                 FileName = "GraphImage",
                 DefaultExt = ".jpg",
-                Filter = "JPG Image (.jpg)|*.jpg"
+                Filter = @"JPG Image (.jpg)|*.jpg"
             };
 
         private static SaveFileDialog SaveFileDialogForGifSaving() =>
@@ -93,17 +96,17 @@ namespace CourseworkApp
             {
                 FileName = "Movement",
                 DefaultExt = ".gif",
-                Filter = "Gif Image (.gif)|*.gif",
+                Filter = @"Gif Image (.gif)|*.gif",
             };
 
         private static FolderBrowserDialog FolderBrowserDialogForGraphSaving() =>
-            new FolderBrowserDialog() { SelectedPath = "Digraph" };
+            new FolderBrowserDialog() { SelectedPath = @"Digraph" };
 
         private static OpenFileDialog DigraphOpenFileDialog() =>
             new OpenFileDialog()
             {
                 DefaultExt = ".digraph",
-                Filter = "Digraph data files (.digraph)|*.digraph"
+                Filter = @"Digraph data files (.digraph)|*.digraph"
             };
 
         #endregion

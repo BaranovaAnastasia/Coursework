@@ -61,7 +61,7 @@ namespace CourseworkApp
         /// </summary>
         private void ClearButton_Click(object sender, EventArgs e)
         {
-            if (Digraph.Vertices.Count == 0) return;
+            if (digraph.Vertices.Count == 0) return;
 
             const string message = "Would you like to save the graph? Otherwise, your graph will be lost";
             const string caption = "Saving";
@@ -84,7 +84,7 @@ namespace CourseworkApp
         /// </summary>
         private void EnlargeButton_Click(object sender, EventArgs e)
         {
-            var command = new EnlargeDigraphCommand(Digraph, 1.1);
+            var command = new EnlargeDigraphCommand(digraph, 1.1);
             commandsManager.Execute(command);
             UpdateImage();
         }
@@ -94,7 +94,7 @@ namespace CourseworkApp
         /// </summary>
         private void ReduceButton_Click(object sender, EventArgs e)
         {
-            var command = new EnlargeDigraphCommand(Digraph, 0.9);
+            var command = new EnlargeDigraphCommand(digraph, 0.9);
             commandsManager.Execute(command);
             UpdateImage();
         }
@@ -103,28 +103,28 @@ namespace CourseworkApp
 
         private void Up_Click(object sender, EventArgs e)
         {
-            var command = new MoveDigraphCommand(Digraph, 0, 10);
+            var command = new MoveDigraphCommand(digraph, 0, 10);
             commandsManager.Execute(command);
             UpdateImage();
         }
 
         private void Left_Click(object sender, EventArgs e)
         {
-            var command = new MoveDigraphCommand(Digraph, -10, 0);
+            var command = new MoveDigraphCommand(digraph, -10, 0);
             commandsManager.Execute(command);
             UpdateImage();
         }
 
         private void Right_Click(object sender, EventArgs e)
         {
-            var command = new MoveDigraphCommand(Digraph, 10, 0);
+            var command = new MoveDigraphCommand(digraph, 10, 0);
             commandsManager.Execute(command);
             UpdateImage();
         }
 
         private void Down_Click(object sender, EventArgs e)
         {
-            var command = new MoveDigraphCommand(Digraph, -10, 0);
+            var command = new MoveDigraphCommand(digraph, -10, 0);
             commandsManager.Execute(command);
             UpdateImage();
         }
@@ -137,8 +137,8 @@ namespace CourseworkApp
         private void UpdateImage()
         {
             if (isOnMovement && SandpileTypeCheckBox.Checked)
-                graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
-            else graphDrawing.DrawTheWholeGraph(Digraph);
+                graphDrawing.DrawTheWholeGraphSandpile(digraph, false);
+            else graphDrawing.DrawTheWholeGraph(digraph);
             DrawingSurface.Image = graphDrawing.Image;
         }
 
@@ -157,7 +157,7 @@ namespace CourseworkApp
             command.Executed += (s, ea) =>
             {
                 VerticesColorPanel.BackColor = (Color)s;
-                graphDrawing.DrawTheWholeGraph(Digraph);
+                graphDrawing.DrawTheWholeGraph(digraph);
                 DrawingSurface.Image = graphDrawing.Image;
             };
 
@@ -178,7 +178,7 @@ namespace CourseworkApp
             command.Executed += (s, ea) =>
             {
                 ArcsColorPanel.BackColor = (Color)s;
-                graphDrawing.DrawTheWholeGraph(Digraph);
+                graphDrawing.DrawTheWholeGraph(digraph);
                 DrawingSurface.Image = graphDrawing.Image;
             };
 
@@ -213,14 +213,14 @@ namespace CourseworkApp
         {
             if(isOnMovement) return;
             commandsManager.Undo();
-            graphDrawing.DrawTheWholeGraph(Digraph);
+            graphDrawing.DrawTheWholeGraph(digraph);
             DrawingSurface.Image = graphDrawing.Image;
         }
         private void RedoButton_Click(object sender, EventArgs e)
         {
             if(isOnMovement) return;
             commandsManager.Redo();
-            graphDrawing.DrawTheWholeGraph(Digraph);
+            graphDrawing.DrawTheWholeGraph(digraph);
             DrawingSurface.Image = graphDrawing.Image;
         }
     }

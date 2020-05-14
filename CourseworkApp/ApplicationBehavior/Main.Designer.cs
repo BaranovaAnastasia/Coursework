@@ -1,4 +1,6 @@
 ﻿using System.Drawing;
+using System.Runtime.Remoting.Channels;
+using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CourseworkApp
@@ -49,6 +51,7 @@ namespace CourseworkApp
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.separator = new System.Windows.Forms.ToolStripSeparator();
             this.MovementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -116,6 +119,8 @@ namespace CourseworkApp
             this.GraphStyleColorDialog = new System.Windows.Forms.ColorDialog();
             this.EmptyToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.DrawingSurface = new System.Windows.Forms.PictureBox();
+            this.MouseWheelTimer = new System.Windows.Forms.Timer(this.components);
+            this.SplashScreen = new System.Windows.Forms.Panel();
             this.TopMenu.SuspendLayout();
             this.Tools.SuspendLayout();
             this.ArcsColorPanel.SuspendLayout();
@@ -170,12 +175,13 @@ namespace CourseworkApp
             this.FileToolStripMenuItem,
             this.AboutToolStripMenuItem,
             this.MainMenuToolStripMenuItem,
+            this.separator,
             this.MovementToolStripMenuItem,
             this.StopToolStripMenuItem,
             this.ResetToolStripMenuItem});
             this.TopMenu.Location = new System.Drawing.Point(0, 0);
             this.TopMenu.Name = "TopMenu";
-            this.TopMenu.Size = new System.Drawing.Size(1236, 33);
+            this.TopMenu.Size = new System.Drawing.Size(1236, 36);
             this.TopMenu.TabIndex = 4;
             this.TopMenu.Text = "menuStrip1";
             // 
@@ -187,7 +193,7 @@ namespace CourseworkApp
             this.saveToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.FileToolStripMenuItem.Name = "FileToolStripMenuItem";
-            this.FileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
+            this.FileToolStripMenuItem.Size = new System.Drawing.Size(54, 32);
             this.FileToolStripMenuItem.Text = "File";
             // 
             // newProjectToolStripMenuItem
@@ -246,7 +252,7 @@ namespace CourseworkApp
             // AboutToolStripMenuItem
             // 
             this.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem";
-            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(78, 29);
+            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(78, 32);
             this.AboutToolStripMenuItem.Text = "About";
             this.AboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
@@ -257,6 +263,11 @@ namespace CourseworkApp
             this.MainMenuToolStripMenuItem.Text = "Main Menu";
             this.MainMenuToolStripMenuItem.Visible = false;
             this.MainMenuToolStripMenuItem.Click += new System.EventHandler(this.MainMenuToolStripMenuItem_Click);
+            // 
+            // separator
+            // 
+            this.separator.Name = "separator";
+            this.separator.Size = new System.Drawing.Size(6, 32);
             // 
             // MovementToolStripMenuItem
             // 
@@ -322,6 +333,7 @@ namespace CourseworkApp
             this.RedoButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.RedoButton.Enabled = false;
             this.RedoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RedoButton.Image = global::Graph_WinForms.Properties.Resources.redo;
             this.RedoButton.Location = new System.Drawing.Point(50, 131);
             this.RedoButton.Name = "RedoButton";
             this.RedoButton.Size = new System.Drawing.Size(33, 33);
@@ -336,6 +348,7 @@ namespace CourseworkApp
             this.UndoButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.UndoButton.Enabled = false;
             this.UndoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UndoButton.Image = global::Graph_WinForms.Properties.Resources.undo;
             this.UndoButton.Location = new System.Drawing.Point(10, 131);
             this.UndoButton.Name = "UndoButton";
             this.UndoButton.Size = new System.Drawing.Size(33, 33);
@@ -371,6 +384,7 @@ namespace CourseworkApp
             // ArcsColorDialogOpen
             // 
             this.ArcsColorDialogOpen.BackColor = System.Drawing.SystemColors.Control;
+            this.ArcsColorDialogOpen.BackgroundImage = global::Graph_WinForms.Properties.Resources.dots;
             this.ArcsColorDialogOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ArcsColorDialogOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ArcsColorDialogOpen.Location = new System.Drawing.Point(48, 1);
@@ -398,6 +412,7 @@ namespace CourseworkApp
             // VertexColorDialogOpen
             // 
             this.VertexColorDialogOpen.BackColor = System.Drawing.SystemColors.Control;
+            this.VertexColorDialogOpen.BackgroundImage = global::Graph_WinForms.Properties.Resources.dots;
             this.VertexColorDialogOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.VertexColorDialogOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.VertexColorDialogOpen.Location = new System.Drawing.Point(48, 1);
@@ -412,6 +427,7 @@ namespace CourseworkApp
             // 
             this.Down.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.Down.BackgroundImage = global::Graph_WinForms.Properties.Resources.down;
             this.Down.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Down.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
             this.Down.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -427,6 +443,7 @@ namespace CourseworkApp
             // 
             this.Up.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.Up.BackgroundImage = global::Graph_WinForms.Properties.Resources.up;
             this.Up.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Up.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
             this.Up.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -443,6 +460,7 @@ namespace CourseworkApp
             this.Left.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Left.BackColor = System.Drawing.SystemColors.Control;
+            this.Left.BackgroundImage = global::Graph_WinForms.Properties.Resources.left;
             this.Left.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Left.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
             this.Left.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -458,6 +476,7 @@ namespace CourseworkApp
             // 
             this.Right.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.Right.BackgroundImage = global::Graph_WinForms.Properties.Resources.right;
             this.Right.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Right.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
             this.Right.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -473,6 +492,7 @@ namespace CourseworkApp
             // 
             this.ReduceButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ReduceButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ReduceButton.Image = global::Graph_WinForms.Properties.Resources.minus;
             this.ReduceButton.Location = new System.Drawing.Point(50, 92);
             this.ReduceButton.Name = "ReduceButton";
             this.ReduceButton.Size = new System.Drawing.Size(33, 33);
@@ -486,6 +506,7 @@ namespace CourseworkApp
             this.EnlargeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.EnlargeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.EnlargeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EnlargeButton.Image = global::Graph_WinForms.Properties.Resources.plus;
             this.EnlargeButton.Location = new System.Drawing.Point(10, 92);
             this.EnlargeButton.Name = "EnlargeButton";
             this.EnlargeButton.Size = new System.Drawing.Size(33, 33);
@@ -513,6 +534,7 @@ namespace CourseworkApp
             this.ClearButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ClearButton.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ClearButton.Image = global::Graph_WinForms.Properties.Resources.clear;
             this.ClearButton.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ClearButton.Location = new System.Drawing.Point(10, 585);
             this.ClearButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -531,6 +553,7 @@ namespace CourseworkApp
             this.CursorButton.Enabled = false;
             this.CursorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CursorButton.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CursorButton.Image = ((System.Drawing.Image)(resources.GetObject("CursorButton.Image")));
             this.CursorButton.Location = new System.Drawing.Point(10, 10);
             this.CursorButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.CursorButton.Name = "CursorButton";
@@ -546,7 +569,7 @@ namespace CourseworkApp
             | System.Windows.Forms.AnchorStyles.Right)));
             this.RadiusLabel.AutoSize = true;
             this.RadiusLabel.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.RadiusLabel.Location = new System.Drawing.Point(0, 329);
+            this.RadiusLabel.Location = new System.Drawing.Point(0, 313);
             this.RadiusLabel.Name = "RadiusLabel";
             this.RadiusLabel.Size = new System.Drawing.Size(80, 42);
             this.RadiusLabel.TabIndex = 33;
@@ -557,6 +580,7 @@ namespace CourseworkApp
             this.DeleteButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.DeleteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeleteButton.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.DeleteButton.Image = global::Graph_WinForms.Properties.Resources.eraser;
             this.DeleteButton.Location = new System.Drawing.Point(50, 51);
             this.DeleteButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.DeleteButton.Name = "DeleteButton";
@@ -571,6 +595,7 @@ namespace CourseworkApp
             this.VertexButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.VertexButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.VertexButton.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.VertexButton.Image = global::Graph_WinForms.Properties.Resources.vertex;
             this.VertexButton.Location = new System.Drawing.Point(50, 10);
             this.VertexButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.VertexButton.Name = "VertexButton";
@@ -585,6 +610,7 @@ namespace CourseworkApp
             this.EdgeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.EdgeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EdgeButton.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.EdgeButton.Image = global::Graph_WinForms.Properties.Resources.arc;
             this.EdgeButton.Location = new System.Drawing.Point(10, 51);
             this.EdgeButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.EdgeButton.Name = "EdgeButton";
@@ -598,8 +624,9 @@ namespace CourseworkApp
             // 
             this.SandpilePalette.AllowUserToAddRows = false;
             this.SandpilePalette.AllowUserToDeleteRows = false;
-            this.SandpilePalette.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.SandpilePalette.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.SandpilePalette.BackgroundColor = System.Drawing.SystemColors.Control;
             this.SandpilePalette.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -634,7 +661,7 @@ namespace CourseworkApp
             this.SandpilePalette.RowTemplate.Height = 28;
             this.SandpilePalette.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.SandpilePalette.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.SandpilePalette.Size = new System.Drawing.Size(93, 326);
+            this.SandpilePalette.Size = new System.Drawing.Size(93, 310);
             this.SandpilePalette.TabIndex = 36;
             this.SandpilePalette.Visible = false;
             this.SandpilePalette.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.SandpilePalette_RowPrePaint);
@@ -1167,6 +1194,22 @@ namespace CourseworkApp
             this.DrawingSurface.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DrawingSurface_MouseMove);
             this.DrawingSurface.MouseUp += new System.Windows.Forms.MouseEventHandler(this.DrawingSurface_MouseUp);
             // 
+            // MouseWheelTimer
+            // 
+            this.MouseWheelTimer.Interval = 500;
+            this.MouseWheelTimer.Tick += new System.EventHandler(this.WheelStopped);
+            // 
+            // SplashScreen
+            // 
+            this.SplashScreen.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SplashScreen.Location = new System.Drawing.Point(0, 36);
+            this.SplashScreen.Name = "SplashScreen";
+            this.SplashScreen.Size = new System.Drawing.Size(1240, 663);
+            this.SplashScreen.TabIndex = 36;
+            this.SplashScreen.Visible = false;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -1185,6 +1228,8 @@ namespace CourseworkApp
             this.Controls.Add(this.Build);
             this.Controls.Add(this.TopMenu);
             this.Controls.Add(this.DrawingSurface);
+            this.Controls.Add(this.SplashScreen);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.TopMenu;
             this.MinimumSize = new System.Drawing.Size(1258, 753);
@@ -1194,6 +1239,7 @@ namespace CourseworkApp
             this.SizeChanged += new System.EventHandler(this.GraphBuilder_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GraphBuilder_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyUp);
+            this.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.MainWindow_MouseWheel);
             this.TopMenu.ResumeLayout(false);
             this.TopMenu.PerformLayout();
             this.Tools.ResumeLayout(false);
@@ -1230,6 +1276,7 @@ namespace CourseworkApp
         private System.Windows.Forms.Button Build;
         private System.Windows.Forms.Button Open;
         private System.Windows.Forms.MenuStrip TopMenu;
+        private System.Windows.Forms.ToolStripSeparator separator;
         private System.Windows.Forms.Panel Tools;
         private System.Windows.Forms.Button ClearButton;
         private System.Windows.Forms.Button CursorButton;
@@ -1307,6 +1354,8 @@ namespace CourseworkApp
         private System.Windows.Forms.ToolTip EmptyToolTip;
         private System.Windows.Forms.Button RedoButton;
         private System.Windows.Forms.Button UndoButton;
+        private Timer MouseWheelTimer;
+        private Panel SplashScreen;
     }
 }
 

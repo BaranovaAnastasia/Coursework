@@ -26,7 +26,7 @@ namespace CourseworkApp
 
             if (!VertexButton.Enabled)
             {
-                var command = new AddVertexCommand(Digraph, new Vertex(e.X, e.Y));
+                var command = new AddVertexCommand(digraph, new Vertex(e.X, e.Y));
                 commandsManager.Execute(command);
                 return;
             }
@@ -35,7 +35,7 @@ namespace CourseworkApp
             {
                 if (FindArcVertices(e.X, e.Y))
                 {
-                    var command = new AddArcCommand(Digraph, new Arc(vStart, vEnd));
+                    var command = new AddArcCommand(digraph, new Arc(vStart, vEnd));
                     commandsManager.Execute(command);
                 }
             }
@@ -51,22 +51,22 @@ namespace CourseworkApp
 
             var wasSmthDeleted = false;
 
-            if (DigraphBuilding.TryToDeleteVertexAt(e.X, e.Y, Digraph, graphDrawing.R, out int i))
+            if (DigraphBuilding.TryToDeleteVertexAt(e.X, e.Y, digraph, graphDrawing.R, out int i))
             {
-                var command = new EraseVertexCommand(Digraph, Digraph.Vertices[i]);
+                var command = new EraseVertexCommand(digraph, digraph.Vertices[i]);
                 commandsManager.Execute(command);
                 wasSmthDeleted = true;
             }
-            else if (DigraphBuilding.TryToDeleteArcAt(e.X, e.Y, Digraph, out Arc arc))
+            else if (DigraphBuilding.TryToDeleteArcAt(e.X, e.Y, digraph, out Arc arc))
             {
-                var command = new EraseArcCommand(Digraph, arc);
+                var command = new EraseArcCommand(digraph, arc);
                 commandsManager.Execute(command);
                 wasSmthDeleted = true;
             }
 
             if (wasSmthDeleted)
             {
-                graphDrawing.DrawTheWholeGraph(Digraph);
+                graphDrawing.DrawTheWholeGraph(digraph);
                 DrawingSurface.Image = graphDrawing.Image;
             }
         }
@@ -83,11 +83,11 @@ namespace CourseworkApp
             if (CursorButton.Enabled || isOnMovement) return;
             isPressed = true;
 
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
-                if (Math.Pow((Digraph.Vertices[i].X - e.X), 2) + Math.Pow((Digraph.Vertices[i].Y - e.Y), 2) <= Math.Pow(graphDrawing.R, 2))
+            for (int i = 0; i < digraph.Vertices.Count; i++)
+                if (Math.Pow((digraph.Vertices[i].X - e.X), 2) + Math.Pow((digraph.Vertices[i].Y - e.Y), 2) <= Math.Pow(graphDrawing.R, 2))
                 {
                     movingVertexIndex = i;
-                    movingVertex = Digraph.Vertices[i];
+                    movingVertex = digraph.Vertices[i];
                     ticks = DateTime.Now;
                     return;
                 }
@@ -100,8 +100,8 @@ namespace CourseworkApp
         {
             if (isOnMovement || !isPressed || CursorButton.Enabled || movingVertexIndex == -1) return;
 
-            Digraph.Vertices[movingVertexIndex] = new Vertex(e.X, e.Y);
-            graphDrawing.DrawTheWholeGraph(Digraph);
+            digraph.Vertices[movingVertexIndex] = new Vertex(e.X, e.Y);
+            graphDrawing.DrawTheWholeGraph(digraph);
             DrawingSurface.Image = graphDrawing.Image;
         }
 
@@ -137,16 +137,16 @@ namespace CourseworkApp
                 if (y > DrawingSurface.Height - graphDrawing.R - 5)
                     y = DrawingSurface.Height - graphDrawing.R - 5;
 
-                var command = new MoveVertexCommand(Digraph, movingVertexIndex,
+                var command = new MoveVertexCommand(digraph, movingVertexIndex,
                     new Point(movingVertex.X, movingVertex.Y),
                     new Point((int)x, (int)y));
                 commandsManager.Execute(command);
             }
 
-            if (highlight) Digraph.Vertices[movingVertexIndex] = new Vertex(movingVertex.X, movingVertex.Y);
-            graphDrawing.DrawTheWholeGraph(Digraph);
+            if (highlight) digraph.Vertices[movingVertexIndex] = new Vertex(movingVertex.X, movingVertex.Y);
+            graphDrawing.DrawTheWholeGraph(digraph);
 
-            if (highlight) graphDrawing.HighlightVertex(Digraph.Vertices[movingVertexIndex]);
+            if (highlight) graphDrawing.HighlightVertex(digraph.Vertices[movingVertexIndex]);
 
             DrawingSurface.Image = graphDrawing.Image;
             movingVertexIndex = -1;
@@ -168,12 +168,12 @@ namespace CourseworkApp
                 FillWeight = 1,
                 Width = 35,
                 SortMode = DataGridViewColumnSortMode.NotSortable,
-                CellTemplate = new DataGridViewButtonCell()
+                CellTemplate = new DataGridViewTextBoxCell()
             };
             GridAdjacencyMatrix.Columns.Insert(index, column);
             GridAdjacencyMatrix.Rows.Insert(index);
 
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
+            for (int i = 0; i < digraph.Vertices.Count; i++)
             {
                 GridAdjacencyMatrix[index, i].Value = 0;
                 GridAdjacencyMatrix[i, index].Value = 0;
@@ -187,7 +187,7 @@ namespace CourseworkApp
         {
             GridAdjacencyMatrix.Columns.RemoveAt(index);
             if (GridAdjacencyMatrix.Columns.Count != 0) GridAdjacencyMatrix.Rows.RemoveAt(index);
-            for (int j = index; j < Digraph.Vertices.Count; j++)
+            for (int j = index; j < digraph.Vertices.Count; j++)
             {
                 GridAdjacencyMatrix.Columns[j].HeaderCell.Value = (j + 1).ToString();
                 GridAdjacencyMatrix.Rows[j].HeaderCell.Value = (j + 1).ToString();
@@ -209,15 +209,15 @@ namespace CourseworkApp
                 }
             }
             GridParameters.Rows.Insert(index);
-            GridParameters.Rows[index].HeaderCell.Value = Digraph.Vertices.Count.ToString();
-            GridParameters[0, index].Value = Digraph.Thresholds[index];
-            GridParameters[1, index].Value = Digraph.RefractoryPeriods[index];
-            GridParameters[2, index].Value = Digraph.State[index];
+            GridParameters.Rows[index].HeaderCell.Value = digraph.Vertices.Count.ToString();
+            GridParameters[0, index].Value = digraph.Thresholds[index];
+            GridParameters[1, index].Value = digraph.RefractoryPeriods[index];
+            GridParameters[2, index].Value = digraph.State[index];
         }
         private void RemoveVertexFromGridParameters(int index)
         {
             GridParameters.Rows.RemoveAt(index);
-            for (int j = index; j < Digraph.Vertices.Count; j++)
+            for (int j = index; j < digraph.Vertices.Count; j++)
                 GridParameters.Rows[j].HeaderCell.Value = (j + 1).ToString();
         }
 
@@ -231,13 +231,13 @@ namespace CourseworkApp
         /// <param name="y">Y coordinate of a place where mouse click occurred</param>
         private bool FindArcVertices(int x, int y)
         {
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
-                if (Math.Pow((Digraph.Vertices[i].X - x), 2) + Math.Pow((Digraph.Vertices[i].Y - y), 2) <= Math.Pow(graphDrawing.R, 2))
+            for (int i = 0; i < digraph.Vertices.Count; i++)
+                if (Math.Pow((digraph.Vertices[i].X - x), 2) + Math.Pow((digraph.Vertices[i].Y - y), 2) <= Math.Pow(graphDrawing.R, 2))
                 {
                     if (vStart == -1)
                     {
                         vStart = i;
-                        graphDrawing.HighlightVertex(Digraph.Vertices[i]);
+                        graphDrawing.HighlightVertex(digraph.Vertices[i]);
                         DrawingSurface.Image = graphDrawing.Image;
                         return false;
                     }
@@ -245,7 +245,7 @@ namespace CourseworkApp
                     {
                         if (GridAdjacencyMatrix[i, vStart].Value.ToString() != "0" || vStart == i)
                         {
-                            graphDrawing.UnhighlightVertex(Digraph.Vertices[vStart]);
+                            graphDrawing.UnhighlightVertex(digraph.Vertices[vStart]);
                             DrawingSurface.Image = graphDrawing.Image;
                             if (GridAdjacencyMatrix[i, vStart].Value.ToString() != "0")
                                 MessageBox.Show(@"The edge already exists", @"Error",
@@ -257,7 +257,7 @@ namespace CourseworkApp
                             return false;
                         }
                         vEnd = i;
-                        graphDrawing.HighlightVertex(Digraph.Vertices[i]);
+                        graphDrawing.HighlightVertex(digraph.Vertices[i]);
                         DrawingSurface.Image = graphDrawing.Image;
                         return true;
                     }
@@ -271,13 +271,13 @@ namespace CourseworkApp
         /// </summary>
         private void SelectStock(int x, int y)
         {
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
-                if (Math.Pow((Digraph.Vertices[i].X - x), 2) + Math.Pow((Digraph.Vertices[i].Y - y), 2) <=
+            for (int i = 0; i < digraph.Vertices.Count; i++)
+                if (Math.Pow((digraph.Vertices[i].X - x), 2) + Math.Pow((digraph.Vertices[i].Y - y), 2) <=
                     Math.Pow(graphDrawing.R, 2))
                 {
-                    if (Digraph.Stock.Contains(i)) Digraph.Stock.Remove(i);
-                    else Digraph.Stock.Add(i);
-                    graphDrawing.DrawTheWholeGraphSandpile(Digraph, false);
+                    if (digraph.Stock.Contains(i)) digraph.Stock.Remove(i);
+                    else digraph.Stock.Add(i);
+                    graphDrawing.DrawTheWholeGraphSandpile(digraph, false);
                     DrawingSurface.Image = graphDrawing.Image;
                     return;
                 }
@@ -288,14 +288,14 @@ namespace CourseworkApp
         /// </summary>
         private async void SelectVertexToAddSand(int x, int y)
         {
-            for (int i = 0; i < Digraph.Vertices.Count; i++)
-                if (Math.Pow((Digraph.Vertices[i].X - x), 2) + Math.Pow((Digraph.Vertices[i].Y - y), 2) <=
+            for (int i = 0; i < digraph.Vertices.Count; i++)
+                if (Math.Pow((digraph.Vertices[i].X - x), 2) + Math.Pow((digraph.Vertices[i].Y - y), 2) <=
                     Math.Pow(graphDrawing.R, 2))
                 {
-                    if (Digraph.Stock.Contains(i)) return;
-                    Digraph.State[i]++;
+                    if (digraph.Stock.Contains(i)) return;
+                    digraph.State[i]++;
                     SandpilePanel.Visible = false;
-                    graphDrawing.HighlightVertexToAddSand(Digraph.Vertices[i]);
+                    graphDrawing.HighlightVertexToAddSand(digraph.Vertices[i]);
                     DrawingSurface.Image = graphDrawing.Image;
                     await Task.Delay(200);
                     if (SaveGifCheckBox.Checked && movement.MovementGif.Frames.Count < 250)

@@ -3,11 +3,11 @@ using System.Drawing;
 using System.Windows.Forms;
 using ApplicationClasses;
 
-namespace Graph_WinForms
+namespace CourseworkApp
 {
     public partial class SquareLatticeForm : Form
     {
-        private static Random rnd = null;   //Random values generator
+        private static Random _rnd;   //Random values generator
 
         /// <summary>
         /// Generated square lattice digraph
@@ -64,11 +64,11 @@ namespace Graph_WinForms
             for (int i = 0; i < Xvalue.Value; i++, p.Y += step, p.X = (width - 100 - step * ((int)Yvalue.Value - 1)) / 2 + 50)
                 for (int j = 0; j < Yvalue.Value; j++, p.X += step)
                 {
-                    if (rnd != null)
+                    if (_rnd != null)
                     {
-                        int th = rnd.Next(1, 5);
-                        int rp = rnd.Next(1, 10001);
-                        int s = rnd.Next(0, 2 * th);
+                        int th = _rnd.Next(1, 5);
+                        int rp = _rnd.Next(1, 10001);
+                        int s = _rnd.Next(0, 2 * th);
                         SquareLatticeDigraph.AddVertex(new Vertex(p.X, p.Y), th, rp, s);
                         continue;
                     }
@@ -87,17 +87,17 @@ namespace Graph_WinForms
                     if (j != Yvalue.Value - 1)
                     {
                         SquareLatticeDigraph.AddArc(new Arc(i * (int)Yvalue.Value + j, i * (int)Yvalue.Value + 1 + j,
-                            rnd != null ? rnd.Next(1, 5) + rnd.NextDouble() : 1));
+                            _rnd != null ? _rnd.Next(1, 5) + _rnd.NextDouble() : 1));
                         SquareLatticeDigraph.AddArc(new Arc(i * (int)Yvalue.Value + 1 + j, i * (int)Yvalue.Value + j,
-                            rnd != null ? rnd.Next(1, 5) + rnd.NextDouble() : 1));
+                            _rnd != null ? _rnd.Next(1, 5) + _rnd.NextDouble() : 1));
                     }
 
                     if (i != Xvalue.Value - 1)
                     {
                         SquareLatticeDigraph.AddArc(new Arc(i * (int)Yvalue.Value + j, i * (int)Yvalue.Value + j % (int)Yvalue.Value + (int)Yvalue.Value,
-                            rnd != null ? rnd.Next(1, 5) + rnd.NextDouble() : 1));
+                            _rnd != null ? _rnd.Next(1, 5) + _rnd.NextDouble() : 1));
                         SquareLatticeDigraph.AddArc(new Arc(i * (int)Yvalue.Value + j % (int)Yvalue.Value + (int)Yvalue.Value, i * (int)Yvalue.Value + j,
-                            rnd != null ? rnd.Next(1, 5) + rnd.NextDouble() : 1));
+                            _rnd != null ? _rnd.Next(1, 5) + _rnd.NextDouble() : 1));
                     }
                 }
         }
@@ -107,7 +107,7 @@ namespace Graph_WinForms
         /// to allow or forbid random digraph parameters filling
         /// </summary>
         private void ParamsCheckBox_CheckedChanged(object sender, EventArgs e) =>
-            rnd = ParamsCheckBox.Checked ? new Random() : null;
+            _rnd = ParamsCheckBox.Checked ? new Random() : null;
 
         /// <summary>
         /// Closes the form

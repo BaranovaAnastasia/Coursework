@@ -173,7 +173,7 @@ namespace ApplicationClasses
         /// <exception cref="ArgumentOutOfRangeException"/>
         public void RemoveArc(int index)
         {
-            if (Arcs.Count >= index || index < 0)
+            if (Arcs.Count <= index || index < 0)
                 throw new ArgumentOutOfRangeException(nameof(index),
                     @"Index of the arc must be a non-negative number less than the number of elements in the arcs list");
 

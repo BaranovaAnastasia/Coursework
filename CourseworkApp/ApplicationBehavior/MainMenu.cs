@@ -115,6 +115,10 @@ namespace CourseworkApp
         /// </summary>
         private void ChangeDrawingElementsState(bool state)
         {
+            SplashScreen.BringToFront();
+            SplashScreen.Visible = true;
+            Cursor = Cursors.WaitCursor;
+
             Tools.Visible = state;
             DrawingSurface.Visible = state;
             AppParameters.Visible = state;
@@ -129,6 +133,8 @@ namespace CourseworkApp
             MovementToolStripMenuItem.Visible = state;
 
             SandpilePanel.Size = new Size(358, 32);
+            SplashScreen.Visible = false;
+            Cursor = Cursors.Default;
         }
 
         /// <summary>

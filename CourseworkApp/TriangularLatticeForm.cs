@@ -7,7 +7,7 @@ namespace CourseworkApp
 {
     public partial class TriangularLatticeForm : Form
     {
-        private static Random rnd = null;   // Random values generator
+        private static Random _rnd;   // Random values generator
 
         /// <summary>
         /// Generated square lattice digraph
@@ -63,11 +63,11 @@ namespace CourseworkApp
                  p.X = i % 2 == 0 ? x : x - step / 2)
                 for (int j = 0; j < Xvalue.Value; j++, p.X += step)
                 {
-                    if (rnd != null)
+                    if (_rnd != null)
                     {
-                        int th = rnd.Next(1, 5);
-                        int rp = rnd.Next(1, 10001);
-                        int s = rnd.Next(0, 2 * th);
+                        int th = _rnd.Next(1, 5);
+                        int rp = _rnd.Next(1, 10001);
+                        int s = _rnd.Next(0, 2 * th);
                         TriangularLatticeDigraph.AddVertex(new Vertex(p.X, p.Y), th, rp, s);
                         continue;
                     }
@@ -86,25 +86,25 @@ namespace CourseworkApp
                     if (j != Xvalue.Value - 1)
                     {
                         TriangularLatticeDigraph.AddArc(new Arc(i * (int)Xvalue.Value + j, i * (int)Xvalue.Value + 1 + j,
-                            rnd != null ? rnd.Next(1, 5) + rnd.NextDouble() : 1));
+                            _rnd != null ? _rnd.Next(1, 5) + _rnd.NextDouble() : 1));
                         TriangularLatticeDigraph.AddArc(new Arc(i * (int)Xvalue.Value + 1 + j, i * (int)Xvalue.Value + j,
-                            rnd != null ? rnd.Next(1, 5) + rnd.NextDouble() : 1));
+                            _rnd != null ? _rnd.Next(1, 5) + _rnd.NextDouble() : 1));
                     }
 
                     if (i != Yvalue.Value - 1)
                     {
                         TriangularLatticeDigraph.AddArc(new Arc(i * (int)Xvalue.Value + j, i * (int)Xvalue.Value + j % (int)Xvalue.Value + (int)Xvalue.Value,
-                            rnd != null ? rnd.Next(1, 5) + rnd.NextDouble() : 1));
+                            _rnd != null ? _rnd.Next(1, 5) + _rnd.NextDouble() : 1));
                         TriangularLatticeDigraph.AddArc(new Arc(i * (int)Xvalue.Value + j % (int)Xvalue.Value + (int)Xvalue.Value, i * (int)Xvalue.Value + j,
-                            rnd != null ? rnd.Next(1, 5) + rnd.NextDouble() : 1));
+                            _rnd != null ? _rnd.Next(1, 5) + _rnd.NextDouble() : 1));
                     }
 
                     if (i != Yvalue.Value - 1 && ((j != 0 && i % 2 != 0) || (j != Xvalue.Value - 1 && i % 2 == 0)))
                     {
                         TriangularLatticeDigraph.AddArc(new Arc(i * (int)Xvalue.Value + j, i * (int)Xvalue.Value + j % (int)Xvalue.Value + (int)Xvalue.Value + (int)Math.Pow(-1, i),
-                            rnd != null ? rnd.Next(1, 5) + rnd.NextDouble() : 1));
+                            _rnd != null ? _rnd.Next(1, 5) + _rnd.NextDouble() : 1));
                         TriangularLatticeDigraph.AddArc(new Arc(i * (int)Xvalue.Value + j % (int)Xvalue.Value + (int)Xvalue.Value + (int)Math.Pow(-1, i), i * (int)Xvalue.Value + j,
-                            rnd != null ? rnd.Next(1, 5) + rnd.NextDouble() : 1));
+                            _rnd != null ? _rnd.Next(1, 5) + _rnd.NextDouble() : 1));
                     }
                 }
         }
@@ -115,7 +115,7 @@ namespace CourseworkApp
         /// to allow or forbid random digraph parameters filling
         /// </summary>
         private void ParamsCheckBox_CheckedChanged(object sender, EventArgs e) =>
-            rnd = ParamsCheckBox.Checked ? new Random() : null;
+            _rnd = ParamsCheckBox.Checked ? new Random() : null;
 
         /// <summary>
         /// Closes the form

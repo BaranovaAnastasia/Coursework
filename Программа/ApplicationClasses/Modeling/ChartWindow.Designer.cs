@@ -33,6 +33,7 @@ namespace ApplicationClasses.Modeling
         {
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,35 +48,32 @@ namespace ApplicationClasses.Modeling
             // 
             // chart1
             // 
+            this.chart1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            chartArea1.Name = "Chart";
+            series1.ChartType = SeriesChartType.Line;
+            series1.Color = Color.DarkCyan;
+            series1.MarkerStyle = MarkerStyle.Circle;
+            series1.MarkerColor = Color.DarkCyan;
+            series1.ChartArea = "Chart";
+            series1.BorderWidth = 3;
+            series1.XValueType = ChartValueType.UInt32;
+            series1.YValueType = ChartValueType.Int32;
+            Font = new Font("Segoe UI", 9);
+            series1.ToolTip = "t* = #VALX,\n\rN = #VALY";
+            this.chart1.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(-2, 36);
             this.chart1.Name = "chart1";
+            series1.ChartArea = "Chart";
+            series1.Legend = "Legend1";
+            series1.Name = "Number of Dots";
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(801, 410);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
-            Series data = new Series("Number of Dots")
-            {
-                ChartType = SeriesChartType.Line,
-                Color = Color.DarkCyan,
-                MarkerStyle = MarkerStyle.Circle,
-                MarkerColor = Color.DarkCyan,
-                ChartArea = "Chart",
-                BorderWidth = 3,
-                XValueType = ChartValueType.UInt32,
-                YValueType = ChartValueType.Int32,
-                Font = new Font("Segoe UI", 9),
-                ToolTip = "t* = #VALX,\n\rN = #VALY"
-            };
-            this.chart1.Series.Add(data);
-            this.chart1.ChartAreas.Add("Chart");
-            this.chart1.Font = new Font("Segoe UI", 9);
-            this.chart1.ChartAreas[0].AxisX.Title = "t*, s";
-            this.chart1.ChartAreas[0].AxisY.Title = "Amount";
-            this.chart1.ChartAreas[0].AxisX.Interval = 1;
-            this.chart1.ChartAreas[0].AxisY.Interval = 5;
-            this.chart1.ChartAreas[0].AxisX.IsStartedFromZero = true;
-            this.chart1.ChartAreas[0].AxisY.IsStartedFromZero = true;
             // 
             // menuStrip1
             // 
@@ -85,7 +83,7 @@ namespace ApplicationClasses.Modeling
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 33);
+            this.menuStrip1.Size = new System.Drawing.Size(800, 36);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -94,7 +92,7 @@ namespace ApplicationClasses.Modeling
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 32);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // saveToolStripMenuItem
@@ -130,6 +128,7 @@ namespace ApplicationClasses.Modeling
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI Emoji", 9F);
             this.label1.Location = new System.Drawing.Point(-4, 426);
@@ -150,7 +149,6 @@ namespace ApplicationClasses.Modeling
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "ChartWindow";
             this.Text = "Number of Dots Chart";
-            this.SizeChanged += new System.EventHandler(this.ChartWindow_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

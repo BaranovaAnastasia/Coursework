@@ -38,7 +38,7 @@ namespace ApplicationClasses.Modeling
             }
 
             CheckDotsNumber(20000);
-            StartNewTimers(timers.Count - count);
+            StartNewTimers(stopwatches.Count - count);
         }
 
         /// <summary>
@@ -52,10 +52,10 @@ namespace ApplicationClasses.Modeling
             else GraphDrawing.DrawTheWholeGraphSandpile(digraph, false);
             for (var i = 0; i < involvedArcs.Count; i++)
             {
-                if (timers[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
+                if (stopwatches[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
                 {
                     digraph.State[involvedArcs[i].EndVertex]++;
-                    timers.RemoveAt(i);
+                    stopwatches.RemoveAt(i);
                     involvedArcs.RemoveAt(i);
 
                     i--;
@@ -66,7 +66,7 @@ namespace ApplicationClasses.Modeling
                     GetPoint(digraph.Vertices[involvedArcs[i].StartVertex],
                         digraph.Vertices[involvedArcs[i].EndVertex],
                         involvedArcs[i].Length,
-                        timers[i]);
+                        stopwatches[i]);
 
                 GraphDrawing.DrawDot(point);
             }
@@ -88,7 +88,7 @@ namespace ApplicationClasses.Modeling
             while (releaseCondition(vertexIndex))
             {
                 involvedArcs.AddRange(incidenceList[vertexIndex]);
-                timers.AddRange(incidenceList[vertexIndex].ConvertAll(arc => new Stopwatch()));
+                stopwatches.AddRange(incidenceList[vertexIndex].ConvertAll(arc => new Stopwatch()));
                 stateChange(vertexIndex);
                 digraph.TimeTillTheEndOfRefractoryPeriod[vertexIndex]?.Start();
             }
@@ -101,7 +101,7 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private void CheckDotsNumber(int limit)
         {
-            if (timers.Count > limit)
+            if (stopwatches.Count > limit)
             {
                 Stop();
                 MessageBox.Show("Operation has been aborted prematurely." + Environment.NewLine +
@@ -118,9 +118,9 @@ namespace ApplicationClasses.Modeling
         private void StartNewTimers(int count)
         {
             int fired = 0;
-            for (int i = timers.Count - 1; fired < count; i--, fired++)
+            for (int i = stopwatches.Count - 1; fired < count; i--, fired++)
             {
-                timers[i].Start();
+                stopwatches[i].Start();
                 digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Stop();
                 digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Start();
             }
@@ -134,7 +134,7 @@ namespace ApplicationClasses.Modeling
         {
             if (!modes.Contains(MovementModelingMode.Chart)
                 || numberOfDotsChart == null
-                || val == timers.Count) return;
+                || val == stopwatches.Count) return;
 
             AddNumberOfDotsChartPoint(mainStopwatch.ElapsedMilliseconds, val);
             AddNumberOfDotsChartPoint(mainStopwatch.ElapsedMilliseconds, involvedArcs.Count);

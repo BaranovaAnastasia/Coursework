@@ -13,7 +13,7 @@ namespace GraphClasses.Commands
         /// <summary>
         /// Vertex coordinates before moving
         /// </summary>
-        private Point initialPoint;
+        private Point oldPoint;
         /// <summary>
         /// New vertex coordinates
         /// </summary>
@@ -28,16 +28,16 @@ namespace GraphClasses.Commands
         /// </summary>
         /// <param name="digraph">Digraph whose vertex is moving</param>
         /// <param name="index">Vertex index</param>
-        /// <param name="initialPoint">Vertex coordinates before moving</param>
+        /// <param name="oldPoint">Vertex coordinates before moving</param>
         /// <param name="newPoint">New vertex coordinates</param>
         /// <exception cref="ArgumentNullException"/>
         /// <exception cref="ArgumentOutOfRangeException"/>
-        public MoveVertexCommand(Digraph digraph, int index, Point initialPoint, Point newPoint)
+        public MoveVertexCommand(Digraph digraph, int index, Point oldPoint, Point newPoint)
         {
             this.digraph = digraph ?? throw new ArgumentNullException(nameof(digraph));
             if (digraph.Vertices.Count <= index)
                 throw new ArgumentOutOfRangeException(nameof(index));
-            this.initialPoint = initialPoint;
+            this.oldPoint = oldPoint;
             this.newPoint = newPoint;
             this.index = index;
         }
@@ -52,6 +52,6 @@ namespace GraphClasses.Commands
         /// UnExecutes the command
         /// </summary>
         public void UnExecute() =>
-            digraph.Vertices[index] = new Vertex(initialPoint.X, initialPoint.Y);
+            digraph.Vertices[index] = new Vertex(oldPoint.X, oldPoint.Y);
     }
 }

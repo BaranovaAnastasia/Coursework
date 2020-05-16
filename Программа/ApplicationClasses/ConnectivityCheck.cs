@@ -34,7 +34,7 @@ namespace ApplicationClasses
         /// <summary>
         /// Adds graph edge to Adjacency List
         /// </summary>
-        public void AddEdge(Arc edge) => adjacencyList[edge.StartVertex].Add(edge.EndVertex);
+        public void AddArc(Arc edge) => adjacencyList[edge.StartVertex].Add(edge.EndVertex);
 
         /// <summary>
         /// Recursive DFS function
@@ -93,7 +93,7 @@ namespace ApplicationClasses
             if (digraph.Vertices.Count < 3) return false;
             ConnectivityCheck check = new ConnectivityCheck(digraph.Vertices.Count);
             foreach (Arc arc in digraph.Arcs)
-                check.AddEdge(arc);
+                check.AddArc(arc);
             return check.IsStronglyConnected();
         }
     }

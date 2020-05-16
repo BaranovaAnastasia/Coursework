@@ -93,7 +93,7 @@ namespace ApplicationClasses.Modeling
         /// <summary>
         /// Stopwatches for each moving dot
         /// </summary>
-        private readonly List<Stopwatch> timers = new List<Stopwatch>();
+        private readonly List<Stopwatch> stopwatches = new List<Stopwatch>();
         /// <summary>
         /// Stopwatch counting the time of the whole process
         /// </summary>
@@ -168,7 +168,7 @@ namespace ApplicationClasses.Modeling
         {
             mainTimer.Stop();
             mainStopwatch.Stop();
-            timers.ForEach(timer => timer.Stop());
+            stopwatches.ForEach(timer => timer.Stop());
             IsActive = false;
         }
 
@@ -178,7 +178,7 @@ namespace ApplicationClasses.Modeling
         public void Go()
         {
             mainTimer.Start();
-            timers.ForEach(timer => timer.Start());
+            stopwatches.ForEach(timer => timer.Start());
             IsActive = true;
         }
 

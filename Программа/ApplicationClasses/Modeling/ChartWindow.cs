@@ -14,16 +14,6 @@ namespace ApplicationClasses.Modeling
         public ChartWindow()
         {
             InitializeComponent();
-            ChartWindow_SizeChanged(null, null);
-        }
-
-        /// <summary>
-        /// Adjusts controls sizes to fit window size
-        /// </summary>
-        private void ChartWindow_SizeChanged(object sender, EventArgs e)
-        {
-            label1.Location = new Point(0, Height - 80);
-            chart1.Size = new Size(Width, Height - label1.Height - 80 > 0 ? Height - label1.Height - 80 : 0);
         }
 
         /// <summary>

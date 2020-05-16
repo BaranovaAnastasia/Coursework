@@ -18,7 +18,7 @@ namespace ApplicationClasses
         /// <summary>
         /// Graphics instance for drawing
         /// </summary>
-        private Graphics drawing;
+        private Graphics graphics;
 
         /// <summary>
         /// Pen for drawing vertices
@@ -87,8 +87,6 @@ namespace ApplicationClasses
             }
         }
 
-        private PointF point; //Helper variable
-
         /// <summary>
         /// Occurs when the Vertices radius changes
         /// </summary>
@@ -107,7 +105,7 @@ namespace ApplicationClasses
             if (width <= 0 || height <= 0)
                 throw new ArgumentException("The image cannot have negative dimensions");
             Image = new Bitmap(width, height);
-            drawing = Graphics.FromImage(Image);
+            graphics = Graphics.FromImage(Image);
             BackColor = Color.White;
             ClearTheSurface();
         }
@@ -115,7 +113,7 @@ namespace ApplicationClasses
         /// <summary>
         /// Cleans the drawing surface
         /// </summary>
-        public void ClearTheSurface() => drawing.Clear(BackColor);
+        public void ClearTheSurface() => graphics.Clear(BackColor);
 
         /// <summary>
         /// Draws graph vertices
@@ -127,35 +125,35 @@ namespace ApplicationClasses
         public void DrawVertex(int x, int y, int number, Pen pen = null)
         {
             if (pen == null) pen = verticesPen;
-            drawing.FillEllipse(Brushes.White, (x - R), (y - R), 2 * R, 2 * R);
-            drawing.DrawEllipse(pen, (x - R), (y - R), 2 * R, 2 * R);
-            point = number >= 100
+            graphics.FillEllipse(Brushes.White, (x - R), (y - R), 2 * R, 2 * R);
+            graphics.DrawEllipse(pen, (x - R), (y - R), 2 * R, 2 * R);
+            PointF point = number >= 100
                 ? new PointF(x - font.Size * 2f, y - font.Size * 1.4f)
                 : number >= 10
                     ? new PointF(x - font.Size * 1.4f, y - font.Size * 1.4f)
                     : new PointF(x - font.Size * 0.8f, y - font.Size * 1.4f);
 
-            drawing.DrawString(number.ToString(), font, brush, point);
+            graphics.DrawString(number.ToString(), font, brush, point);
         }
 
         /// <summary>
         /// Highlights graph vertex
         /// </summary>
         public void HighlightVertex(Vertex vertex) =>
-            drawing.DrawEllipse(highlightPen, (vertex.X - R), (vertex.Y - R), 2 * R, 2 * R);
+            graphics.DrawEllipse(highlightPen, (vertex.X - R), (vertex.Y - R), 2 * R, 2 * R);
 
         /// <summary>
         /// Highlights graph vertex before adding sand to it (sandpile modeling)
         /// </summary>
         public void HighlightVertexToAddSand(Vertex vertex) =>
-            drawing.DrawEllipse(highlightSandpilePen, (vertex.X - R * 1.1f), (vertex.Y - R * 1.1f), 2 * R * 1.1f, 2 * R * 1.1f);
+            graphics.DrawEllipse(highlightSandpilePen, (vertex.X - R * 1.1f), (vertex.Y - R * 1.1f), 2 * R * 1.1f, 2 * R * 1.1f);
 
 
         /// <summary>
         /// Removes highlighting from graph vertex
         /// </summary>
         public void UnhighlightVertex(Vertex vertex) =>
-            drawing.DrawEllipse(verticesPen, (vertex.X - R), (vertex.Y - R), 2 * R, 2 * R);
+            graphics.DrawEllipse(verticesPen, (vertex.X - R), (vertex.Y - R), 2 * R, 2 * R);
 
         /// <summary>
         /// Draws graph arc
@@ -174,7 +172,7 @@ namespace ApplicationClasses
             endVertex.Y = (int)((endVertex.Y + yOffset) * sizeCoef);
             if (arc.StartVertex == arc.EndVertex)
                 throw new ArgumentException("Arc cannot be a loop");
-            drawing.DrawLine(arcsPen, startVertex.X, startVertex.Y, endVertex.X, endVertex.Y);
+            graphics.DrawLine(arcsPen, startVertex.X, startVertex.Y, endVertex.X, endVertex.Y);
             DrawVertex(startVertex.X, startVertex.Y, arc.StartVertex + 1);
             DrawVertex(endVertex.X, endVertex.Y, arc.EndVertex + 1);
 
@@ -186,10 +184,10 @@ namespace ApplicationClasses
             double[] w = { -l[1] * R / 3, l[0] * R / 3 };
             double x = endVertex.X + l[0] * 2 * R + w[0];
             double y = endVertex.Y + l[1] * 2 * R + w[1];
-            drawing.DrawLine(arcsPen, (float)x, (float)y, (float)(endVertex.X + l[0] * R), (float)(endVertex.Y + l[1] * R));
+            graphics.DrawLine(arcsPen, (float)x, (float)y, (float)(endVertex.X + l[0] * R), (float)(endVertex.Y + l[1] * R));
             x -= 2 * w[0];
             y -= 2 * w[1];
-            drawing.DrawLine(arcsPen, (float)x, (float)y, (float)(endVertex.X + l[0] * R), (float)(endVertex.Y + l[1] * R));
+            graphics.DrawLine(arcsPen, (float)x, (float)y, (float)(endVertex.X + l[0] * R), (float)(endVertex.Y + l[1] * R));
         }
 
         /// <summary>
@@ -218,7 +216,7 @@ namespace ApplicationClasses
         /// </summary>
         /// <param name="p"></param>
         public void DrawDot(PointF p) =>
-            drawing.FillEllipse(Brushes.Black, p.X - 4, p.Y - 4, 8, 8);
+            graphics.FillEllipse(Brushes.Black, p.X - 4, p.Y - 4, 8, 8);
 
 
         #region Sandpile
@@ -299,12 +297,12 @@ namespace ApplicationClasses
                         : SandpilePalette[digraph.State[i]], 4f));
 
                 if (digraph.Stock.Contains(i))
-                    drawing.FillEllipse(Brushes.Black, 
+                    graphics.FillEllipse(Brushes.Black, 
                         (int)((digraph.Vertices[i].X + xOffset) * sizeCoef) - R, 
                         (int)((digraph.Vertices[i].Y + yOffset) * sizeCoef) - R, 
                         2 * R, 2 * R);
                 else
-                    drawing.DrawString($"({digraph.State[i]})", sandpileFont, brush,
+                    graphics.DrawString($"({digraph.State[i]})", sandpileFont, brush,
                         (int)((digraph.Vertices[i].X + xOffset) * sizeCoef) + R,
                         (int)((digraph.Vertices[i].Y + yOffset) * sizeCoef) - R - 5);
             }
@@ -417,14 +415,14 @@ namespace ApplicationClasses
             {
                 if(value.Height == 0 || value.Width == 0) return;
                 Image = new Bitmap(value.Width, value.Height);
-                drawing = Graphics.FromImage(Image);
+                graphics = Graphics.FromImage(Image);
             }
         }
 
         public void Dispose()
         {
             Image.Dispose();
-            drawing.Dispose();
+            graphics.Dispose();
             verticesPen.Dispose();
             arcsPen.Dispose();
             highlightPen.Dispose();

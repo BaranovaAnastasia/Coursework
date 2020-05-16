@@ -348,3 +348,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/Программа/ApplicationClasses/ClassDiagram1.cd
+/Программа/ApplicationClasses/ClassDiagram2.cd

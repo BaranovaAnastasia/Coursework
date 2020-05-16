@@ -16,10 +16,9 @@ namespace ApplicationClasses.Modeling
             Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch.ElapsedMilliseconds));
 
             int initialCount = involvedArcs.Count;
-            int numberOfNewDots = ProcessVertices() + ProcessDots();
-
+            ProcessDots();
+            ProcessVertices();
             UpdateChart(initialCount);
-            StartNewTimers(numberOfNewDots);
 
             if (!mainStopwatch.IsRunning) mainStopwatch.Start();
             if (IsMovementEnded) MovementEnded?.Invoke(this, null);
@@ -28,7 +27,7 @@ namespace ApplicationClasses.Modeling
         /// <summary>
         /// Process vertices states to release new dots
         /// </summary>
-        private int ProcessVertices()
+        private void ProcessVertices()
         {
             int count = involvedArcs.Count; // number of 'old' dots 
 
@@ -39,30 +38,26 @@ namespace ApplicationClasses.Modeling
             }
 
             CheckDotsNumber(20000);
-            return timers.Count - count;
+            StartNewTimers(timers.Count - count);
         }
 
         /// <summary>
         /// Draws all the moving dots, removes all the dots got to their destination
         /// and releases new dots if destination vertices are ready
         /// </summary>
-        private int ProcessDots()
+        private void ProcessDots()
         {
             if (type == MovementModelingType.Basic)
                 GraphDrawing.DrawTheWholeGraph(digraph);
             else GraphDrawing.DrawTheWholeGraphSandpile(digraph, false);
-
-            int count = timers.Count;    // number of 'old' dots
-            for (var i = 0; i < count; i++)
+            for (var i = 0; i < involvedArcs.Count; i++)
             {
                 if (timers[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
                 {
                     digraph.State[involvedArcs[i].EndVertex]++;
-                    ReleaseDots(involvedArcs[i].EndVertex);
                     timers.RemoveAt(i);
                     involvedArcs.RemoveAt(i);
 
-                    count--;
                     i--;
                     continue;
                 }
@@ -82,8 +77,6 @@ namespace ApplicationClasses.Modeling
                 GraphDrawing.DrawVertices(digraph);
             else GraphDrawing.DrawVerticesSandpile(digraph);
             DrawingSurface.Image = GraphDrawing.Image;
-
-            return timers.Count - count;
         }
 
         /// <summary>

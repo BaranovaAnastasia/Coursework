@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ApplicationClasses
 {
@@ -71,8 +72,7 @@ namespace ApplicationClasses
             // Fist DFS traversing
             DFS(0, visited);
             // Returning false there is a vertex that hasn't been visited 
-            foreach (bool v in visited)
-                if (!v) return false;
+            if (visited.Contains(false)) return false;
 
             // Inverting the graph
             ConnectivityCheck gr = GetInvertedGraph();

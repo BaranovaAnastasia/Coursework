@@ -79,8 +79,8 @@ namespace CourseworkApp
             new SaveFileDialog()
             {
                 FileName = "DigraphData",
-                DefaultExt = ".dsync",
-                Filter = @"Digraph data files (.dsync)|*.dsync"
+                DefaultExt = ".dgmm",
+                Filter = @"Digraph data files (.dgmm)|*.dgmm"
             };
 
         private static SaveFileDialog SaveFileDialogForImageSaving() =>
@@ -105,8 +105,8 @@ namespace CourseworkApp
         private static OpenFileDialog DigraphOpenFileDialog() =>
             new OpenFileDialog()
             {
-                DefaultExt = ".dsync",
-                Filter = @"Digraph data files (.dsync)|*.dsync"
+                DefaultExt = ".dgmm",
+                Filter = @"Digraph data files (.dgmm)|*.dgmm"
             };
 
         #endregion

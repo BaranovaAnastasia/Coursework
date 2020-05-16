@@ -415,6 +415,7 @@ namespace ApplicationClasses
             get => Image.Size;
             set
             {
+                if(value.Height == 0 || value.Width == 0) return;
                 Image = new Bitmap(value.Width, value.Height);
                 drawing = Graphics.FromImage(Image);
             }

@@ -10,7 +10,7 @@ namespace CourseworkApp
     public partial class MainWindow
     {
         private void NewProjectToolStripMenuItem_Click(object sender, EventArgs e) => Build_Click(sender, e);
-        private void OpenProjectToolStripMenuItem_Click(object sender, EventArgs e) => Open_Click(sender, e);
+        private void OpenProjectToolStripMenuItem_Click(object sender, EventArgs e) => Open_Click(TopMenu, e);
 
 
         #region Digraph saving

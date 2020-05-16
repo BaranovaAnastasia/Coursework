@@ -15,10 +15,19 @@ namespace CourseworkApp
         /// </summary>
         private void Build_Click(object sender, EventArgs e)
         {
+            if (sender != TopMenu)
+            {
+                SplashScreen.BringToFront();
+                SplashScreen.Visible = true;
+                this.Cursor = Cursors.WaitCursor;
+            }
             RefreshVariables();
             UpdateDigraphInfo();
             ChangeMainMenuState(false);
             ChangeDrawingElementsState(true);
+
+            SplashScreen.Visible = false;
+            Cursor = Cursors.Default;
         }
 
         /// <summary>
@@ -115,11 +124,6 @@ namespace CourseworkApp
         /// </summary>
         private void ChangeDrawingElementsState(bool state)
         {
-            SplashScreen.BringToFront();
-            SplashScreen.Visible = true;
-            Cursor = Cursors.WaitCursor;
-
-            Tools.Visible = state;
             DrawingSurface.Visible = state;
             AppParameters.Visible = state;
             if (!state)
@@ -133,8 +137,8 @@ namespace CourseworkApp
             MovementToolStripMenuItem.Visible = state;
 
             SandpilePanel.Size = new Size(358, 32);
-            SplashScreen.Visible = false;
-            Cursor = Cursors.Default;
+            Tools.Visible = state;
+            Tools.Refresh();
         }
 
         /// <summary>

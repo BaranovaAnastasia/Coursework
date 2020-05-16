@@ -18,7 +18,12 @@ namespace CourseworkApp
         {
             if (movement != null)
                 if (movement.IsActive || SandpilePanel.Visible) return; //returns is modeling is active or the app is waiting for other user's action
-                else { movement.Go(); return; }                         //restarts movement if it's not over yet but not active at the moment
+                else //restarts movement if it's not over yet but not active at the moment
+                {
+                    movement.Go();
+                    MovementToolStripMenuItem.Enabled = false; 
+                    return;
+                } 
             if (movement == null && isOnMovement) return;               //returns if movement is over but reset button wasn't clicked yet
 
             if (!CheckConnectivity()) return;   //Connectivity check before movement modeling start
@@ -58,6 +63,9 @@ namespace CourseworkApp
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();
 
+            MovementToolStripMenuItem.Text = @"Continue";
+            MovementToolStripMenuItem.Enabled = false;
+
             movement.StartMovementModeling();
         }
 
@@ -89,8 +97,8 @@ namespace CourseworkApp
             if (!ConnectivityCheck.IsGraphValid(digraph))
             {
                 MessageBox.Show(
-                    digraph.Vertices.Count >= 3 
-                        ? @"The graph is not strongly connected" 
+                    digraph.Vertices.Count >= 3
+                        ? @"The graph is not strongly connected"
                         : @"Not enough vertices",
                     @"Graph validation failed", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -108,7 +116,7 @@ namespace CourseworkApp
                 if (fileDialog.ShowDialog() == DialogResult.OK)
                     using (FileStream stream = new FileStream(fileDialog.FileName, FileMode.Create))
                     {
-                        var bmp = ((Bitmap) DrawingSurface.Image).GetHbitmap();
+                        var bmp = ((Bitmap)DrawingSurface.Image).GetHbitmap();
                         var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                             bmp,
                             IntPtr.Zero,
@@ -128,7 +136,9 @@ namespace CourseworkApp
         /// </summary>
         private void StopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (movement != null && movement.IsActive) movement.Stop();
+            if (movement == null || !movement.IsActive) return;
+            movement?.Stop();
+            MovementToolStripMenuItem.Enabled = true;
         }
 
         /// <summary>
@@ -166,6 +176,9 @@ namespace CourseworkApp
 
             ChangeWindowStateForMovementModeling(false);
 
+            MovementToolStripMenuItem.Text = @"Movement";
+            MovementToolStripMenuItem.Enabled = true;
+
             GC.Collect();
         }
 
@@ -192,9 +205,9 @@ namespace CourseworkApp
             }
 
             foreach (var page in AppParameters.Controls)
-                foreach (var control in ((TabPage) page).Controls)
+                foreach (var control in ((TabPage)page).Controls)
                     if (control is DataGridView dgv) dgv.ReadOnly = state;
-                    else ((Control) control).Enabled = !state;
+                    else ((Control)control).Enabled = !state;
 
             if (!state) AnimationCheckBox.Enabled = false;
 

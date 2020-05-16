@@ -3,7 +3,7 @@ using ApplicationClasses;
 
 namespace GraphClasses.Commands
 {
-    public class EnlargeDigraphCommand : ICommand
+    public class ResizeDigraphCommand : ICommand
     {
         /// <summary>
         /// Digraph whose vertex is moving
@@ -15,12 +15,12 @@ namespace GraphClasses.Commands
         private readonly double coefficient;
 
         /// <summary>
-        /// Initializes a new MoveVertexCommand instance
+        /// Initializes a new ResizeDigraphCommand instance
         /// </summary>
         /// <param name="digraph">Digraph whose vertex is moving</param>
         /// <param name="coefficient">X axis offset</param>
         /// <exception cref="ArgumentNullException"/>
-        public EnlargeDigraphCommand(Digraph digraph, double coefficient)
+        public ResizeDigraphCommand(Digraph digraph, double coefficient)
         {
             this.digraph = digraph ?? throw new ArgumentNullException(nameof(digraph));
             this.coefficient = coefficient;

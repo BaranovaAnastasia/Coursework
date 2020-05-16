@@ -84,7 +84,7 @@ namespace CourseworkApp
         /// </summary>
         private void EnlargeButton_Click(object sender, EventArgs e)
         {
-            var command = new EnlargeDigraphCommand(digraph, 1.1);
+            var command = new ResizeDigraphCommand(digraph, 1.1);
             commandsManager.Execute(command);
             UpdateImage();
         }
@@ -94,7 +94,7 @@ namespace CourseworkApp
         /// </summary>
         private void ReduceButton_Click(object sender, EventArgs e)
         {
-            var command = new EnlargeDigraphCommand(digraph, 0.9);
+            var command = new ResizeDigraphCommand(digraph, 0.9);
             commandsManager.Execute(command);
             UpdateImage();
         }

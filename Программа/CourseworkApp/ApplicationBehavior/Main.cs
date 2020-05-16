@@ -81,9 +81,9 @@ namespace CourseworkApp
             else if (e.KeyCode == Keys.Down)
                 yCoefficient += 10;
             else if (e.KeyCode == Keys.Oemplus)
-                enlargeCoefficient *= 1.1;
+                resizeCoefficient *= 1.1;
             else if (e.KeyCode == Keys.OemMinus)
-                enlargeCoefficient *= 0.9;
+                resizeCoefficient *= 0.9;
             else if (!isOnMovement && e.KeyCode == Keys.Z)
                 UndoButton_Click(sender, e);
             else if (!isOnMovement && e.KeyCode == Keys.Y)
@@ -91,8 +91,8 @@ namespace CourseworkApp
             else return;
 
             if (isOnMovement && SandpileTypeCheckBox.Checked)
-                graphDrawing.DrawTheWholeGraphSandpile(digraph, false, xCoefficient, yCoefficient, enlargeCoefficient);
-            else graphDrawing.DrawTheWholeGraph(digraph, xCoefficient, yCoefficient, enlargeCoefficient);
+                graphDrawing.DrawTheWholeGraphSandpile(digraph, false, xCoefficient, yCoefficient, resizeCoefficient);
+            else graphDrawing.DrawTheWholeGraph(digraph, xCoefficient, yCoefficient, resizeCoefficient);
             DrawingSurface.Image = graphDrawing.Image;
         }
         /// <summary>
@@ -113,9 +113,9 @@ namespace CourseworkApp
 
             if (e.KeyCode == Keys.OemMinus || e.KeyCode == Keys.Oemplus)
             {
-                var command = new EnlargeDigraphCommand(digraph, enlargeCoefficient);
+                var command = new ResizeDigraphCommand(digraph, resizeCoefficient);
                 commandsManager.Execute(command);
-                enlargeCoefficient = 1;
+                resizeCoefficient = 1;
             }
         }
 
@@ -153,7 +153,7 @@ namespace CourseworkApp
             MouseWheelTimer.Stop();
             if (xCoefficient != 0 || yCoefficient != 0)
                 MainWindow_KeyUp(MouseWheelTimer, new KeyEventArgs(Keys.Up));
-            if (Math.Abs(enlargeCoefficient - 1) > 0)
+            if (Math.Abs(resizeCoefficient - 1) > 0)
                 MainWindow_KeyUp(MouseWheelTimer, new KeyEventArgs(Keys.OemMinus));
         }
 

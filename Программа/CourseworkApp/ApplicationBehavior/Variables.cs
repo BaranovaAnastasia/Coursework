@@ -28,9 +28,9 @@ namespace CourseworkApp
         // Indicator showing whether the mouse button is pressed
         private bool isPressed;
         // Index of the moving vertex
-        private int movingVertexIndex = -1;
+        private int movedVertexIndex = -1;
         // Moving vertex itself
-        private Vertex movingVertex;
+        private Vertex movedVertex;
         // Time during which the movement occurred
         private DateTime ticks;
 
@@ -72,7 +72,7 @@ namespace CourseworkApp
         /// <summary>
         /// Resize coefficient
         /// </summary>
-        private double enlargeCoefficient = 1;
+        private double resizeCoefficient = 1;
 
         #region File dialods
         private static SaveFileDialog SaveFileDialogForDataSaving() =>

@@ -91,8 +91,8 @@ namespace CourseworkApp
             for (int i = 0; i < digraph.Vertices.Count; i++)
                 if (Math.Pow((digraph.Vertices[i].X - e.X), 2) + Math.Pow((digraph.Vertices[i].Y - e.Y), 2) <= Math.Pow(graphDrawing.R, 2))
                 {
-                    movingVertexIndex = i;
-                    movingVertex = digraph.Vertices[i];
+                    movedVertexIndex = i;
+                    movedVertex = digraph.Vertices[i];
                     ticks = DateTime.Now;
                     return;
                 }
@@ -103,9 +103,9 @@ namespace CourseworkApp
         /// </summary>
         private void DrawingSurface_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isOnMovement || !isPressed || CursorButton.Enabled || movingVertexIndex == -1) return;
+            if (isOnMovement || !isPressed || CursorButton.Enabled || movedVertexIndex == -1) return;
 
-            digraph.Vertices[movingVertexIndex] = new Vertex(e.X, e.Y);
+            digraph.Vertices[movedVertexIndex] = new Vertex(e.X, e.Y);
             graphDrawing.DrawTheWholeGraph(digraph);
             DrawingSurface.Image = graphDrawing.Image;
         }
@@ -119,9 +119,9 @@ namespace CourseworkApp
             if (isOnMovement || !isPressed || CursorButton.Enabled) return;
 
             bool highlight = (DateTime.Now - ticks).Ticks < 2250000 &&
-                Math.Pow(e.X - movingVertex.X, 2) + Math.Pow(e.Y - movingVertex.Y, 2) <= graphDrawing.R * graphDrawing.R;
+                Math.Pow(e.X - movedVertex.X, 2) + Math.Pow(e.Y - movedVertex.Y, 2) <= graphDrawing.R * graphDrawing.R;
 
-            if (movingVertexIndex != -1 && !highlight)
+            if (movedVertexIndex != -1 && !highlight)
             {
                 // Keeping the image inside the borders of the sheet
                 float x = e.X, y = e.Y;
@@ -130,31 +130,31 @@ namespace CourseworkApp
                 if (y < graphDrawing.R + 5)
                 {
                     y = graphDrawing.R + 5;
-                    if (GridAdjacencyMatrix[movingVertexIndex, movingVertexIndex].Value.ToString() != "0")
+                    if (GridAdjacencyMatrix[movedVertexIndex, movedVertexIndex].Value.ToString() != "0")
                         y += graphDrawing.R;
                 }
                 if (x > DrawingSurface.Width - graphDrawing.R - 5)
                 {
                     x = DrawingSurface.Width - graphDrawing.R - 5;
-                    if (GridAdjacencyMatrix[movingVertexIndex, movingVertexIndex].Value.ToString() != "0")
+                    if (GridAdjacencyMatrix[movedVertexIndex, movedVertexIndex].Value.ToString() != "0")
                         x -= graphDrawing.R;
                 }
                 if (y > DrawingSurface.Height - graphDrawing.R - 5)
                     y = DrawingSurface.Height - graphDrawing.R - 5;
 
-                var command = new MoveVertexCommand(digraph, movingVertexIndex,
-                    new Point(movingVertex.X, movingVertex.Y),
+                var command = new MoveVertexCommand(digraph, movedVertexIndex,
+                    new Point(movedVertex.X, movedVertex.Y),
                     new Point((int)x, (int)y));
                 commandsManager.Execute(command);
             }
 
-            if (highlight) digraph.Vertices[movingVertexIndex] = new Vertex(movingVertex.X, movingVertex.Y);
+            if (highlight) digraph.Vertices[movedVertexIndex] = new Vertex(movedVertex.X, movedVertex.Y);
             graphDrawing.DrawTheWholeGraph(digraph);
 
-            if (highlight) graphDrawing.HighlightVertex(digraph.Vertices[movingVertexIndex]);
+            if (highlight) graphDrawing.HighlightVertex(digraph.Vertices[movedVertexIndex]);
 
             DrawingSurface.Image = graphDrawing.Image;
-            movingVertexIndex = -1;
+            movedVertexIndex = -1;
             isPressed = false;
         }
 

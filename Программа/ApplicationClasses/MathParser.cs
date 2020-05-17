@@ -140,8 +140,7 @@ namespace MathParserTK
             new Dictionary<string, string>
             {
                 {"pi", NumberMaker +  Math.PI.ToString() },
-                {"e", NumberMaker + Math.E.ToString() },
-                {"exp", NumberMaker + Math.E.ToString() }
+                {"e", NumberMaker + Math.E.ToString() }
             };
 
         #endregion

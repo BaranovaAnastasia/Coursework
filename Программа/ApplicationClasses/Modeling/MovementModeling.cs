@@ -21,17 +21,17 @@ namespace ApplicationClasses.Modeling
         /// <param name="digraph">Digraph</param>
         /// <param name="speed">Speed in unit per millisecond</param>
         /// <param name="type">Modeling type</param>
-        /// <param name="modes">Array of additional modes</param>
+        /// <param name="actions">Array of additional actions</param>
         /// <exception cref="ArgumentNullException"/>
         /// <exception cref="ArgumentOutOfRangeException"/>
-        public MovementModeling(Digraph digraph, double speed, MovementModelingType type, MovementModelingMode[] modes)
+        public MovementModeling(Digraph digraph, double speed, MovementModelingType type, MovementModelingActions[] actions)
         {
             if (speed <= 0)
                 throw new ArgumentOutOfRangeException(nameof(speed), @"Speed of movement should be positive");
             this.digraph = digraph ?? throw new ArgumentNullException(nameof(digraph));
             this.speed = speed;
             this.type = type;
-            this.modes = modes;
+            this.actions = actions;
             IsActive = false;
 
             MovementEnded += (sender, e) =>
@@ -62,9 +62,9 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private readonly MovementModelingType type;
         /// <summary>
-        /// Array of additional modes
+        /// Array of additional actions
         /// </summary>
-        private readonly MovementModelingMode[] modes;
+        private readonly MovementModelingActions[] actions;
         /// <summary>
         /// GraphDrawing for drawing animation frames
         /// </summary>
@@ -146,7 +146,7 @@ namespace ApplicationClasses.Modeling
             }
 
             //Prepare chart windows if it's needed
-            if (modes.Contains(MovementModelingMode.Chart))
+            if (actions.Contains(MovementModelingActions.Chart))
             {
                 PrepareSandpileCharts();
                 PrepareBasicCharts();
@@ -155,7 +155,7 @@ namespace ApplicationClasses.Modeling
             }
 
             //Add gif frames collecting
-            if (modes.Contains(MovementModelingMode.Gif))
+            if (actions.Contains(MovementModelingActions.Gif))
                 mainTimer.Tick += TickAddFrame;
 
             Go(); 
@@ -303,21 +303,21 @@ namespace ApplicationClasses.Modeling
         #endregion
     }
 
-    public enum MovementModelingMode
+    public enum MovementModelingActions
     {
-        Animation,
-        Chart,
-        Gif
+        Animation = 0,
+        Chart = 1,
+        Gif = 2
     }
     public enum MovementModelingType
     {
-        Basic,
-        Sandpile
+        Basic = 0,
+        Sandpile = 1
     }
     public enum SandpileChartType
     {
-        NumberOfDotsChart,
-        AvalancheSizesDistributionChart
+        NumberOfDotsChart = 0,
+        AvalancheSizesDistributionChart = 1
     }
 
     public class MovementTickEventArgs : EventArgs

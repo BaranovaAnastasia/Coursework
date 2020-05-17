@@ -56,13 +56,13 @@ namespace CourseworkApp
 
             var wasSmthDeleted = false;
 
-            if (DigraphBuilding.TryToDeleteVertexAt(e.X, e.Y, digraph, graphDrawing.R, out int i))
+            if (DigraphComponentsRemover.TryToDeleteVertexAt(e.X, e.Y, digraph, graphDrawing.R, out int i))
             {
                 var command = new EraseVertexCommand(digraph, digraph.Vertices[i]);
                 commandsManager.Execute(command);
                 wasSmthDeleted = true;
             }
-            else if (DigraphBuilding.TryToDeleteArcAt(e.X, e.Y, digraph, out Arc arc))
+            else if (DigraphComponentsRemover.TryToDeleteArcAt(e.X, e.Y, digraph, out Arc arc))
             {
                 var command = new EraseArcCommand(digraph, arc);
                 commandsManager.Execute(command);

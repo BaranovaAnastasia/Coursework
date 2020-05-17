@@ -34,10 +34,10 @@ namespace CourseworkApp
                 ? MovementModelingType.Basic
                 : MovementModelingType.Sandpile;
 
-            var modes = GetModelingModes();
+            var actions = GetModelingActions();
             var sandpileChartTypes = GetChartTypes();
 
-            movement = new MovementModeling(digraph, (double)SpeedNumeric.Value / 1000, type, modes)
+            movement = new MovementModeling(digraph, (double)SpeedNumeric.Value / 1000, type, actions)
             {
                 GraphDrawing = graphDrawing,
                 DrawingSurface = DrawingSurface,
@@ -70,12 +70,13 @@ namespace CourseworkApp
         }
 
         #region Params Collecting methods
-        private MovementModelingMode[] GetModelingModes()
+
+        private MovementModelingActions[] GetModelingActions()
         {
-            var modes = new List<MovementModelingMode>(2);
-            if (AnimationCheckBox.Checked) modes.Add(MovementModelingMode.Animation);
-            if (ChartCheckBox.Checked) modes.Add(MovementModelingMode.Chart);
-            if (SaveGifCheckBox.Checked) modes.Add(MovementModelingMode.Gif);
+            var modes = new List<MovementModelingActions>(2);
+            if (AnimationCheckBox.Checked) modes.Add(MovementModelingActions.Animation);
+            if (ChartCheckBox.Checked) modes.Add(MovementModelingActions.Chart);
+            if (SaveGifCheckBox.Checked) modes.Add(MovementModelingActions.Gif);
             return modes.ToArray();
         }
 

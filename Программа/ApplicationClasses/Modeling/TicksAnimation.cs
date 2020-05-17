@@ -132,7 +132,7 @@ namespace ApplicationClasses.Modeling
         /// <param name="val">Number of dots before changes</param>
         private void UpdateChart(int val)
         {
-            if (!modes.Contains(MovementModelingMode.Chart)
+            if (!actions.Contains(MovementModelingActions.Chart)
                 || numberOfDotsChart == null
                 || val == stopwatches.Count) return;
 

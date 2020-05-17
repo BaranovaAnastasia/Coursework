@@ -6,7 +6,7 @@ namespace ApplicationClasses
     /// <summary>
     /// Provides static methods for arcs and vertices deletion
     /// </summary>
-    public static class DigraphBuilding
+    public static class DigraphComponentsRemover
     {
         #region Vertices and arcs deletion
 

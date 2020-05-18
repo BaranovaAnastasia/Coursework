@@ -35,9 +35,9 @@ namespace CourseworkApp
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.Build = new System.Windows.Forms.Button();
             this.Open = new System.Windows.Forms.Button();
             this.TopMenu = new System.Windows.Forms.MenuStrip();
@@ -78,6 +78,7 @@ namespace CourseworkApp
             this.EdgeButton = new System.Windows.Forms.Button();
             this.SandpilePalette = new System.Windows.Forms.DataGridView();
             this.RadiusTrackBar = new System.Windows.Forms.TrackBar();
+            this.EscButton = new System.Windows.Forms.Button();
             this.RandomGraph = new System.Windows.Forms.Button();
             this.TimeTextBox = new System.Windows.Forms.TextBox();
             this.SandpileLabel = new System.Windows.Forms.Label();
@@ -108,7 +109,6 @@ namespace CourseworkApp
             this.ParametersLegendLabel = new System.Windows.Forms.Label();
             this.ParamsLabel = new System.Windows.Forms.Label();
             this.AdjacencyPage = new System.Windows.Forms.TabPage();
-            this.EscButton = new System.Windows.Forms.Button();
             this.ArcLengthLabel = new System.Windows.Forms.Label();
             this.GridAdjacencyMatrix = new System.Windows.Forms.DataGridView();
             this.ArcLengthContainer = new System.Windows.Forms.SplitContainer();
@@ -335,7 +335,7 @@ namespace CourseworkApp
             this.RedoButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.RedoButton.Enabled = false;
             this.RedoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RedoButton.Image = global::Graph_WinForms.Properties.Resources.redo;
+            this.RedoButton.Image = global::CourseworkApp.Properties.Resources.redo;
             this.RedoButton.Location = new System.Drawing.Point(50, 131);
             this.RedoButton.Name = "RedoButton";
             this.RedoButton.Size = new System.Drawing.Size(33, 33);
@@ -350,7 +350,7 @@ namespace CourseworkApp
             this.UndoButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.UndoButton.Enabled = false;
             this.UndoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.UndoButton.Image = global::Graph_WinForms.Properties.Resources.undo;
+            this.UndoButton.Image = global::CourseworkApp.Properties.Resources.undo;
             this.UndoButton.Location = new System.Drawing.Point(10, 131);
             this.UndoButton.Name = "UndoButton";
             this.UndoButton.Size = new System.Drawing.Size(33, 33);
@@ -386,7 +386,7 @@ namespace CourseworkApp
             // ArcsColorDialogOpen
             // 
             this.ArcsColorDialogOpen.BackColor = System.Drawing.SystemColors.Control;
-            this.ArcsColorDialogOpen.BackgroundImage = global::Graph_WinForms.Properties.Resources.dots;
+            this.ArcsColorDialogOpen.BackgroundImage = global::CourseworkApp.Properties.Resources.dots;
             this.ArcsColorDialogOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ArcsColorDialogOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ArcsColorDialogOpen.Location = new System.Drawing.Point(48, 1);
@@ -414,7 +414,7 @@ namespace CourseworkApp
             // VertexColorDialogOpen
             // 
             this.VertexColorDialogOpen.BackColor = System.Drawing.SystemColors.Control;
-            this.VertexColorDialogOpen.BackgroundImage = global::Graph_WinForms.Properties.Resources.dots;
+            this.VertexColorDialogOpen.BackgroundImage = global::CourseworkApp.Properties.Resources.dots;
             this.VertexColorDialogOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.VertexColorDialogOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.VertexColorDialogOpen.Location = new System.Drawing.Point(48, 1);
@@ -429,7 +429,7 @@ namespace CourseworkApp
             // 
             this.Down.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Down.BackgroundImage = global::Graph_WinForms.Properties.Resources.down;
+            this.Down.BackgroundImage = global::CourseworkApp.Properties.Resources.down;
             this.Down.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Down.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
             this.Down.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -445,7 +445,7 @@ namespace CourseworkApp
             // 
             this.Up.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Up.BackgroundImage = global::Graph_WinForms.Properties.Resources.up;
+            this.Up.BackgroundImage = global::CourseworkApp.Properties.Resources.up;
             this.Up.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Up.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
             this.Up.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -462,7 +462,7 @@ namespace CourseworkApp
             this.Left.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Left.BackColor = System.Drawing.SystemColors.Control;
-            this.Left.BackgroundImage = global::Graph_WinForms.Properties.Resources.left;
+            this.Left.BackgroundImage = global::CourseworkApp.Properties.Resources.left;
             this.Left.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Left.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
             this.Left.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -478,7 +478,7 @@ namespace CourseworkApp
             // 
             this.Right.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Right.BackgroundImage = global::Graph_WinForms.Properties.Resources.right;
+            this.Right.BackgroundImage = global::CourseworkApp.Properties.Resources.right;
             this.Right.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Right.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
             this.Right.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -494,7 +494,7 @@ namespace CourseworkApp
             // 
             this.ReduceButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ReduceButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ReduceButton.Image = global::Graph_WinForms.Properties.Resources.minus;
+            this.ReduceButton.Image = global::CourseworkApp.Properties.Resources.minus;
             this.ReduceButton.Location = new System.Drawing.Point(50, 92);
             this.ReduceButton.Name = "ReduceButton";
             this.ReduceButton.Size = new System.Drawing.Size(33, 33);
@@ -508,7 +508,7 @@ namespace CourseworkApp
             this.EnlargeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.EnlargeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.EnlargeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EnlargeButton.Image = global::Graph_WinForms.Properties.Resources.plus;
+            this.EnlargeButton.Image = global::CourseworkApp.Properties.Resources.plus;
             this.EnlargeButton.Location = new System.Drawing.Point(10, 92);
             this.EnlargeButton.Name = "EnlargeButton";
             this.EnlargeButton.Size = new System.Drawing.Size(33, 33);
@@ -536,7 +536,7 @@ namespace CourseworkApp
             this.ClearButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ClearButton.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ClearButton.Image = global::Graph_WinForms.Properties.Resources.clear;
+            this.ClearButton.Image = global::CourseworkApp.Properties.Resources.clear;
             this.ClearButton.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ClearButton.Location = new System.Drawing.Point(10, 585);
             this.ClearButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -582,7 +582,7 @@ namespace CourseworkApp
             this.DeleteButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.DeleteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeleteButton.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.DeleteButton.Image = global::Graph_WinForms.Properties.Resources.eraser;
+            this.DeleteButton.Image = global::CourseworkApp.Properties.Resources.eraser;
             this.DeleteButton.Location = new System.Drawing.Point(50, 51);
             this.DeleteButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.DeleteButton.Name = "DeleteButton";
@@ -597,7 +597,7 @@ namespace CourseworkApp
             this.VertexButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.VertexButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.VertexButton.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.VertexButton.Image = global::Graph_WinForms.Properties.Resources.vertex;
+            this.VertexButton.Image = global::CourseworkApp.Properties.Resources.vertex;
             this.VertexButton.Location = new System.Drawing.Point(50, 10);
             this.VertexButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.VertexButton.Name = "VertexButton";
@@ -612,7 +612,7 @@ namespace CourseworkApp
             this.EdgeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.EdgeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EdgeButton.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.EdgeButton.Image = global::Graph_WinForms.Properties.Resources.arc;
+            this.EdgeButton.Image = global::CourseworkApp.Properties.Resources.arc;
             this.EdgeButton.Location = new System.Drawing.Point(10, 51);
             this.EdgeButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.EdgeButton.Name = "EdgeButton";
@@ -631,34 +631,34 @@ namespace CourseworkApp
             | System.Windows.Forms.AnchorStyles.Right)));
             this.SandpilePalette.BackgroundColor = System.Drawing.SystemColors.Control;
             this.SandpilePalette.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 7F);
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.SandpilePalette.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 7F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.SandpilePalette.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.SandpilePalette.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.SandpilePalette.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.SandpilePalette.DefaultCellStyle = dataGridViewCellStyle5;
             this.SandpilePalette.Location = new System.Drawing.Point(0, 0);
             this.SandpilePalette.Name = "SandpilePalette";
             this.SandpilePalette.ReadOnly = true;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 7F);
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.SandpilePalette.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 7F);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.SandpilePalette.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.SandpilePalette.RowHeadersWidth = 25;
             this.SandpilePalette.RowTemplate.Height = 28;
             this.SandpilePalette.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -683,6 +683,18 @@ namespace CourseworkApp
             this.RadiusTrackBar.Value = 8;
             this.RadiusTrackBar.ValueChanged += new System.EventHandler(this.RadiusTrackBar_ValueChanged);
             this.RadiusTrackBar.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Movement_PreviewKeyDown);
+            // 
+            // EscButton
+            // 
+            this.EscButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.EscButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EscButton.ForeColor = System.Drawing.SystemColors.Control;
+            this.EscButton.Location = new System.Drawing.Point(12, 243);
+            this.EscButton.Name = "EscButton";
+            this.EscButton.Size = new System.Drawing.Size(15, 15);
+            this.EscButton.TabIndex = 25;
+            this.EscButton.UseVisualStyleBackColor = true;
+            this.EscButton.Click += new System.EventHandler(this.EscButton_Click);
             // 
             // RandomGraph
             // 
@@ -1055,18 +1067,6 @@ namespace CourseworkApp
             this.AdjacencyPage.Size = new System.Drawing.Size(277, 620);
             this.AdjacencyPage.TabIndex = 0;
             this.AdjacencyPage.Text = "Adjacency and Arcs Length ";
-            // 
-            // EscButton
-            // 
-            this.EscButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.EscButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EscButton.ForeColor = System.Drawing.SystemColors.Control;
-            this.EscButton.Location = new System.Drawing.Point(12, 243);
-            this.EscButton.Name = "EscButton";
-            this.EscButton.Size = new System.Drawing.Size(15, 15);
-            this.EscButton.TabIndex = 25;
-            this.EscButton.UseVisualStyleBackColor = true;
-            this.EscButton.Click += new System.EventHandler(this.EscButton_Click);
             // 
             // ArcLengthLabel
             // 

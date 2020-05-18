@@ -92,7 +92,7 @@ namespace ApplicationClasses.Modeling
                 stateChange(vertexIndex);
                 digraph.TimeTillTheEndOfRefractoryPeriod[vertexIndex]?.Start();
             }
-            if (distributionChart != null) avalancheSize++;
+            if (distributionChart != null) avalanche[vertexIndex] = true;
         }
 
         /// <summary>

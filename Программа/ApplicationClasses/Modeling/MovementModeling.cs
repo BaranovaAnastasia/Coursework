@@ -105,7 +105,7 @@ namespace ApplicationClasses.Modeling
         /// <summary>
         /// Current avalanche size
         /// </summary>
-        private int avalancheSize;
+        private bool[] avalanche;
 
         private Predicate<int> releaseCondition;
         private Action<int> stateChange;
@@ -245,10 +245,11 @@ namespace ApplicationClasses.Modeling
             if (SandpileChartTypes.Contains(SandpileChartType.AvalancheSizesDistributionChart))
             {
                 distributionChart = new ChartWindow();
+                avalanche = new bool[digraph.Vertices.Count];
                 MovementEnded += delegate
                 {
                     AddAvalancheSize();
-                    avalancheSize = 0;
+                    avalanche = new bool[digraph.Vertices.Count];
                 };
                 distributionChart.AvalancheSizesDistributionChartPrepare();
             }

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Drawing;
+using System.Linq;
+using System.Net.Sockets;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Media.Imaging;
 
@@ -53,16 +56,18 @@ namespace ApplicationClasses.Modeling
         private void AddAvalancheSize()
         {
             if (distributionChart == null || !IsMovementEndedSandpile) return;
-            if (avalancheSize == 0) return;
+            if (!avalanche.Contains(true)) return;
+
+            int size = avalanche.Count(v => v);
 
             foreach (var point in distributionChart.chart1.Series[0].Points)
             {
-                if (Math.Abs(point.XValue - avalancheSize) > 0) continue;
-                distributionChart.chart1.Series[0].Points.AddXY(avalancheSize, point.YValues[0] + 1);
+                if (Math.Abs(point.XValue - size) > 0) continue;
+                distributionChart.chart1.Series[0].Points.AddXY(size, point.YValues[0] + 1);
                 distributionChart.chart1.Series[0].Points.Remove(point);
                 return;
             }
-            distributionChart.chart1.Series[0].Points.AddXY(avalancheSize, 1);
+            distributionChart.chart1.Series[0].Points.AddXY(size, 1);
         }
 
         /// <summary>

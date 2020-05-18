@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{04E9C74F-0AD3-4E88-A07B-A8ED73DCE944}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Graph_WinForms</RootNamespace>
-    <AssemblyName>Graph_WinForms</AssemblyName>
+    <RootNamespace>CourseworkApp</RootNamespace>
+    <AssemblyName>DotsMovementModelingApp</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -31,6 +31,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>CourseworkApp.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>circular.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -186,6 +192,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\clear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="circular.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

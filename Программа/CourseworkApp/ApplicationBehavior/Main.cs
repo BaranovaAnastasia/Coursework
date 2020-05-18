@@ -205,5 +205,14 @@ namespace CourseworkApp
                 ArcName.Items.RemoveAt(e.Index);
             };
         }
+
+        private void EscButton_Click(object sender, EventArgs e)
+        {
+            if(isOnMovement) return;
+            vStart = vEnd = -1;
+            movedVertexIndex = -1;
+            graphDrawing.DrawTheWholeGraph(digraph, xCoefficient, yCoefficient, resizeCoefficient);
+            DrawingSurface.Image = graphDrawing.Image;
+        }
     }
 }

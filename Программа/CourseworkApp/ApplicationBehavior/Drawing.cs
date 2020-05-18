@@ -118,7 +118,7 @@ namespace CourseworkApp
         {
             if (isOnMovement || !isPressed || CursorButton.Enabled) return;
 
-            bool highlight = (DateTime.Now - ticks).Ticks < 2250000 &&
+            bool highlight = (DateTime.Now - ticks).Ticks < 2200000 &&
                 Math.Pow(e.X - movedVertex.X, 2) + Math.Pow(e.Y - movedVertex.Y, 2) <= graphDrawing.R * graphDrawing.R;
 
             if (movedVertexIndex != -1 && !highlight)

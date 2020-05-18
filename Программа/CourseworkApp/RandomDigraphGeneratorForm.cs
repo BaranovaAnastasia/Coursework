@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using ApplicationClasses;
 
@@ -56,10 +57,13 @@ namespace CourseworkApp
             }
 
             int start = 0;
-            for (int i = 0; i < (int)NumOfVertices.Value - 1; i++)
+            while (visitedV.Contains(false))
             {
                 int end;
-                do { } while ((end = Rnd.Next(1, visitedV.Length)) == start || visitedV[end]);
+                do
+                {
+                } while ((end = Rnd.Next(1, visitedV.Length)) == start
+                              || !Digraph.Arcs.TrueForAll(arc => arc.StartVertex != start || arc.EndVertex != end));
                 Digraph.AddArc(new Arc(start, end, Rnd.Next(3, 11) + Rnd.NextDouble()));
                 visitedV[end] = true;
                 start = end;

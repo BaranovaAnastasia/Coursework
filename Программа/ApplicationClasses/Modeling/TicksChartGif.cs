@@ -21,7 +21,7 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private void TickAddFrame(object source, EventArgs e)
         {
-            var bmp = ((Bitmap) DrawingSurface.Image).GetHbitmap();
+            var bmp = ((Bitmap)DrawingSurface.Image).GetHbitmap();
             var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                 bmp,
                 IntPtr.Zero,
@@ -44,8 +44,9 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private void AddNumberOfDotsChartPoint(long time, int count)
         {
+            if (numberOfDotsChart == null) return;
             numberOfDotsChart?.chart1.Series[0].Points.AddXY(time / 1000.0, count);
-            if (count >= numberOfDotsChart?.chart1.ChartAreas[0].AxisY.Maximum
+            if (count >= numberOfDotsChart.chart1.ChartAreas[0].AxisY.Maximum
             || time / 1000.0 >= numberOfDotsChart?.chart1.ChartAreas[0].AxisX.Maximum)
                 ChangeChartInterval(numberOfDotsChart?.chart1);
         }
@@ -75,6 +76,7 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private static void ChangeChartInterval(Chart chart)
         {
+            if (chart == null) return;
             chart.ChartAreas[0].AxisY.Interval = (int)(chart.ChartAreas[0].AxisY.Maximum / 5);
             chart.ChartAreas[0].AxisX.Interval = (int)(chart.ChartAreas[0].AxisX.Maximum / 10);
         }

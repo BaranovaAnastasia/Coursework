@@ -26,7 +26,7 @@ namespace CourseworkApp
 
             if (!VertexButton.Enabled)
             {
-                if (digraph.Vertices.Count >= 100)
+                if (digraph.Vertices.Count >= 200)
                 {
                     MessageBox.Show(@"Too many vertices. Unable to add a new one.", @"Failed");
                     return;
@@ -253,10 +253,10 @@ namespace CourseworkApp
                             graphDrawing.UnhighlightVertex(digraph.Vertices[vStart]);
                             DrawingSurface.Image = graphDrawing.Image;
                             if (GridAdjacencyMatrix[i, vStart].Value.ToString() != "0")
-                                MessageBox.Show(@"The edge already exists", @"Error",
+                                MessageBox.Show($@"Unable to add {vStart + 1}-{i + 1} arc. Such an arc already exists", @"Error",
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                             if (vStart == i)
-                                MessageBox.Show(@"Arc cannot be a loop", @"Error",
+                                MessageBox.Show($@"Unable to add {vStart + 1}-{i + 1} arc. Arc cannot be a loop", @"Error",
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                             vStart = vEnd = -1;
                             return false;

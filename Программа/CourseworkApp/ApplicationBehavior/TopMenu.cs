@@ -64,7 +64,7 @@ namespace CourseworkApp
                     graphDrawing.Image.Save(stream, ImageFormat.Jpeg);
                 }
 
-                using (var stream = new StreamWriter(folderDialog.SelectedPath + @"\Data.digraph", false))
+                using (var stream = new StreamWriter(folderDialog.SelectedPath + @"\Data.dgmm", false))
                 {
                     XmlSerializer format = new XmlSerializer(typeof(Digraph));
                     format.Serialize(stream, digraph);

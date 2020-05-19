@@ -71,6 +71,7 @@ namespace CourseworkApp
                 var command = new ChangeArcLengthCommand(digraph, selectedArc, digraph.Arcs[selectedArc].Length, length);
                 command.Executed += (s, ea) => GridAdjacencyMatrix[digraph.Arcs[selectedArc].EndVertex, digraph.Arcs[selectedArc].StartVertex].Value = s;
                 commandsManager.Execute(command);
+                ArcLength.Text = length.ToString(CultureInfo.CurrentCulture);
             }
             catch (Exception)
             {

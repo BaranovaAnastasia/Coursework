@@ -252,6 +252,7 @@ namespace ApplicationClasses.Modeling
                     avalanche = new bool[digraph.Vertices.Count];
                 };
                 distributionChart.AvalancheSizesDistributionChartPrepare();
+                distributionChart.Closing += (sender, e) => distributionChart = null;
             }
         }
 
@@ -262,6 +263,7 @@ namespace ApplicationClasses.Modeling
         {
             if (type != MovementModelingType.Basic) return;
             numberOfDotsChart = new ChartWindow();
+            numberOfDotsChart.Closing += (sender, e) => numberOfDotsChart = null;
         }
 
         #region Helper static methods

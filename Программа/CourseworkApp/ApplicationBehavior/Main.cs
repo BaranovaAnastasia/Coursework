@@ -24,6 +24,9 @@ namespace CourseworkApp
                 DrawingSurface.Image = graphDrawing.Image;
             };
 
+            VerticesColorPanel.BackColor = graphDrawing.VerticesColor;
+            ArcsColorPanel.BackColor = graphDrawing.ArcsColor;
+
             graphDrawing.SandpilePaletteChanged +=
                 (sender, e) =>
                     DigraphInformationDemonstration.DisplaySandpileColors(graphDrawing, SandpilePalette);

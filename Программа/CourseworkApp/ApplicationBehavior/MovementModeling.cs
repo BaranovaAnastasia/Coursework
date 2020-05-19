@@ -21,7 +21,8 @@ namespace CourseworkApp
                 else //restarts movement if it's not over yet but not active at the moment
                 {
                     movement.Go();
-                    MovementToolStripMenuItem.Enabled = false; 
+                    MovementToolStripMenuItem.Enabled = false;
+                    StopToolStripMenuItem.Enabled = true;
                     return;
                 } 
             if (movement == null && isOnMovement) return;               //returns if movement is over but reset button wasn't clicked yet
@@ -48,6 +49,10 @@ namespace CourseworkApp
             movement.Tick += UpdateElapsedTime;
             movement.MovementEnded += StopToolStripMenuItem_Click;
 
+            MovementToolStripMenuItem.Text = @"Continue";
+            MovementToolStripMenuItem.Enabled = false;
+            StopToolStripMenuItem.Enabled = true;
+
             if (type == MovementModelingType.Sandpile)
             {
                 graphDrawing.DrawTheWholeGraphSandpile(digraph, true);
@@ -62,9 +67,6 @@ namespace CourseworkApp
 
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();
-
-            MovementToolStripMenuItem.Text = @"Continue";
-            MovementToolStripMenuItem.Enabled = false;
 
             movement.StartMovementModeling();
         }
@@ -140,6 +142,7 @@ namespace CourseworkApp
             if (movement == null || !movement.IsActive) return;
             movement?.Stop();
             MovementToolStripMenuItem.Enabled = true;
+            StopToolStripMenuItem.Enabled = false;
         }
 
         /// <summary>
@@ -158,7 +161,7 @@ namespace CourseworkApp
             {
                 digraph.State[i] = int.Parse(GridParameters[2, i].Value.ToString());
                 if (digraph.RefractoryPeriods[i] == 0) continue;
-                digraph.TimeTillTheEndOfRefractoryPeriod[i]?.Stop();
+                digraph.TimeTillTheEndOfRefractoryPeriod?[i]?.Stop();
             }
             digraph.ResetStock();
 
@@ -212,6 +215,7 @@ namespace CourseworkApp
 
             if (!state) AnimationCheckBox.Enabled = false;
 
+            MovementToolStripMenuItem.Enabled = state;
             StopToolStripMenuItem.Visible = state;
             ResetToolStripMenuItem.Visible = state;
         }

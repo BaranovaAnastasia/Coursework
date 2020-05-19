@@ -112,7 +112,7 @@ namespace CourseworkApp
             }
 
             await Task.Delay(1000);
-            movement.Go();
+            movement?.Go();
         }
 
 

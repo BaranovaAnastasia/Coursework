@@ -67,12 +67,12 @@
             this.VNLabel.AutoSize = true;
             this.VNLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.VNLabel.Font = new System.Drawing.Font("Segoe UI Historic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.VNLabel.Location = new System.Drawing.Point(3, 9);
+            this.VNLabel.Location = new System.Drawing.Point(17, 9);
             this.VNLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.VNLabel.Name = "VNLabel";
-            this.VNLabel.Size = new System.Drawing.Size(397, 38);
+            this.VNLabel.Size = new System.Drawing.Size(369, 38);
             this.VNLabel.TabIndex = 1;
-            this.VNLabel.Text = "Choose the number of vertices";
+            this.VNLabel.Text = "Enter the number of vertices";
             // 
             // VNRandom
             // 

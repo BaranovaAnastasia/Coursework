@@ -36,12 +36,13 @@ namespace ApplicationClasses.Modeling
             chart1.ChartAreas[0].AxisY.Title = "Frequency";
             chart1.ChartAreas[0].AxisX.Interval = 2;
             chart1.ChartAreas[0].AxisY.Interval = 5;
+            label1.Visible = false;
         }
 
         /// <summary>
         /// Saves chart image
         /// </summary>
-        private void SaveImage_Click(object sender, EventArgs e)
+        private void SaveData_Click(object sender, EventArgs e)
         {
             using (var saveDialog = new SaveFileDialog
             {
@@ -60,7 +61,7 @@ namespace ApplicationClasses.Modeling
         /// <summary>
         /// Saves chart data (.csv)
         /// </summary>
-        private void SaveData_Click(object sender, EventArgs e)
+        private void SaveImage_Click(object sender, EventArgs e)
         {
             using (var saveDialog = new SaveFileDialog
             {

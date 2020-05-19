@@ -13,15 +13,25 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private void TickModeling(object source, EventArgs e)
         {
-            Tick?.Invoke(this, new MovementTickEventArgs(mainStopwatch.ElapsedMilliseconds));
+            Tick?.Invoke(this, new MovementTickEventArgs(
+                indexOfFixedDot == -1
+                    ? (long)time
+                    : (long)(time - GetTime(involvedArcs[indexOfFixedDot].Length, speed) +
+                             stopwatches[indexOfFixedDot].ElapsedMilliseconds)));
 
             int initialCount = involvedArcs.Count;
             ProcessDots();
             ProcessVertices();
             UpdateChart(initialCount);
 
-            if (!mainStopwatch.IsRunning) mainStopwatch.Start();
-            if (IsMovementEnded) MovementEnded?.Invoke(this, null);
+            if (IsMovementEnded)
+            {
+                AddNumberOfDotsChartPoint((long)(time), initialCount);
+                AddNumberOfDotsChartPoint((long)(time), involvedArcs.Count);
+
+                Tick?.Invoke(this, new MovementTickEventArgs((long)time));
+                MovementEnded?.Invoke(this, null);
+            }
         }
 
         /// <summary>
@@ -38,6 +48,16 @@ namespace ApplicationClasses.Modeling
             }
 
             CheckDotsNumber(20000);
+
+            if (indexOfFixedDot == -1)
+            {
+                if (involvedArcs.Count == 0) return;
+                indexOfFixedDot = involvedArcs.Count - 1;
+                time += GetTime(involvedArcs[indexOfFixedDot].Length, speed) -
+                        stopwatches[indexOfFixedDot].ElapsedMilliseconds;
+                stopwatchTime.Start();
+            }
+
             StartNewTimers(stopwatches.Count - count);
         }
 
@@ -54,6 +74,14 @@ namespace ApplicationClasses.Modeling
             {
                 if (stopwatches[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
                 {
+                    if (i == indexOfFixedDot)
+                    {
+                        stopwatchTime.Reset();
+                        indexOfFixedDot = -1;
+                    }
+
+                    if (indexOfFixedDot > i) indexOfFixedDot--;
+
                     digraph.State[involvedArcs[i].EndVertex]++;
                     stopwatches.RemoveAt(i);
                     involvedArcs.RemoveAt(i);
@@ -87,6 +115,7 @@ namespace ApplicationClasses.Modeling
             if (!releaseCondition(vertexIndex)) return;
             while (releaseCondition(vertexIndex))
             {
+
                 involvedArcs.AddRange(incidenceList[vertexIndex]);
                 stopwatches.AddRange(incidenceList[vertexIndex].ConvertAll(arc => new Stopwatch()));
                 stateChange(vertexIndex);
@@ -134,10 +163,14 @@ namespace ApplicationClasses.Modeling
         {
             if (!actions.Contains(MovementModelingActions.Chart)
                 || numberOfDotsChart == null
-                || val == stopwatches.Count) return;
+                || val == stopwatches.Count
+                || indexOfFixedDot == -1) return;
 
-            AddNumberOfDotsChartPoint(mainStopwatch.ElapsedMilliseconds, val);
-            AddNumberOfDotsChartPoint(mainStopwatch.ElapsedMilliseconds, involvedArcs.Count);
+            long point = (long) (time -
+                                 GetTime(involvedArcs[indexOfFixedDot].Length, speed) +
+                                 stopwatches[indexOfFixedDot].ElapsedMilliseconds + stopwatchTime.ElapsedMilliseconds);
+            AddNumberOfDotsChartPoint(point, val);
+            AddNumberOfDotsChartPoint(point, involvedArcs.Count);
         }
     }
 }

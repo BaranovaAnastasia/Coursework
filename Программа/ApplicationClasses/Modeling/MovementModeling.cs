@@ -95,10 +95,6 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         private readonly List<Stopwatch> stopwatches = new List<Stopwatch>();
         /// <summary>
-        /// Stopwatch counting the time of the whole process
-        /// </summary>
-        private readonly Stopwatch mainStopwatch = new Stopwatch();
-        /// <summary>
         /// Timer updating the process data every few milliseconds
         /// </summary>
         private Timer mainTimer;
@@ -113,8 +109,9 @@ namespace ApplicationClasses.Modeling
         private ChartWindow numberOfDotsChart;
         private ChartWindow distributionChart;
 
-        private double time = 0;
+        private double time;
         private int indexOfFixedDot = -1;
+        readonly Stopwatch stopwatchTime = new Stopwatch();
 
         #endregion
 
@@ -170,7 +167,6 @@ namespace ApplicationClasses.Modeling
         public void Stop()
         {
             mainTimer.Stop();
-            mainStopwatch.Stop();
             stopwatches.ForEach(timer => timer.Stop());
             IsActive = false;
         }

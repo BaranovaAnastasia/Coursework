@@ -113,6 +113,9 @@ namespace ApplicationClasses.Modeling
         private ChartWindow numberOfDotsChart;
         private ChartWindow distributionChart;
 
+        private double time = 0;
+        private int indexOfFixedDot = -1;
+
         #endregion
 
         /// <summary>
@@ -177,6 +180,11 @@ namespace ApplicationClasses.Modeling
         /// </summary>
         public void Go()
         {
+            if (IsMovementEnded)
+            {
+                MovementEnded?.Invoke(this, null);
+                return;
+            }
             mainTimer.Start();
             stopwatches.ForEach(timer => timer.Start());
             IsActive = true;

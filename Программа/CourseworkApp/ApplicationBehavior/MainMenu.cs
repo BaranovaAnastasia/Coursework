@@ -194,6 +194,10 @@ namespace CourseworkApp
             RadiusTrackBar.Value = 8;
 
             commandsManager = new CommandsManager();
+            UndoButton.Enabled = RedoButton.Enabled = false;
+
+            graphDrawing.ArcsColor = ArcsColorPanel.BackColor = Color.FromArgb(80, Color.MidnightBlue);
+            graphDrawing.VerticesColor = VerticesColorPanel.BackColor = Color.MidnightBlue;
         }
 
         #endregion

@@ -214,5 +214,12 @@ namespace CourseworkApp
             graphDrawing.DrawTheWholeGraph(digraph, xCoefficient, yCoefficient, resizeCoefficient);
             DrawingSurface.Image = graphDrawing.Image;
         }
+
+        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (digraph.Vertices.Count == 0) return;
+            if (SaveGraph("Would you like to save the graph before leaving?", "Saving") == DialogResult.Cancel)
+                e.Cancel = true;
+        }
     }
 }

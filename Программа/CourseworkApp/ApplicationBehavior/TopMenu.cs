@@ -80,13 +80,10 @@ namespace CourseworkApp
         /// </summary>
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (digraph.Vertices.Count != 0
-                    && SaveGraph("Would you like to save the graph before leaving?", "Saving") == DialogResult.Cancel)
+            if (digraph.Vertices.Count == 0) Close();
+            if (SaveGraph("Would you like to save the graph before leaving?", "Saving") == DialogResult.Cancel)
                 return;
-
-            if (MessageBox.Show(@"Are you sure you want to leave?", @"Leaving",
-                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
-                Close();
+            Close();
         }
 
         /// <summary>

@@ -28,7 +28,7 @@ namespace CourseworkApp
             {
                 if (digraph.Vertices.Count >= 200)
                 {
-                    MessageBox.Show(@"Too many vertices. Unable to add a new one.", @"Failed");
+                    MessageBox.Show(@"Too many vertices. Unable to add a new one.", @"Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 var command = new AddVertexCommand(digraph, new Vertex(e.X, e.Y));

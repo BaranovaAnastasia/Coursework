@@ -44,7 +44,7 @@
             this.NumOfVertices.Location = new System.Drawing.Point(116, 57);
             this.NumOfVertices.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.NumOfVertices.Maximum = new decimal(new int[] {
-            50,
+            200,
             0,
             0,
             0});

@@ -304,7 +304,7 @@ namespace ApplicationClasses
                 else
                     graphics.DrawString($"({digraph.State[i]})", sandpileFont, brush,
                         (int)((digraph.Vertices[i].X + xOffset) * sizeCoef) + R,
-                        (int)((digraph.Vertices[i].Y + yOffset) * sizeCoef) - R - 5);
+                        (int)((digraph.Vertices[i].Y + yOffset) * sizeCoef) - R - 10f);
             }
         }
 

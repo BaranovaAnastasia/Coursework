@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CourseworkApp
@@ -20,12 +17,12 @@ namespace CourseworkApp
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new MainWindow());
             }
-            catch (ArgumentNullException e)
+            catch (Exception e)
             {
                 var message = "An unexpected fatal error has occurred. Exception message: " + e.Message +
                               Environment.NewLine + "The application will be closed." +
                               Environment.NewLine + "We apologize for the inconvenience.";
-                var caption = "Fatal error"; 
+                var caption = "Fatal error";
                 MessageBox.Show(message, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

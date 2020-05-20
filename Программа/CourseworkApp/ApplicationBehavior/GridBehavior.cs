@@ -75,7 +75,8 @@ namespace CourseworkApp
             }
             catch (Exception)
             {
-                MessageBox.Show(@"Invalid value", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@"Invalid value. Make sure the input value is greater than zero and is the correct mathematical expression.", 
+                    @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

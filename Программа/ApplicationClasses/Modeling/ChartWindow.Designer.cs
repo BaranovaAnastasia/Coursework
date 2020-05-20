@@ -52,10 +52,10 @@ namespace ApplicationClasses.Modeling
             this.chart1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea1.Name = "Chart";
             chartArea1.AxisX.Title = "t*, ms";
+            chartArea1.AxisY.TextOrientation = System.Windows.Forms.DataVisualization.Charting.TextOrientation.Rotated270;
             chartArea1.AxisY.Title = "Value";
-            chartArea1.AxisY.TextOrientation = TextOrientation.Rotated270;
+            chartArea1.Name = "Chart";
             this.chart1.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chart1.Legends.Add(legend1);
@@ -106,27 +106,27 @@ namespace ApplicationClasses.Modeling
             this.saveDataToolStripMenuItem,
             this.saveAllToolStripMenuItem});
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(151, 34);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.saveToolStripMenuItem.Text = "Save";
             // 
             // saveChartToolStripMenuItem
             // 
             this.saveChartToolStripMenuItem.Name = "saveChartToolStripMenuItem";
-            this.saveChartToolStripMenuItem.Size = new System.Drawing.Size(198, 34);
-            this.saveChartToolStripMenuItem.Text = "Save Chart";
+            this.saveChartToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveChartToolStripMenuItem.Text = "Save Image";
             this.saveChartToolStripMenuItem.Click += new System.EventHandler(this.SaveImage_Click);
             // 
             // saveDataToolStripMenuItem
             // 
             this.saveDataToolStripMenuItem.Name = "saveDataToolStripMenuItem";
-            this.saveDataToolStripMenuItem.Size = new System.Drawing.Size(198, 34);
+            this.saveDataToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.saveDataToolStripMenuItem.Text = "Save Data";
             this.saveDataToolStripMenuItem.Click += new System.EventHandler(this.SaveData_Click);
             // 
             // saveAllToolStripMenuItem
             // 
             this.saveAllToolStripMenuItem.Name = "saveAllToolStripMenuItem";
-            this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(198, 34);
+            this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.saveAllToolStripMenuItem.Text = "Save All";
             this.saveAllToolStripMenuItem.Click += new System.EventHandler(this.SaveAll_Click);
             // 

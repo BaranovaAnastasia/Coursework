@@ -58,13 +58,15 @@ namespace CourseworkApp
             {
                 if (folderDialog.ShowDialog() != DialogResult.OK) return;
 
-                using (var stream = new FileStream(folderDialog.SelectedPath + @"\Image.jpg", FileMode.Create))
+                Directory.CreateDirectory(folderDialog.SelectedPath + @"\Graph");
+
+                using (var stream = new FileStream(folderDialog.SelectedPath + @"\Graph\Image.jpg", FileMode.Create))
                 {
                     graphDrawing.DrawTheWholeGraph(digraph);
                     graphDrawing.Image.Save(stream, ImageFormat.Jpeg);
                 }
 
-                using (var stream = new StreamWriter(folderDialog.SelectedPath + @"\Data.dgmm", false))
+                using (var stream = new StreamWriter(folderDialog.SelectedPath + @"\Graph\Data.dgmm", false))
                 {
                     XmlSerializer format = new XmlSerializer(typeof(Digraph));
                     format.Serialize(stream, digraph);
@@ -78,13 +80,7 @@ namespace CourseworkApp
         /// <summary>
         /// Saves the graph if user wants to and closes the app
         /// </summary>
-        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (digraph.Vertices.Count == 0) Close();
-            if (SaveGraph("Would you like to save the graph before leaving?", "Saving") == DialogResult.Cancel)
-                return;
-            Close();
-        }
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e) => Close();
 
         /// <summary>
         /// Saves the graph if user wants to and goes to a start window

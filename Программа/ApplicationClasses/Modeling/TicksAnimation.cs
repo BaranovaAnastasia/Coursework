@@ -164,8 +164,9 @@ namespace ApplicationClasses.Modeling
                 Stop();
                 MessageBox.Show("Operation has been aborted prematurely." + Environment.NewLine +
                                 $"The number of dots exceeded the allowable mark of {limit}",
-                    "Operation Aborted");
-                MovementEnded?.Invoke(this, null);
+                    "Operation Aborted", MessageBoxButton.OK, MessageBoxImage.Error);
+                Tick?.Invoke(this, new MovementTickEventArgs((long)time));
+                MovementEnded?.Invoke(limit, null);
             }
         }
 
@@ -195,9 +196,9 @@ namespace ApplicationClasses.Modeling
                 || val == stopwatches.Count
                 || indexOfFixedDot == -1) return;
 
-            long point = (long)(time -
+            long point = (long) (time -
                                  GetTime(involvedArcs[indexOfFixedDot].Length, speed) +
-                                 stopwatches[indexOfFixedDot].ElapsedMilliseconds + stopwatchTime.ElapsedMilliseconds);
+                                 stopwatches[indexOfFixedDot].ElapsedMilliseconds);// + stopwatchTime.ElapsedMilliseconds);
             AddNumberOfDotsChartPoint(point, val);
             AddNumberOfDotsChartPoint(point, involvedArcs.Count);
         }

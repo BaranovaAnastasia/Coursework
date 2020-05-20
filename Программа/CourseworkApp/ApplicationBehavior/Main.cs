@@ -57,7 +57,7 @@ namespace CourseworkApp
             SplashScreen.Visible = true;
 
             graphDrawing.Size = DrawingSurface.Size;
-            if (BasicTypeCheckBox.Checked) graphDrawing.DrawTheWholeGraph(digraph);
+            if (BasicTypeCheckBox.Checked || !isOnMovement) graphDrawing.DrawTheWholeGraph(digraph);
             else graphDrawing.DrawTheWholeGraphSandpile(digraph, false);
             DrawingSurface.Image = graphDrawing.Image;
 
@@ -229,7 +229,7 @@ namespace CourseworkApp
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (digraph.Vertices.Count == 0) return;
-            if (SaveGraph("Would you like to save the graph before leaving?", "Saving") == DialogResult.Cancel)
+            if (SaveGraph("Would you like to save the graph before leaving? Otherwise, your graph will be lost", "Saving") == DialogResult.Cancel)
                 e.Cancel = true;
         }
     }

@@ -81,6 +81,7 @@ namespace CourseworkApp
         /// </summary>
         private void MovementEndedSandpileEventHandler(object sender, EventArgs e)
         {
+            if(sender is int) return;
             SandpilePanel.Visible = true;
             SandpilePanel.BringToFront();
         }
@@ -91,6 +92,7 @@ namespace CourseworkApp
         /// </summary>
         private async void RandomAddingLabel_Click(object sender, EventArgs e)
         {
+            if (sender is int) return;
             int rndVertex;
             do { rndVertex = Rnd.Next(digraph.Vertices.Count); }
             while (digraph.Stock.Contains(rndVertex));

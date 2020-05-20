@@ -91,10 +91,12 @@ namespace ApplicationClasses.Modeling
             {
                 if(folderBrowser.ShowDialog() != DialogResult.OK) return;
 
-                using (var stream = new FileStream(folderBrowser.SelectedPath + @"\ChartImage.jpg", FileMode.Create))
+                Directory.CreateDirectory(folderBrowser.SelectedPath + @"\Chart");
+
+                using (var stream = new FileStream(folderBrowser.SelectedPath + @"\Chart\ChartImage.jpg", FileMode.Create))
                     chart1.SaveImage(stream, ChartImageFormat.Jpeg);
 
-                using (var stream = new StreamWriter(folderBrowser.SelectedPath + @"\Data.csv", false))
+                using (var stream = new StreamWriter(folderBrowser.SelectedPath + @"\Chart\ChartData.csv", false))
                 {
                     stream.WriteLine(chart1.ChartAreas[0].AxisX.Title + ";" + chart1.ChartAreas[0].AxisY.Title);
                     foreach (var point in chart1.Series[0].Points)

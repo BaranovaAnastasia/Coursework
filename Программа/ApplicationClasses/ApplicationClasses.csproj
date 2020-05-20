@@ -88,6 +88,7 @@
     <Compile Include="Commands\AddVertexCommand.cs" />
     <Compile Include="Commands\ChangeColorCommand.cs" />
     <Compile Include="Commands\ChangeArcLengthCommand.cs" />
+    <Compile Include="Commands\ChangeRadiusCommand.cs" />
     <Compile Include="Commands\CommandsManager.cs" />
     <Compile Include="Commands\ResizeDigraphCommand.cs" />
     <Compile Include="Commands\EraseArcCommand.cs" />

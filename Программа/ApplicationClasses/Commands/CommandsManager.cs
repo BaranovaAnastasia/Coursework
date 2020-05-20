@@ -14,6 +14,9 @@ namespace GraphClasses.Commands
         /// </summary>
         public bool CanRedo => RedoStack.Count > 0;
 
+        public ICommand NextToUndo => UndoStack.Peek();
+        public ICommand NextToRedo => RedoStack.Peek();
+
         /// <summary>
         /// Stack of commands to undo
         /// </summary>

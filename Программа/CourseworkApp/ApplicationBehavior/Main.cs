@@ -158,6 +158,14 @@ namespace CourseworkApp
                 MainWindow_KeyUp(MouseWheelTimer, new KeyEventArgs(Keys.Up));
             if (Math.Abs(resizeCoefficient - 1) > 0)
                 MainWindow_KeyUp(MouseWheelTimer, new KeyEventArgs(Keys.OemMinus));
+            if (radiusChanged)
+            {
+                radiusChanged = false;
+                var command = new ChangeRadiusCommand(graphDrawing, radius, graphDrawing.R);
+                command.Executed += (s, ea) => RadiusTrackBar.Value = (int) s;
+                commandsManager.Execute(command);
+                radius = graphDrawing.R;
+            }
         }
 
         public new void Dispose()

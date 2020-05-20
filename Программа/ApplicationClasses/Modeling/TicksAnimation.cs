@@ -14,7 +14,7 @@ namespace ApplicationClasses.Modeling
         private void TickModeling(object source, EventArgs e)
         {
             Tick?.Invoke(this, new MovementTickEventArgs(
-                indexOfFixedDot == -1
+                indexOfFixedDot == -1 || indexOfFixedDot >= involvedArcs.Count
                     ? (long)time
                     : (long)(time - GetTime(involvedArcs[indexOfFixedDot].Length, speed) +
                              stopwatches[indexOfFixedDot].ElapsedMilliseconds)));
@@ -43,6 +43,24 @@ namespace ApplicationClasses.Modeling
 
             for (var i = 0; i < digraph.Vertices.Count; i++)
             {
+                if (indexOfFixedDot == -1 && i == index && releaseCondition(i))
+                {
+                    indexOfFixedDot = 0;
+
+                    for (int j = 0; j < incidenceList[i].Count; j++)
+                    {
+                        if (incidenceList[i][j].Length > incidenceList[i][indexOfFixedDot].Length)
+                            indexOfFixedDot = j;
+                    }
+
+                    time += GetTime(incidenceList[i][indexOfFixedDot].Length, speed);
+                    indexOfFixedDot += involvedArcs.Count;
+                    stopwatchTime.Reset();
+                    stopwatchTime.Start();
+                    index = -1;
+                }
+                else if (i == index) index = -1;
+
                 if (!releaseCondition(i)) continue;
                 ReleaseDots(i);
             }
@@ -52,17 +70,15 @@ namespace ApplicationClasses.Modeling
             if (indexOfFixedDot == -1)
             {
                 if (involvedArcs.Count == 0) return;
-                indexOfFixedDot = count;
-
-                for (int i = count; i < involvedArcs.Count; i++)
-                {
-                    if (involvedArcs[i].Length > involvedArcs[indexOfFixedDot].Length)
-                        indexOfFixedDot = i;
-                }
                 indexOfFixedDot = involvedArcs.Count - 1;
+                if (time == 0)
+                    for (int i = 0; i < involvedArcs.Count; i++)
+                    {
+                        if (involvedArcs[i].Length > involvedArcs[indexOfFixedDot].Length)
+                            indexOfFixedDot = i;
+                    }
                 time += GetTime(involvedArcs[indexOfFixedDot].Length, speed) -
-                        stopwatches[indexOfFixedDot].ElapsedMilliseconds;// + stopwatchTime.ElapsedMilliseconds;
-
+                        stopwatches[indexOfFixedDot].ElapsedMilliseconds;
                 stopwatchTime.Reset();
                 stopwatchTime.Start();
             }
@@ -70,6 +86,7 @@ namespace ApplicationClasses.Modeling
             StartNewTimers(stopwatches.Count - count);
         }
 
+        private int index = -1;
         /// <summary>
         /// Draws all the moving dots, removes all the dots got to their destination
         /// and releases new dots if destination vertices are ready
@@ -88,11 +105,13 @@ namespace ApplicationClasses.Modeling
                         stopwatchTime.Reset();
                         stopwatchTime.Start();
                         indexOfFixedDot = -1;
+                        index = involvedArcs[i].EndVertex;
                     }
 
                     if (indexOfFixedDot > i) indexOfFixedDot--;
 
                     digraph.State[involvedArcs[i].EndVertex]++;
+
                     stopwatches.RemoveAt(i);
                     involvedArcs.RemoveAt(i);
 
@@ -176,7 +195,7 @@ namespace ApplicationClasses.Modeling
                 || val == stopwatches.Count
                 || indexOfFixedDot == -1) return;
 
-            long point = (long) (time -
+            long point = (long)(time -
                                  GetTime(involvedArcs[indexOfFixedDot].Length, speed) +
                                  stopwatches[indexOfFixedDot].ElapsedMilliseconds + stopwatchTime.ElapsedMilliseconds);
             AddNumberOfDotsChartPoint(point, val);

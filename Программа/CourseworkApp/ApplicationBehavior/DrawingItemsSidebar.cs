@@ -77,6 +77,8 @@ namespace CourseworkApp
         {
             graphDrawing.R = RadiusTrackBar.Value;
             RadiusValueLabel.Text = @"R = " + RadiusTrackBar.Value;
+            MouseWheelTimer.Start();
+            radiusChanged = !radiusChanged;
         }
 
         /// <summary>
@@ -212,16 +214,20 @@ namespace CourseworkApp
         private void UndoButton_Click(object sender, EventArgs e)
         {
             if(isOnMovement) return;
+            radiusChanged = true;
             commandsManager.Undo();
             graphDrawing.DrawTheWholeGraph(digraph);
             DrawingSurface.Image = graphDrawing.Image;
+            radiusChanged = false;
         }
         private void RedoButton_Click(object sender, EventArgs e)
         {
             if(isOnMovement) return;
+            radiusChanged = true;
             commandsManager.Redo();
             graphDrawing.DrawTheWholeGraph(digraph);
             DrawingSurface.Image = graphDrawing.Image;
+            radiusChanged = false;
         }
     }
 }

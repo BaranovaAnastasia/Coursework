@@ -73,6 +73,12 @@ namespace CourseworkApp
         /// Resize coefficient
         /// </summary>
         private double resizeCoefficient = 1;
+        /// <summary>
+        /// Vertices radius
+        /// </summary>
+        private int radius = 8;
+
+        private bool radiusChanged;
 
         #region File dialods
         private static SaveFileDialog SaveFileDialogForDataSaving() =>

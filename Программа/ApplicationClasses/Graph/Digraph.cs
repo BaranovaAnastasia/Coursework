@@ -116,7 +116,7 @@ namespace ApplicationClasses
 
             Arcs = Arcs.ConvertAll(arc =>
                 new Arc(arc.StartVertex >= index ? arc.StartVertex + 1 : arc.StartVertex,
-                    arc.EndVertex >= index ? arc.EndVertex + 1 : arc.EndVertex));
+                    arc.EndVertex >= index ? arc.EndVertex + 1 : arc.EndVertex, arc.Length));
 
             VertexAdded?.Invoke(vertex, new DigraphChangedEventArgs(index));
         }

@@ -213,7 +213,11 @@ namespace CourseworkApp
                     if (control is DataGridView dgv) dgv.ReadOnly = state;
                     else ((Control)control).Enabled = !state;
 
-            if (!state) AnimationCheckBox.Enabled = false;
+            if (!state)
+            {
+                GridAdjacencyMatrix.ReadOnly = true;
+                AnimationCheckBox.Enabled = false;
+            }
 
             MovementToolStripMenuItem.Enabled = state;
             StopToolStripMenuItem.Visible = state;

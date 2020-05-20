@@ -40,15 +40,16 @@ namespace ApplicationClasses.Modeling
         }
 
         /// <summary>
-        /// Saves chart image
+        /// Saves chart data (.csv)
         /// </summary>
         private void SaveData_Click(object sender, EventArgs e)
         {
+
             using (var saveDialog = new SaveFileDialog
             {
-                FileName = "ChartData",
-                DefaultExt = ".csv",
-                Filter = @"CSV file (.csv)|*.csv"
+                FileName = "ChartImage",
+                DefaultExt = ".jpg",
+                Filter = @"JPEG Image (.jpeg)|*.jpeg"
             })
             {
 
@@ -59,15 +60,15 @@ namespace ApplicationClasses.Modeling
         }
 
         /// <summary>
-        /// Saves chart data (.csv)
+        /// Saves chart Image
         /// </summary>
         private void SaveImage_Click(object sender, EventArgs e)
         {
             using (var saveDialog = new SaveFileDialog
             {
-                FileName = "ChartImage",
-                DefaultExt = ".jpg",
-                Filter = @"JPEG Image (.jpeg)|*.jpeg"
+                FileName = "ChartData",
+                DefaultExt = ".csv",
+                Filter = @"CSV file (.csv)|*.csv"
             })
             {
 

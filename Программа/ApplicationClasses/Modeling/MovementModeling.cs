@@ -168,6 +168,7 @@ namespace ApplicationClasses.Modeling
         {
             mainTimer.Stop();
             stopwatches.ForEach(timer => timer.Stop());
+            stopwatchTime.Stop();
             IsActive = false;
         }
 
@@ -182,6 +183,8 @@ namespace ApplicationClasses.Modeling
                 return;
             }
             mainTimer.Start();
+            if(time > 0)
+                stopwatchTime.Start();
             stopwatches.ForEach(timer => timer.Start());
             IsActive = true;
         }

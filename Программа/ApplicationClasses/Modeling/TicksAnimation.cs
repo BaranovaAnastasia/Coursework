@@ -52,9 +52,18 @@ namespace ApplicationClasses.Modeling
             if (indexOfFixedDot == -1)
             {
                 if (involvedArcs.Count == 0) return;
+                indexOfFixedDot = count;
+
+                for (int i = count; i < involvedArcs.Count; i++)
+                {
+                    if (involvedArcs[i].Length > involvedArcs[indexOfFixedDot].Length)
+                        indexOfFixedDot = i;
+                }
                 indexOfFixedDot = involvedArcs.Count - 1;
                 time += GetTime(involvedArcs[indexOfFixedDot].Length, speed) -
-                        stopwatches[indexOfFixedDot].ElapsedMilliseconds;
+                        stopwatches[indexOfFixedDot].ElapsedMilliseconds;// + stopwatchTime.ElapsedMilliseconds;
+
+                stopwatchTime.Reset();
                 stopwatchTime.Start();
             }
 
@@ -77,6 +86,7 @@ namespace ApplicationClasses.Modeling
                     if (i == indexOfFixedDot)
                     {
                         stopwatchTime.Reset();
+                        stopwatchTime.Start();
                         indexOfFixedDot = -1;
                     }
 

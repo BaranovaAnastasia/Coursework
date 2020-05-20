@@ -183,5 +183,75 @@ namespace DotsMovementModelingApp
         }
 
         #endregion
+
+
+        #region Adding and removing vertices 
+
+        /// <summary>
+        /// Adds a new line and a row to Adjacency Matrix in DataGridView
+        /// </summary>
+        private void AddVertexToGridAdjacencyMatrix(int index)
+        {
+            var column = new DataGridViewColumn
+            {
+                Name = string.Empty,
+                HeaderText = (index + 1).ToString(),
+                FillWeight = 1,
+                Width = 35,
+                SortMode = DataGridViewColumnSortMode.NotSortable,
+                CellTemplate = new DataGridViewTextBoxCell()
+            };
+            GridAdjacencyMatrix.Columns.Insert(index, column);
+            GridAdjacencyMatrix.Rows.Insert(index);
+
+            for (int i = 0; i < digraph.Vertices.Count; i++)
+            {
+                GridAdjacencyMatrix[index, i].Value = 0;
+                GridAdjacencyMatrix[i, index].Value = 0;
+                GridAdjacencyMatrix.Columns[i].HeaderCell.Value = (i + 1).ToString();
+                GridAdjacencyMatrix.Rows[i].HeaderCell.Value = (i + 1).ToString();
+            }
+            GridAdjacencyMatrix.Rows[index].HeaderCell.Value = (index + 1).ToString();
+        }
+
+        private void RemoveVertexFromGridAdjacencyMatrix(int index)
+        {
+            GridAdjacencyMatrix.Columns.RemoveAt(index);
+            if (GridAdjacencyMatrix.Columns.Count != 0) GridAdjacencyMatrix.Rows.RemoveAt(index);
+            for (int j = index; j < digraph.Vertices.Count; j++)
+            {
+                GridAdjacencyMatrix.Columns[j].HeaderCell.Value = (j + 1).ToString();
+                GridAdjacencyMatrix.Rows[j].HeaderCell.Value = (j + 1).ToString();
+            }
+        }
+
+        private void AddVertexToGridParameters(int index)
+        {
+            if (GridParameters.ColumnCount == 0)
+            {
+                GridParameters.Columns.Add(String.Empty, "th");
+                GridParameters.Columns.Add(String.Empty, "p");
+                GridParameters.Columns.Add(String.Empty, "s");
+                for (int i = 0; i < GridParameters.ColumnCount; ++i)
+                {
+                    GridParameters.Columns[i].FillWeight = 1;
+                    GridParameters.Columns[i].Width = 70;
+                    GridParameters.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
+            }
+            GridParameters.Rows.Insert(index);
+            GridParameters.Rows[index].HeaderCell.Value = digraph.Vertices.Count.ToString();
+            GridParameters[0, index].Value = digraph.Thresholds[index];
+            GridParameters[1, index].Value = digraph.RefractoryPeriods[index];
+            GridParameters[2, index].Value = digraph.State[index];
+        }
+        private void RemoveVertexFromGridParameters(int index)
+        {
+            GridParameters.Rows.RemoveAt(index);
+            for (int j = index; j < digraph.Vertices.Count; j++)
+                GridParameters.Rows[j].HeaderCell.Value = (j + 1).ToString();
+        }
+
+        #endregion
     }
 }

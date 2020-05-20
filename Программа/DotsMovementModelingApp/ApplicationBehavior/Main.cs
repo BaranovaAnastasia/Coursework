@@ -1,8 +1,8 @@
-﻿using System;
+﻿using DotsMovementModelingAppLib;
+using DotsMovementModelingAppLib.Commands;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using DotsMovementModelingAppLib;
-using DotsMovementModelingAppLib.Commands;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
@@ -54,18 +54,12 @@ namespace DotsMovementModelingApp
             if (graphDrawing == null) return;
 
             Cursor = Cursors.WaitCursor;
-            SplashScreen.Visible = true;
-
             graphDrawing.Size = DrawingSurface.Size;
             if (BasicTypeCheckBox.Checked || !isOnMovement) graphDrawing.DrawTheWholeGraph(digraph);
             else graphDrawing.DrawTheWholeGraphSandpile(digraph, false);
             DrawingSurface.Image = graphDrawing.Image;
-
-            SplashScreen.Visible = false;
             Cursor = Cursors.Default;
         }
-
-        private bool isControlPressed;
 
         /// <summary>
         /// Moves digraph image on the drawing surface
@@ -75,29 +69,43 @@ namespace DotsMovementModelingApp
             if (e.KeyCode == Keys.ControlKey) isControlPressed = true;
             if (e.Modifiers != Keys.Control && !(sender is MouseEventArgs)) return;
 
-            if (e.KeyCode == Keys.Right)
-                xCoefficient += 10;
-            else if (e.KeyCode == Keys.Left)
-                xCoefficient -= 10;
-            else if (e.KeyCode == Keys.Up)
-                yCoefficient -= 10;
-            else if (e.KeyCode == Keys.Down)
-                yCoefficient += 10;
-            else if (e.KeyCode == Keys.Oemplus)
-                resizeCoefficient *= 1.1;
-            else if (e.KeyCode == Keys.OemMinus)
-                resizeCoefficient *= 0.9;
-            else if (!isOnMovement && e.KeyCode == Keys.Z)
-                UndoButton_Click(sender, e);
-            else if (!isOnMovement && e.KeyCode == Keys.Y)
-                RedoButton_Click(sender, e);
-            else return;
+            switch (e.KeyCode)
+            {
+                case Keys.Right:
+                    xCoefficient += 10;
+                    break;
+                case Keys.Left:
+                    xCoefficient -= 10;
+                    break;
+                case Keys.Up:
+                    yCoefficient -= 10;
+                    break;
+                case Keys.Down:
+                    yCoefficient += 10;
+                    break;
+                case Keys.Oemplus:
+                    resizeCoefficient *= 1.1;
+                    break;
+                case Keys.OemMinus:
+                    resizeCoefficient *= 0.9;
+                    break;
+                case Keys.Z:
+                    if (isOnMovement) break;
+                    UndoButton_Click(sender, e);
+                    break;
+                case Keys.Y:
+                    if (isOnMovement) break;
+                    RedoButton_Click(sender, e);
+                    break;
+                default: return;
+            }
 
             if (isOnMovement && SandpileTypeCheckBox.Checked)
                 graphDrawing.DrawTheWholeGraphSandpile(digraph, false, xCoefficient, yCoefficient, resizeCoefficient);
             else graphDrawing.DrawTheWholeGraph(digraph, xCoefficient, yCoefficient, resizeCoefficient);
             DrawingSurface.Image = graphDrawing.Image;
         }
+
         /// <summary>
         /// Executes commands to move digraph itself
         /// </summary>
@@ -148,6 +156,7 @@ namespace DotsMovementModelingApp
                 else if (e.Delta < 0) GraphBuilder_KeyDown(e, new KeyEventArgs(Keys.Down));
             }
         }
+
         /// <summary>
         /// Moves digraph itself according to mouse wheel scrolling
         /// </summary>
@@ -158,14 +167,32 @@ namespace DotsMovementModelingApp
                 MainWindow_KeyUp(MouseWheelTimer, new KeyEventArgs(Keys.Up));
             if (Math.Abs(resizeCoefficient - 1) > 0)
                 MainWindow_KeyUp(MouseWheelTimer, new KeyEventArgs(Keys.OemMinus));
-            if (radiusChanged)
-            {
-                radiusChanged = false;
-                var command = new ChangeRadiusCommand(graphDrawing, radius, graphDrawing.R);
-                command.Executed += (s, ea) => RadiusTrackBar.Value = (int) s;
-                commandsManager.Execute(command);
-                radius = graphDrawing.R;
-            }
+
+            if (!radiusChanged) return;
+            radiusChanged = false;
+            var command = new ChangeRadiusCommand(graphDrawing, radius, graphDrawing.R);
+            command.Executed += (s, ea) => RadiusTrackBar.Value = (int)s;
+            commandsManager.Execute(command);
+            //radius = graphDrawing.R;
+        }
+
+        /// <summary>
+        /// Removes selections
+        /// </summary>
+        private void EscButton_Click(object sender, EventArgs e)
+        {
+            if (isOnMovement) return;
+            vStart = vEnd = -1;
+            movedVertexIndex = -1;
+            graphDrawing.DrawTheWholeGraph(digraph, xCoefficient, yCoefficient, resizeCoefficient);
+            DrawingSurface.Image = graphDrawing.Image;
+        }
+
+        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (digraph.Vertices.Count == 0) return;
+            if (SaveGraph("Would you like to save the graph before leaving? Otherwise, your graph will be lost", "Saving") == DialogResult.Cancel)
+                e.Cancel = true;
         }
 
         public new void Dispose()
@@ -215,22 +242,6 @@ namespace DotsMovementModelingApp
                 GridAdjacencyMatrix[((Arc)sender).EndVertex, ((Arc)sender).StartVertex].Value = 0;
                 ArcName.Items.RemoveAt(e.Index);
             };
-        }
-
-        private void EscButton_Click(object sender, EventArgs e)
-        {
-            if(isOnMovement) return;
-            vStart = vEnd = -1;
-            movedVertexIndex = -1;
-            graphDrawing.DrawTheWholeGraph(digraph, xCoefficient, yCoefficient, resizeCoefficient);
-            DrawingSurface.Image = graphDrawing.Image;
-        }
-
-        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (digraph.Vertices.Count == 0) return;
-            if (SaveGraph("Would you like to save the graph before leaving? Otherwise, your graph will be lost", "Saving") == DialogResult.Cancel)
-                e.Cancel = true;
         }
     }
 }

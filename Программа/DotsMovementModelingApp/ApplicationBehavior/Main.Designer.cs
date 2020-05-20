@@ -194,7 +194,7 @@ namespace DotsMovementModelingApp
             this.saveToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.FileToolStripMenuItem.Name = "FileToolStripMenuItem";
-            this.FileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
+            this.FileToolStripMenuItem.Size = new System.Drawing.Size(54, 32);
             this.FileToolStripMenuItem.Text = "File";
             // 
             // newProjectToolStripMenuItem
@@ -253,7 +253,7 @@ namespace DotsMovementModelingApp
             // AboutToolStripMenuItem
             // 
             this.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem";
-            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(78, 29);
+            this.AboutToolStripMenuItem.Size = new System.Drawing.Size(78, 32);
             this.AboutToolStripMenuItem.Text = "About";
             this.AboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
@@ -268,7 +268,7 @@ namespace DotsMovementModelingApp
             // separator
             // 
             this.separator.Name = "separator";
-            this.separator.Size = new System.Drawing.Size(6, 29);
+            this.separator.Size = new System.Drawing.Size(6, 32);
             // 
             // MovementToolStripMenuItem
             // 

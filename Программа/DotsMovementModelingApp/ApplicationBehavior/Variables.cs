@@ -73,6 +73,7 @@ namespace DotsMovementModelingApp
         /// Resize coefficient
         /// </summary>
         private double resizeCoefficient = 1;
+        private bool isControlPressed;
         /// <summary>
         /// Vertices radius
         /// </summary>

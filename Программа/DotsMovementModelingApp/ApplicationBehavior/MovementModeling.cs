@@ -127,7 +127,6 @@ namespace DotsMovementModelingApp
                         movement.MovementGif.Frames.Add(BitmapFrame.Create(src));
                         movement.MovementGif.Save(stream);
                         DeleteObject(bmp);
-                        Text = movement.MovementGif.Frames.Count.ToString();
                     }
         }
 

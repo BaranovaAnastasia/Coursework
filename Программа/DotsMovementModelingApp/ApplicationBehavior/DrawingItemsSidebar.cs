@@ -1,8 +1,7 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using DotsMovementModelingAppLib;
+﻿using DotsMovementModelingAppLib;
 using DotsMovementModelingAppLib.Commands;
+using System;
+using System.Windows.Forms;
 
 namespace DotsMovementModelingApp
 {
@@ -19,6 +18,7 @@ namespace DotsMovementModelingApp
             VertexButton.Enabled = true;
             EdgeButton.Enabled = true;
             DeleteButton.Enabled = true;
+            EscButton_Click(sender, e);
         }
 
         /// <summary>
@@ -30,6 +30,7 @@ namespace DotsMovementModelingApp
             VertexButton.Enabled = false;
             EdgeButton.Enabled = true;
             DeleteButton.Enabled = true;
+            EscButton_Click(sender, e);
         }
 
         /// <summary>
@@ -41,6 +42,7 @@ namespace DotsMovementModelingApp
             VertexButton.Enabled = true;
             EdgeButton.Enabled = false;
             DeleteButton.Enabled = true;
+            EscButton_Click(sender, e);
         }
 
         /// <summary>
@@ -52,6 +54,7 @@ namespace DotsMovementModelingApp
             VertexButton.Enabled = true;
             EdgeButton.Enabled = true;
             DeleteButton.Enabled = false;
+            EscButton_Click(sender, e);
         }
 
         #endregion
@@ -158,7 +161,7 @@ namespace DotsMovementModelingApp
 
             command.Executed += (s, ea) =>
             {
-                VerticesColorPanel.BackColor = (Color)s;
+                VerticesColorPanel.BackColor = graphDrawing.VerticesColor;
                 graphDrawing.DrawTheWholeGraph(digraph);
                 DrawingSurface.Image = graphDrawing.Image;
             };
@@ -179,7 +182,7 @@ namespace DotsMovementModelingApp
 
             command.Executed += (s, ea) =>
             {
-                ArcsColorPanel.BackColor = (Color)s;
+                ArcsColorPanel.BackColor = graphDrawing.ArcsColor;
                 graphDrawing.DrawTheWholeGraph(digraph);
                 DrawingSurface.Image = graphDrawing.Image;
             };
@@ -213,7 +216,7 @@ namespace DotsMovementModelingApp
 
         private void UndoButton_Click(object sender, EventArgs e)
         {
-            if(isOnMovement) return;
+            if (isOnMovement) return;
             radiusChanged = true;
             commandsManager.Undo();
             graphDrawing.DrawTheWholeGraph(digraph);
@@ -222,7 +225,7 @@ namespace DotsMovementModelingApp
         }
         private void RedoButton_Click(object sender, EventArgs e)
         {
-            if(isOnMovement) return;
+            if (isOnMovement) return;
             radiusChanged = true;
             commandsManager.Redo();
             graphDrawing.DrawTheWholeGraph(digraph);

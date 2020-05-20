@@ -1,17 +1,18 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using DotsMovementModelingAppLib;
+using DotsMovementModelingAppLib.Commands;
+using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
-using DotsMovementModelingAppLib;
-using DotsMovementModelingAppLib.Commands;
 
 namespace DotsMovementModelingApp
 {
     public partial class MainWindow
     {
         /// <summary>
-        /// Draws vertices and arcs by mouse click on a drawing surface 
+        /// Draws vertices and arcs by mouse click on a drawing surface
+        /// or selects a vertex to add sand to during sandpile modeling
         /// </summary>
         private void DrawingSurface_MouseClick(object sender, MouseEventArgs e)
         {
@@ -28,7 +29,8 @@ namespace DotsMovementModelingApp
             {
                 if (digraph.Vertices.Count >= 200)
                 {
-                    MessageBox.Show(@"Too many vertices. Unable to add a new one.", @"Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(@"Too many vertices. Unable to add a new one.",
+                        @"Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 var command = new AddVertexCommand(digraph, new Vertex(e.X, e.Y));
@@ -54,28 +56,21 @@ namespace DotsMovementModelingApp
         {
             if (DeleteButton.Enabled || isOnMovement) return;
 
-            var wasSmthDeleted = false;
-
             if (DigraphComponentsRemover.TryToDeleteVertexAt(e.X, e.Y, digraph, graphDrawing.R, out int i))
             {
                 var command = new EraseVertexCommand(digraph, digraph.Vertices[i]);
                 commandsManager.Execute(command);
-                wasSmthDeleted = true;
+                graphDrawing.DrawTheWholeGraph(digraph);
+                DrawingSurface.Image = graphDrawing.Image;
             }
             else if (DigraphComponentsRemover.TryToDeleteArcAt(e.X, e.Y, digraph, out Arc arc))
             {
                 var command = new EraseArcCommand(digraph, arc);
                 commandsManager.Execute(command);
-                wasSmthDeleted = true;
-            }
-
-            if (wasSmthDeleted)
-            {
                 graphDrawing.DrawTheWholeGraph(digraph);
                 DrawingSurface.Image = graphDrawing.Image;
             }
         }
-
 
         /// <summary>
         /// Remembers vertex chosen for moving and point where the movement began
@@ -158,77 +153,6 @@ namespace DotsMovementModelingApp
             isPressed = false;
         }
 
-
-        #region Adding and removing vertices 
-
-        /// <summary>
-        /// Adds a new line and a row to Adjacency Matrix in DataGridView
-        /// </summary>
-        private void AddVertexToGridAdjacencyMatrix(int index)
-        {
-            var column = new DataGridViewColumn
-            {
-                Name = string.Empty,
-                HeaderText = (index + 1).ToString(),
-                FillWeight = 1,
-                Width = 35,
-                SortMode = DataGridViewColumnSortMode.NotSortable,
-                CellTemplate = new DataGridViewTextBoxCell()
-            };
-            GridAdjacencyMatrix.Columns.Insert(index, column);
-            GridAdjacencyMatrix.Rows.Insert(index);
-
-            for (int i = 0; i < digraph.Vertices.Count; i++)
-            {
-                GridAdjacencyMatrix[index, i].Value = 0;
-                GridAdjacencyMatrix[i, index].Value = 0;
-                GridAdjacencyMatrix.Columns[i].HeaderCell.Value = (i + 1).ToString();
-                GridAdjacencyMatrix.Rows[i].HeaderCell.Value = (i + 1).ToString();
-            }
-            GridAdjacencyMatrix.Rows[index].HeaderCell.Value = (index + 1).ToString();
-        }
-
-        private void RemoveVertexFromGridAdjacencyMatrix(int index)
-        {
-            GridAdjacencyMatrix.Columns.RemoveAt(index);
-            if (GridAdjacencyMatrix.Columns.Count != 0) GridAdjacencyMatrix.Rows.RemoveAt(index);
-            for (int j = index; j < digraph.Vertices.Count; j++)
-            {
-                GridAdjacencyMatrix.Columns[j].HeaderCell.Value = (j + 1).ToString();
-                GridAdjacencyMatrix.Rows[j].HeaderCell.Value = (j + 1).ToString();
-            }
-        }
-
-        private void AddVertexToGridParameters(int index)
-        {
-            if (GridParameters.ColumnCount == 0)
-            {
-                GridParameters.Columns.Add(String.Empty, "th");
-                GridParameters.Columns.Add(String.Empty, "p");
-                GridParameters.Columns.Add(String.Empty, "s");
-                for (int i = 0; i < GridParameters.ColumnCount; ++i)
-                {
-                    GridParameters.Columns[i].FillWeight = 1;
-                    GridParameters.Columns[i].Width = 70;
-                    GridParameters.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
-                }
-            }
-            GridParameters.Rows.Insert(index);
-            GridParameters.Rows[index].HeaderCell.Value = digraph.Vertices.Count.ToString();
-            GridParameters[0, index].Value = digraph.Thresholds[index];
-            GridParameters[1, index].Value = digraph.RefractoryPeriods[index];
-            GridParameters[2, index].Value = digraph.State[index];
-        }
-        private void RemoveVertexFromGridParameters(int index)
-        {
-            GridParameters.Rows.RemoveAt(index);
-            for (int j = index; j < digraph.Vertices.Count; j++)
-                GridParameters.Rows[j].HeaderCell.Value = (j + 1).ToString();
-        }
-
-        #endregion
-
-
         /// <summary>
         /// Finds vertices chosen for creating a new arc 
         /// </summary>
@@ -269,7 +193,6 @@ namespace DotsMovementModelingApp
                 }
             return false;
         }
-
 
         /// <summary>
         /// Searches for a vertex at (x, y) and turns it into a stock vertex

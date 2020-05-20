@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Drawing;
-using ApplicationClasses;
+using DotsMovementModelingAppLib;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using System.IO;
-using GraphClasses.Commands;
+using DotsMovementModelingAppLib.Commands;
 
-namespace CourseworkApp
+namespace DotsMovementModelingApp
 {
     public partial class MainWindow
     {

@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms.DataVisualization.Charting;
 
-namespace ApplicationClasses.Modeling
+namespace DotsMovementModelingAppLib.Modeling
 {
     partial class ChartWindow
     {

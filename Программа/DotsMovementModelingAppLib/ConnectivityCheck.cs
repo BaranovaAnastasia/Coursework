@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ApplicationClasses
+namespace DotsMovementModelingAppLib
 {
     public class ConnectivityCheck
     {

@@ -1,7 +1,7 @@
 ﻿using System;
-using ApplicationClasses;
+using DotsMovementModelingAppLib;
 
-namespace GraphClasses.Commands
+namespace DotsMovementModelingAppLib.Commands
 {
     public class ChangeRadiusCommand : ICommand
     {

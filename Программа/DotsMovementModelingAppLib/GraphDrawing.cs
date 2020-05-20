@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using ApplicationClasses.Modeling;
+using DotsMovementModelingAppLib.Modeling;
 
-namespace ApplicationClasses
+namespace DotsMovementModelingAppLib
 {
     public class GraphDrawing : IDisposable
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace ApplicationClasses
+namespace DotsMovementModelingAppLib
 {
     /// <summary>
     /// Provides static methods for arcs and vertices deletion

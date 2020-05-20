@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GraphClasses.Commands
+namespace DotsMovementModelingAppLib.Commands
 {
     public class CommandsManager
     {

@@ -1,11 +1,11 @@
-﻿using ApplicationClasses;
+﻿using DotsMovementModelingAppLib;
 using System;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.Xml.Serialization;
 using System.IO;
 
-namespace CourseworkApp
+namespace DotsMovementModelingApp
 {
     public partial class MainWindow
     {

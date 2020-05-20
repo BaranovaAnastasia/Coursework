@@ -1,10 +1,10 @@
 ﻿using System;
-using ApplicationClasses;
+using DotsMovementModelingAppLib;
 using System.Windows.Forms;
-using ApplicationClasses.Modeling;
-using GraphClasses.Commands;
+using DotsMovementModelingAppLib.Modeling;
+using DotsMovementModelingAppLib.Commands;
 
-namespace CourseworkApp
+namespace DotsMovementModelingApp
 {
     public partial class MainWindow
     {

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using ApplicationClasses;
-using GraphClasses.Commands;
+using DotsMovementModelingAppLib;
+using DotsMovementModelingAppLib.Commands;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
-namespace CourseworkApp
+namespace DotsMovementModelingApp
 {
     public partial class MainWindow : Form, IDisposable
     {

@@ -4,10 +4,10 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
-using ApplicationClasses;
-using ApplicationClasses.Modeling;
+using DotsMovementModelingAppLib;
+using DotsMovementModelingAppLib.Modeling;
 
-namespace CourseworkApp
+namespace DotsMovementModelingApp
 {
     public partial class MainWindow
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
-namespace ApplicationClasses
+namespace DotsMovementModelingAppLib
 {
     /// <summary>
     /// Represents a digraph

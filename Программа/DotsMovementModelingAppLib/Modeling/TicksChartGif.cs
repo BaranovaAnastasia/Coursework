@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Drawing;
-using System.Linq;
-using System.Net.Sockets;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Media.Imaging;
+using System.Linq;
 
-namespace ApplicationClasses.Modeling
+namespace DotsMovementModelingAppLib.Modeling
 {
     public partial class MovementModeling
     {

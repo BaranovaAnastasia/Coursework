@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Windows;
+using  System.Linq;
 
-namespace ApplicationClasses.Modeling
+namespace DotsMovementModelingAppLib.Modeling
 {
     public partial class MovementModeling
     {

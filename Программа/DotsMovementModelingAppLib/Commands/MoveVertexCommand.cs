@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Drawing;
-using ApplicationClasses;
+using DotsMovementModelingAppLib;
 
-namespace GraphClasses.Commands
+namespace DotsMovementModelingAppLib.Commands
 {
     public class MoveVertexCommand : ICommand
     {

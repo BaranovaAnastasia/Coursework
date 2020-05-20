@@ -1,5 +1,5 @@
 ﻿
-namespace GraphClasses.Commands
+namespace DotsMovementModelingAppLib.Commands
 {
     public interface ICommand
     {

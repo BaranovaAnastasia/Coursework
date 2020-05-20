@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
-using ApplicationClasses;
-using GraphClasses.Commands;
+using DotsMovementModelingAppLib;
+using DotsMovementModelingAppLib.Commands;
 
-namespace CourseworkApp
+namespace DotsMovementModelingApp
 {
     public partial class MainWindow
     {

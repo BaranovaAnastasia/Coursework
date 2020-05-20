@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{04E9C74F-0AD3-4E88-A07B-A8ED73DCE944}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>CourseworkApp</RootNamespace>
+    <RootNamespace>DotsMovementModelingApp</RootNamespace>
     <AssemblyName>DotsMovementModelingApp</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>CourseworkApp.Program</StartupObject>
+    <StartupObject>DotsMovementModelingApp.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>circular.ico</ApplicationIcon>
@@ -146,12 +146,6 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ApplicationClasses\ApplicationClasses.csproj">
-      <Project>{eabe1dc0-cb89-4af3-95b6-5466b037b9ad}</Project>
-      <Name>ApplicationClasses</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\cursor.png" />
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +189,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="circular.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotsMovementModelingAppLib\DotsMovementModelingAppLib.csproj">
+      <Project>{eabe1dc0-cb89-4af3-95b6-5466b037b9ad}</Project>
+      <Name>DotsMovementModelingAppLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

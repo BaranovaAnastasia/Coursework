@@ -3,7 +3,7 @@ using System.Runtime.Remoting.Channels;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace CourseworkApp
+namespace DotsMovementModelingApp
 {
     partial class MainWindow
     {
@@ -335,7 +335,7 @@ namespace CourseworkApp
             this.RedoButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.RedoButton.Enabled = false;
             this.RedoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.RedoButton.Image = global::CourseworkApp.Properties.Resources.redo;
+            this.RedoButton.Image = global::DotsMovementModelingApp.Properties.Resources.redo;
             this.RedoButton.Location = new System.Drawing.Point(50, 131);
             this.RedoButton.Name = "RedoButton";
             this.RedoButton.Size = new System.Drawing.Size(33, 33);
@@ -350,7 +350,7 @@ namespace CourseworkApp
             this.UndoButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.UndoButton.Enabled = false;
             this.UndoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.UndoButton.Image = global::CourseworkApp.Properties.Resources.undo;
+            this.UndoButton.Image = global::DotsMovementModelingApp.Properties.Resources.undo;
             this.UndoButton.Location = new System.Drawing.Point(10, 131);
             this.UndoButton.Name = "UndoButton";
             this.UndoButton.Size = new System.Drawing.Size(33, 33);
@@ -386,7 +386,7 @@ namespace CourseworkApp
             // ArcsColorDialogOpen
             // 
             this.ArcsColorDialogOpen.BackColor = System.Drawing.SystemColors.Control;
-            this.ArcsColorDialogOpen.BackgroundImage = global::CourseworkApp.Properties.Resources.dots;
+            this.ArcsColorDialogOpen.BackgroundImage = global::DotsMovementModelingApp.Properties.Resources.dots;
             this.ArcsColorDialogOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ArcsColorDialogOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ArcsColorDialogOpen.Location = new System.Drawing.Point(48, 1);
@@ -414,7 +414,7 @@ namespace CourseworkApp
             // VertexColorDialogOpen
             // 
             this.VertexColorDialogOpen.BackColor = System.Drawing.SystemColors.Control;
-            this.VertexColorDialogOpen.BackgroundImage = global::CourseworkApp.Properties.Resources.dots;
+            this.VertexColorDialogOpen.BackgroundImage = global::DotsMovementModelingApp.Properties.Resources.dots;
             this.VertexColorDialogOpen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.VertexColorDialogOpen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.VertexColorDialogOpen.Location = new System.Drawing.Point(48, 1);
@@ -429,7 +429,7 @@ namespace CourseworkApp
             // 
             this.Down.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Down.BackgroundImage = global::CourseworkApp.Properties.Resources.down;
+            this.Down.BackgroundImage = global::DotsMovementModelingApp.Properties.Resources.down;
             this.Down.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Down.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
             this.Down.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -445,7 +445,7 @@ namespace CourseworkApp
             // 
             this.Up.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Up.BackgroundImage = global::CourseworkApp.Properties.Resources.up;
+            this.Up.BackgroundImage = global::DotsMovementModelingApp.Properties.Resources.up;
             this.Up.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Up.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
             this.Up.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -462,7 +462,7 @@ namespace CourseworkApp
             this.Left.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Left.BackColor = System.Drawing.SystemColors.Control;
-            this.Left.BackgroundImage = global::CourseworkApp.Properties.Resources.left;
+            this.Left.BackgroundImage = global::DotsMovementModelingApp.Properties.Resources.left;
             this.Left.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Left.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
             this.Left.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -478,7 +478,7 @@ namespace CourseworkApp
             // 
             this.Right.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Right.BackgroundImage = global::CourseworkApp.Properties.Resources.right;
+            this.Right.BackgroundImage = global::DotsMovementModelingApp.Properties.Resources.right;
             this.Right.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.Right.FlatAppearance.BorderColor = System.Drawing.Color.DarkGray;
             this.Right.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -494,7 +494,7 @@ namespace CourseworkApp
             // 
             this.ReduceButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ReduceButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ReduceButton.Image = global::CourseworkApp.Properties.Resources.minus;
+            this.ReduceButton.Image = global::DotsMovementModelingApp.Properties.Resources.minus;
             this.ReduceButton.Location = new System.Drawing.Point(50, 92);
             this.ReduceButton.Name = "ReduceButton";
             this.ReduceButton.Size = new System.Drawing.Size(33, 33);
@@ -508,7 +508,7 @@ namespace CourseworkApp
             this.EnlargeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.EnlargeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.EnlargeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EnlargeButton.Image = global::CourseworkApp.Properties.Resources.plus;
+            this.EnlargeButton.Image = global::DotsMovementModelingApp.Properties.Resources.plus;
             this.EnlargeButton.Location = new System.Drawing.Point(10, 92);
             this.EnlargeButton.Name = "EnlargeButton";
             this.EnlargeButton.Size = new System.Drawing.Size(33, 33);
@@ -536,7 +536,7 @@ namespace CourseworkApp
             this.ClearButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClearButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ClearButton.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ClearButton.Image = global::CourseworkApp.Properties.Resources.clear;
+            this.ClearButton.Image = global::DotsMovementModelingApp.Properties.Resources.clear;
             this.ClearButton.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ClearButton.Location = new System.Drawing.Point(10, 585);
             this.ClearButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -582,7 +582,7 @@ namespace CourseworkApp
             this.DeleteButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.DeleteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeleteButton.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.DeleteButton.Image = global::CourseworkApp.Properties.Resources.eraser;
+            this.DeleteButton.Image = global::DotsMovementModelingApp.Properties.Resources.eraser;
             this.DeleteButton.Location = new System.Drawing.Point(50, 51);
             this.DeleteButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.DeleteButton.Name = "DeleteButton";
@@ -597,7 +597,7 @@ namespace CourseworkApp
             this.VertexButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.VertexButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.VertexButton.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.VertexButton.Image = global::CourseworkApp.Properties.Resources.vertex;
+            this.VertexButton.Image = global::DotsMovementModelingApp.Properties.Resources.vertex;
             this.VertexButton.Location = new System.Drawing.Point(50, 10);
             this.VertexButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.VertexButton.Name = "VertexButton";
@@ -612,7 +612,7 @@ namespace CourseworkApp
             this.EdgeButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.EdgeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EdgeButton.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.EdgeButton.Image = global::CourseworkApp.Properties.Resources.arc;
+            this.EdgeButton.Image = global::DotsMovementModelingApp.Properties.Resources.arc;
             this.EdgeButton.Location = new System.Drawing.Point(10, 51);
             this.EdgeButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.EdgeButton.Name = "EdgeButton";

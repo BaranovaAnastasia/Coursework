@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace CourseworkApp
+namespace DotsMovementModelingApp
 {
     static class Program
     {

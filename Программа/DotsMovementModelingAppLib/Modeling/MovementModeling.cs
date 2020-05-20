@@ -7,7 +7,7 @@ using System.Drawing;
 using Timer = System.Windows.Forms.Timer;
 #pragma warning disable 67
 
-namespace ApplicationClasses.Modeling
+namespace DotsMovementModelingAppLib.Modeling
 {
     /// <summary>
     /// Contains instance methods for Modeling the Movement of Points on Directed Metric Graph,

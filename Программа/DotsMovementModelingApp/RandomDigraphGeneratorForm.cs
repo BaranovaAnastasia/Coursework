@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
-using ApplicationClasses;
+using DotsMovementModelingAppLib;
 
-namespace CourseworkApp
+namespace DotsMovementModelingApp
 {
     public partial class RandomDigraphGeneratorForm : Form
     {

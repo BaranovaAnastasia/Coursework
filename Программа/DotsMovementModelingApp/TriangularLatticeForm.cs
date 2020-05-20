@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using ApplicationClasses;
+using DotsMovementModelingAppLib;
 
-namespace CourseworkApp
+namespace DotsMovementModelingApp
 {
     public partial class TriangularLatticeForm : Form
     {

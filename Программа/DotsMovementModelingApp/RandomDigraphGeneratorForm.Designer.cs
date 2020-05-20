@@ -1,4 +1,4 @@
-﻿namespace CourseworkApp
+﻿namespace DotsMovementModelingApp
 {
     partial class RandomDigraphGeneratorForm
     {

@@ -2,9 +2,9 @@
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
-using GraphClasses.Commands;
+using DotsMovementModelingAppLib.Commands;
 
-namespace CourseworkApp
+namespace DotsMovementModelingApp
 {
     public partial class MainWindow
     {

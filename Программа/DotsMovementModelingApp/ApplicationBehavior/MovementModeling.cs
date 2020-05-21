@@ -38,7 +38,7 @@ namespace DotsMovementModelingApp
             var actions = GetModelingActions();
             var sandpileChartTypes = GetChartTypes();
 
-            PrepareMovementModeling(type, actions, sandpileChartTypes);
+            if(PrepareMovementModeling(type, actions, sandpileChartTypes)) return; 
 
             movement.StartMovementModeling();
         }
@@ -49,7 +49,7 @@ namespace DotsMovementModelingApp
         /// <param name="type">Modeling type</param>
         /// <param name="actions">Additional actions</param>
         /// <param name="sandpileChartTypes">Sandpile chart types</param>
-        private void PrepareMovementModeling(MovementModelingType type,
+        private bool PrepareMovementModeling(MovementModelingType type,
             MovementModelingActions[] actions,
             SandpileChartType[] sandpileChartTypes)
         {
@@ -74,6 +74,7 @@ namespace DotsMovementModelingApp
                 DrawingSurface.Image = graphDrawing.Image;
                 SandpilePanel.Visible = true;
                 SandpilePanel.BringToFront();
+                return true;
             }
 
             movement.MovementEnded += (s, ea) =>
@@ -85,6 +86,7 @@ namespace DotsMovementModelingApp
 
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();
+            return false;
         }
 
         #region Params Collecting methods
@@ -191,6 +193,7 @@ namespace DotsMovementModelingApp
 
             SandpilePanel.Visible = false;
             SandpileLabel.Text = @"Select sink vertices and then click here          ";
+            SandpileLabel.Enabled = true;
             SandpileLabel.Font = new Font("Segoe UI", 9, FontStyle.Underline);
             SandpilePanel.Size = new Size(SandpilePanel.Size.Width, 32);
 

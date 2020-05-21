@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Media.Imaging;
-using System.Linq;
 
 namespace DotsMovementModelingAppLib.Modeling
 {
@@ -40,12 +40,12 @@ namespace DotsMovementModelingAppLib.Modeling
         /// <summary>
         /// Adds point to number of dots chart
         /// </summary>
-        private void AddNumberOfDotsChartPoint(long time, int count)
+        private void AddNumberOfDotsChartPoint(long t, int count)
         {
             if (numberOfDotsChart == null) return;
-            numberOfDotsChart?.chart1.Series[0].Points.AddXY(time / 1000.0, count);
+            numberOfDotsChart?.chart1.Series[0].Points.AddXY(t / 1000.0, count);
             if (count >= numberOfDotsChart.chart1.ChartAreas[0].AxisY.Maximum
-            || time / 1000.0 >= numberOfDotsChart?.chart1.ChartAreas[0].AxisX.Maximum)
+            || t / 1000.0 >= numberOfDotsChart?.chart1.ChartAreas[0].AxisX.Maximum)
                 ChangeChartInterval(numberOfDotsChart?.chart1);
         }
 

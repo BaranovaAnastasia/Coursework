@@ -68,7 +68,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppHelpers.cs" />
+    <Compile Include="AppAdditions.cs" />
     <Compile Include="Commands\AddArcCommand.cs" />
     <Compile Include="Commands\AddVertexCommand.cs" />
     <Compile Include="Commands\ChangeColorCommand.cs" />

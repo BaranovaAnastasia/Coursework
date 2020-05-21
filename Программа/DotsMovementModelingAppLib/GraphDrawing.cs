@@ -1,8 +1,8 @@
-﻿using System;
+﻿using DotsMovementModelingAppLib.Modeling;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using DotsMovementModelingAppLib.Modeling;
 
 namespace DotsMovementModelingAppLib
 {
@@ -166,7 +166,7 @@ namespace DotsMovementModelingAppLib
         /// <param name="sizeCoef">Resizing coefficient</param>
         public void DrawArc(Vertex startVertex, Vertex endVertex, Arc arc, int xOffset = 0, int yOffset = 0, double sizeCoef = 1)
         {
-            startVertex.X = (int) ((startVertex.X + xOffset) * sizeCoef);
+            startVertex.X = (int)((startVertex.X + xOffset) * sizeCoef);
             startVertex.Y = (int)((startVertex.Y + yOffset) * sizeCoef);
             endVertex.X = (int)((endVertex.X + xOffset) * sizeCoef);
             endVertex.Y = (int)((endVertex.Y + yOffset) * sizeCoef);
@@ -196,7 +196,7 @@ namespace DotsMovementModelingAppLib
         public void DrawVertices(Digraph digraph, int xOffset = 0, int yOffset = 0, double sizeCoef = 1)
         {
             for (int i = 0; i < digraph.Vertices.Count; ++i)
-                DrawVertex((int)((digraph.Vertices[i].X + xOffset)*sizeCoef), (int)((digraph.Vertices[i].Y + yOffset) * sizeCoef), i + 1);
+                DrawVertex((int)((digraph.Vertices[i].X + xOffset) * sizeCoef), (int)((digraph.Vertices[i].Y + yOffset) * sizeCoef), i + 1);
         }
 
         /// <summary>
@@ -290,16 +290,16 @@ namespace DotsMovementModelingAppLib
             for (int i = 0; i < digraph.State.Count; i++)
             {
                 DrawVertex((int)((digraph.Vertices[i].X + xOffset) * sizeCoef),
-                    (int)((digraph.Vertices[i].Y + yOffset) * sizeCoef), 
+                    (int)((digraph.Vertices[i].Y + yOffset) * sizeCoef),
                     i + 1,
                     new Pen(digraph.State[i] >= incidenceList[i].Count || digraph.Stock.Contains(i)
                         ? Color.Black
                         : SandpilePalette[digraph.State[i]], 4f));
 
                 if (digraph.Stock.Contains(i))
-                    graphics.FillEllipse(Brushes.Black, 
-                        (int)((digraph.Vertices[i].X + xOffset) * sizeCoef) - R, 
-                        (int)((digraph.Vertices[i].Y + yOffset) * sizeCoef) - R, 
+                    graphics.FillEllipse(Brushes.Black,
+                        (int)((digraph.Vertices[i].X + xOffset) * sizeCoef) - R,
+                        (int)((digraph.Vertices[i].Y + yOffset) * sizeCoef) - R,
                         2 * R, 2 * R);
                 else
                     graphics.DrawString($"({digraph.State[i]})", sandpileFont, brush,
@@ -413,7 +413,7 @@ namespace DotsMovementModelingAppLib
             get => Image.Size;
             set
             {
-                if(value.Height == 0 || value.Width == 0) return;
+                if (value.Height == 0 || value.Width == 0) return;
                 Image = new Bitmap(value.Width, value.Height);
                 graphics = Graphics.FromImage(Image);
             }

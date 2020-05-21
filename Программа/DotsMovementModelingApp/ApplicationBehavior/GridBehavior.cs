@@ -1,8 +1,8 @@
-﻿using System;
+﻿using DotsMovementModelingAppLib.Commands;
+using System;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
-using DotsMovementModelingAppLib.Commands;
 
 namespace DotsMovementModelingApp
 {
@@ -58,7 +58,7 @@ namespace DotsMovementModelingApp
                 return;
             }
 
-            int selectedArc = ArcName.Items.IndexOf(ArcName.Text);
+            var selectedArc = ArcName.Items.IndexOf(ArcName.Text);
             if (selectedArc == -1)
             {
                 MessageBox.Show(@"The edge doesn't exist", @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -67,7 +67,7 @@ namespace DotsMovementModelingApp
 
             try
             {
-                double length = new MathParserTK.MathParser().Parse(ArcLength.Text);
+                var length = new MathParserTK.MathParser().Parse(ArcLength.Text);
                 var command = new ChangeArcLengthCommand(digraph, selectedArc, digraph.Arcs[selectedArc].Length, length);
                 command.Executed += (s, ea) => GridAdjacencyMatrix[digraph.Arcs[selectedArc].EndVertex, digraph.Arcs[selectedArc].StartVertex].Value = s;
                 commandsManager.Execute(command);
@@ -75,7 +75,7 @@ namespace DotsMovementModelingApp
             }
             catch (Exception)
             {
-                MessageBox.Show(@"Invalid value. Make sure the input value is greater than zero and is the correct mathematical expression.", 
+                MessageBox.Show(@"Invalid value. Make sure the input value is greater than zero and is the correct mathematical expression.",
                     @"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -113,10 +113,12 @@ namespace DotsMovementModelingApp
                         return;
                     }
                     digraph.State[e.RowIndex] = value;
-                    return;
+                    break;
             }
-            GridParameters[e.ColumnIndex, e.RowIndex].Value = value;
 
+            GridParameters.CellValueChanged -= GridParameters_CellValueChanged;
+            GridParameters[e.ColumnIndex, e.RowIndex].Value = value;
+            GridParameters.CellValueChanged += GridParameters_CellValueChanged;
         }
 
         private void GridParameters_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)

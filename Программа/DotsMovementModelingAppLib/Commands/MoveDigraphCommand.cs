@@ -1,5 +1,4 @@
 ﻿using System;
-using DotsMovementModelingAppLib;
 
 namespace DotsMovementModelingAppLib.Commands
 {
@@ -38,7 +37,7 @@ namespace DotsMovementModelingAppLib.Commands
         public void Execute()
         {
             for (int i = 0; i < digraph.Vertices.Count; i++)
-                digraph.Vertices[i] = 
+                digraph.Vertices[i] =
                     new Vertex(digraph.Vertices[i].X + xCoefficient, digraph.Vertices[i].Y + yCoefficient);
         }
 

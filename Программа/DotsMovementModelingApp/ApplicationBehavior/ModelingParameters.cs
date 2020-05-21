@@ -57,7 +57,6 @@ namespace DotsMovementModelingApp
             }
         }
 
-
         /// <summary>
         /// Starts Sandpile movement after stock vertices are selected
         /// </summary>
@@ -66,6 +65,7 @@ namespace DotsMovementModelingApp
             if (SandpilePanel.Size.Height > 60) return;
             SandpilePanel.Visible = false;
             TimeTextBox.Visible = true;
+            SandpileLabel.Enabled = false;
             TimeTextBox.BringToFront();
             SandpileLabel.Text = @"Select vertex to add a grain of sand to       ";
             SandpileLabel.Font = new Font("Segoe UI", 9);
@@ -81,11 +81,10 @@ namespace DotsMovementModelingApp
         /// </summary>
         private void MovementEndedSandpileEventHandler(object sender, EventArgs e)
         {
-            if(sender is int) return;
+            if (sender is int) return;
             SandpilePanel.Visible = true;
             SandpilePanel.BringToFront();
         }
-
 
         /// <summary>
         /// Adds a grain of sand to a random vertex
@@ -104,7 +103,7 @@ namespace DotsMovementModelingApp
 
             if (SaveGifCheckBox.Checked && movement.MovementGif.Frames.Count < 250)
             {
-                var bmp = ((Bitmap) DrawingSurface.Image).GetHbitmap();
+                var bmp = ((Bitmap)DrawingSurface.Image).GetHbitmap();
                 var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                     bmp,
                     IntPtr.Zero,
@@ -129,7 +128,6 @@ namespace DotsMovementModelingApp
             movement.MovementEnded += MovementEndedSandpileEventHandler;
             movement.MovementEnded -= RandomAddingLabel_Click;
         }
-
 
         private void SandpileChartType1_CheckedChanged(object sender, EventArgs e)
         {

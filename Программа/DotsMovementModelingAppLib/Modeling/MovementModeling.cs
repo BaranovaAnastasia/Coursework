@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Drawing;
 using Timer = System.Windows.Forms.Timer;
 #pragma warning disable 67
 
@@ -158,7 +158,7 @@ namespace DotsMovementModelingAppLib.Modeling
             if (actions.Contains(MovementModelingActions.Gif))
                 mainTimer.Tick += TickAddFrame;
 
-            Go(); 
+            Go();
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace DotsMovementModelingAppLib.Modeling
                 return;
             }
             mainTimer.Start();
-            if(time > 0)
+            if (time > 0)
                 stopwatchTime.Start();
             stopwatches.ForEach(timer => timer.Start());
             IsActive = true;

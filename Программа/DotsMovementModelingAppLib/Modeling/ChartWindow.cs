@@ -87,9 +87,9 @@ namespace DotsMovementModelingAppLib.Modeling
         /// </summary>
         private void SaveAll_Click(object sender, EventArgs e)
         {
-            using (var folderBrowser = new FolderBrowserDialog {SelectedPath = @"Chart"})
+            using (var folderBrowser = new FolderBrowserDialog { SelectedPath = @"Chart" })
             {
-                if(folderBrowser.ShowDialog() != DialogResult.OK) return;
+                if (folderBrowser.ShowDialog() != DialogResult.OK) return;
 
                 Directory.CreateDirectory(folderBrowser.SelectedPath + @"\Chart");
 

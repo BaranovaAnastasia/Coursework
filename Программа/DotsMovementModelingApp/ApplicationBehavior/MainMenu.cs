@@ -1,10 +1,10 @@
-﻿using System;
+﻿using DotsMovementModelingAppLib;
+using DotsMovementModelingAppLib.Commands;
+using System;
 using System.Drawing;
-using DotsMovementModelingAppLib;
+using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using System.IO;
-using DotsMovementModelingAppLib.Commands;
 
 namespace DotsMovementModelingApp
 {
@@ -15,18 +15,11 @@ namespace DotsMovementModelingApp
         /// </summary>
         private void Build_Click(object sender, EventArgs e)
         {
-            if (sender != TopMenu)
-            {
-                SplashScreen.BringToFront();
-                SplashScreen.Visible = true;
-                this.Cursor = Cursors.WaitCursor;
-            }
+            Cursor = Cursors.WaitCursor;
             RefreshVariables();
             UpdateDigraphInfo();
             ChangeMainMenuState(false);
             ChangeDrawingElementsState(true);
-
-            SplashScreen.Visible = false;
             Cursor = Cursors.Default;
         }
 
@@ -75,7 +68,7 @@ namespace DotsMovementModelingApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show(@"Invalid file:" + Environment.NewLine + ex.Message, @"Error", 
+                MessageBox.Show(@"Invalid file:" + Environment.NewLine + ex.Message, @"Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -115,7 +108,6 @@ namespace DotsMovementModelingApp
             ChangeMainMenuState(false);
             ChangeDrawingElementsState(true);
         }
-
 
         #region Additional methods
 

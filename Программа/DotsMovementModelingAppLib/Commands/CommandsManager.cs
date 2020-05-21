@@ -14,9 +14,6 @@ namespace DotsMovementModelingAppLib.Commands
         /// </summary>
         public bool CanRedo => RedoStack.Count > 0;
 
-        public ICommand NextToUndo => UndoStack.Peek();
-        public ICommand NextToRedo => RedoStack.Peek();
-
         /// <summary>
         /// Stack of commands to undo
         /// </summary>
@@ -44,8 +41,8 @@ namespace DotsMovementModelingAppLib.Commands
             var command = UndoStack.Pop();
             command.UnExecute();
             RedoStack.Push(command);
-            if(!CanUndo) CanUndoChanged?.Invoke(false, null);
-            if(RedoStack.Count == 1) CanRedoChanged?.Invoke(true, null);
+            if (!CanUndo) CanUndoChanged?.Invoke(false, null);
+            if (RedoStack.Count == 1) CanRedoChanged?.Invoke(true, null);
         }
 
         /// <summary>

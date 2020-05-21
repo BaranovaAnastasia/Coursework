@@ -1,11 +1,11 @@
-﻿using System;
+﻿using DotsMovementModelingAppLib;
+using DotsMovementModelingAppLib.Modeling;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
-using DotsMovementModelingAppLib;
-using DotsMovementModelingAppLib.Modeling;
 
 namespace DotsMovementModelingApp
 {
@@ -24,8 +24,8 @@ namespace DotsMovementModelingApp
                     MovementToolStripMenuItem.Enabled = false;
                     StopToolStripMenuItem.Enabled = true;
                     return;
-                } 
-            if (movement == null && isOnMovement) return;               //returns if movement is over but reset button wasn't clicked yet
+                }
+            if (movement == null && isOnMovement) return;   //returns if movement is over but reset button wasn't clicked yet
 
             if (!CheckConnectivity()) return;   //Connectivity check before movement modeling start
 
@@ -38,6 +38,21 @@ namespace DotsMovementModelingApp
             var actions = GetModelingActions();
             var sandpileChartTypes = GetChartTypes();
 
+            PrepareMovementModeling(type, actions, sandpileChartTypes);
+
+            movement.StartMovementModeling();
+        }
+
+        /// <summary>
+        /// Prepares MovementModeling instance for modeling the movement
+        /// </summary>
+        /// <param name="type">Modeling type</param>
+        /// <param name="actions">Additional actions</param>
+        /// <param name="sandpileChartTypes">Sandpile chart types</param>
+        private void PrepareMovementModeling(MovementModelingType type,
+            MovementModelingActions[] actions,
+            SandpileChartType[] sandpileChartTypes)
+        {
             movement = new MovementModeling(digraph, (double)SpeedNumeric.Value / 1000, type, actions)
             {
                 GraphDrawing = graphDrawing,
@@ -59,16 +74,17 @@ namespace DotsMovementModelingApp
                 DrawingSurface.Image = graphDrawing.Image;
                 SandpilePanel.Visible = true;
                 SandpilePanel.BringToFront();
-                return;
             }
 
-            movement.MovementEnded += (s, ea) => { movement.Tick -= UpdateElapsedTime; movement = null; };
+            movement.MovementEnded += (s, ea) =>
+            {
+                movement.Tick -= UpdateElapsedTime;
+                movement = null;
+            };
             if (SaveGifCheckBox.Checked) movement.MovementEnded += SaveGif;
 
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();
-
-            movement.StartMovementModeling();
         }
 
         #region Params Collecting methods
@@ -90,6 +106,7 @@ namespace DotsMovementModelingApp
             if (SandpileChartType2.Checked) types.Add(SandpileChartType.AvalancheSizesDistributionChart);
             return types.ToArray();
         }
+
         #endregion
 
         /// <summary>

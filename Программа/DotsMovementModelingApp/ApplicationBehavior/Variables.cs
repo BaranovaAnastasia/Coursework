@@ -1,8 +1,8 @@
-﻿using System;
-using DotsMovementModelingAppLib;
-using System.Windows.Forms;
-using DotsMovementModelingAppLib.Modeling;
+﻿using DotsMovementModelingAppLib;
 using DotsMovementModelingAppLib.Commands;
+using DotsMovementModelingAppLib.Modeling;
+using System;
+using System.Windows.Forms;
 
 namespace DotsMovementModelingApp
 {
@@ -73,12 +73,17 @@ namespace DotsMovementModelingApp
         /// Resize coefficient
         /// </summary>
         private double resizeCoefficient = 1;
+        /// <summary>
+        /// Shows is Control button is currently pressed
+        /// </summary>
         private bool isControlPressed;
         /// <summary>
         /// Vertices radius
         /// </summary>
         private int radius = 8;
-
+        /// <summary>
+        /// Shows if vertices radius was changed
+        /// </summary>
         private bool radiusChanged;
 
         #region File dialods

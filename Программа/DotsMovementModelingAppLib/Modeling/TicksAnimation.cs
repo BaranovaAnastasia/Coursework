@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows;
-using  System.Linq;
 
 namespace DotsMovementModelingAppLib.Modeling
 {
@@ -71,7 +71,7 @@ namespace DotsMovementModelingAppLib.Modeling
             {
                 if (involvedArcs.Count == 0) return;
                 indexOfFixedDot = involvedArcs.Count - 1;
-                if (time == 0)
+                if (Math.Abs(time) <= 0)
                     for (int i = 0; i < involvedArcs.Count; i++)
                     {
                         if (involvedArcs[i].Length > involvedArcs[indexOfFixedDot].Length)
@@ -196,9 +196,9 @@ namespace DotsMovementModelingAppLib.Modeling
                 || val == stopwatches.Count
                 || indexOfFixedDot == -1) return;
 
-            long point = (long) (time -
+            long point = (long)(time -
                                  GetTime(involvedArcs[indexOfFixedDot].Length, speed) +
-                                 stopwatches[indexOfFixedDot].ElapsedMilliseconds);// + stopwatchTime.ElapsedMilliseconds);
+                                 stopwatches[indexOfFixedDot].ElapsedMilliseconds);
             AddNumberOfDotsChartPoint(point, val);
             AddNumberOfDotsChartPoint(point, involvedArcs.Count);
         }

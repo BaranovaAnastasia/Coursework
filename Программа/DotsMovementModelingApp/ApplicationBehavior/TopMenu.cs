@@ -1,9 +1,9 @@
 ﻿using DotsMovementModelingAppLib;
 using System;
-using System.Windows.Forms;
 using System.Drawing.Imaging;
-using System.Xml.Serialization;
 using System.IO;
+using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace DotsMovementModelingApp
 {
@@ -78,7 +78,7 @@ namespace DotsMovementModelingApp
 
 
         /// <summary>
-        /// Saves the graph if user wants to and closes the app
+        /// Closes the app
         /// </summary>
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e) => Close();
 
@@ -96,14 +96,13 @@ namespace DotsMovementModelingApp
             ChangeMainMenuState(true);
         }
 
-
         /// <summary>
         /// Giving information about the application and the developer
         /// </summary>
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e) =>
             MessageBox.Show(AboutApp, @"About", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-        
+
         /// <summary>
         /// Saves the digraph to file if user wants to
         /// </summary>

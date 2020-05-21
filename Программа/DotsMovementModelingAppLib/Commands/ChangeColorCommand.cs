@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using DotsMovementModelingAppLib;
 
 namespace DotsMovementModelingAppLib.Commands
 {
@@ -38,7 +37,7 @@ namespace DotsMovementModelingAppLib.Commands
         /// <exception cref="ArgumentException"/>
         public ChangeColorCommand(GraphDrawing target, Type type, Color oldColor, Color newColor)
         {
-            if(type != typeof(Arc) && type != typeof(Vertex))
+            if (type != typeof(Arc) && type != typeof(Vertex))
                 throw new ArgumentException(nameof(type));
             this.target = target;
             this.type = type;

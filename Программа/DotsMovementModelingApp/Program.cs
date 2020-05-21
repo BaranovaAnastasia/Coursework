@@ -17,7 +17,7 @@ namespace DotsMovementModelingApp
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new MainWindow());
             }
-            catch (Exception e)
+            catch (InvalidCastException e)
             {
                 var message = "An unexpected fatal error has occurred. Exception message: " + e.Message +
                               Environment.NewLine + "The application will be closed." +

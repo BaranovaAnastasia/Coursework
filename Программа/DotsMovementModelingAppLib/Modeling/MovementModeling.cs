@@ -134,14 +134,16 @@ namespace DotsMovementModelingAppLib.Modeling
             {
                 releaseCondition = i => digraph.State[i] >= digraph.Thresholds[i]
                                         && (digraph.RefractoryPeriods[i] == 0 ||
-                                            !digraph.TimeTillTheEndOfRefractoryPeriod[i].Enabled);
+                                            digraph.TimeTillTheEndOfRefractoryPeriod[i].ElapsedMilliseconds >= digraph.RefractoryPeriods[i]
+                                            || !digraph.TimeTillTheEndOfRefractoryPeriod[i].IsRunning);
                 stateChange = i => digraph.State[i] -= digraph.Thresholds[i];
             }
             else
             {
                 releaseCondition = i => !digraph.Stock.Contains(i) && digraph.State[i] >= incidenceList[i].Count
                                                                    && (digraph.RefractoryPeriods[i] == 0 ||
-                                                                       !digraph.TimeTillTheEndOfRefractoryPeriod[i].Enabled);
+                                                                       digraph.TimeTillTheEndOfRefractoryPeriod[i].ElapsedMilliseconds >= digraph.RefractoryPeriods[i]
+                                                                       || !digraph.TimeTillTheEndOfRefractoryPeriod[i].IsRunning);
                 stateChange = i => digraph.State[i] -= incidenceList[i].Count;
             }
 

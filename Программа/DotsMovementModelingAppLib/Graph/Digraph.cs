@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -42,7 +43,7 @@ namespace DotsMovementModelingAppLib
         /// <summary>
         /// Remaining time until the end of refractory period in milliseconds
         /// </summary>
-        [XmlIgnore] public List<Timer> TimeTillTheEndOfRefractoryPeriod { get; private set; }
+        [XmlIgnore] public List<Stopwatch> TimeTillTheEndOfRefractoryPeriod { get; private set; }
 
         /// <summary>
         /// List of indices of sink vertices (sandpile modeling)
@@ -198,14 +199,12 @@ namespace DotsMovementModelingAppLib
         /// </summary>
         public void SetTimeTillTheEndOfRefractoryPeriod()
         {
-            TimeTillTheEndOfRefractoryPeriod = new List<Timer>(RefractoryPeriods.Count);
+            TimeTillTheEndOfRefractoryPeriod = new List<Stopwatch>(RefractoryPeriods.Count);
             for (int i = 0; i < RefractoryPeriods.Count; ++i)
             {
                 if (RefractoryPeriods[i] > 0)
                 {
-                    TimeTillTheEndOfRefractoryPeriod.Add(new Timer() { Interval = RefractoryPeriods[i] });
-                    TimeTillTheEndOfRefractoryPeriod[i].Tick +=
-                        (sender, e) => (sender as Timer)?.Stop();
+                    TimeTillTheEndOfRefractoryPeriod.Add(new Stopwatch());
                 }
                 else TimeTillTheEndOfRefractoryPeriod.Add(null);
             }

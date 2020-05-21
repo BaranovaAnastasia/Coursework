@@ -8,6 +8,7 @@ namespace DotsMovementModelingAppLib.Modeling
 {
     public partial class MovementModeling
     {
+        private bool isNew = true;
         private bool isOnWaiting;
         private int indexOfWaited = -1;
         /// <summary>
@@ -26,25 +27,49 @@ namespace DotsMovementModelingAppLib.Modeling
             ProcessVertices();
             UpdateChart(initialCount);
 
-            if (indexOfFixedDot == -1 && (indexOfWaited == -1 || digraph.TimeTillTheEndOfRefractoryPeriod[indexOfWaited].Enabled))
-            {
-                //time += stopwatchTime.ElapsedMilliseconds;
-                    //stopwatchTime.Reset();
-                    if (!isOnWaiting)
-                    {
-                        stopwatchTime.Start();
-                        isOnWaiting = true;
-                    }
-                    
-            }
+            
 
             if (IsMovementEnded)
             {
+                Stop();
                 AddNumberOfDotsChartPoint((long)(time), initialCount);
                 AddNumberOfDotsChartPoint((long)(time), involvedArcs.Count);
 
+                isNew = true;
+
                 Tick?.Invoke(this, new MovementTickEventArgs((long)time));
                 MovementEnded?.Invoke(this, null);
+                return;
+            }
+
+            if (indexOfFixedDot == -1 && (indexOfWaited == -1
+                                          || digraph.TimeTillTheEndOfRefractoryPeriod[indexOfWaited].ElapsedMilliseconds
+                                          >= digraph.RefractoryPeriods[indexOfWaited]))
+            {
+                indexOfWaited = -1;
+                for (int i = 0; i < digraph.Vertices.Count; i++)
+                {
+                    if ((type == MovementModelingType.Basic && digraph.State[i] >= digraph.Thresholds[i]
+                         || type == MovementModelingType.Sandpile && digraph.State[i] >= incidenceList[i].Count)
+                        && (indexOfWaited == -1
+                            || digraph.RefractoryPeriods[indexOfWaited] -
+                            digraph.TimeTillTheEndOfRefractoryPeriod[indexOfWaited].ElapsedMilliseconds
+                            < digraph.RefractoryPeriods[i] -
+                            digraph.TimeTillTheEndOfRefractoryPeriod[i].ElapsedMilliseconds))
+                    {
+                        indexOfWaited = i;
+                    }
+
+                }
+
+                time += digraph.RefractoryPeriods[indexOfWaited] -
+                        digraph.TimeTillTheEndOfRefractoryPeriod[indexOfWaited].ElapsedMilliseconds + stopwatchTime.ElapsedMilliseconds;
+                stopwatchTime.Restart();
+                if (!isOnWaiting)
+                {
+                    isOnWaiting = true;
+                }
+
             }
         }
 
@@ -59,6 +84,7 @@ namespace DotsMovementModelingAppLib.Modeling
             {
                 if (indexOfFixedDot == -1 && i == index && releaseCondition(i))
                 {
+                    stopwatchTime.Restart();
                     indexOfFixedDot = 0;
 
                     for (int j = 0; j < incidenceList[i].Count; j++)
@@ -69,8 +95,6 @@ namespace DotsMovementModelingAppLib.Modeling
 
                     time += GetTime(incidenceList[i][indexOfFixedDot].Length, speed);
                     indexOfFixedDot += involvedArcs.Count;
-                    stopwatchTime.Reset();
-                    stopwatchTime.Start();
                     index = -1;
                 }
                 else if (i == index) index = -1;
@@ -101,7 +125,11 @@ namespace DotsMovementModelingAppLib.Modeling
                         if (involvedArcs[i].Length > involvedArcs[indexOfFixedDot].Length)
                             indexOfFixedDot = i;
                     }
-                if (involvedArcs.Count > 1) time -= 9;
+                if (!isNew)
+                {
+                    time -= 9;
+                    isNew = false;
+                }
                 time += GetTime(involvedArcs[indexOfFixedDot].Length, speed) -
                         stopwatches[indexOfFixedDot].ElapsedMilliseconds;
                 stopwatchTime.Reset();
@@ -126,6 +154,7 @@ namespace DotsMovementModelingAppLib.Modeling
                 if (stopwatches[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
                 {
                     digraph.State[involvedArcs[i].EndVertex]++;
+
 
                     if (i == indexOfFixedDot)
                     {
@@ -181,8 +210,7 @@ namespace DotsMovementModelingAppLib.Modeling
                 involvedArcs.AddRange(incidenceList[vertexIndex]);
                 stopwatches.AddRange(incidenceList[vertexIndex].ConvertAll(arc => new Stopwatch()));
                 stateChange(vertexIndex);
-                digraph.TimeTillTheEndOfRefractoryPeriod[vertexIndex]?.Stop();
-                digraph.TimeTillTheEndOfRefractoryPeriod[vertexIndex]?.Start();
+                digraph.TimeTillTheEndOfRefractoryPeriod[vertexIndex]?.Restart();
             }
             if (distributionChart != null) avalanche[vertexIndex] = true;
         }
@@ -214,8 +242,7 @@ namespace DotsMovementModelingAppLib.Modeling
             for (int i = stopwatches.Count - 1; fired < count; i--, fired++)
             {
                 stopwatches[i].Start();
-                //digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Stop();
-                //digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Start();
+                digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex]?.Restart();
             }
         }
 

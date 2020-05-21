@@ -96,7 +96,7 @@ namespace DotsMovementModelingAppLib.Modeling
                 using (var stream = new FileStream(folderBrowser.SelectedPath + @"\Chart\ChartImage.jpg", FileMode.Create))
                     chart1.SaveImage(stream, ChartImageFormat.Jpeg);
 
-                using (var stream = new StreamWriter(folderBrowser.SelectedPath + @"\Chart\ChartData.csv", false))
+                using (var stream = new StreamWriter(folderBrowser.SelectedPath + @"\Chart\ChartData.csv", true))
                 {
                     stream.WriteLine(chart1.ChartAreas[0].AxisX.Title + ";" + chart1.ChartAreas[0].AxisY.Title);
                     foreach (var point in chart1.Series[0].Points)

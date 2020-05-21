@@ -80,8 +80,8 @@ namespace DotsMovementModelingApp
         {
             graphDrawing.R = RadiusTrackBar.Value;
             RadiusValueLabel.Text = @"R = " + RadiusTrackBar.Value;
-            MouseWheelTimer.Start();
             radiusChanged = !radiusChanged;
+            MouseWheelTimer.Start();
         }
 
         /// <summary>

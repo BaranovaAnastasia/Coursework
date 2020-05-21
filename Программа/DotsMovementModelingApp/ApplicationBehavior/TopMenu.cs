@@ -66,7 +66,7 @@ namespace DotsMovementModelingApp
                     graphDrawing.Image.Save(stream, ImageFormat.Jpeg);
                 }
 
-                using (var stream = new StreamWriter(folderDialog.SelectedPath + @"\Graph\Data.dgmm", false))
+                using (var stream = new StreamWriter(folderDialog.SelectedPath + @"\Graph\Data.dgmm", true))
                 {
                     XmlSerializer format = new XmlSerializer(typeof(Digraph));
                     format.Serialize(stream, digraph);

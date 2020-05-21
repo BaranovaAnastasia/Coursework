@@ -173,7 +173,7 @@ namespace DotsMovementModelingApp
             var command = new ChangeRadiusCommand(graphDrawing, radius, graphDrawing.R);
             command.Executed += (s, ea) => RadiusTrackBar.Value = (int)s;
             commandsManager.Execute(command);
-            //radius = graphDrawing.R;
+            radius = graphDrawing.R;
         }
 
         /// <summary>

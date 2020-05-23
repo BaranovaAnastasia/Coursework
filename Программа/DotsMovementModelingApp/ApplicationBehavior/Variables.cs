@@ -54,9 +54,9 @@ namespace DotsMovementModelingApp
         /// </summary>
         private static readonly string AboutApp =
             "The application developed as a part of a coursework" + Environment.NewLine +
-            Environment.NewLine +
-            Environment.NewLine + "Developed by Baranova Anastasia Andreevna, BSE196." +
-            Environment.NewLine +
+            "\"The Program for Modeling the Movement of Points on Directed Metric Graph, with the Condition of Synchronization at the Vertices\"" +
+            Environment.NewLine + Environment.NewLine +  "Developed by Baranova Anastasia Andreevna, BSE196." +
+            Environment.NewLine + 
             "Supervisor: Vsevolod L. Chernyshev, Associate Professor, Big Data and Information Retrieval School, Faculty of Computer Science." +
             Environment.NewLine +
             Environment.NewLine + "Higher School of Economics, Moscow, 2020";

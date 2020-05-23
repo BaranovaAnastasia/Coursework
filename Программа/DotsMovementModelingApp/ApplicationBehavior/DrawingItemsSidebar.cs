@@ -80,8 +80,12 @@ namespace DotsMovementModelingApp
         {
             graphDrawing.R = RadiusTrackBar.Value;
             RadiusValueLabel.Text = @"R = " + RadiusTrackBar.Value;
-            radiusChanged = !radiusChanged;
-            MouseWheelTimer.Start();
+            if (!isCommand)
+            {
+                radiusChanged = true;
+                MouseWheelTimer.Start();
+            }
+            else radius = RadiusTrackBar.Value;
         }
 
         /// <summary>
@@ -214,23 +218,25 @@ namespace DotsMovementModelingApp
 
         #endregion
 
+        private bool isCommand;
+
         private void UndoButton_Click(object sender, EventArgs e)
         {
             if (isOnMovement) return;
-            radiusChanged = true;
+            isCommand = true;
             commandsManager.Undo();
             graphDrawing.DrawTheWholeGraph(digraph);
             DrawingSurface.Image = graphDrawing.Image;
-            radiusChanged = false;
+            isCommand = false;
         }
         private void RedoButton_Click(object sender, EventArgs e)
         {
             if (isOnMovement) return;
-            radiusChanged = true;
+            isCommand = true;
             commandsManager.Redo();
             graphDrawing.DrawTheWholeGraph(digraph);
             DrawingSurface.Image = graphDrawing.Image;
-            radiusChanged = false;
+            isCommand = false;
         }
     }
 }

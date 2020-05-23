@@ -181,7 +181,6 @@ namespace DotsMovementModelingApp
                 if (digraph.RefractoryPeriods[i] == 0) continue;
                 digraph.TimeTillTheEndOfRefractoryPeriod?[i]?.Stop();
             }
-            digraph.ResetStock();
 
             graphDrawing.DrawTheWholeGraph(digraph);
             DrawingSurface.Image = graphDrawing.Image;

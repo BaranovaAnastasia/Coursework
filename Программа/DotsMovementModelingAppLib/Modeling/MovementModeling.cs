@@ -40,6 +40,8 @@ namespace DotsMovementModelingAppLib.Modeling
                 if (type == MovementModelingType.Basic) GraphDrawing.DrawTheWholeGraph(digraph);
                 DrawingSurface.Image = GraphDrawing.Image;
             };
+
+            lastFires = new Double[digraph.Vertices.Count];
         }
 
         /// <summary>
@@ -169,7 +171,14 @@ namespace DotsMovementModelingAppLib.Modeling
         public void Stop()
         {
             mainTimer.Stop();
+            for (int i = 0; i < digraph.Vertices.Count; i++)
+            {
+                if (digraph.TimeTillTheEndOfRefractoryPeriod[i].IsRunning)
+                    digraph.TimeTillTheEndOfRefractoryPeriod[i].Stop();
+                else digraph.TimeTillTheEndOfRefractoryPeriod[i] = null;
+            }
             stopwatches.ForEach(timer => timer.Stop());
+
             stopwatchTime.Stop();
             IsActive = false;
         }
@@ -187,6 +196,14 @@ namespace DotsMovementModelingAppLib.Modeling
             mainTimer.Start();
             if (time > 0)
                 stopwatchTime.Start();
+
+            for (int i = 0; i < digraph.Vertices.Count && time > 0; i++)
+            {
+                if (digraph.TimeTillTheEndOfRefractoryPeriod[i] == null)
+                    digraph.TimeTillTheEndOfRefractoryPeriod[i] = new Stopwatch();
+                else digraph.TimeTillTheEndOfRefractoryPeriod[i].Start();
+            }
+
             stopwatches.ForEach(timer => timer.Start());
             IsActive = true;
         }

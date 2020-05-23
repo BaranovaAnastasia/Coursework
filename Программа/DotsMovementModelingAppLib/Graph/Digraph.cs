@@ -202,11 +202,7 @@ namespace DotsMovementModelingAppLib
             TimeTillTheEndOfRefractoryPeriod = new List<Stopwatch>(RefractoryPeriods.Count);
             for (int i = 0; i < RefractoryPeriods.Count; ++i)
             {
-                if (RefractoryPeriods[i] > 0)
-                {
                     TimeTillTheEndOfRefractoryPeriod.Add(new Stopwatch());
-                }
-                else TimeTillTheEndOfRefractoryPeriod.Add(null);
             }
         }
 

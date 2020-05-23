@@ -46,6 +46,8 @@ namespace DotsMovementModelingAppLib.Modeling
             stateReleaseCondition = i =>
                 type == MovementModelingType.Sandpile && digraph.State[i] >= incidenceList[i].Count
                 || type == MovementModelingType.Basic && digraph.State[i] >= digraph.Thresholds[i];
+
+            refractoryPeriodAdded = new bool[digraph.Vertices.Count];
         }
 
 

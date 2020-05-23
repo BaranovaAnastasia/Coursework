@@ -17,6 +17,7 @@ namespace DotsMovementModelingAppLib.Modeling
         private long lastTime;
         private int lastUpdated;
         private int initialCount;
+        private bool[] refractoryPeriodAdded;
 
         /// <summary>
         /// Models and animates the process of dots movement
@@ -26,16 +27,13 @@ namespace DotsMovementModelingAppLib.Modeling
             if (dotsTime.Count > 0)
             {
                 int index = dotsTime.IndexOf(dotsTime.Max());
-                time = (long)(dotsTime.Max() - GetTime(involvedArcs[index].Length, speed) +
+                time = (long)(dotsTime[index] - GetTime(involvedArcs[index].Length, speed) +
                             stopwatches[index].ElapsedMilliseconds) + lastTime;
             }
             else time = (long)verticesTime.Max() + lastTime;
-            Tick?.Invoke(this,
-            new MovementTickEventArgs(time));
+            Tick?.Invoke(this, new MovementTickEventArgs(time));
 
-
-
-             initialCount = involvedArcs.Count;
+            initialCount = involvedArcs.Count;
             ProcessDots();
             ProcessVertices();
 
@@ -76,6 +74,8 @@ namespace DotsMovementModelingAppLib.Modeling
             {
                 if (!releaseCondition(i)) continue;
                 ReleaseDots(i);
+
+                refractoryPeriodAdded[i] = false;
             }
 
             UpdateChart(initialCount, (long)verticesTime.Max());
@@ -85,8 +85,11 @@ namespace DotsMovementModelingAppLib.Modeling
                 if (digraph.State[i] == 0)
                     verticesTime[i] = 0;
 
-                if (!releaseCondition(i) && stateReleaseCondition(i))
+                if (!releaseCondition(i) && stateReleaseCondition(i) && !refractoryPeriodAdded[i])
+                {
                     verticesTime[i] += digraph.RefractoryPeriods[i];
+                    refractoryPeriodAdded[i] = true;
+                }
             }
             CheckDotsNumber(20000);
 
@@ -115,10 +118,13 @@ namespace DotsMovementModelingAppLib.Modeling
                         verticesTime[involvedArcs[i].EndVertex] = dotsTime[i];
                     if (!releaseCondition(involvedArcs[i].EndVertex) &&
                         stateReleaseCondition(involvedArcs[i].EndVertex) && addTime)
+                    {
                         verticesTime[involvedArcs[i].EndVertex] += digraph.RefractoryPeriods[involvedArcs[i].EndVertex]
                                                                    - digraph.TimeTillTheEndOfRefractoryPeriod[
                                                                        involvedArcs[i].EndVertex].ElapsedMilliseconds;
-                    if(!releaseCondition(involvedArcs[i].EndVertex)) lastUpdated = involvedArcs[i].EndVertex;
+
+                        refractoryPeriodAdded[involvedArcs[i].EndVertex] = true;
+                    }
 
                     stopwatches.RemoveAt(i);
                     involvedArcs.RemoveAt(i);

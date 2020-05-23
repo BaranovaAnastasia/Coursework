@@ -13,23 +13,31 @@ namespace DotsMovementModelingAppLib.Modeling
         /// </summary>
         public readonly GifBitmapEncoder MovementGif = new GifBitmapEncoder();
 
+        private bool save = true;
+
         /// <summary>
         /// Collects frames for a GIF image of the process of the movement of points on digraph
         /// (with a limit of 300 frames)
         /// </summary>
         private void TickAddFrame(object source, EventArgs e)
         {
-            var bmp = ((Bitmap)DrawingSurface.Image).GetHbitmap();
-            var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                bmp,
-                IntPtr.Zero,
-                System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            MovementGif.Frames.Add(BitmapFrame.Create(src));
+            if (save)
+            {
+                var bmp = ((Bitmap) DrawingSurface.Image).GetHbitmap();
+                var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                    bmp,
+                    IntPtr.Zero,
+                    System.Windows.Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                MovementGif.Frames.Add(BitmapFrame.Create(src));
 
-            DeleteObject(bmp);
+                DeleteObject(bmp);
 
-            if (MovementGif.Frames.Count >= 300)
-                mainTimer.Tick -= TickAddFrame;
+                save = false;
+
+                if (MovementGif.Frames.Count >= 400)
+                    mainTimer.Tick -= TickAddFrame;
+            }
+            else save = true;
         }
 
 

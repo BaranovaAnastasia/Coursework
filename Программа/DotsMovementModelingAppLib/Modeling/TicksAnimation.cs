@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows;
+using System.Windows.Forms;
+using MessageBox = System.Windows.MessageBox;
 
 namespace DotsMovementModelingAppLib.Modeling
 {
@@ -11,8 +13,11 @@ namespace DotsMovementModelingAppLib.Modeling
     {
         private List<double> verticesTime;
         private List<double> dotsTime = new List<double>();
-        private long time = 0;
-        private long lastTime = 0;
+        private long time;
+        private long lastTime;
+        private int lastUpdated;
+        private int initialCount;
+
         /// <summary>
         /// Models and animates the process of dots movement
         /// </summary>
@@ -30,10 +35,9 @@ namespace DotsMovementModelingAppLib.Modeling
 
 
 
-            int initialCount = involvedArcs.Count;
+             initialCount = involvedArcs.Count;
             ProcessDots();
             ProcessVertices();
-            UpdateChart(initialCount, time);
 
             if (IsMovementEnded)
             {
@@ -58,25 +62,37 @@ namespace DotsMovementModelingAppLib.Modeling
         /// </summary>
         private void ProcessVertices()
         {
+            int sum = involvedArcs.Count;
+            for (int i = 0; i < digraph.Vertices.Count; i++)
+            {
+                if (releaseCondition(i))
+                    sum += incidenceList[i].Count;
+            }
+            if(sum > 20000) CheckDotsNumber(involvedArcs.Count -1);
+
             int count = involvedArcs.Count; // number of 'old' dots 
 
             for (var i = 0; i < digraph.Vertices.Count; i++)
             {
                 if (!releaseCondition(i)) continue;
                 ReleaseDots(i);
+            }
+
+            UpdateChart(initialCount, (long)verticesTime.Max());
+
+            for (var i = 0; i < digraph.Vertices.Count; i++)
+            {
                 if (digraph.State[i] == 0)
                     verticesTime[i] = 0;
 
                 if (!releaseCondition(i) && stateReleaseCondition(i))
                     verticesTime[i] += digraph.RefractoryPeriods[i];
             }
-
             CheckDotsNumber(20000);
 
             StartNewTimers(stopwatches.Count - count);
         }
 
-        private int index = -1;
         /// <summary>
         /// Draws all the moving dots, removes all the dots got to their destination
         /// and releases new dots if destination vertices are ready
@@ -102,7 +118,7 @@ namespace DotsMovementModelingAppLib.Modeling
                         verticesTime[involvedArcs[i].EndVertex] += digraph.RefractoryPeriods[involvedArcs[i].EndVertex]
                                                                    - digraph.TimeTillTheEndOfRefractoryPeriod[
                                                                        involvedArcs[i].EndVertex].ElapsedMilliseconds;
-
+                    if(!releaseCondition(involvedArcs[i].EndVertex)) lastUpdated = involvedArcs[i].EndVertex;
 
                     stopwatches.RemoveAt(i);
                     involvedArcs.RemoveAt(i);
@@ -161,7 +177,17 @@ namespace DotsMovementModelingAppLib.Modeling
                 MessageBox.Show("Operation has been aborted prematurely." + Environment.NewLine +
                                 $"The number of dots exceeded the allowable mark of {limit}",
                     "Operation Aborted", MessageBoxButton.OK, MessageBoxImage.Error);
-                Tick?.Invoke(this, new MovementTickEventArgs((long)time));
+
+                Stop();
+                lastTime += (long) (dotsTime.Max() -
+                                    GetTime(involvedArcs[dotsTime.IndexOf(dotsTime.Max())].Length, speed));
+
+                verticesTime = new List<double>(digraph.Vertices.Count);
+                verticesTime.AddRange(digraph.Vertices.ConvertAll(vertex => 0d));
+                dotsTime = new List<double>();
+
+
+                Tick?.Invoke(this, new MovementTickEventArgs(lastTime));
                 MovementEnded?.Invoke(limit, null);
             }
         }
@@ -191,14 +217,14 @@ namespace DotsMovementModelingAppLib.Modeling
         /// Updates number of dots chart
         /// </summary>
         /// <param name="val">Number of dots before changes</param>
-        private void UpdateChart(int val, long time)
+        private void UpdateChart(int val, long timePoint)
         {
             if (!actions.Contains(MovementModelingActions.Chart)
                 || numberOfDotsChart == null
                 || val == involvedArcs.Count) return;
 
-            AddNumberOfDotsChartPoint(time, val);
-            AddNumberOfDotsChartPoint(time, involvedArcs.Count);
+            AddNumberOfDotsChartPoint(timePoint, val);
+            AddNumberOfDotsChartPoint(timePoint, involvedArcs.Count);
         }
     }
 }

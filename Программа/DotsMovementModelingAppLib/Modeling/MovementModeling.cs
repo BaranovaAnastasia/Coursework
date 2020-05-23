@@ -48,10 +48,11 @@ namespace DotsMovementModelingAppLib.Modeling
                 || type == MovementModelingType.Basic && digraph.State[i] >= digraph.Thresholds[i];
 
             refractoryPeriodAdded = new bool[digraph.Vertices.Count];
+            hasFired = new bool[digraph.Vertices.Count];
         }
 
 
-        private Predicate<int> stateReleaseCondition;
+        private readonly Predicate<int> stateReleaseCondition;
 
         /// <summary>
         /// Shows if the movement is currently active
@@ -145,7 +146,7 @@ namespace DotsMovementModelingAppLib.Modeling
                 releaseCondition = i => digraph.State[i] >= digraph.Thresholds[i]
                                         && (digraph.RefractoryPeriods[i] == 0 ||
                                             digraph.TimeTillTheEndOfRefractoryPeriod[i].ElapsedMilliseconds >= digraph.RefractoryPeriods[i]
-                                            || !digraph.TimeTillTheEndOfRefractoryPeriod[i].IsRunning);
+                                            || !hasFired[i]);
                 stateChange = i => digraph.State[i] -= digraph.Thresholds[i];
             }
             else
@@ -153,7 +154,7 @@ namespace DotsMovementModelingAppLib.Modeling
                 releaseCondition = i => !digraph.Stock.Contains(i) && digraph.State[i] >= incidenceList[i].Count
                                                                    && (digraph.RefractoryPeriods[i] == 0 ||
                                                                        digraph.TimeTillTheEndOfRefractoryPeriod[i].ElapsedMilliseconds >= digraph.RefractoryPeriods[i]
-                                                                       || !digraph.TimeTillTheEndOfRefractoryPeriod[i].IsRunning);
+                                                                       || !hasFired[i]);
                 stateChange = i => digraph.State[i] -= incidenceList[i].Count;
             }
 
@@ -181,9 +182,7 @@ namespace DotsMovementModelingAppLib.Modeling
             mainTimer.Stop();
             for (int i = 0; i < digraph.Vertices.Count; i++)
             {
-                if (digraph.TimeTillTheEndOfRefractoryPeriod[i] != null && digraph.TimeTillTheEndOfRefractoryPeriod[i].IsRunning)
-                    digraph.TimeTillTheEndOfRefractoryPeriod[i].Stop();
-                else digraph.TimeTillTheEndOfRefractoryPeriod[i] = null;
+                digraph.TimeTillTheEndOfRefractoryPeriod[i].Stop();
             }
             stopwatches.ForEach(timer => timer.Stop());
 
@@ -205,11 +204,10 @@ namespace DotsMovementModelingAppLib.Modeling
             if (lastTime > 0)
                 stopwatchTime.Start();
 
-            for (int i = 0; i < digraph.TimeTillTheEndOfRefractoryPeriod.Count && lastTime > 0; i++)
+            for (int i = 0; i < digraph.TimeTillTheEndOfRefractoryPeriod.Count && time > 0; i++)
             {
-                if (digraph.TimeTillTheEndOfRefractoryPeriod[i] == null)
-                    digraph.TimeTillTheEndOfRefractoryPeriod[i] = new Stopwatch();
-                else digraph.TimeTillTheEndOfRefractoryPeriod[i].Start();
+                if (digraph.TimeTillTheEndOfRefractoryPeriod[i].ElapsedMilliseconds != 0)
+                    digraph.TimeTillTheEndOfRefractoryPeriod[i].Start();
             }
 
             stopwatches.ForEach(timer => timer.Start());

@@ -17,7 +17,9 @@ namespace DotsMovementModelingAppLib.Modeling
         private long lastTime;
         private int lastUpdated;
         private int initialCount;
-        private bool[] refractoryPeriodAdded;
+        private readonly bool[] refractoryPeriodAdded;
+        private double oldMax = 0;
+        private bool[] hasFired;
 
         /// <summary>
         /// Models and animates the process of dots movement
@@ -30,7 +32,12 @@ namespace DotsMovementModelingAppLib.Modeling
                 time = (long)(dotsTime[index] - GetTime(involvedArcs[index].Length, speed) +
                             stopwatches[index].ElapsedMilliseconds) + lastTime;
             }
-            else time = (long)verticesTime.Max() + lastTime;
+            else
+            {
+                int index = verticesTime.IndexOf(verticesTime.Max());
+                time = (long)verticesTime[index] - digraph.RefractoryPeriods[index]
+                       + digraph.TimeTillTheEndOfRefractoryPeriod[index].ElapsedMilliseconds + lastTime;
+            }
             Tick?.Invoke(this, new MovementTickEventArgs(time));
 
             initialCount = involvedArcs.Count;
@@ -45,14 +52,16 @@ namespace DotsMovementModelingAppLib.Modeling
                 verticesTime = new List<double>(digraph.Vertices.Count);
                 verticesTime.AddRange(digraph.Vertices.ConvertAll(vertex => 0d));
                 dotsTime = new List<double>();
+                oldMax = 0;
 
                 AddNumberOfDotsChartPoint(lastTime, initialCount);
                 AddNumberOfDotsChartPoint(lastTime, involvedArcs.Count);
-                
+
 
                 Tick?.Invoke(this, new MovementTickEventArgs(lastTime));
                 MovementEnded?.Invoke(this, null);
             }
+            else if (involvedArcs.Count == 0 && initialCount != 0) stopwatchTime.Restart();
         }
 
         /// <summary>
@@ -66,19 +75,24 @@ namespace DotsMovementModelingAppLib.Modeling
                 if (releaseCondition(i))
                     sum += incidenceList[i].Count;
             }
-            if(sum > 20000) CheckDotsNumber(involvedArcs.Count -1);
+            if (sum > 20000) CheckDotsNumber(involvedArcs.Count - 1);
 
             int count = involvedArcs.Count; // number of 'old' dots 
+            double newOldMax = -1;
 
             for (var i = 0; i < digraph.Vertices.Count; i++)
             {
                 if (!releaseCondition(i)) continue;
                 ReleaseDots(i);
 
+                if (verticesTime[i] > newOldMax) newOldMax = verticesTime[i];
+
                 refractoryPeriodAdded[i] = false;
             }
 
-            UpdateChart(initialCount, (long)verticesTime.Max());
+            if (newOldMax > 0) oldMax = newOldMax;
+
+            UpdateChart(initialCount, (long)oldMax + lastTime);
 
             for (var i = 0; i < digraph.Vertices.Count; i++)
             {
@@ -106,10 +120,13 @@ namespace DotsMovementModelingAppLib.Modeling
                 GraphDrawing.DrawTheWholeGraph(digraph);
             else GraphDrawing.DrawTheWholeGraphSandpile(digraph, false);
 
+            int newOldMax = -1;
             for (var i = 0; i < involvedArcs.Count; i++)
             {
                 if (stopwatches[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
                 {
+                    if (Math.Max(dotsTime[i], verticesTime[involvedArcs[i].EndVertex]) > oldMax)
+                        oldMax = Math.Max(dotsTime[i], verticesTime[involvedArcs[i].EndVertex]);
                     bool addTime = !stateReleaseCondition(involvedArcs[i].EndVertex);
 
                     digraph.State[involvedArcs[i].EndVertex]++;
@@ -143,6 +160,8 @@ namespace DotsMovementModelingAppLib.Modeling
                 GraphDrawing.DrawDot(point);
             }
 
+            if (newOldMax > 0) oldMax = newOldMax;
+
             CheckDotsNumber(20000);
 
             if (type == MovementModelingType.Basic)
@@ -156,19 +175,21 @@ namespace DotsMovementModelingAppLib.Modeling
         /// </summary>
         private void ReleaseDots(int vertexIndex)
         {
-            stopwatchTime.Restart();
             if (!releaseCondition(vertexIndex)) return;
             while (releaseCondition(vertexIndex))
             {
+                hasFired[vertexIndex] = true;
                 dotsTime.AddRange(incidenceList[vertexIndex].ConvertAll(arc =>
                     GetTime(arc.Length, speed) + verticesTime[vertexIndex]));
                 involvedArcs.AddRange(incidenceList[vertexIndex]);
                 stopwatches.AddRange(incidenceList[vertexIndex].ConvertAll(arc => new Stopwatch()));
 
                 stateChange(vertexIndex);
-                digraph.TimeTillTheEndOfRefractoryPeriod[vertexIndex]?.Restart();
+                digraph.TimeTillTheEndOfRefractoryPeriod[vertexIndex].Restart();
+
             }
             if (distributionChart != null) avalanche[vertexIndex] = true;
+            hasFired[vertexIndex] = true;
         }
 
         /// <summary>
@@ -185,7 +206,7 @@ namespace DotsMovementModelingAppLib.Modeling
                     "Operation Aborted", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 Stop();
-                lastTime += (long) (dotsTime.Max() -
+                lastTime += (long)(dotsTime.Max() -
                                     GetTime(involvedArcs[dotsTime.IndexOf(dotsTime.Max())].Length, speed));
 
                 verticesTime = new List<double>(digraph.Vertices.Count);

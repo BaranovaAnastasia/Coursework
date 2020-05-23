@@ -77,12 +77,12 @@ namespace DotsMovementModelingApp
                 return true;
             }
 
+            if (SaveGifCheckBox.Checked) movement.MovementEnded += SaveGif;
             movement.MovementEnded += (s, ea) =>
             {
                 movement.Tick -= UpdateElapsedTime;
                 movement = null;
             };
-            if (SaveGifCheckBox.Checked) movement.MovementEnded += SaveGif;
 
             TimeTextBox.Visible = true;
             TimeTextBox.BringToFront();

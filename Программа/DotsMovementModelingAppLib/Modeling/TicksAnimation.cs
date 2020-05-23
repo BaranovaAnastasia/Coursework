@@ -9,66 +9,48 @@ namespace DotsMovementModelingAppLib.Modeling
 {
     public partial class MovementModeling
     {
-        private bool isNew = true;
-        private bool isOnWaiting;
-        private int indexOfWaited = -1;
-        private readonly double[] lastFires;
-        private readonly List<double> releaseTime = new List<double>();
-
         private List<double> verticesTime;
         private List<double> dotsTime = new List<double>();
-
+        private long time = 0;
+        private long lastTime = 0;
         /// <summary>
         /// Models and animates the process of dots movement
         /// </summary>
         private void TickModeling(object source, EventArgs e)
         {
-            Tick?.Invoke(this, new MovementTickEventArgs((long)verticesTime.Max()));
+            if (dotsTime.Count > 0)
+            {
+                int index = dotsTime.IndexOf(dotsTime.Max());
+                time = (long)(dotsTime.Max() - GetTime(involvedArcs[index].Length, speed) +
+                            stopwatches[index].ElapsedMilliseconds) + lastTime;
+            }
+            else time = (long)verticesTime.Max() + lastTime;
+            Tick?.Invoke(this,
+            new MovementTickEventArgs(time));
+
 
 
             int initialCount = involvedArcs.Count;
-            long t = indexOfFixedDot == -1
-                ? (long) time
-                : (long) (time - GetTime(involvedArcs[indexOfFixedDot].Length, speed) +
-                          stopwatches[indexOfFixedDot].ElapsedMilliseconds);
             ProcessDots();
             ProcessVertices();
-            UpdateChart(initialCount, t);
-
-            
+            UpdateChart(initialCount, time);
 
             if (IsMovementEnded)
             {
                 Stop();
-                AddNumberOfDotsChartPoint((long)(time), initialCount);
-                AddNumberOfDotsChartPoint((long)(time), involvedArcs.Count);
+                lastTime += (long)(verticesTime.Max());
 
-                isNew = true;
+                verticesTime = new List<double>(digraph.Vertices.Count);
+                verticesTime.AddRange(digraph.Vertices.ConvertAll(vertex => 0d));
+                dotsTime = new List<double>();
 
-                Tick?.Invoke(this, new MovementTickEventArgs((long)verticesTime.Max()));
+                AddNumberOfDotsChartPoint(lastTime, initialCount);
+                AddNumberOfDotsChartPoint(lastTime, involvedArcs.Count);
+                
+
+                Tick?.Invoke(this, new MovementTickEventArgs(lastTime));
                 MovementEnded?.Invoke(this, null);
                 return;
-            }
-
-            if (indexOfFixedDot == -1 && indexOfWaited == -1 && !isOnWaiting)
-            {
-                indexOfWaited = -1;
-                isOnWaiting = true;
-                isNew = true;
-                for (int i = 0; i < digraph.Vertices.Count; i++)
-                {
-                    if ((type == MovementModelingType.Basic && digraph.State[i] >= digraph.Thresholds[i]
-                         || type == MovementModelingType.Sandpile && digraph.State[i] >= incidenceList[i].Count)
-                            && digraph.RefractoryPeriods[i]
-                            - digraph.TimeTillTheEndOfRefractoryPeriod[i].ElapsedMilliseconds != 0)
-                    {
-                        indexOfWaited = i;
-
-                        double newtime = digraph.RefractoryPeriods[indexOfWaited] - (time - lastFires[indexOfWaited]);
-                        time += newtime;
-                        return;
-                    }
-                }
             }
         }
 
@@ -81,36 +63,9 @@ namespace DotsMovementModelingAppLib.Modeling
 
             for (var i = 0; i < digraph.Vertices.Count; i++)
             {
-                if(releaseCondition(i))
-                    lastFires[i] = indexOfFixedDot == -1 ? time : time - GetTime(involvedArcs[indexOfFixedDot].Length, speed) +
-                                                                  stopwatches[indexOfFixedDot].ElapsedMilliseconds;
-                
-
-                if (indexOfFixedDot == -1 && i == index && releaseCondition(i) && !isOnWaiting)
-                {
-                    indexOfFixedDot = 0;
-
-                    for (int j = 0; j < incidenceList[i].Count; j++)
-                    {
-                        if (incidenceList[i][j].Length > incidenceList[i][indexOfFixedDot].Length)
-                            indexOfFixedDot = j;
-                    }
-
-                    time += GetTime(incidenceList[i][indexOfFixedDot].Length, speed);
-                    indexOfFixedDot += involvedArcs.Count;
-                    index = -1;
-                }
-                else if (i == index) index = -1;
-
-                if (isOnWaiting && indexOfWaited == i && releaseCondition(i))
-                {
-                    //time += stopwatchTime.ElapsedMilliseconds;
-                    isOnWaiting = false;
-                    indexOfWaited = -1;
-                }
                 if (!releaseCondition(i)) continue;
                 ReleaseDots(i);
-                if(digraph.State[i] == 0)
+                if (digraph.State[i] == 0)
                     verticesTime[i] = 0;
 
                 if (!releaseCondition(i) && stateReleaseCondition(i))
@@ -118,25 +73,6 @@ namespace DotsMovementModelingAppLib.Modeling
             }
 
             CheckDotsNumber(20000);
-
-            if (indexOfFixedDot == -1)
-            {
-                if (involvedArcs.Count == 0) return;
-                indexOfFixedDot = involvedArcs.Count - 1;
-                if (Math.Abs(time) <= 0)
-                    for (int i = 0; i < involvedArcs.Count; i++)
-                    {
-                        if (involvedArcs[i].Length > involvedArcs[indexOfFixedDot].Length)
-                            indexOfFixedDot = i;
-                    }
-                isNew = false;
-                if (stopwatches[indexOfFixedDot].IsRunning )
-                {
-                    time -= (time - releaseTime[indexOfFixedDot]);
-                }
-                time += GetTime(involvedArcs[indexOfFixedDot].Length, speed);
-                
-            }
 
             StartNewTimers(stopwatches.Count - count);
         }
@@ -154,9 +90,7 @@ namespace DotsMovementModelingAppLib.Modeling
 
             for (var i = 0; i < involvedArcs.Count; i++)
             {
-                if (indexOfFixedDot != -1 && time - GetTime(involvedArcs[indexOfFixedDot].Length, speed) +
-                    stopwatches[indexOfFixedDot].ElapsedMilliseconds - releaseTime[i] >= GetTime(involvedArcs[i].Length, speed)
-                    || indexOfFixedDot == -1 && time - releaseTime[i] >= GetTime(involvedArcs[i].Length, speed))
+                if (stopwatches[i].ElapsedMilliseconds >= GetTime(involvedArcs[i].Length, speed))
                 {
                     bool addTime = !stateReleaseCondition(involvedArcs[i].EndVertex);
 
@@ -170,24 +104,9 @@ namespace DotsMovementModelingAppLib.Modeling
                                                                    - digraph.TimeTillTheEndOfRefractoryPeriod[
                                                                        involvedArcs[i].EndVertex].ElapsedMilliseconds;
 
-                    if (i == indexOfFixedDot)
-                    {
-                        indexOfFixedDot = -1;
-                        index = involvedArcs[i].EndVertex;
-                        if (!releaseCondition(involvedArcs[i].EndVertex) && i != 0)
-                        {
-                            indexOfFixedDot = i - 1;
-                            time += GetTime(involvedArcs[indexOfFixedDot].Length, speed) -
-                                    stopwatches[indexOfFixedDot].ElapsedMilliseconds;
-                        }
-                    }
-
-                    if (indexOfFixedDot > i) indexOfFixedDot--;
-
 
                     stopwatches.RemoveAt(i);
                     involvedArcs.RemoveAt(i);
-                    releaseTime.RemoveAt(i);
                     dotsTime.RemoveAt(i);
 
                     i--;
@@ -220,13 +139,11 @@ namespace DotsMovementModelingAppLib.Modeling
             if (!releaseCondition(vertexIndex)) return;
             while (releaseCondition(vertexIndex))
             {
-                dotsTime.AddRange(incidenceList[vertexIndex].ConvertAll(arc => 
+                dotsTime.AddRange(incidenceList[vertexIndex].ConvertAll(arc =>
                     GetTime(arc.Length, speed) + verticesTime[vertexIndex]));
                 involvedArcs.AddRange(incidenceList[vertexIndex]);
                 stopwatches.AddRange(incidenceList[vertexIndex].ConvertAll(arc => new Stopwatch()));
-                releaseTime.AddRange(incidenceList[vertexIndex].ConvertAll(arc => 
-                    indexOfFixedDot == -1 ? time : time - GetTime(involvedArcs[indexOfFixedDot].Length, speed) +
-                                                   stopwatches[indexOfFixedDot].ElapsedMilliseconds));
+
                 stateChange(vertexIndex);
                 digraph.TimeTillTheEndOfRefractoryPeriod[vertexIndex]?.Restart();
             }
@@ -260,7 +177,7 @@ namespace DotsMovementModelingAppLib.Modeling
             for (int i = stopwatches.Count - 1; fired < count; i--, fired++)
             {
                 stopwatches[i].Start();
-                if(digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex] == null)
+                if (digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex] == null)
                     digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex] = new Stopwatch();
                 {
                     digraph.TimeTillTheEndOfRefractoryPeriod[involvedArcs[i].StartVertex].Stop();

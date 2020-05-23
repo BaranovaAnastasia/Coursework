@@ -41,7 +41,6 @@ namespace DotsMovementModelingAppLib.Modeling
                 DrawingSurface.Image = GraphDrawing.Image;
             };
 
-            lastFires = new Double[digraph.Vertices.Count];
             verticesTime = new List<double>(digraph.Vertices.Count);
             verticesTime.AddRange(digraph.Vertices.ConvertAll(vertex => 0d));
             stateReleaseCondition = i =>
@@ -119,7 +118,6 @@ namespace DotsMovementModelingAppLib.Modeling
         private ChartWindow numberOfDotsChart;
         private ChartWindow distributionChart;
 
-        private double time;
         private int indexOfFixedDot = -1;
         readonly Stopwatch stopwatchTime = new Stopwatch();
 
@@ -181,7 +179,7 @@ namespace DotsMovementModelingAppLib.Modeling
             mainTimer.Stop();
             for (int i = 0; i < digraph.Vertices.Count; i++)
             {
-                if (digraph.TimeTillTheEndOfRefractoryPeriod[i].IsRunning)
+                if (digraph.TimeTillTheEndOfRefractoryPeriod[i] != null && digraph.TimeTillTheEndOfRefractoryPeriod[i].IsRunning)
                     digraph.TimeTillTheEndOfRefractoryPeriod[i].Stop();
                 else digraph.TimeTillTheEndOfRefractoryPeriod[i] = null;
             }
@@ -202,10 +200,10 @@ namespace DotsMovementModelingAppLib.Modeling
                 return;
             }
             mainTimer.Start();
-            if (time > 0)
+            if (lastTime > 0)
                 stopwatchTime.Start();
 
-            for (int i = 0; i < digraph.Vertices.Count && time > 0; i++)
+            for (int i = 0; i < digraph.TimeTillTheEndOfRefractoryPeriod.Count && lastTime > 0; i++)
             {
                 if (digraph.TimeTillTheEndOfRefractoryPeriod[i] == null)
                     digraph.TimeTillTheEndOfRefractoryPeriod[i] = new Stopwatch();

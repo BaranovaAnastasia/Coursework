@@ -50,7 +50,6 @@ namespace DotsMovementModelingAppLib.Modeling
 
                 Tick?.Invoke(this, new MovementTickEventArgs(lastTime));
                 MovementEnded?.Invoke(this, null);
-                return;
             }
         }
 
@@ -196,8 +195,7 @@ namespace DotsMovementModelingAppLib.Modeling
         {
             if (!actions.Contains(MovementModelingActions.Chart)
                 || numberOfDotsChart == null
-                || val == stopwatches.Count
-                || indexOfFixedDot == -1) return;
+                || val == involvedArcs.Count) return;
 
             AddNumberOfDotsChartPoint(time, val);
             AddNumberOfDotsChartPoint(time, involvedArcs.Count);

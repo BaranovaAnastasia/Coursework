@@ -42,7 +42,15 @@ namespace DotsMovementModelingAppLib.Modeling
             };
 
             lastFires = new Double[digraph.Vertices.Count];
+            verticesTime = new List<double>(digraph.Vertices.Count);
+            verticesTime.AddRange(digraph.Vertices.ConvertAll(vertex => 0d));
+            stateReleaseCondition = i =>
+                type == MovementModelingType.Sandpile && digraph.State[i] >= incidenceList[i].Count
+                || type == MovementModelingType.Basic && digraph.State[i] >= digraph.Thresholds[i];
         }
+
+
+        private Predicate<int> stateReleaseCondition;
 
         /// <summary>
         /// Shows if the movement is currently active

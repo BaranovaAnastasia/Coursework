@@ -19,7 +19,7 @@ namespace DotsMovementModelingAppLib.Modeling
         private int initialCount;
         private readonly bool[] refractoryPeriodAdded;
         private double oldMax = 0;
-        private bool[] hasFired;
+        private readonly bool[] hasFired;
 
         /// <summary>
         /// Models and animates the process of dots movement

@@ -1,0 +1,5 @@
+C:\Users\Anastasia\source\repos\Graph_WinForms\GraphClasses\bin\Debug\GraphClasses.dll
+C:\Users\Anastasia\source\repos\Graph_WinForms\GraphClasses\bin\Debug\GraphClasses.pdb
+C:\Users\Anastasia\source\repos\Graph_WinForms\GraphClasses\obj\Debug\GraphClasses.csprojAssemblyReference.cache
+C:\Users\Anastasia\source\repos\Graph_WinForms\GraphClasses\obj\Debug\GraphClasses.dll
+C:\Users\Anastasia\source\repos\Graph_WinForms\GraphClasses\obj\Debug\GraphClasses.pdb

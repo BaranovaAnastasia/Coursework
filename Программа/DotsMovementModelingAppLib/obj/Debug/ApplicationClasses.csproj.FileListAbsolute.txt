@@ -1,0 +1,69 @@
+C:\Users\Anastasia\source\repos\Graph_WinForms\GraphClasses\bin\Debug\GraphClasses.dll
+C:\Users\Anastasia\source\repos\Graph_WinForms\GraphClasses\bin\Debug\GraphClasses.pdb
+C:\Users\Anastasia\source\repos\Graph_WinForms\GraphClasses\obj\Debug\ApplicationClasses.csprojAssemblyReference.cache
+C:\Users\Anastasia\source\repos\Graph_WinForms\GraphClasses\obj\Debug\GraphClasses.dll
+C:\Users\Anastasia\source\repos\Graph_WinForms\GraphClasses\obj\Debug\GraphClasses.pdb
+C:\Users\Anastasia\Desktop\Учебные материалы 1 курс\Курсовая\Graph_WinForms\GraphClasses\bin\Debug\GraphClasses.dll
+C:\Users\Anastasia\Desktop\Учебные материалы 1 курс\Курсовая\Graph_WinForms\GraphClasses\bin\Debug\GraphClasses.pdb
+C:\Users\Anastasia\Desktop\Учебные материалы 1 курс\Курсовая\Graph_WinForms\GraphClasses\obj\Debug\ApplicationClasses.csprojAssemblyReference.cache
+C:\Users\Anastasia\Desktop\Учебные материалы 1 курс\Курсовая\Graph_WinForms\GraphClasses\obj\Debug\GraphClasses.dll
+C:\Users\Anastasia\Desktop\Учебные материалы 1 курс\Курсовая\Graph_WinForms\GraphClasses\obj\Debug\GraphClasses.pdb
+C:\Users\Anastasia\Desktop\Учебные материалы 1 курс\Курсовая\Coursework\GraphClasses\bin\Debug\GraphClasses.dll
+C:\Users\Anastasia\Desktop\Учебные материалы 1 курс\Курсовая\Coursework\GraphClasses\bin\Debug\GraphClasses.pdb
+C:\Users\Anastasia\Desktop\Учебные материалы 1 курс\Курсовая\Coursework\GraphClasses\obj\Debug\ApplicationClasses.csprojAssemblyReference.cache
+C:\Users\Anastasia\Desktop\Учебные материалы 1 курс\Курсовая\Coursework\GraphClasses\obj\Debug\GraphClasses.dll
+C:\Users\Anastasia\Desktop\Учебные материалы 1 курс\Курсовая\Coursework\GraphClasses\obj\Debug\GraphClasses.pdb
+C:\Users\Anastasia\Desktop\Учебные материалы 1 курс\Курсовая\Coursework\ApplicationClasses\bin\Debug\GraphClasses.dll
+C:\Users\Anastasia\Desktop\Учебные материалы 1 курс\Курсовая\Coursework\ApplicationClasses\bin\Debug\GraphClasses.pdb
+C:\Users\Anastasia\Desktop\Учебные материалы 1 курс\Курсовая\Coursework\ApplicationClasses\obj\Debug\ApplicationClasses.csprojAssemblyReference.cache
+C:\Users\Anastasia\Desktop\Учебные материалы 1 курс\Курсовая\Coursework\ApplicationClasses\obj\Debug\GraphClasses.dll
+C:\Users\Anastasia\Desktop\Учебные материалы 1 курс\Курсовая\Coursework\ApplicationClasses\obj\Debug\GraphClasses.pdb
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\GraphClasses.dll
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\GraphClasses.pdb
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\obj\Debug\ApplicationClasses.csprojAssemblyReference.cache
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\obj\Debug\GraphClasses.dll
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\obj\Debug\GraphClasses.pdb
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\obj\Debug\ApplicationClasses.csproj.GenerateResource.cache
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\obj\Debug\ApplicationClasses.Modeling.ChartWindow.resources
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\Habanero.Base.dll
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\Habanero.BO.dll
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\Habanero.Console.dll
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\Habanero.DB.dll
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\obj\Debug\ApplicationClasses.csproj.CopyComplete
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\ServiceStack.Text.dll
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\ServiceStack.Text.xml
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\CsvHelper.dll
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\CsvHelper.xml
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\EPPlus.dll
+C:\Users\Anastasia\Desktop\Coursework\ApplicationClasses\bin\Debug\EPPlus.xml
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\CsvHelper.dll
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\EPPlus.dll
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\Habanero.Base.dll
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\Habanero.BO.dll
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\Habanero.Console.dll
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\Habanero.DB.dll
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\ServiceStack.Text.dll
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\CsvHelper.xml
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\EPPlus.xml
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\ServiceStack.Text.xml
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\obj\Debug\ApplicationClasses.csprojAssemblyReference.cache
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\obj\Debug\ApplicationClasses.Modeling.ChartWindow.resources
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\obj\Debug\ApplicationClasses.csproj.GenerateResource.cache
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\obj\Debug\ApplicationClasses.csproj.CopyComplete
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\obj\Debug\ApplicationClasses.csproj.CoreCompileInputs.cache
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\DotsMovementModelingAppLib.dll
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\bin\Debug\DotsMovementModelingAppLib.pdb
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\obj\Debug\DotsMovementModelingAppLib.dll
+C:\Users\Anastasia\Desktop\Coursework\Программа\ApplicationClasses\obj\Debug\DotsMovementModelingAppLib.pdb

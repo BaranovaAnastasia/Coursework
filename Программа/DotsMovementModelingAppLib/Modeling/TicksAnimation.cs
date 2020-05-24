@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows;
-using System.Windows.Forms;
 using MessageBox = System.Windows.MessageBox;
 
 namespace DotsMovementModelingAppLib.Modeling
@@ -19,7 +18,7 @@ namespace DotsMovementModelingAppLib.Modeling
         private int initialCount;
         private readonly bool[] refractoryPeriodAdded;
         private double oldMax = 0;
-        private bool[] hasFired;
+        private readonly bool[] hasFired;
 
         /// <summary>
         /// Models and animates the process of dots movement

@@ -1,0 +1,16 @@
+C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp\obj\Debug\DotsMovementModelingApp.csprojAssemblyReference.cache
+C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp\obj\Debug\DotsMovementModelingApp.MainWindow.resources
+C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp\obj\Debug\DotsMovementModelingApp.RandomDigraphGeneratorForm.resources
+C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp\obj\Debug\DotsMovementModelingApp.SquareLatticeForm.resources
+C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp\obj\Debug\DotsMovementModelingApp.TriangularLatticeForm.resources
+C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp\obj\Debug\DotsMovementModelingApp.csproj.GenerateResource.cache
+C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp\obj\Debug\DotsMovementModelingApp.csproj.CoreCompileInputs.cache
+C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp\obj\Debug\DotsMovementModelingApp.exe
+C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp\obj\Debug\DotsMovementModelingApp.pdb
+C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp\obj\Debug\DotsMovementModelingApp.Properties.Resources.resources
+C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp\bin\Debug\DotsMovementModelingApp.exe.config
+C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp\bin\Debug\DotsMovementModelingApp.exe
+C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp\bin\Debug\DotsMovementModelingApp.pdb
+C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp\bin\Debug\DotsMovementModelingAppLib.dll
+C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp\bin\Debug\DotsMovementModelingAppLib.pdb
+C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp\obj\Debug\DotsMovementModelingApp.csproj.CopyComplete

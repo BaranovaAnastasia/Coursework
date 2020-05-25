@@ -49,6 +49,7 @@ namespace DotsMovementModelingAppLib.Modeling
 
             refractoryPeriodAdded = new bool[digraph.Vertices.Count];
             hasFired = new bool[digraph.Vertices.Count];
+            lastFires = new Double[digraph.Vertices.Count];
         }
 
 

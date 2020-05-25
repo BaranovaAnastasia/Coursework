@@ -19,6 +19,7 @@ namespace DotsMovementModelingAppLib.Modeling
         private readonly bool[] refractoryPeriodAdded;
         private double oldMax = 0;
         private readonly bool[] hasFired;
+        private double[] lastFires;
 
         /// <summary>
         /// Models and animates the process of dots movement
@@ -87,6 +88,7 @@ namespace DotsMovementModelingAppLib.Modeling
                 if (verticesTime[i] > newOldMax) newOldMax = verticesTime[i];
 
                 refractoryPeriodAdded[i] = false;
+                lastFires[i] = verticesTime[i];
             }
 
             if (newOldMax > 0) oldMax = newOldMax;
@@ -95,8 +97,6 @@ namespace DotsMovementModelingAppLib.Modeling
 
             for (var i = 0; i < digraph.Vertices.Count; i++)
             {
-                if (digraph.State[i] == 0)
-                    verticesTime[i] = 0;
 
                 if (!releaseCondition(i) && stateReleaseCondition(i) && !refractoryPeriodAdded[i])
                 {
@@ -135,9 +135,8 @@ namespace DotsMovementModelingAppLib.Modeling
                     if (!releaseCondition(involvedArcs[i].EndVertex) &&
                         stateReleaseCondition(involvedArcs[i].EndVertex) && addTime)
                     {
-                        verticesTime[involvedArcs[i].EndVertex] += digraph.RefractoryPeriods[involvedArcs[i].EndVertex]
-                                                                   - digraph.TimeTillTheEndOfRefractoryPeriod[
-                                                                       involvedArcs[i].EndVertex].ElapsedMilliseconds;
+                        verticesTime[involvedArcs[i].EndVertex] += digraph.RefractoryPeriods[involvedArcs[i].EndVertex] -
+                            dotsTime[i] + lastFires[involvedArcs[i].EndVertex];
 
                         refractoryPeriodAdded[involvedArcs[i].EndVertex] = true;
                     }

@@ -40,9 +40,9 @@ namespace DotsMovementModelingAppLib.Modeling
         }
 
         /// <summary>
-        /// Saves chart data (.csv)
+        /// Saves chart Image
         /// </summary>
-        private void SaveData_Click(object sender, EventArgs e)
+        private void SaveImage_Click(object sender, EventArgs e)
         {
 
             using (var saveDialog = new SaveFileDialog
@@ -60,9 +60,9 @@ namespace DotsMovementModelingAppLib.Modeling
         }
 
         /// <summary>
-        /// Saves chart Image
+        /// Saves chart data (.csv)
         /// </summary>
-        private void SaveImage_Click(object sender, EventArgs e)
+        private void SaveData_Click(object sender, EventArgs e)
         {
             using (var saveDialog = new SaveFileDialog
             {

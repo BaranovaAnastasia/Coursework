@@ -112,7 +112,7 @@ namespace DotsMovementModelingApp
 
         private void Up_Click(object sender, EventArgs e)
         {
-            var command = new MoveDigraphCommand(digraph, 0, 10);
+            var command = new MoveDigraphCommand(digraph, 0, -10);
             commandsManager.Execute(command);
             UpdateImage();
         }
@@ -133,7 +133,7 @@ namespace DotsMovementModelingApp
 
         private void Down_Click(object sender, EventArgs e)
         {
-            var command = new MoveDigraphCommand(digraph, -10, 0);
+            var command = new MoveDigraphCommand(digraph, 0, 10);
             commandsManager.Execute(command);
             UpdateImage();
         }

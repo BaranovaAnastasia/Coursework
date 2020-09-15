@@ -17,3 +17,22 @@ C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingApp
 C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingAppLib\bin\Debug\System.Threading.Tasks.Extensions.xml
 C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingAppLib\obj\Debug\DotsMovementModelingAppLib.csproj.CopyComplete
 C:\Users\Anastasia\Desktop\Coursework\Программа\DotsMovementModelingAppLib\obj\Debug\DotsMovementModelingAppLib.csprojAssemblyReference.cache
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\bin\Debug\DotsMovementModelingAppLib.dll
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\bin\Debug\DotsMovementModelingAppLib.pdb
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\bin\Debug\EPPlus.dll
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\bin\Debug\ServiceStack.Text.dll
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\bin\Debug\EPPlus.xml
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\bin\Debug\ServiceStack.Text.xml
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\obj\Debug\DotsMovementModelingAppLib.csprojAssemblyReference.cache
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\obj\Debug\DotsMovementModelingAppLib.Modeling.ChartWindow.resources
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\obj\Debug\DotsMovementModelingAppLib.csproj.GenerateResource.cache
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\obj\Debug\DotsMovementModelingAppLib.csproj.CoreCompileInputs.cache
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\obj\Debug\DotsMovementModelingAppLib.csproj.CopyComplete
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\obj\Debug\DotsMovementModelingAppLib.dll
+C:\Users\Anastasia\Desktop\1 курс\Курсовая\Coursework\Программа\DotsMovementModelingAppLib\obj\Debug\DotsMovementModelingAppLib.pdb
